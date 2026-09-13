@@ -226,6 +226,12 @@ bool MoveToTravelTargetAction::Execute(Event& event)
 
 bool MoveToTravelTargetAction::isUseful()
 {
+    if (ai->HasStrategy("stay", BotState::BOT_STATE_NON_COMBAT) || ai->HasStrategy("stay", BotState::BOT_STATE_COMBAT))
+        return false;
+
+    if (!MovementAction::isUseful())
+        return false;
+
     if (!ai->AllowActivity(TRAVEL_ACTIVITY))
         return false;
 
