@@ -282,7 +282,7 @@ namespace
             else if (sServerFacade.IsHostileTo(unit, bot))
                 kind = "hostile creature";
 
-            descriptions.push_back(kind + " " + unit->GetName() + " level " + std::to_string(unit->GetLevel()));
+            descriptions.push_back(kind + " " + unit->GetName());
         }
 
         return descriptions.empty() ? "No nearby players, creatures, or objects are visible." : JoinStrings(descriptions);
@@ -580,7 +580,7 @@ std::string AIPlayAction::GetCompactActionMenu()
     return "ATTACK, COME, STOP, TRAVEL, "
         "EXPLORE, LOOT, QUEST, "
         "INTERACT, GREET, EMOTE, EAT, DRINK, "
-        "HEAL, MOUNT.";
+        "HEAL, MOUNT, NONE.";
 }
 
 std::string AIPlayAction::ExtractActionIntent(std::string& text)
@@ -631,6 +631,147 @@ std::string AIPlayAction::ExtractActionIntent(std::string& text)
     if (foundNone)
         text.clear();
     return std::string();
+}
+
+std::string AIPlayAction::ExtractCombinedActionIntent(std::string& text, const std::string& responseSpeakerName)
+{
+    const auto normalizeId = [](std::string id) -> std::string
+    {
+        std::transform(id.begin(), id.end(), id.begin(), [](unsigned char c) { return (char)std::toupper(c); });
+        if (id == "FOLLOW" || id == "FOLLOWING")
+            return "COME";
+        if (id == "NONE" || FindAIPlayCommand(id))
+            return id;
+        return "";
+    };
+
+    const auto lineId = [&](std::string line) -> std::string
+    {
+        size_t first = line.find_first_not_of(" \t\r\n[](){}<>`*_\"");
+        if (first == std::string::npos)
+            return "";
+        line.erase(0, first);
+        size_t last = line.find_last_not_of(" \t\r\n[](){}<>`*_\"");
+        if (last != std::string::npos)
+            line.erase(last + 1);
+
+        std::string lower = LowerAIPlayText(line);
+        if (lower.compare(0, 7, "action:") == 0)
+            line = line.substr(7);
+        else if (lower.compare(0, 8, "command:") == 0)
+            line = line.substr(8);
+        else if (lower.compare(0, 8, "ai_play=") == 0 || lower.compare(0, 8, "ai_play:") == 0)
+            line = line.substr(8);
+        else if (!responseSpeakerName.empty() && line.size() > responseSpeakerName.size() &&
+            LowerAIPlayText(line.substr(0, responseSpeakerName.size())) == LowerAIPlayText(responseSpeakerName) &&
+            line[responseSpeakerName.size()] == ':')
+            line = line.substr(responseSpeakerName.size() + 1);
+
+        first = line.find_first_not_of(" \t\r\n[](){}<>`*_\"");
+        if (first == std::string::npos)
+            return "";
+        line.erase(0, first);
+        size_t end = line.find_first_of(" \t\r\n:|,;.!?[](){}<>`*_\"");
+        return normalizeId(line.substr(0, end));
+    };
+
+    // The first generated line is reserved for the action ID. Always consume
+    // it, even when a small model misspells or omits the ID, so it cannot be
+    // sent as in-game dialogue.
+    size_t firstLine = text.find_first_not_of(" \t\r\n");
+    if (firstLine == std::string::npos)
+    {
+        text.clear();
+        return "";
+    }
+
+    size_t firstEnd = text.find_first_of("\r\n", firstLine);
+    if (firstEnd == std::string::npos)
+        firstEnd = text.size();
+
+    std::string selected = lineId(text.substr(firstLine, firstEnd - firstLine));
+    size_t eraseEnd = firstEnd;
+    if (eraseEnd < text.size() && text[eraseEnd] == '\r')
+        ++eraseEnd;
+    if (eraseEnd < text.size() && text[eraseEnd] == '\n')
+        ++eraseEnd;
+    text.erase(firstLine, eraseEnd - firstLine);
+    if (!selected.empty())
+        return selected;
+
+    size_t remainingStart = text.find_first_not_of(" \t\r\n");
+    if (remainingStart == std::string::npos)
+    {
+        text.clear();
+        return "";
+    }
+    if (remainingStart > 0)
+        text.erase(0, remainingStart);
+
+    // Accept former tagged output in the remaining text for compatibility.
+    const std::string loweredText = LowerAIPlayText(text);
+    size_t tag = loweredText.find("ai_play");
+    while (tag != std::string::npos)
+    {
+        const bool wordStart = tag == 0 || !std::isalnum(static_cast<unsigned char>(text[tag - 1]));
+        size_t idStart = tag + 7;
+        while (idStart < text.size() && std::isspace(static_cast<unsigned char>(text[idStart])))
+            ++idStart;
+        if (wordStart && idStart < text.size() && (text[idStart] == '=' || text[idStart] == ':'))
+        {
+            ++idStart;
+            while (idStart < text.size() && std::isspace(static_cast<unsigned char>(text[idStart])))
+                ++idStart;
+            size_t idEnd = idStart;
+            while (idEnd < text.size() && std::isalnum(static_cast<unsigned char>(text[idEnd])))
+                ++idEnd;
+            std::string id = normalizeId(text.substr(idStart, idEnd - idStart));
+            if (!id.empty())
+            {
+                text.erase(tag, idEnd - tag);
+                return id;
+            }
+        }
+        tag = loweredText.find("ai_play", tag + 7);
+    }
+
+    size_t contentEnd = text.find_last_not_of(" \t\r\n");
+    if (contentEnd == std::string::npos)
+        return "";
+    firstLine = text.find_first_not_of(" \t\r\n");
+    firstEnd = text.find_first_of("\r\n", firstLine);
+    if (firstEnd == std::string::npos)
+        firstEnd = text.size();
+    std::vector<std::pair<size_t, size_t>> candidates;
+    candidates.emplace_back(firstLine, firstEnd);
+
+    size_t lastLine = text.find_last_of("\r\n", contentEnd);
+    lastLine = lastLine == std::string::npos ? 0 : lastLine + 1;
+    if (lastLine != firstLine)
+        candidates.emplace_back(lastLine, contentEnd + 1);
+
+    for (const auto& bounds : candidates)
+    {
+        std::string id = lineId(text.substr(bounds.first, bounds.second - bounds.first));
+        if (id.empty())
+            continue;
+        size_t eraseStart = bounds.first;
+        size_t lineEnd = bounds.second;
+        if (lineEnd < text.size() && text[lineEnd] == '\r')
+            ++lineEnd;
+        if (lineEnd < text.size() && text[lineEnd] == '\n')
+            ++lineEnd;
+        else if (eraseStart > 0)
+        {
+            if (text[eraseStart - 1] == '\n')
+                --eraseStart;
+            if (eraseStart > 0 && text[eraseStart - 1] == '\r')
+                --eraseStart;
+        }
+        text.erase(eraseStart, lineEnd - eraseStart);
+        return id;
+    }
+    return "";
 }
 
 void AIPlayAction::StartActionSelection(PlayerbotAI* ai, const std::string& latestText, ObjectGuid ownerGuid)
@@ -789,5 +930,35 @@ void AIPlayAction::QueueGeneratedResponse(ObjectGuid botGuid, ObjectGuid ownerGu
 
         Player* owner = ownerGuid.IsEmpty() ? nullptr : sObjectAccessor.FindPlayer(ownerGuid);
         AIPlayAction::ProcessGeneratedText(bot->GetPlayerbotAI(), text, true, owner);
+    });
+}
+
+void AIPlayAction::QueueCombinedResponse(ObjectGuid botGuid, ObjectGuid ownerGuid,
+    const std::string& replyText, const std::string& commandId)
+{
+    if (botGuid.IsEmpty() || (replyText.empty() && commandId.empty()))
+        return;
+
+    sWorld.GetMessager().AddMessage([botGuid, ownerGuid, replyText, commandId](World*)
+    {
+        Player* bot = sObjectAccessor.FindPlayer(botGuid);
+        if (!bot || !bot->IsInWorld() || !bot->GetPlayerbotAI())
+            return;
+
+        PlayerbotAI* ai = bot->GetPlayerbotAI();
+        if (!ai->HasStrategy("ai play", BotState::BOT_STATE_NON_COMBAT))
+            return;
+
+        if (!replyText.empty())
+        {
+            if (!ai->aiPlayContext.empty())
+                ai->aiPlayContext += "\n";
+            ai->aiPlayContext += std::string(bot->GetName()) + ": " + replyText;
+            if (ai->aiPlayContext.size() > 32768)
+                ai->aiPlayContext.erase(0, ai->aiPlayContext.size() - 32768);
+        }
+
+        if (!commandId.empty() && LowerAIPlayText(commandId) != "none")
+            ExecuteAIPlayCommand(ai, commandId, ownerGuid);
     });
 }

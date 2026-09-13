@@ -421,7 +421,7 @@ delayedPackets ChatReplyAction::LinesToPackets(const std::vector<std::string>& l
     return delayedPackets;
 }
 
-static std::string ExtractFallbackLLMText(const std::string& response)
+static std::string ExtractFallbackLLMText(const std::string& response, bool preserveLineBreaks)
 {
     static const std::regex textField(
         R"json("(?:text|content|response|output_text|generated_text|answer)"\s*:\s*"((?:\\.|[^"\\])*)")json", std::regex::icase);
@@ -440,8 +440,12 @@ static std::string ExtractFallbackLLMText(const std::string& response)
             }
 
             char escaped = encoded[++i];
-            if (escaped == 'n' || escaped == 'r' || escaped == 't')
-                decoded.push_back(' ');
+            if (escaped == 'n')
+                decoded.push_back(preserveLineBreaks ? '\n' : ' ');
+            else if (escaped == 'r')
+                decoded.push_back(preserveLineBreaks ? '\r' : ' ');
+            else if (escaped == 't')
+                decoded.push_back(preserveLineBreaks ? '\t' : ' ');
             else if (escaped == '"' || escaped == '\\' || escaped == '/')
                 decoded.push_back(escaped);
             else
@@ -536,10 +540,23 @@ delayedPackets ChatReplyAction::GenerateResponsePacketsAIPlay(const std::string 
     auto timeAfter = time(nullptr);
     auto timeDiff = (timeAfter - startTime) * IN_MILLISECONDS;
 
-    std::string fallbackText = ExtractFallbackLLMText(response);
+    std::string fallbackText = ExtractFallbackLLMText(response, processForAIPlay);
     size_t responseStart = response.find_first_not_of(" \t\r\n");
     bool structuredResponse = responseStart != std::string::npos &&
         (response[responseStart] == '{' || response[responseStart] == '[');
+
+    // The shared completion starts with a private action ID. Strip it before
+    // running the ordinary chat parser so it can never be spoken in game.
+    std::string generatedText = fallbackText.empty() ? response : fallbackText;
+    std::string selectedAction;
+    if (processForAIPlay)
+    {
+        selectedAction = AIPlayAction::ExtractCombinedActionIntent(generatedText, responseSpeakerName);
+        if (!fallbackText.empty())
+            fallbackText = generatedText;
+        if (!structuredResponse)
+            response = generatedText;
+    }
 
     std::vector<std::string> lines;
     if (structuredResponse && !fallbackText.empty())
@@ -604,7 +621,7 @@ delayedPackets ChatReplyAction::GenerateResponsePacketsAIPlay(const std::string 
 
         // Chat generation is complete. Queue a separate, action-only LLM
         // generation; its output is never sent through the chat packet path.
-        AIPlayAction::QueueGeneratedResponse(botGuid, ownerGuid, responseText);
+        AIPlayAction::QueueCombinedResponse(botGuid, ownerGuid, responseText, selectedAction);
     }
 
     delayedPackets packets, debugPackets;
@@ -759,7 +776,16 @@ void ChatReplyAction::ChatReplyDo(Player* bot, uint32 type, uint32 guid1, uint32
                     prompt.second = BOT_TEXT2(prompt.second, placeholders);
                 }
 
-                uint32 currentLength = jsonFill["<pre prompt>"].size() + jsonFill["<context>"].size() + jsonFill["<prompt>"].size() + llmContext.size();
+                const bool processForAIPlayPrompt = player->isRealPlayer() &&
+                    ai->HasStrategy("ai play", BotState::BOT_STATE_NON_COMBAT);
+                if (processForAIPlayPrompt)
+                {
+                    jsonFill["<post prompt>"] += "\nPick one action for this message. IDs: " +
+                        AIPlayAction::GetCompactActionMenu() + ". Output exactly one ID first on its own line, then one short reply as " +
+                        bot->GetName() + ". No text before the ID.\nACTION: ";
+                }
+
+                uint32 currentLength = jsonFill["<pre prompt>"].size() + jsonFill["<context>"].size() + jsonFill["<prompt>"].size() + jsonFill["<post prompt>"].size() + llmContext.size();
                 PlayerbotLLMInterface::LimitContext(llmContext, currentLength);
                 jsonFill["<context>"] = llmContext;
 
