@@ -6,7 +6,9 @@
 #include "playerbot/PlayerbotLLMInterface.h"
 #include "playerbot/PlayerbotTextMgr.h"
 #include "playerbot/ServerFacade.h"
+#include "playerbot/TravelMgr.h"
 #include "playerbot/WorldPosition.h"
+#include "playerbot/strategy/actions/ChooseTravelTargetAction.h"
 #include "playerbot/strategy/AiObjectContext.h"
 #include "playerbot/strategy/NamedObjectContext.h"
 #include "playerbot/strategy/actions/SayAction.h"
@@ -14,13 +16,18 @@
 #include "World.h"
 #include "ObjectAccessor.h"
 #include "Group.h"
+#include "Log.h"
 
 #include <algorithm>
 #include <cctype>
 #include <cmath>
-#include <initializer_list>
+#include <exception>
+#include <future>
+#include <map>
 #include <random>
+#include <set>
 #include <thread>
+#include <vector>
 
 using namespace ai;
 
@@ -37,9 +44,7 @@ bool AIPlayMoveToRequesterAction::Execute(Event& event)
 
     const float followDistance = ai->GetRange("follow");
     if (sServerFacade.GetDistance2d(bot, requester) <= followDistance)
-    {
         return true;
-    }
 
     return MoveNear(requester, followDistance);
 }
@@ -66,694 +71,44 @@ bool AIPlayStopAttackAction::Execute(Event&)
 
 namespace
 {
-    struct KeywordIntent
+    std::string LowerAIPlayText(std::string text)
     {
-        const char* phrase;
+        std::transform(text.begin(), text.end(), text.begin(), [](unsigned char c) { return (char)std::tolower(c); });
+        return text;
+    }
+
+    struct AIPlayCommand
+    {
+        const char* id;
         const char* action;
     };
 
-    enum class CandidateKind
+    static const AIPlayCommand aiPlayCommands[] =
     {
-        KEYWORD,
-        ACTION
+        { "ATTACK", "attack my target" },
+        { "COME", "ai play move to requester" },
+        { "STOP", "ai play stop attack" },
+        { "TRAVEL", "ai play travel" },
+        { "EXPLORE", "ai play move random" },
+        { "LOOT", "loot" },
+        { "QUEST", "doquest" },
+        { "INTERACT", "ai play interact" },
+        { "GREET", "greet" },
+        { "EMOTE", "emote" },
+        { "EAT", "food" },
+        { "DRINK", "drink" },
+        { "HEAL", "ai play heal" },
+        { "MOUNT", "mount" }
     };
 
-    struct IntentCandidate
+    const AIPlayCommand* FindAIPlayCommand(const std::string& id)
     {
-        size_t position;
-        size_t phraseLength;
-        CandidateKind kind;
-        const KeywordIntent* keyword;
-        std::string name;
-    };
-
-    void AddKeywordAliases(std::vector<KeywordIntent>& intents, std::initializer_list<const char*> aliases,
-        const char* action)
-    {
-        for (const char* alias : aliases)
-            intents.push_back({ alias, action });
+        const std::string loweredId = LowerAIPlayText(id);
+        for (const AIPlayCommand& command : aiPlayCommands)
+            if (loweredId == LowerAIPlayText(command.id))
+                return &command;
+        return nullptr;
     }
-
-    std::string NormalizeKeywords(const std::string& input)
-    {
-        std::string result;
-        result.reserve(input.size());
-        bool lastSpace = true;
-
-        for (unsigned char ch : input)
-        {
-            if (std::isalnum(ch))
-            {
-                result.push_back((char)std::tolower(ch));
-                lastSpace = false;
-            }
-            else if (ch == '\'')
-            {
-                // Keep contractions such as "don't" as one token.
-            }
-            else if (ch == '.' || ch == '!' || ch == '?' || ch == ';' || ch == '\n')
-            {
-                if (!lastSpace)
-                    result.push_back(' ');
-                result += "| ";
-                lastSpace = true;
-            }
-            else if (!lastSpace)
-            {
-                result.push_back(' ');
-                lastSpace = true;
-            }
-        }
-
-        if (!result.empty() && result.back() == ' ')
-            result.pop_back();
-        return result;
-    }
-
-    bool FindKeyword(const std::string& normalizedText, const std::string& phrase, size_t& position)
-    {
-        std::string normalizedPhrase = NormalizeKeywords(phrase);
-        if (normalizedPhrase.empty())
-            return false;
-
-        std::string paddedText = " " + normalizedText + " ";
-        std::string paddedPhrase = " " + normalizedPhrase + " ";
-        size_t found = paddedText.find(paddedPhrase);
-        if (found == std::string::npos)
-            return false;
-
-        position = found - 1;
-        return true;
-    }
-
-    bool IsNegatedBefore(const std::string& normalizedText, size_t position, bool includeStop)
-    {
-        std::string prefix = normalizedText.substr(0, position);
-        size_t sentenceStart = prefix.rfind('|');
-        if (sentenceStart != std::string::npos)
-            prefix = prefix.substr(sentenceStart + 1);
-        size_t start = prefix.size() > 48 ? prefix.size() - 48 : 0;
-        prefix = prefix.substr(start);
-
-        static const char* negations[] = { "not ", "never ", "dont ", "didnt ", "doesnt ", "isnt ", "wasnt ", "cannot ", "cant ", "wont ", "wouldnt ", "shouldnt ", "couldnt ", "no longer " };
-        for (const char* negation : negations)
-            if (prefix.find(negation) != std::string::npos)
-                return true;
-
-        return includeStop && prefix.find("stop ") != std::string::npos;
-    }
-
-
-
-    const std::vector<KeywordIntent>& GetKeywordIntents()
-    {
-        static const std::vector<KeywordIntent> intents = []()
-        {
-            std::vector<KeywordIntent> result = {
-                { "stop following", "stop follow" },
-                { "stopped following", "stop follow" },
-                { "stop wandering", "stop follow" },
-                { "stopped wandering", "stop follow" },
-                { "stop moving", "stop follow" },
-                { "stay here", "stop follow" },
-                { "wait here", "stop follow" },
-                { "hold position", "stop follow" },
-                { "come here", "ai play move to requester" },
-                { "come over here", "ai play move to requester" },
-                { "get over here", "ai play move to requester" },
-                { "get over to me", "ai play move to requester" },
-                { "move to me", "ai play move to requester" },
-                { "move toward me", "ai play move to requester" },
-                { "move towards me", "ai play move to requester" },
-                { "meet me", "ai play move to requester" },
-                { "catch up", "ai play move to requester" },
-                { "rejoin me", "ai play move to requester" },
-                { "follow me", "ai play move to requester" },
-                { "come along", "ai play move to requester" },
-                { "come with", "ai play move to requester" },
-                { "attack player", "attack enemy player" },
-                { "attack enemy", "attack my target" },
-                { "attack target", "attack my target" },
-                { "kill target", "attack my target" },
-                { "kill it", "attack my target" },
-                { "take cover", "flee" },
-                { "run away", "flee" },
-                { "back off", "flee" },
-                { "toward enemy", "attack my target" },
-                { "approach enemy", "attack my target" },
-                { "open fire", "attack my target" },
-                { "meet up", "ai play move to requester" },
-                { "head out", "ai play move random" },
-                { "heal me", "rpg heal" },
-                { "heal group", "rpg heal" },
-                { "help me", "attack my target" },
-                { "protect me", "tank assist" },
-                { "stay close", "ai play move to requester" },
-                { "free roam", "ai play move random" },
-                { "stop combat", "ai play stop attack" },
-                { "cease fire", "ai play stop attack" },
-                { "attack", "attack my target" },
-                { "attacks", "attack my target" },
-                { "attacking", "attack my target" },
-                { "kill", "attack my target" },
-                { "kills", "attack my target" },
-                { "killing", "attack my target" },
-                { "fight", "attack my target" },
-                { "fights", "attack my target" },
-                { "fighting", "attack my target" },
-                { "engage", "attack my target" },
-                { "engages", "attack my target" },
-                { "engaging", "attack my target" },
-                { "slay", "attack my target" },
-                { "charge", "attack my target" },
-                { "enemy", "attack my target" },
-                { "follow", "ai play move to requester" },
-                { "follows", "ai play move to requester" },
-                { "following", "ai play move to requester" },
-                { "come", "ai play move to requester" },
-                { "join", "ai play move to requester" },
-                { "stay", "stop follow" },
-                { "wait", "stop follow" },
-                { "hold", "stop follow" },
-                { "wander", "ai play move random" },
-                { "wanders", "ai play move random" },
-                { "wandering", "ai play move random" },
-                { "roam", "ai play move random" },
-                { "explore", "ai play move random" },
-                { "travel", "ai play move random" },
-                { "travels", "ai play move random" },
-                { "traveling", "ai play move random" },
-                { "return", "return" },
-                { "attack", "attack my target" },
-                { "kill", "attack my target" },
-                { "fight", "attack my target" },
-                { "engage", "attack my target" },
-                { "defend", "attack my target" },
-                { "flee", "flee" },
-                { "retreat", "flee" },
-                { "escape", "flee" },
-                { "heal", "rpg heal" },
-                { "heals", "rpg heal" },
-                { "healing", "rpg heal" },
-                { "buff", "buff" },
-                { "boost", "buff" },
-                { "cure", "cure poison on party" },
-                { "cleanse", "cure poison on party" },
-                { "dispel", "cure poison on party" },
-                { "interrupt", "counterspell" },
-                { "tank", "tank assist" },
-                { "assist", "dps assist" },
-                { "ranged", "switch to ranged" },
-                { "melee", "switch to melee" },
-                { "kite", "move out of enemy contact" },
-                { "aoe", "dps aoe" },
-                { "crowd control", "polymorph" },
-                { "mount", "mount" },
-                { "dismount", "dismount" },
-                { "loot", "loot" },
-                { "loots", "loot" },
-                { "drink", "drink" },
-                { "drinks", "drink" },
-                { "thirsty", "drink" },
-                { "eat", "food" },
-                { "eats", "food" },
-                { "hungry", "food" },
-                { "healthstone", "healthstone" },
-                { "potion", "healing potion" },
-                { "quest", "rpg" },
-                { "quests", "rpg" },
-                { "gather", "add gathering loot" },
-                { "mine", "add gathering loot" },
-                { "herb", "add gathering loot" },
-                { "fish", "fish" },
-                { "craft", "rpg craft" },
-                { "repair", "rpg repair" },
-                { "vendor", "rpg" },
-                { "buy", "rpg buy" },
-                { "sell", "rpg sell" },
-                { "auction", "rpg" },
-                { "mail", "rpg get mail" },
-                { "train", "rpg train" },
-                { "duel", "rpg duel" },
-                { "pvp", "attack enemy player" },
-                { "battleground", "free bg join" },
-                { "wave", "emote::wave" },
-                { "dance", "emote::dance" },
-                { "laugh", "emote::laugh" },
-                { "cheer", "emote::cheer" },
-                { "salute", "emote::salute" },
-                { "bow", "emote::bow" },
-                { "applaud", "emote::applaud" },
-                { "beg", "emote::beg" },
-                { "chicken", "emote::chicken" },
-                { "cry", "emote::cry" },
-                { "eat", "emote::eat" },
-                { "flex", "emote::flex" },
-                { "kick", "emote::kick" },
-                { "kiss", "emote::kiss" },
-                { "kneel", "emote::kneel" },
-                { "point", "emote::point" },
-                { "question", "emote::question" },
-                { "rude", "emote::rude" },
-                { "shout", "emote::shout" },
-                { "shy", "emote::shy" },
-                { "sleep", "emote::sleep" },
-                { "hello", "emote::hello" },
-                { "bye", "emote::bye" },
-                { "thank", "emote::thank" },
-                { "help", "emote::help" },
-                { "hug", "emote::hug" },
-                { "flirt", "emote::flirt" },
-                { "silly", "emote::silly" },
-                { "joke", "emote::joke" },
-                { "welcome", "emote::welcome" },
-                { "whistle", "emote::whistle" },
-                { "yawn", "emote::yawn" },
-                { "no", "emote::no" },
-                { "yes", "emote::yes" },
-                { "roar", "emote::roar" },
-                { "land", "emote::land" },
-                { "liftoff", "emote::liftoff" },
-                { "wound", "emote::wound" },
-                { "train", "emote::train" },
-                { "bored", "emote::bored" },
-                { "congrats", "emote::congratulate" },
-                { "nod", "emote::nod" },
-                { "sigh", "emote::sigh" },
-                { "introduce", "emote::introduce" },
-                { "wave", "emote::wave" },
-                { "dance", "emote::dance" },
-                { "laugh", "emote::laugh" },
-                { "cheer", "emote::cheer" },
-                { "salute", "emote::salute" },
-                { "bow", "emote::bow" },
-                { "applaud", "emote::applaud" },
-                { "cry", "emote::cry" },
-                { "roar", "emote::roar" },
-                { "greet", "greet" },
-                { "hello", "greet" },
-                { "greetings", "greet" },
-                { "talk", "talk" },
-                { "sit", "sit" },
-                { "jump", "jump" },
-                { "mount", "mount" },
-                { "pet", "initialize pet" },
-                { "stealth", "stealth" },
-                { "no war", "ai play stop attack" },
-                { "silent", nullptr },
-                { "food", "food" },
-                { "rest", "food" },
-                { "rpg", "rpg" },
-                { "group", "ai play move to requester" },
-                { "invite group", "invite nearby" },
-                { "leave group", "leave" },
-                { "release", "release" },
-                { "unstuck", "unstuck" },
-                { "", nullptr }
-            };
-
-            // Try class-appropriate abilities for broad support intents.
-            AddKeywordAliases(result, { "cure", "cleanse", "dispel" }, "cure disease on party");
-            AddKeywordAliases(result, { "cure", "cleanse", "dispel" }, "abolish poison on party");
-            AddKeywordAliases(result, { "cure", "cleanse", "dispel" }, "abolish disease on party");
-            AddKeywordAliases(result, { "cure", "cleanse", "dispel" }, "remove curse on party");
-            AddKeywordAliases(result, { "cure", "cleanse", "dispel" }, "dispel magic on party");
-            AddKeywordAliases(result, { "cure", "cleanse", "dispel" }, "cleanse poison on party");
-            AddKeywordAliases(result, { "cure", "cleanse", "dispel" }, "cleanse disease on party");
-            AddKeywordAliases(result, { "cure", "cleanse", "dispel" }, "cleanse magic on party");
-            AddKeywordAliases(result, { "cure", "cleanse", "dispel" }, "purify poison on party");
-            AddKeywordAliases(result, { "cure", "cleanse", "dispel" }, "purify disease on party");
-            AddKeywordAliases(result, { "cure", "cleanse", "dispel" }, "cleanse spirit poison on party");
-            AddKeywordAliases(result, { "cure", "cleanse", "dispel" }, "cleanse spirit disease on party");
-            AddKeywordAliases(result, { "cure", "cleanse", "dispel" }, "cleanse spirit curse on party");
-
-            AddKeywordAliases(result, { "interrupt", "interrupt spell" }, "kick");
-            AddKeywordAliases(result, { "interrupt", "interrupt spell" }, "pummel");
-            AddKeywordAliases(result, { "interrupt", "interrupt spell" }, "shield bash");
-            AddKeywordAliases(result, { "interrupt", "interrupt spell" }, "wind shear");
-            AddKeywordAliases(result, { "interrupt", "interrupt spell" }, "spell lock");
-            AddKeywordAliases(result, { "interrupt", "interrupt spell" }, "earth shock");
-            AddKeywordAliases(result, { "interrupt", "interrupt spell" }, "hammer of justice");
-            AddKeywordAliases(result, { "stop casting", "cancel my cast" }, "interrupt current spell");
-
-            AddKeywordAliases(result, { "crowd control", "cc", "control the target", "disable the enemy" }, "freezing trap");
-            AddKeywordAliases(result, { "crowd control", "cc", "control the target", "disable the enemy" }, "hibernate");
-            AddKeywordAliases(result, { "crowd control", "cc", "control the target", "disable the enemy" }, "shackle undead");
-            AddKeywordAliases(result, { "crowd control", "cc", "control the target", "disable the enemy" }, "fear");
-            AddKeywordAliases(result, { "crowd control", "cc", "control the target", "disable the enemy" }, "banish");
-            AddKeywordAliases(result, { "crowd control", "cc", "control the target", "disable the enemy" }, "hammer of justice");
-            AddKeywordAliases(result, { "crowd control", "cc", "control the target", "disable the enemy" }, "repentance");
-            AddKeywordAliases(result, { "crowd control", "cc", "control the target", "disable the enemy" }, "blind");
-            AddKeywordAliases(result, { "crowd control", "cc", "control the target", "disable the enemy" }, "gouge");
-            AddKeywordAliases(result, { "crowd control", "cc", "control the target", "disable the enemy" }, "kidney shot");
-            AddKeywordAliases(result, { "crowd control", "cc", "control the target", "disable the enemy" }, "intimidating shout");
-            AddKeywordAliases(result, { "crowd control", "cc", "control the target", "disable the enemy" }, "scatter shot");
-            AddKeywordAliases(result, { "crowd control", "cc", "control the target", "disable the enemy" }, "wyvern sting");
-
-            // Every AI-play keyword dispatches one finite action; no strategy is changed.
-            AddKeywordAliases(result, {
-                    "always follow", "always follow me", "keep following", "keep following me",
-                    "continue following", "follow me from now on", "stay with me", "stay by my side",
-                    "stick with me", "keep close to me", "stay close to me", "remain by my side",
-                    "at your side", "stay together", "stick together", "keep together"
-                }, "ai play move to requester");
-
-            AddKeywordAliases(result, {
-                    "always attack", "keep attacking", "continue attacking", "keep fighting",
-                    "continue fighting", "always fight", "stay aggressive", "keep focus on my target"
-                }, "dps assist");
-
-            // Natural language has many surface forms for the same intent. These
-            // aliases deliberately include verbs, inflections, role language, and
-            // casual phrasing, while execution remains gated by native bot actions.
-            AddKeywordAliases(result, {
-                    "follow", "follows", "following", "followed", "come", "join", "joining",
-                    "accompany", "accompanies", "accompanying", "escort", "escorting", "trail", "trailing",
-                    "tail", "tailing", "behind", "behind you", "beside", "beside you", "alongside",
-                    "alongside you", "your side", "keep up", "keeping up", "stick", "sticking",
-                    "stick close", "sticking close", "walking", "walk with", "marching", "come along",
-                    "coming along", "come with", "go with", "going with", "travel with", "meeting",
-                    "with you", "right behind", "your heels"
-                }, "ai play move to requester");
-
-            AddKeywordAliases(result, {
-                    "coming", "moving", "move", "moving closer", "move closer", "approaching me",
-                    "walking over", "walk over", "run over", "get over here", "come over here",
-                    "come here", "come to me", "get to me", "head to me", "head over here",
-                    "moving toward you", "moving towards you", "move toward me", "move towards me",
-                    "coming over", "on my way", "i am coming", "i'm coming", "be right there",
-                    "i will be right there", "i'll be right there", "meet me", "meet up", "catch up",
-                    "rejoin me", "join me", "join us", "come closer", "come right over"
-                }, "ai play move to requester");
-
-            AddKeywordAliases(result, {
-                    "stay", "staying", "wait", "waiting", "hold", "holding", "halt", "pause", "freeze",
-                    "stationary", "remain", "remaining", "idle", "guard", "guarding", "watch", "watching",
-                    "stand", "standing", "park", "camp", "anchor", "hold position", "stay put", "wait here",
-                    "stand still", "hold still", "remain here", "keep watch", "stand guard", "stay back",
-                    "stay behind", "stay nearby", "stop", "stopping",
-                    "cover", "covering", "overwatch", "hold ground", "hold fast"
-                }, "stop follow");
-
-            AddKeywordAliases(result, {
-                    "wander", "wandering", "roam", "roaming", "explore", "exploring", "scout", "scouting",
-                    "patrol", "patrolling", "adventure", "adventuring", "venture", "venturing",
-                    "trek", "trekking", "hike", "hiking", "traverse", "traversing", "sightsee",
-                    "sightseeing", "look around", "seek",
-                    "seeking", "discover", "discovering", "exploration", "recon", "reconnoiter",
-                    "go exploring", "scout ahead", "search around"
-                }, "ai play move random");
-
-            AddKeywordAliases(result, {
-                    "travel", "travels", "traveling", "travelling", "journey", "journeying", "depart",
-                    "departing", "leave", "leaving", "advance", "advancing", "proceed", "proceeding",
-                    "continue", "continuing", "embark", "embarking", "head out", "set out", "move on",
-                    "moving on", "press on", "ride out", "travel onward", "go onward", "head north",
-                    "head south", "head east", "head west", "venture forth", "make tracks", "get going"
-                }, "ai play move random");
-
-            AddKeywordAliases(result, {
-                    "attack", "attacks", "attacking", "fight", "fights", "fighting", "battle", "battling",
-                    "combat", "engage", "engages", "engaging", "kill", "kills", "killing", "slay", "slays",
-                    "slaying", "destroy", "destroying", "defeat", "defeating", "strike", "striking", "hit",
-                    "hitting", "shoot", "shooting", "fire", "firing", "charge", "charging", "rush", "rushing",
-                    "assault", "assaulting", "ambush", "ambushing", "hunt", "hunting", "pull", "pulling",
-                    "provoke", "provoking", "execute", "executing", "finish", "finish off",
-                    "move toward", "move towards", "moving toward", "moving towards", "approaching enemy", "approach target",
-                    "take down", "bring down", "dispatch", "eliminate", "smash", "crush", "annihilate", "destroy",
-                    "go in", "get them", "focus fire", "open fire", "strike back", "defend us", "target enemy",
-                    "enemy", "enemies", "hostile", "hostiles", "foe", "foes", "opponent", "opponents"
-                }, "attack my target");
-
-            AddKeywordAliases(result, {
-                    "flee", "fleeing", "retreat", "retreating", "escape", "escaping", "withdraw", "withdrawing",
-                    "evade", "evading", "dodge", "dodging", "avoid", "avoiding", "disengage", "disengaging",
-                    "run away", "back away", "back off", "fall back", "pull back", "get away", "break away",
-                    "move away", "moving away", "move back", "moving back", "scatter", "scattering", "survive", "surviving",
-                    "take cover", "retire", "withdraw", "keep distance", "stay clear", "give ground", "retreat now"
-                }, "flee");
-
-            AddKeywordAliases(result, {
-                    "heal", "heals", "healing", "healer", "mend", "mending", "restore", "restoring", "recover",
-                    "recovering", "patch", "patching", "tend", "tending", "stabilize",
-                    "stabilizing", "aid", "aiding", "help", "helping", "support", "supporting", "rescue", "rescuing",
-                    "revive", "reviving", "resurrect", "resurrecting", "raise", "raising", "rez", "recovery",
-                    "heal up", "top off", "restore health", "treat", "treating", "mend wounds",
-                    "patch up", "save", "saving", "keep alive", "bring back", "revitalize", "renew"
-                }, "rpg heal");
-
-            AddKeywordAliases(result, {
-                    "buff", "buffs", "buffing", "bless", "blessing", "blessings", "strengthen", "strengthening",
-                    "fortify", "fortifying", "empower", "empowering", "boosting", "enhance", "enhancing",
-                    "protect", "protection", "shield", "shielding", "ward", "warding", "prepare", "preparing",
-                    "prepare us", "bolster", "bolstering", "aura", "auras", "power up",
-                    "gear up", "make stronger"
-                }, "buff");
-
-            AddKeywordAliases(result, {
-                    "tank", "tanking", "tank it", "hold aggro", "take aggro", "draw aggro", "taunt", "taunting",
-                    "protect tank", "protect group", "defend group", "guard group", "take point", "frontline",
-                    "front line", "stand between", "keep safe", "bodyguard", "bodyguarding"
-                }, "tank assist");
-
-            AddKeywordAliases(result, {
-                    "damage", "damaging", "dps", "damage dealer", "deal damage", "hit hard", "go offensive",
-                    "offensive", "offense", "focus target", "focus", "assist", "assisting", "help attack",
-                    "target focus", "burn target", "burst", "bursting"
-                }, "dps assist");
-
-            AddKeywordAliases(result, {
-                    "ranged", "ranging", "range", "distance", "distant", "afar", "from afar", "at range",
-                    "keep range", "stay ranged", "snipe", "sniping", "archer", "archery", "longbow", "crossbow",
-                    "gun", "guns"
-                }, "switch to ranged");
-
-            AddKeywordAliases(result, {
-                    "melee", "meleeing", "close", "closer", "up close", "close in", "close range", "get close",
-                    "get closer", "engage close", "close combat", "move in", "moving in", "charge in", "rush in"
-                }, "switch to melee");
-
-            AddKeywordAliases(result, {
-                    "kite", "kiting", "kite them", "keep moving", "run circles", "circle them", "stay mobile",
-                    "hit run", "moving attack", "backpedal", "backpedaling", "maintain distance"
-                }, "move out of enemy contact");
-
-            AddKeywordAliases(result, {
-                    "cast", "casting", "spell", "spells", "spellcasting", "ability", "abilities", "skill",
-                    "skills", "power", "powers", "magic", "magical", "cast something", "use spell",
-                    "use ability"
-                }, "cast random spell");
-
-            AddKeywordAliases(result, {
-                    "mount", "mounting", "mounted", "ride", "riding", "saddle", "saddling", "steed", "horse",
-                    "mount up", "get mounted", "ride faster", "travel mounted"
-                }, "mount");
-
-            AddKeywordAliases(result, {
-                    "dismount", "dismounting", "unmount", "unmounting", "on foot", "get down", "leave mount"
-                }, "dismount");
-
-            AddKeywordAliases(result, {
-                    "loot", "looting", "plunder", "plundering", "scavenge", "scavenging", "collect", "collecting",
-                    "claim", "claiming", "pick up", "pickup", "salvage", "salvaging", "loot corpse", "collect loot",
-                    "take loot", "claim spoils", "gather spoils", "take treasure", "collect treasure"
-                }, "loot");
-
-            AddKeywordAliases(result, {
-                    "gather", "gathering", "harvest", "harvesting", "mine", "mining", "herb", "herbalism", "skin",
-                    "skinning", "forage", "foraging", "salvage materials", "collect herbs",
-                    "gather herbs", "gather ore", "gather materials", "harvest plants", "pick herbs", "mine ore"
-                }, "add gathering loot");
-
-            AddKeywordAliases(result, {
-                    "fish", "fishing", "angler", "angling", "cast line", "reel in", "catch fish", "go fishing"
-                }, "fish");
-
-            AddKeywordAliases(result, {
-                    "talk", "talking", "speak", "speaking", "chat", "chatting", "converse", "conversing", "gossip",
-                    "ask", "asking", "inquire", "inquiring", "question", "questioning", "hailing",
-                    "approach npc", "speak to", "talk to", "start conversation", "speak with",
-                    "address", "addressing", "consult", "consulting", "interview", "interviewing"
-                }, "talk");
-
-            AddKeywordAliases(result, {
-                    "interact", "interacting", "click", "clicking", "activate", "activating", "open", "opening",
-                    "inspect", "inspecting", "examine", "examining", "investigate", "investigating", "use object",
-                    "open dialog", "open dialogue", "browse options", "choose option"
-                }, "gossip hello");
-
-            AddKeywordAliases(result, {
-                    "use", "using", "activate item", "use item"
-                }, "use consumable");
-
-            AddKeywordAliases(result, {
-                    "quest", "quests", "questing", "objective", "objectives", "task", "tasks", "mission", "missions",
-                    "accept", "accepting", "complete", "completing", "abandon",
-                    "abandoning", "quest share",
-                    "deliver", "delivering", "do quest", "questwork"
-                }, "rpg");
-
-            AddKeywordAliases(result, {
-                    "accept quest", "accepting quest", "take quest", "start quest", "begin quest"
-                }, "accept quest");
-
-            AddKeywordAliases(result, {
-                    "complete quest", "finish quest", "deliver quest",
-                    "report quest", "claim reward", "choose reward", "quest reward", "select reward",
-                    "show rewards", "list rewards", "reward options"
-                }, "talk to quest giver");
-
-            AddKeywordAliases(result, { "turn in", "hand in" }, "talk to quest giver");
-            AddKeywordAliases(result, { "share quest", "share it" }, "share");
-            AddKeywordAliases(result, { "abandon quest", "drop quest" }, "drop");
-
-            AddKeywordAliases(result, {
-                    "craft", "crafting", "create", "creating", "forge", "forging", "smith",
-                    "smithing", "cook", "cooking", "brew", "brewing", "alchemy", "alchemist", "enchant", "enchanting",
-                    "smelt", "smelting", "prospect", "prospecting", "disenchant", "disenchanting", "tailor", "tailoring",
-                    "leatherwork", "leatherworking", "engineering", "craft item", "make item", "create item", "use recipe",
-                    "learn recipe", "profession", "professions"
-                }, "rpg craft");
-
-            AddKeywordAliases(result, {
-                    "buying", "purchase", "purchasing", "shop", "shopping", "selling", "trading",
-                    "barter", "auction", "auctioning", "bid", "bidding", "vendor", "merchant", "repairing",
-                    "fix", "fixing", "training", "trainer", "learn", "learning", "mailing", "post",
-                    "posting", "send mail", "check mail", "collect mail", "buy gear", "sell items", "repair gear",
-                    "visit vendor", "visit trainer", "browse wares", "purchase supplies", "restock"
-                }, "rpg");
-
-            AddKeywordAliases(result, {
-                    "group", "grouping", "party", "partying", "raid", "raiding", "guild", "guilding", "form group",
-                    "form party", "form raid", "join group", "join party", "join raid", "regroup", "rally", "assemble",
-                    "assembly", "gather group", "follow leader", "stick together", "stay together", "move together",
-                    "split up", "separate", "formation", "team up", "squad up", "make party", "make group"
-                }, "ai play move to requester");
-
-            AddKeywordAliases(result, {
-                    "invite", "inviting", "recruit", "recruiting", "invite party", "invite group", "invite nearby",
-                    "add player", "bring in", "group invite", "party invite"
-                }, "invite nearby");
-
-            AddKeywordAliases(result, {
-                    "leave", "leaving", "depart group", "drop group", "disband", "leave group", "leave party",
-                    "leave raid", "quit group", "exit group", "dismiss group"
-                }, "leave");
-
-            AddKeywordAliases(result, {
-                    "ready", "ready check", "check readiness", "stand ready", "prepare group"
-                }, "ready check");
-
-            AddKeywordAliases(result, {
-                    "hi", "hey", "greetings", "salutations", "hail", "welcoming", "say hello", "say hi", "greet warmly"
-                }, "greet");
-            AddKeywordAliases(result, { "smile", "smiling", "grin", "grinning" }, "emote::smile");
-            AddKeywordAliases(result, { "chuckle", "chuckling", "giggle", "giggling", "snicker", "snickering" }, "emote::laugh");
-            AddKeywordAliases(result, { "cheering", "celebrate", "celebrating", "hooray", "rejoice" }, "emote::cheer");
-            AddKeywordAliases(result, { "clap", "clapping", "applauding", "applause" }, "emote::applaud");
-            AddKeywordAliases(result, { "saluting", "render salute" }, "emote::salute");
-            AddKeywordAliases(result, { "bowing", "curtsy" }, "emote::bow");
-            AddKeywordAliases(result, { "crying", "sob", "sobbing", "weep", "weeping" }, "emote::cry");
-            AddKeywordAliases(result, { "sighing", "yawn", "yawning" }, "emote::sigh");
-            AddKeywordAliases(result, { "flexing", "show muscles", "show off" }, "emote::flex");
-            AddKeywordAliases(result, { "pointing", "indicate", "gesture" }, "emote::point");
-            AddKeywordAliases(result, { "nodding", "agree", "agreement" }, "emote::nod");
-            AddKeywordAliases(result, { "shrug", "shrugging", "uncertain", "confused" }, "emote::question");
-            AddKeywordAliases(result, { "blushing", "hugging", "embrace" }, "emote::hug");
-            AddKeywordAliases(result, { "kissing", "smooch" }, "emote::kiss");
-            AddKeywordAliases(result, { "flirting", "charm", "flirtatious" }, "emote::flirt");
-            AddKeywordAliases(result, { "whistling", "catcall" }, "emote::whistle");
-            AddKeywordAliases(result, { "roaring", "bellow", "bellowing" }, "emote::roar");
-            AddKeywordAliases(result, { "dancing", "boogie", "groove" }, "emote::dance");
-            AddKeywordAliases(result, { "thank", "thanks", "say thanks", "thankful" }, "emote::thank");
-            AddKeywordAliases(result, { "goodbye", "farewell", "bye", "see you" }, "emote::bye");
-            AddKeywordAliases(result, { "congratulate", "congratulations", "congrats", "well done" }, "emote::congratulate");
-
-            AddKeywordAliases(result, {
-                    "eat", "eating", "hungry", "starving", "snack", "snacking", "feast", "feasting", "dine", "dining",
-                    "food", "meal", "consume food", "eat up", "munch", "munching"
-                }, "food");
-
-            AddKeywordAliases(result, {
-                    "drink", "drinking", "thirsty", "parched", "sip", "sipping", "hydrate", "hydrating", "quench",
-                    "water", "drink up", "restore mana", "refresh", "gulp", "gulping"
-                }, "drink");
-
-            AddKeywordAliases(result, {
-                    "rest", "resting", "replenish", "take break", "recover mana", "recover health", "sit down"
-                }, "food");
-
-            AddKeywordAliases(result, { "bandage", "bandaging", "apply bandage", "use bandage" }, "use bandage");
-            AddKeywordAliases(result, { "healthstone", "stone", "use stone", "use healthstone" }, "healthstone");
-            AddKeywordAliases(result, { "potion", "potions", "use potion", "take potion", "drink potion", "heal potion" }, "healing potion");
-
-            AddKeywordAliases(result, { "pet", "petting", "call pet", "summon pet" }, "initialize pet");
-                AddKeywordAliases(result, { "call pet", "summon pet" }, "call pet");
-                AddKeywordAliases(result, { "dismiss pet" }, "dismiss pet");
-                AddKeywordAliases(result, { "send pet", "pet attack" }, "attack my target");
-                AddKeywordAliases(result, { "pet follow" }, "ai play move to requester");
-                AddKeywordAliases(result, { "pet stay" }, "stop follow");
-                AddKeywordAliases(result, { "feed pet" }, "feed pet");
-                AddKeywordAliases(result, { "revive pet" }, "revive pet");
-                AddKeywordAliases(result, { "heal pet", "mend pet" }, "mend pet");
-
-            AddKeywordAliases(result, {
-                    "stealth", "sneak", "sneaking", "hide", "hiding", "invisible", "vanish", "vanishing", "stalk",
-                    "stalking", "sneak past", "move unseen", "stay hidden"
-                }, "stealth");
-
-            AddKeywordAliases(result, { "dueling", "challenge", "challenging" }, "rpg duel");
-                AddKeywordAliases(result, { "pvp", "fight player", "enemy player", "war", "battlefield" }, "attack enemy player");
-                AddKeywordAliases(result, { "battlegrounds", "bg", "arena", "arenas", "join battleground", "enter battleground" }, "free bg join");
-
-            result.erase(std::remove_if(result.begin(), result.end(), [](const KeywordIntent& intent)
-            {
-                return !intent.phrase || !*intent.phrase;
-            }), result.end());
-
-            return result;
-        }();
-
-        return intents;
-    }
-
-    bool ApplyIntent(PlayerbotAI* ai, const KeywordIntent& intent, const std::string& source, Player* owner)
-    {
-        if (!intent.action || !ai->CanDoSpecificAction(intent.action, true, true))
-            return false;
-
-        Event event("ai play", source, owner);
-        return ai->DoSpecificAction(intent.action, event, true);
-    }
-
-    bool IsRawMovementActionBlocked(const std::string& action)
-    {
-        return action == "follow" || action == "stay" || action == "wander" ||
-            action == "move random" || action == "reset" || action == "reset ai" ||
-            action == "reset strats" || action == "change strategy";
-    }
-
-    bool ApplyActionName(PlayerbotAI* ai, const std::string& action, const std::string& normalized,
-        const std::string& source, Player* owner)
-    {
-        if (action == "ai play" || IsRawMovementActionBlocked(action))
-            return false;
-
-        size_t position = 0;
-        if (!FindKeyword(normalized, action, position) || IsNegatedBefore(normalized, position, true))
-            return false;
-
-        if (!ai->GetAiObjectContext()->GetAction(action))
-            return false;
-
-        if (!ai->CanDoSpecificAction(action, true, true))
-            return false;
-
-        Event event("ai play", source, owner);
-        return ai->DoSpecificAction(action, event, true);
-    }
-
-
 
     std::string JoinStrings(const std::vector<std::string>& strings)
     {
@@ -819,8 +174,8 @@ namespace
 
         static thread_local std::mt19937 generator(std::random_device{}());
         std::shuffle(visible.begin(), visible.end(), generator);
-        size_t maxVisible = std::min<size_t>(3, visible.size());
-        size_t selectedCount = urand(1, (uint32)maxVisible);
+        const size_t maxVisible = std::min<size_t>(3, visible.size());
+        const size_t selectedCount = urand(1, (uint32)maxVisible);
 
         std::vector<std::string> descriptions;
         for (size_t i = 0; i < selectedCount; ++i)
@@ -859,11 +214,12 @@ namespace
         return urand(minimum, maximum);
     }
 
-    bool BuildAutonomousRequest(PlayerbotAI* ai, std::string& json, std::string& startPattern,
-        std::string& endPattern, std::string& deletePattern, std::string& splitPattern)
+    void CapActionGenerationLength(std::string& json);
+
+    bool BuildActionRequest(PlayerbotAI* ai, const std::string& latestText, std::string& json)
     {
-        Player* bot = ai->GetBot();
-        AiObjectContext* context = ai->GetAiObjectContext();
+        Player* bot = ai ? ai->GetBot() : nullptr;
+        AiObjectContext* context = ai ? ai->GetAiObjectContext() : nullptr;
         if (!bot || !context)
             return false;
 
@@ -877,36 +233,373 @@ namespace
         placeholders["<other race>"] = "unknown";
         placeholders["<other type>"] = "your surroundings";
         placeholders["<channel name>"] = "while adventuring";
-        placeholders["<initial message>"] = "What do you do next? Nearby: " + GetNearbySight(ai);
-
-        std::string card;
-        if (Value<std::string>* value = context->GetValue<std::string>("manual saved string::llmdefaultprompt"))
-            card = value->Get();
+        placeholders["<initial message>"] = latestText.empty() ? "Choose your next action." : latestText;
 
         std::string previousContext = ai->GetAIPlayContext();
+        const size_t maxRecentContext = 512;
+        if (previousContext.size() > maxRecentContext)
+            previousContext.erase(0, previousContext.size() - maxRecentContext);
 
         std::map<std::string, std::string> jsonFill;
-        jsonFill["<pre prompt>"] = PlayerbotTextMgr::GetReplacePlaceholders(sPlayerbotAIConfig.llmPrePrompt + " " + card, placeholders);
+        jsonFill["<pre prompt>"] = "Select one action. Do not roleplay.";
         jsonFill["<context>"] = previousContext;
-        jsonFill["<prompt>"] = PlayerbotTextMgr::GetReplacePlaceholders(sPlayerbotAIConfig.llmPrompt, placeholders);
-        jsonFill["<post prompt>"] = PlayerbotTextMgr::GetReplacePlaceholders(sPlayerbotAIConfig.llmPostPrompt, placeholders);
+        jsonFill["<prompt>"] = latestText.empty() ? "Choose the next useful action from the current situation." : "Recent chat: " + latestText;
+        jsonFill["<prompt>"] += " Nearby: " + GetNearbySight(ai);
+        jsonFill["<post prompt>"] = "IDs: " + AIPlayAction::GetCompactActionMenu() +
+            " Output only AI_PLAY=<ID>.";
 
-        uint32 fixedLength = jsonFill["<pre prompt>"].size() + jsonFill["<prompt>"].size() + jsonFill["<post prompt>"].size();
+        const uint32 fixedLength = jsonFill["<pre prompt>"].size() + jsonFill["<prompt>"].size() + jsonFill["<post prompt>"].size();
         PlayerbotLLMInterface::LimitContext(jsonFill["<context>"], fixedLength + jsonFill["<context>"].size());
 
         for (auto& field : jsonFill)
             field.second = PlayerbotLLMInterface::SanitizeForJson(field.second);
-
         for (auto& placeholder : placeholders)
             placeholder.second = PlayerbotLLMInterface::SanitizeForJson(placeholder.second);
 
-        startPattern = PlayerbotTextMgr::GetReplacePlaceholders(sPlayerbotAIConfig.llmResponseStartPattern, placeholders);
-        endPattern = PlayerbotTextMgr::GetReplacePlaceholders(sPlayerbotAIConfig.llmResponseEndPattern, placeholders);
-        deletePattern = PlayerbotTextMgr::GetReplacePlaceholders(sPlayerbotAIConfig.llmResponseDeletePattern, placeholders);
-        splitPattern = PlayerbotTextMgr::GetReplacePlaceholders(sPlayerbotAIConfig.llmResponseSplitPattern, placeholders);
         json = PlayerbotTextMgr::GetReplacePlaceholders(sPlayerbotAIConfig.llmApiJson, jsonFill);
         json = PlayerbotTextMgr::GetReplacePlaceholders(json, placeholders);
+        CapActionGenerationLength(json);
         return !json.empty();
+    }
+
+    void CapActionGenerationLength(std::string& json)
+    {
+        const std::string key = "\"max_length\"";
+        const size_t keyPosition = json.find(key);
+        if (keyPosition == std::string::npos)
+            return;
+
+        const size_t colon = json.find(':', keyPosition + key.size());
+        if (colon == std::string::npos)
+            return;
+
+        const size_t valueStart = json.find_first_not_of(" \t\r\n", colon + 1);
+        if (valueStart == std::string::npos || !std::isdigit(static_cast<unsigned char>(json[valueStart])))
+            return;
+
+        size_t valueEnd = valueStart;
+        uint32 value = 0;
+        while (valueEnd < json.size() && std::isdigit(static_cast<unsigned char>(json[valueEnd])))
+        {
+            if (value < 1000)
+                value = value * 10 + (json[valueEnd] - '0');
+            ++valueEnd;
+        }
+
+        const uint32 maxActionTokens = 16;
+        if (value > maxActionTokens)
+            json.replace(valueStart, valueEnd - valueStart, std::to_string(maxActionTokens));
+    }
+
+    bool ExecuteAIPlayTravel(PlayerbotAI* ai)
+    {
+        Player* bot = ai ? ai->GetBot() : nullptr;
+        if (!bot || bot->InBattleGround())
+            return false;
+
+        AiObjectContext* context = ai->GetAiObjectContext();
+        if (!context)
+            return false;
+
+        TravelTarget* target = AI_VALUE(TravelTarget*, "travel target");
+        if (!target)
+            return false;
+
+        // Do not interrupt an in-flight destination query. Otherwise expire
+        // the current goal so this explicit request can replace it.
+        if (target->GetStatus() == TravelStatus::TRAVEL_STATUS_PREPARE)
+            return true;
+
+        const TravelStatus previousStatus = target->GetStatus();
+        target->SetStatus(TravelStatus::TRAVEL_STATUS_EXPIRED);
+        context->ClearValues("travel target active");
+        context->ClearValues("no active travel destinations");
+
+        const uint32 purpose = (uint32)TravelDestinationPurpose::Explore;
+        WorldPosition center(bot);
+        PlayerTravelInfo travelInfo(bot);
+        FutureDestinations* destinations = AI_VALUE(FutureDestinations*, "future travel destinations");
+        if (!destinations)
+        {
+            target->SetStatus(previousStatus);
+            context->ClearValues("travel target active");
+            return false;
+        }
+
+        try
+        {
+            *destinations = std::async(std::launch::async,
+                [partitions = travelPartitions, travelInfo, center, purpose]()
+                {
+                    return sTravelMgr.GetPartitions(center, partitions, travelInfo, purpose);
+                });
+        }
+        catch (const std::exception&)
+        {
+            target->SetStatus(previousStatus);
+            context->ClearValues("travel target active");
+            return false;
+        }
+
+        SET_AI_VALUE2(std::string, "manual string", "future travel purpose", std::to_string(purpose));
+        SET_AI_VALUE2(std::string, "manual string", "future travel condition", std::string());
+        SET_AI_VALUE2(int, "manual int", "future travel relevance", 629);
+        target->SetStatus(TravelStatus::TRAVEL_STATUS_PREPARE);
+        return true;
+    }
+
+    bool ExecuteAIPlayInteract(PlayerbotAI* ai, Player* requester)
+    {
+        Player* bot = ai ? ai->GetBot() : nullptr;
+        AiObjectContext* context = ai ? ai->GetAiObjectContext() : nullptr;
+        if (!bot || !context)
+            return false;
+
+        Value<std::list<ObjectGuid>>* nearbyNpcs = context->GetValue<std::list<ObjectGuid>>("nearest npcs");
+        if (nearbyNpcs)
+        {
+            for (const ObjectGuid& guid : nearbyNpcs->Get())
+            {
+                Unit* unit = ai->GetUnit(guid);
+                if (!unit || !unit->IsInWorld() || unit->GetMapId() != bot->GetMapId() ||
+                    sServerFacade.GetDistance2d(bot, unit) > INTERACTION_DISTANCE)
+                {
+                    continue;
+                }
+
+                // GossipHelloAction receives its NPC target in the event packet;
+                // it opens the gossip interaction without selecting an option.
+                if (ai->DoSpecificAction("gossip hello", Event("ai play", guid, requester), true))
+                    return true;
+            }
+        }
+
+        Value<std::list<ObjectGuid>>* nearbyObjects = context->GetValue<std::list<ObjectGuid>>("nearest game objects no los");
+        if (!nearbyObjects)
+            return false;
+
+        GameObject* nearestObject = nullptr;
+        float closestDistance = 9999.0f;
+        for (const ObjectGuid& guid : nearbyObjects->Get())
+        {
+            GameObject* gameObject = ai->GetGameObject(guid);
+            if (!gameObject || !gameObject->IsInWorld() || gameObject->GetMapId() != bot->GetMapId())
+                continue;
+
+            const float distance = bot->GetDistance3dToCenter(gameObject);
+            if (distance < closestDistance)
+            {
+                nearestObject = gameObject;
+                closestDistance = distance;
+            }
+        }
+
+        if (!nearestObject || bot->GetDistance(nearestObject) > INTERACTION_DISTANCE)
+            return false;
+
+        // "go" makes the native UseAction activate the nearest gameobject,
+        // including its built-in chest, door, and quest-object handling.
+        return ai->DoSpecificAction("use", Event("ai play", "go", requester), true);
+    }
+
+    bool ExecuteAIPlayHeal(PlayerbotAI* ai, Player* requester)
+    {
+        Player* bot = ai ? ai->GetBot() : nullptr;
+        if (!bot)
+            return false;
+
+        std::vector<const char*> healingActions;
+        switch (bot->GetClass())
+        {
+        case CLASS_PRIEST:
+            healingActions = { "flash heal on party", "greater heal on party", "heal on party", "lesser heal on party",
+                "flash heal", "greater heal", "heal", "lesser heal" };
+            break;
+        case CLASS_DRUID:
+            healingActions = { "healing touch on party", "regrowth on party", "rejuvenation on party",
+                "healing touch", "regrowth", "rejuvenation" };
+            break;
+        case CLASS_PALADIN:
+            healingActions = { "holy light on party", "flash of light on party", "lay on hands on party",
+                "holy light", "flash of light", "lay on hands" };
+            break;
+        case CLASS_SHAMAN:
+            healingActions = { "healing wave on party", "lesser healing wave on party",
+                "healing wave", "lesser healing wave" };
+            break;
+        default:
+            break;
+        }
+
+        for (const char* action : healingActions)
+        {
+            if (ai->DoSpecificAction(action, Event("ai play", "", requester), true))
+                return true;
+        }
+
+        // Classes without healing spells, or healers without a usable spell,
+        // can still recover with the existing potion action.
+        return ai->DoSpecificAction("healing potion", Event("ai play", "", requester), true);
+    }
+
+    bool ExecuteAIPlayCommand(PlayerbotAI* ai, const std::string& commandId, ObjectGuid ownerGuid)
+    {
+        const AIPlayCommand* command = FindAIPlayCommand(commandId);
+        if (!command || !ai || !ai->GetBot() || !ai->GetBot()->IsInWorld() ||
+            !sServerFacade.IsAlive(ai->GetBot()) ||
+            !ai->HasStrategy("ai play", BotState::BOT_STATE_NON_COMBAT) || !sPlayerbotAIConfig.llmEnabled)
+        {
+            return false;
+        }
+
+        if (sPlayerbotAIConfig.llmRequirePlayerPresence && !ai->HasRealPlayerNearbyOrInGroup())
+            return false;
+
+        Player* owner = ownerGuid.IsEmpty() ? nullptr : sObjectAccessor.FindPlayer(ownerGuid);
+        if (!owner || !owner->IsInWorld() || !ai->IsRealPlayer(owner))
+            owner = ai->GetMaster();
+
+        if (command->id == std::string("TRAVEL"))
+            return ExecuteAIPlayTravel(ai);
+        if (command->id == std::string("INTERACT"))
+            return ExecuteAIPlayInteract(ai, owner);
+        if (command->id == std::string("HEAL"))
+            return ExecuteAIPlayHeal(ai, owner);
+
+        const std::string action = command->action;
+        if (!ai->CanDoSpecificAction(action, true, true))
+            return false;
+
+        if (!ai->DoSpecificAction(action, Event("ai play", "", owner), true))
+            return false;
+
+        if (ai->HasStrategy("debug llm", BotState::BOT_STATE_NON_COMBAT))
+            ai->TellPlayerNoFacing(ai->GetMaster(), "AI play selected action: " + action);
+
+        return true;
+    }
+
+}
+
+std::string AIPlayAction::GetCompactActionMenu()
+{
+    return "ATTACK, COME, STOP, TRAVEL, "
+        "EXPLORE, LOOT, QUEST, "
+        "INTERACT, GREET, EMOTE, EAT, DRINK, "
+        "HEAL, MOUNT.";
+}
+
+std::string AIPlayAction::ExtractActionIntent(std::string& text)
+{
+    const std::string marker = "ai_play";
+    std::string loweredText = LowerAIPlayText(text);
+    std::string selected;
+    bool foundTag = false;
+    size_t position = 0;
+
+    while ((position = loweredText.find(marker, position)) != std::string::npos)
+    {
+        if (position > 0)
+        {
+            const unsigned char previous = static_cast<unsigned char>(text[position - 1]);
+            if (std::isalnum(previous) || text[position - 1] == '_')
+            {
+                position += marker.size();
+                continue;
+            }
+        }
+
+        size_t idStart = position + marker.size();
+        while (idStart < text.size() && std::isspace(static_cast<unsigned char>(text[idStart])))
+            ++idStart;
+        if (idStart >= text.size() || (text[idStart] != '=' && text[idStart] != ':'))
+        {
+            position = idStart;
+            continue;
+        }
+
+        ++idStart;
+        while (idStart < text.size() && std::isspace(static_cast<unsigned char>(text[idStart])))
+            ++idStart;
+
+        size_t idEnd = idStart;
+        while (idEnd < text.size())
+        {
+            const unsigned char c = static_cast<unsigned char>(text[idEnd]);
+            if (!std::isalnum(c) && text[idEnd] != '_')
+                break;
+            ++idEnd;
+        }
+
+        std::string id = text.substr(idStart, idEnd - idStart);
+        std::transform(id.begin(), id.end(), id.begin(), [](unsigned char c) { return (char)std::toupper(c); });
+        if (!foundTag)
+        {
+            foundTag = true;
+            if (id != "NONE" && FindAIPlayCommand(id))
+                selected = id;
+        }
+
+        text.erase(position, idEnd - position);
+        loweredText.erase(position, idEnd - position);
+    }
+
+    return selected;
+}
+
+void AIPlayAction::StartActionSelection(PlayerbotAI* ai, const std::string& latestText, ObjectGuid ownerGuid)
+{
+    if (!ai || ai->aiPlayGenerationPending || !ai->GetBot() || !ai->GetBot()->IsInWorld() ||
+        !ai->HasStrategy("ai play", BotState::BOT_STATE_NON_COMBAT) || !sPlayerbotAIConfig.llmEnabled)
+    {
+        return;
+    }
+
+    if (sPlayerbotAIConfig.llmRequirePlayerPresence && !ai->HasRealPlayerNearbyOrInGroup())
+        return;
+
+    std::string json;
+    if (!BuildActionRequest(ai, latestText, json))
+        return;
+
+    ai->aiPlayGenerationPending = true;
+    ObjectGuid botGuid = ai->GetBot()->GetObjectGuid();
+    try
+    {
+        std::thread([botGuid, ownerGuid, json]()
+        {
+            std::string selected;
+            try
+            {
+                std::vector<std::string> debugLines;
+                std::string response = PlayerbotLLMInterface::Generate(json,
+                    sPlayerbotAIConfig.llmGenerationTimeout, sPlayerbotAIConfig.llmMaxSimultaniousGenerations, debugLines);
+                selected = AIPlayAction::ExtractActionIntent(response);
+            }
+            catch (const std::exception& e)
+            {
+                sLog.Out(LOG_BASIC, LOG_LVL_ERROR, "AI play action selection error: %s", e.what());
+            }
+
+            sWorld.GetMessager().AddMessage([botGuid, ownerGuid, selected](World*)
+            {
+                Player* bot = sObjectAccessor.FindPlayer(botGuid);
+                if (!bot || !bot->GetPlayerbotAI())
+                    return;
+
+                PlayerbotAI* botAI = bot->GetPlayerbotAI();
+                botAI->aiPlayGenerationPending = false;
+                if (!bot->IsInWorld())
+                    return;
+
+                ExecuteAIPlayCommand(botAI, selected, ownerGuid);
+            });
+        }).detach();
+    }
+    catch (const std::exception& e)
+    {
+        ai->aiPlayGenerationPending = false;
+        sLog.Out(LOG_BASIC, LOG_LVL_ERROR, "Unable to start AI play action selection: %s", e.what());
     }
 }
 
@@ -937,43 +630,15 @@ void AIPlayAction::TryStartAutonomous(PlayerbotAI* ai)
     if (!action || !action->isUseful())
         return;
 
-    time_t now = time(nullptr);
+    const time_t now = time(nullptr);
     if (!ai->nextAIPlayGenerationTime)
     {
         ai->nextAIPlayGenerationTime = now + NextControlInterval();
         return;
     }
 
-    ai->aiPlayGenerationPending = true;
     ai->nextAIPlayGenerationTime = now + NextControlInterval();
-
-    std::string json, startPattern, endPattern, deletePattern, splitPattern;
-    if (!BuildAutonomousRequest(ai, json, startPattern, endPattern, deletePattern, splitPattern))
-    {
-        ai->aiPlayGenerationPending = false;
-        return;
-    }
-
-    ObjectGuid botGuid = ai->GetBot()->GetObjectGuid();
-    ObjectGuid ownerGuid = ai->GetMaster() ? ai->GetMaster()->GetObjectGuid() : ObjectGuid();
-    std::thread([botGuid, ownerGuid, json, startPattern, endPattern, deletePattern, splitPattern]()
-    {
-        std::vector<std::string> debugLines;
-        std::string response = PlayerbotLLMInterface::Generate(json, sPlayerbotAIConfig.llmGenerationTimeout,
-            sPlayerbotAIConfig.llmMaxSimultaniousGenerations, debugLines);
-        std::vector<std::string> lines = PlayerbotLLMInterface::ParseResponse(response, startPattern,
-            endPattern, deletePattern, splitPattern, debugLines);
-        std::string generatedText = JoinStrings(lines);
-        if (generatedText.empty())
-            generatedText = response;
-
-        sWorld.GetMessager().AddMessage([botGuid, ownerGuid, generatedText](World*)
-        {
-            Player* bot = sObjectAccessor.FindPlayer(botGuid);
-            if (bot && bot->IsInWorld() && bot->GetPlayerbotAI())
-                bot->GetPlayerbotAI()->QueueAIPlayText(generatedText, true, ownerGuid);
-        });
-    }).detach();
+    StartActionSelection(ai, "", ai->GetMaster() ? ai->GetMaster()->GetObjectGuid() : ObjectGuid());
 }
 
 bool AIPlayAction::ProcessPlayerMessage(PlayerbotAI* ai, uint32 type, ObjectGuid sender, ObjectGuid receiver, const std::string& text)
@@ -990,12 +655,12 @@ bool AIPlayAction::ProcessPlayerMessage(PlayerbotAI* ai, uint32 type, ObjectGuid
         return false;
 
     Player* bot = ai->GetBot();
-    bool addressed = type == CHAT_MSG_WHISPER;
+    const bool addressed = type == CHAT_MSG_WHISPER;
     Group* group = bot->GetGroup();
-    bool grouped = group && player->GetGroup() == group;
-    std::string normalizedText = NormalizeKeywords(text);
-    size_t mentionPosition = 0;
-    bool mentioned = FindKeyword(normalizedText, bot->GetName(), mentionPosition);
+    const bool grouped = group && player->GetGroup() == group;
+    const std::string normalizedText = LowerAIPlayText(text);
+    const std::string loweredBotName = LowerAIPlayText(bot->GetName());
+    const bool mentioned = !loweredBotName.empty() && normalizedText.find(loweredBotName) != std::string::npos;
     if (!addressed && !grouped && !mentioned)
         return false;
 
@@ -1005,19 +670,17 @@ bool AIPlayAction::ProcessPlayerMessage(PlayerbotAI* ai, uint32 type, ObjectGuid
     if (ai->aiPlayContext.size() > 32768)
         ai->aiPlayContext.erase(0, ai->aiPlayContext.size() - 32768);
 
-    return ProcessGeneratedText(ai, text, false, player);
+    // The following generated bot reply will be classified together with this
+    // player message, so a turn produces at most one selected action.
+    return false;
 }
 
 bool AIPlayAction::ProcessGeneratedText(PlayerbotAI* ai, const std::string& text, bool appendContext, Player* owner)
 {
-    if (!ai || text.empty() || !ai->HasStrategy("ai play", BotState::BOT_STATE_NON_COMBAT))
+    if (!ai || !ai->HasStrategy("ai play", BotState::BOT_STATE_NON_COMBAT))
         return false;
 
-    std::string normalized = NormalizeKeywords(text);
-    if (normalized.empty())
-        return false;
-
-    if (appendContext && ai->GetBot())
+    if (appendContext && ai->GetBot() && !text.empty())
     {
         if (!ai->aiPlayContext.empty())
             ai->aiPlayContext += "\n";
@@ -1026,69 +689,19 @@ bool AIPlayAction::ProcessGeneratedText(PlayerbotAI* ai, const std::string& text
             ai->aiPlayContext.erase(0, ai->aiPlayContext.size() - 32768);
     }
 
-    std::set<std::string> actions;
-    ai->GetAiObjectContext()->GetSupportedActions(actions);
-    std::set<std::string> keywordActions;
-    for (const KeywordIntent& intent : GetKeywordIntents())
-        if (intent.action)
-            keywordActions.insert(intent.action);
-
-    if (!owner)
-        owner = ai->GetMaster();
-    std::vector<IntentCandidate> candidates;
-    for (const KeywordIntent& intent : GetKeywordIntents())
-    {
-        size_t position = 0;
-        if (FindKeyword(normalized, intent.phrase, position) && !IsNegatedBefore(normalized, position, true))
-            candidates.push_back({ position, std::string(intent.phrase).size(), CandidateKind::KEYWORD, &intent, "" });
-    }
-
-    for (const std::string& action : actions)
-    {
-        if (action == "ai play" || IsRawMovementActionBlocked(action) || !keywordActions.count(action))
-            continue;
-
-        size_t position = 0;
-        if (FindKeyword(normalized, action, position) && !IsNegatedBefore(normalized, position, true))
-            candidates.push_back({ position, action.size(), CandidateKind::ACTION, nullptr, action });
-    }
-
-    // Act on the first meaningful intent in the text, preferring a longer phrase
-    // when multiple aliases begin at the same word. Exactly one finite action is
-    // executed for each player message or LLM generation.
-    std::stable_sort(candidates.begin(), candidates.end(), [](const IntentCandidate& left, const IntentCandidate& right)
-    {
-        if (left.position != right.position)
-            return left.position < right.position;
-        if (left.phraseLength != right.phraseLength)
-            return left.phraseLength > right.phraseLength;
-        return static_cast<int>(left.kind) < static_cast<int>(right.kind);
-    });
-
-    for (const IntentCandidate& candidate : candidates)
-    {
-        bool applied = false;
-        if (candidate.kind == CandidateKind::KEYWORD && candidate.keyword)
-            applied = ApplyIntent(ai, *candidate.keyword, text, owner);
-        else if (candidate.kind == CandidateKind::ACTION)
-            applied = ApplyActionName(ai, candidate.name, normalized, text, owner);
-
-        if (applied)
-            return true;
-    }
-
-    return false;
+    StartActionSelection(ai, text, owner ? owner->GetObjectGuid() : ObjectGuid());
+    return ai->aiPlayGenerationPending;
 }
 
 void AIPlayAction::QueueGeneratedResponse(ObjectGuid botGuid, ObjectGuid ownerGuid, const std::string& text)
 {
-    if (text.empty())
-        return;
-
     sWorld.GetMessager().AddMessage([botGuid, ownerGuid, text](World*)
     {
         Player* bot = sObjectAccessor.FindPlayer(botGuid);
-        if (bot && bot->IsInWorld() && bot->GetPlayerbotAI())
-            bot->GetPlayerbotAI()->QueueAIPlayText(text, false, ownerGuid);
+        if (!bot || !bot->IsInWorld() || !bot->GetPlayerbotAI())
+            return;
+
+        Player* owner = ownerGuid.IsEmpty() ? nullptr : sObjectAccessor.FindPlayer(ownerGuid);
+        AIPlayAction::ProcessGeneratedText(bot->GetPlayerbotAI(), text, true, owner);
     });
 }

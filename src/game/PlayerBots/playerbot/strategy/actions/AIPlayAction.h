@@ -42,6 +42,11 @@ namespace ai
             ObjectGuid receiver, const std::string& text);
         static bool ProcessGeneratedText(PlayerbotAI* ai, const std::string& text, bool appendContext = true, Player* owner = nullptr);
         static void QueueGeneratedResponse(ObjectGuid botGuid, ObjectGuid ownerGuid, const std::string& text);
+        static std::string GetCompactActionMenu();
+        static std::string ExtractActionIntent(std::string& text);
         static void TryStartAutonomous(PlayerbotAI* ai);
+
+    private:
+        static void StartActionSelection(PlayerbotAI* ai, const std::string& latestText, ObjectGuid ownerGuid);
     };
 }

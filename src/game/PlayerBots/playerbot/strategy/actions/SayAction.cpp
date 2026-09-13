@@ -592,7 +592,7 @@ delayedPackets ChatReplyAction::GenerateResponsePacketsAIPlay(const std::string 
     if (lines.empty() && debug && !response.empty())
         debugLines.push_back("No displayable chat text could be extracted from the LLM response.");
 
-    if (processForAIPlay && !response.empty())
+    if (processForAIPlay)
     {
         std::string responseText;
         for (const std::string& line : lines)
@@ -601,8 +601,9 @@ delayedPackets ChatReplyAction::GenerateResponsePacketsAIPlay(const std::string 
                 responseText += " ";
             responseText += line;
         }
-        if (responseText.empty())
-            responseText = response;
+
+        // Chat generation is complete. Queue a separate, action-only LLM
+        // generation; its output is never sent through the chat packet path.
         AIPlayAction::QueueGeneratedResponse(botGuid, ownerGuid, responseText);
     }
 
@@ -746,11 +747,13 @@ void ChatReplyAction::ChatReplyDo(Player* bot, uint32 type, uint32 guid1, uint32
 
                 std::string llmPromptCustom = AI_VALUE(std::string, "manual saved string::llmdefaultprompt");
 
+                bool processForAIPlay = botAI && botAI->HasStrategy("ai play", BotState::BOT_STATE_NON_COMBAT) &&
+                    sPlayerbotAIConfig.llmEnabled && (!sPlayerbotAIConfig.llmRequirePlayerPresence || botAI->HasRealPlayerNearbyOrInGroup());
+
                 std::map<std::string, std::string> jsonFill;
                 jsonFill["<pre prompt>"] = sPlayerbotAIConfig.llmPrePrompt + " " + llmPromptCustom;
                 jsonFill["<prompt>"] = sPlayerbotAIConfig.llmPrompt;
                 jsonFill["<post prompt>"] = sPlayerbotAIConfig.llmPostPrompt;
-
                 for (auto& prompt : jsonFill)
                 {
                     prompt.second = BOT_TEXT2(prompt.second, placeholders);
@@ -833,7 +836,6 @@ void ChatReplyAction::ChatReplyDo(Player* bot, uint32 type, uint32 guid1, uint32
                 WorldPacket emoteTemplate = (type == CHAT_MSG_SAY || type == CHAT_MSG_WHISPER) ? GetPacketTemplate(CMSG_MESSAGECHAT, CHAT_MSG_EMOTE, bot, player) : WorldPacket();
                 WorldPacket systemTemplate = GetPacketTemplate(CMSG_MESSAGECHAT, CHAT_MSG_WHISPER, bot, player);
 
-                bool processForAIPlay = botAI && botAI->HasStrategy("ai play", BotState::BOT_STATE_NON_COMBAT);
                 futurePackets futPackets = std::async(std::launch::async, ChatReplyAction::GenerateResponsePacketsAIPlay, json, chatTemplate, emoteTemplate, systemTemplate, startPattern, endPattern, deletePattern, splitPattern, bot->GetObjectGuid(), ObjectGuid(HIGHGUID_PLAYER, guid1), bot->GetName(), processForAIPlay, debug);
 
                 ai->SendDelayedPacket(session, std::move(futPackets));
