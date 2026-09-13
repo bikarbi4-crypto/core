@@ -31,6 +31,89 @@
 
 using namespace ai;
 
+namespace
+{
+    bool IsValidAIPlayAttackTarget(Player* bot, Unit* target)
+    {
+        return bot && target && target->IsInWorld() && sServerFacade.IsAlive(target) &&
+            bot->IsValidAttackTarget(target) && bot->IsWithinLOSInMap(target);
+    }
+
+    Unit* GetAIPlayAttackTarget(PlayerbotAI* ai, Player* bot, ObjectGuid guid)
+    {
+        if (!ai || !bot || guid.IsEmpty())
+            return nullptr;
+
+        Unit* target = ai->GetUnit(guid);
+        return IsValidAIPlayAttackTarget(bot, target) ? target : nullptr;
+    }
+}
+
+bool AIPlayAttackAction::Execute(Event& event)
+{
+    (void)event;
+    Player* bot = ai ? ai->GetBot() : nullptr;
+    AiObjectContext* context = ai ? ai->GetAiObjectContext() : nullptr;
+    if (!bot || !context)
+        return false;
+
+    // Prefer the master's selection, then the bot's selected/current target.
+    Unit* target = nullptr;
+    Player* master = ai->GetMaster();
+    if (master)
+        target = GetAIPlayAttackTarget(ai, bot, master->GetSelectionGuid());
+    if (!target)
+        target = GetAIPlayAttackTarget(ai, bot, bot->GetSelectionGuid());
+    if (!target)
+    {
+        Value<Unit*>* currentTarget = context->GetValue<Unit*>("current target");
+        if (currentTarget && IsValidAIPlayAttackTarget(bot, currentTarget->Get()))
+            target = currentTarget->Get();
+    }
+
+    // With no selected target, attack the nearest valid hostile creature in sight.
+    if (!target)
+    {
+        Value<std::list<ObjectGuid>>* possibleTargets = context->GetValue<std::list<ObjectGuid>>("possible targets");
+        float closestDistance = 1000000000.0f;
+        if (possibleTargets)
+        {
+            for (ObjectGuid guid : possibleTargets->Get())
+            {
+                Unit* candidate = GetAIPlayAttackTarget(ai, bot, guid);
+                if (!candidate || !candidate->IsCreature() || !sServerFacade.IsHostileTo(candidate, bot))
+                    continue;
+
+                const float distance = sServerFacade.GetDistance2d(bot, candidate);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    target = candidate;
+                }
+            }
+        }
+    }
+
+    if (!target)
+        return false;
+
+    const ObjectGuid targetGuid = target->GetGUID();
+    if (Value<GuidVector>* prioritizedTargets = context->GetValue<GuidVector>("prioritized targets"))
+        prioritizedTargets->Set({ targetGuid });
+
+    // It is already doing the requested thing.
+    if (bot->GetVictim() == target)
+        return true;
+
+    const bool attacked = Attack(bot, target);
+    if (attacked)
+    {
+        if (Value<ObjectGuid>* pullTarget = context->GetValue<ObjectGuid>("pull target"))
+            pullTarget->Set(targetGuid);
+    }
+    return attacked;
+}
+
 bool AIPlayMoveToRequesterAction::Execute(Event& event)
 {
     // Move once toward the player who asked; this does not install the persistent
@@ -246,7 +329,7 @@ namespace
         jsonFill["<prompt>"] = latestText.empty() ? "Choose the next useful action from the current situation." : "Recent chat: " + latestText;
         jsonFill["<prompt>"] += " Nearby: " + GetNearbySight(ai);
         jsonFill["<post prompt>"] = "IDs: " + AIPlayAction::GetCompactActionMenu() +
-            " Output only AI_PLAY=<ID>.";
+            " Output only one ID.";
 
         const uint32 fixedLength = jsonFill["<pre prompt>"].size() + jsonFill["<prompt>"].size() + jsonFill["<post prompt>"].size();
         PlayerbotLLMInterface::LimitContext(jsonFill["<context>"], fixedLength + jsonFill["<context>"].size());
@@ -465,6 +548,17 @@ namespace
             return ExecuteAIPlayInteract(ai, owner);
         if (command->id == std::string("HEAL"))
             return ExecuteAIPlayHeal(ai, owner);
+        if (command->id == std::string("ATTACK"))
+        {
+            AIPlayAttackAction attackAction(ai);
+            Event attackEvent("ai play", "", owner);
+            if (!attackAction.Execute(attackEvent))
+                return false;
+
+            if (ai->HasStrategy("debug llm", BotState::BOT_STATE_NON_COMBAT))
+                ai->TellPlayerNoFacing(ai->GetMaster(), "AI play selected action: attack my target");
+            return true;
+        }
 
         const std::string action = command->action;
         if (!ai->CanDoSpecificAction(action, true, true))
@@ -491,60 +585,52 @@ std::string AIPlayAction::GetCompactActionMenu()
 
 std::string AIPlayAction::ExtractActionIntent(std::string& text)
 {
-    const std::string marker = "ai_play";
-    std::string loweredText = LowerAIPlayText(text);
-    std::string selected;
-    bool foundTag = false;
     size_t position = 0;
+    bool foundNone = false;
 
-    while ((position = loweredText.find(marker, position)) != std::string::npos)
+    while (position < text.size())
     {
-        if (position > 0)
+        while (position < text.size() && !std::isalnum(static_cast<unsigned char>(text[position])) && text[position] != '_')
+            ++position;
+
+        size_t idStart = position;
+        while (position < text.size())
         {
-            const unsigned char previous = static_cast<unsigned char>(text[position - 1]);
-            if (std::isalnum(previous) || text[position - 1] == '_')
-            {
-                position += marker.size();
-                continue;
-            }
+            const unsigned char c = static_cast<unsigned char>(text[position]);
+            if (!std::isalnum(c) && text[position] != '_')
+                break;
+            ++position;
         }
 
-        size_t idStart = position + marker.size();
-        while (idStart < text.size() && std::isspace(static_cast<unsigned char>(text[idStart])))
-            ++idStart;
-        if (idStart >= text.size() || (text[idStart] != '=' && text[idStart] != ':'))
+        if (idStart == position)
+            continue;
+
+        std::string id = text.substr(idStart, position - idStart);
+        std::transform(id.begin(), id.end(), id.begin(), [](unsigned char c) { return (char)std::toupper(c); });
+
+        // Small models may add words around the ID or use this common synonym.
+        if (id == "FOLLOW" || id == "FOLLOWING")
         {
-            position = idStart;
+            text.clear();
+            return "COME";
+        }
+
+        if (id == "NONE")
+        {
+            foundNone = true;
             continue;
         }
 
-        ++idStart;
-        while (idStart < text.size() && std::isspace(static_cast<unsigned char>(text[idStart])))
-            ++idStart;
-
-        size_t idEnd = idStart;
-        while (idEnd < text.size())
+        if (FindAIPlayCommand(id))
         {
-            const unsigned char c = static_cast<unsigned char>(text[idEnd]);
-            if (!std::isalnum(c) && text[idEnd] != '_')
-                break;
-            ++idEnd;
+            text.clear();
+            return id;
         }
-
-        std::string id = text.substr(idStart, idEnd - idStart);
-        std::transform(id.begin(), id.end(), id.begin(), [](unsigned char c) { return (char)std::toupper(c); });
-        if (!foundTag)
-        {
-            foundTag = true;
-            if (id != "NONE" && FindAIPlayCommand(id))
-                selected = id;
-        }
-
-        text.erase(position, idEnd - position);
-        loweredText.erase(position, idEnd - position);
     }
 
-    return selected;
+    if (foundNone)
+        text.clear();
+    return std::string();
 }
 
 void AIPlayAction::StartActionSelection(PlayerbotAI* ai, const std::string& latestText, ObjectGuid ownerGuid)

@@ -2,9 +2,18 @@
 
 #include "playerbot/strategy/Action.h"
 #include "playerbot/strategy/actions/MovementActions.h"
+#include "playerbot/strategy/actions/AttackAction.h"
 
 namespace ai
 {
+    class AIPlayAttackAction : public AttackAction
+    {
+    public:
+        AIPlayAttackAction(PlayerbotAI* ai) : AttackAction(ai, "ai play attack") {}
+        bool Execute(Event& event) override;
+        bool isUseful() override { return true; }
+    };
+
     class AIPlayMoveRandomAction : public MovementAction
     {
     public:
