@@ -13,11 +13,35 @@ using namespace ai;
 namespace
 {
     NextAction** GetKitePositionAction() { return NextAction::array(0, new NextAction("kite position", ACTION_EMERGENCY + 8.0f), NULL); }
+    NextAction** GetKiteStackPositionAction() { return NextAction::array(0, new NextAction("kite stack position", ACTION_EMERGENCY + 8.0f), NULL); }
 } // namespace
 
 void KiteStrategy::InitCombatTriggers(std::list<TriggerNode*>& triggers) { triggers.push_back(new TriggerNode("kite position", GetKitePositionAction())); }
 
 void KiteStrategy::InitReactionTriggers(std::list<TriggerNode*>& triggers) { triggers.push_back(new TriggerNode("kite position", GetKitePositionAction())); }
+
+void KiteStackStrategy::InitCombatTriggers(std::list<TriggerNode*>& triggers) { triggers.push_back(new TriggerNode("kite stack position", GetKiteStackPositionAction())); }
+
+void KiteStackStrategy::InitReactionTriggers(std::list<TriggerNode*>& triggers) { triggers.push_back(new TriggerNode("kite stack position", GetKiteStackPositionAction())); }
+
+float KiteLineOfSightMultiplier::GetValue(Action* action)
+{
+    if (!action || !ai || !ai->GetBot())
+        return 1.0f;
+
+    const std::string name = action->getName();
+    if (name == "kite position" || name == "kite stack position")
+        return 1.0f;
+
+    if (!dynamic_cast<MovementAction*>(action))
+        return 1.0f;
+
+    Unit* target = ai->GetAiObjectContext()->GetValue<Unit*>("current target")->Get();
+    if (!target || !target->IsInWorld() || !target->IsAlive() || target->GetMapId() != ai->GetBot()->GetMapId())
+        return 1.0f;
+
+    return target->IsWithinLOSInMap(ai->GetBot()) ? 1.0f : 0.0f;
+}
 
 float KiteMeleeMultiplier::GetValue(Action* action)
 {
@@ -33,7 +57,7 @@ float KiteMeleeMultiplier::GetValue(Action* action)
 
     const std::string name = action->getName();
 
-    if (name == "kite position")
+    if (name == "kite position" || name == "kite stack position")
         return 1.0f;
 
     if (dynamic_cast<CastShootAction*>(action))
@@ -75,6 +99,8 @@ NextAction** KiteStrategy::GetDefaultCombatActions()
 
 void KiteStrategy::InitCombatMultipliers(std::list<Multiplier*>& multipliers)
 {
+    multipliers.push_back(new KiteLineOfSightMultiplier(ai));
+
     if (ai->GetBot()->GetClass() == CLASS_WARRIOR || ai->GetBot()->GetClass() == CLASS_ROGUE)
     {
         multipliers.push_back(new KiteMeleeMultiplier(ai));

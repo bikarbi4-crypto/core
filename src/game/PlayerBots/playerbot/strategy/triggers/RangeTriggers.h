@@ -268,6 +268,9 @@ namespace ai
             if (!IsValidHostile(target))
                 return false;
 
+            if (!target->IsWithinLOSInMap(bot))
+                return true;
+
             const float targetDistance = sServerFacade.GetDistance2d(bot, target);
 
             const time_t combatStart = ai->GetAiObjectContext()->GetValue<time_t>("combat start time")->Get();
@@ -294,6 +297,19 @@ namespace ai
 
     private:
         bool IsValidHostile(Unit* unit) const { return unit && unit->IsInWorld() && unit->IsAlive() && unit->GetMapId() == bot->GetMapId() && sServerFacade.IsHostileTo(bot, unit); }
+    };
+
+    class KiteStackPositionTrigger : public Trigger
+    {
+    public:
+        KiteStackPositionTrigger(PlayerbotAI* ai) : Trigger(ai, "kite stack position", 1) {}
+
+        bool IsActive() override
+        {
+            // Let the stack action inspect the whole cohort and decide whether it needs to reposition.
+            return ai->IsStateActive(BotState::BOT_STATE_COMBAT) &&
+                   ai->HasStrategy("kite stack", BotState::BOT_STATE_COMBAT);
+        }
     };
 
     class CombatStancePositionTrigger : public Trigger
