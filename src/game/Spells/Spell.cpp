@@ -7697,6 +7697,24 @@ bool Spell::CheckTarget(Unit* target, SpellEffectIndex eff)
 
 bool Spell::IsNeedSendToClient() const
 {
+    if (m_IsTriggeredSpell)
+    {
+        switch (m_spellInfo->Id)
+        {
+        // Windfury Weapon
+        case 8233:
+        case 8236:
+        case 10484:
+        case 16361:
+
+        // Windfury Totem
+        case 8516:
+        case 10608:
+        case 10610:
+            return false;
+        }
+    }
+
     return !IsChannelingVisual() && m_caster->IsInWorld() && (m_spellInfo->SpellVisual != 0 || m_channeled ||
            m_spellInfo->speed > 0.0f || (!m_triggeredByAuraSpell && !m_IsTriggeredSpell));
 }
