@@ -2969,27 +2969,21 @@ std::vector<Player*> PlayerbotAI::GetPlayersInGroup()
 
 void PlayerbotAI::DropQuest(uint32 questIdToDrop)
 {
+    if (!bot || !questIdToDrop)
+        return;
+
     for (uint16 slot = 0; slot < MAX_QUEST_LOG_SIZE; ++slot)
     {
-        uint32 questId = bot->GetUInt32Value(PLAYER_QUEST_LOG_1_1 + slot * MAX_QUEST_OFFSET + QUEST_ID_OFFSET);
-        if (!questId)
+        uint32 const questId = bot->GetUInt32Value(PLAYER_QUEST_LOG_1_1 + slot * MAX_QUEST_OFFSET + QUEST_ID_OFFSET);
+
+        if (questId != questIdToDrop)
             continue;
 
-        QuestStatus status = bot->GetQuestStatus(questId);
-        if (questId == questIdToDrop)
-        {
-            bot->SetUInt32Value(PLAYER_QUEST_LOG_1_1 + slot * MAX_QUEST_OFFSET + QUEST_ID_OFFSET, 0);
+        bot->SetUInt32Value(PLAYER_QUEST_LOG_1_1 + slot * MAX_QUEST_OFFSET + QUEST_ID_OFFSET, 0);
 
-            //We ignore unequippable quest items in this case, its' still be equipped
-            // TakeQuestSourceItem not in vmangos
+        bot->SetQuestStatus(questId, QUEST_STATUS_NONE);
 
-            bot->SetQuestStatus(questId, QUEST_STATUS_NONE);
-            // getQuestStatusMap not directly accessible in vmangos
-
-            //TODO should probably also remove quest items?
-
-            return;
-        }
+        return;
     }
 }
 
