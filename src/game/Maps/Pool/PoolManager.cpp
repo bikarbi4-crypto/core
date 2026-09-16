@@ -1040,7 +1040,7 @@ uint32 PoolManager::GetContinentInstanceIdForPool(uint16 pool_id) const
             if (GameObjectData const* data = sObjectMgr.GetGOData(itr.guid))
             {
                 if (data->position.mapId <= MAX_CONTINENT_ID)
-                    return sMapMgr.GetContinentInstanceId(data->position.mapId, data->position.x, data->position.y);
+                    return sMapMgr.GetContinentInstanceId(data->position.mapId, data->position.x, data->position.y, data->position.z);
             }
         }
 
@@ -1049,7 +1049,7 @@ uint32 PoolManager::GetContinentInstanceIdForPool(uint16 pool_id) const
             if (GameObjectData const* data = sObjectMgr.GetGOData(itr.guid))
             {
                 if (data->position.mapId <= MAX_CONTINENT_ID)
-                    return sMapMgr.GetContinentInstanceId(data->position.mapId, data->position.x, data->position.y);
+                    return sMapMgr.GetContinentInstanceId(data->position.mapId, data->position.x, data->position.y, data->position.z);
             }
         }
     }
@@ -1061,7 +1061,7 @@ uint32 PoolManager::GetContinentInstanceIdForPool(uint16 pool_id) const
             if (CreatureData const* data = sObjectMgr.GetCreatureData(itr.guid))
             {
                 if (data->position.mapId <= MAX_CONTINENT_ID)
-                    return sMapMgr.GetContinentInstanceId(data->position.mapId, data->position.x, data->position.y);
+                    return sMapMgr.GetContinentInstanceId(data->position.mapId, data->position.x, data->position.y, data->position.z);
             }
         }
 
@@ -1070,7 +1070,7 @@ uint32 PoolManager::GetContinentInstanceIdForPool(uint16 pool_id) const
             if (CreatureData const* data = sObjectMgr.GetCreatureData(itr.guid))
             {
                 if (data->position.mapId <= MAX_CONTINENT_ID)
-                    return sMapMgr.GetContinentInstanceId(data->position.mapId, data->position.x, data->position.y);
+                    return sMapMgr.GetContinentInstanceId(data->position.mapId, data->position.x, data->position.y, data->position.z);
             }
         }
     }

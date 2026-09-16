@@ -27,6 +27,9 @@
 #include "Policies/Singleton.h"
 #include "GridStates.h"
 #include <condition_variable>
+#include <functional>
+#include <map>
+#include <vector>
 
 class Map;
 class BattleGround;
@@ -52,6 +55,10 @@ enum
     MAP0_LAST           = 10,
     MAP1_FIRST          = 11,
     MAP1_LAST           = 20,
+
+    // Instance ids below RESERVED_INSTANCES_LAST are reserved for continent
+    // partitions. Zone sharding allocates from this range dynamically.
+    CONTINENT_ZONE_INSTANCE_FIRST = 21,
 };
 
 struct MapID
@@ -88,6 +95,7 @@ class MapManager : public MaNGOS::Singleton<MapManager, MaNGOS::ClassLevelLockab
         typedef std::map<MapID, Map* > MapMapType;
 
         uint32 GetContinentInstanceId(uint32 mapId, float x, float y, bool* transitionArea = nullptr);
+        uint32 GetContinentInstanceId(uint32 mapId, float x, float y, float z, bool* transitionArea = nullptr);
         Map* CreateMap(uint32, WorldObject const* obj);
         Map* CreateBgMap(uint32 mapid, BattleGround* bg);
         Map* CreateTestMap(uint32 mapid, bool instanced, float posX, float posY);
@@ -157,7 +165,7 @@ class MapManager : public MaNGOS::Singleton<MapManager, MaNGOS::ClassLevelLockab
         // statistics
         uint32 GetNumInstances();
         uint32 GetNumPlayersInInstances();
-        uint32 GetContinentUpdateTaskCount() const { return i_maxContinentThread; }
+        uint32 GetContinentUpdateTaskCount() const { return i_continentUpdateTaskCount; }
 
         //get list of all maps
         const MapMapType& Maps() const { return i_maps; }
@@ -194,6 +202,13 @@ class MapManager : public MaNGOS::Singleton<MapManager, MaNGOS::ClassLevelLockab
         void InitStateMachine();
         void DeleteStateMachine();
 
+        void InitializeContinentZoneInstanceIds();
+        uint32 GetContinentZoneInstanceId(uint32 mapId, uint32 zoneId);
+        uint32 GetContinentZoneId(uint32 mapId, uint32 instanceId) const;
+        uint32 GetConfiguredContinentThreadCount() const;
+        void BuildContinentShardWorkloads(std::vector<Map*> const& maps, uint32 mapsDiff,
+                                          std::vector<std::function<void()>>& workloads);
+
         Map* CreateInstance(uint32 id, Player* player);
         DungeonMap* CreateDungeonMap(uint32 id, uint32 InstanceId, DungeonPersistentState* save = nullptr);
         BattleGroundMap* CreateBattleGroundMap(uint32 id, uint32 InstanceId, BattleGround* bg);
@@ -204,6 +219,7 @@ class MapManager : public MaNGOS::Singleton<MapManager, MaNGOS::ClassLevelLockab
 
         uint32 i_MaxInstanceId;
         int             i_maxContinentThread = 0;
+        uint32          i_continentUpdateTaskCount = 0;
 
         mutable std::mutex      m_continentMutex;
         mutable std::condition_variable      m_continentCV;
@@ -216,6 +232,10 @@ class MapManager : public MaNGOS::Singleton<MapManager, MaNGOS::ClassLevelLockab
 
         // Instanced continent zones
         const static int LAST_CONTINENT_ID = 2;
+        mutable std::mutex    m_continentZoneInstanceIdsLock;
+        bool                  m_continentZoneInstanceIdsInitialized = false;
+        std::vector<uint16> m_continentZoneInstanceIds[LAST_CONTINENT_ID];
+        std::map<uint16, uint32> m_continentZoneByInstance[LAST_CONTINENT_ID];
         std::mutex    m_scheduledInstanceSwitches_lock[LAST_CONTINENT_ID];
         std::map<Player*, uint16 /* new instance */> m_scheduledInstanceSwitches[LAST_CONTINENT_ID]; // 2 continents
 

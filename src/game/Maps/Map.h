@@ -359,7 +359,7 @@ class Map : public GridRefManager<NGridType>
         inline void UpdateCells(uint32 diff);
         void UpdateSync(uint32 const);
         void UpdatePlayers(bool updateBots = true);
-        void DoUpdate(uint32 maxDiff);
+        void DoUpdate(uint32 maxDiff, bool useContinentUpdateBarrier = true);
         virtual void Update(uint32);
         void UpdateSessionsMovementAndSpellsIfNeeded();
         void ProcessSessionPackets(PacketProcessing type);
@@ -765,6 +765,7 @@ class Map : public GridRefManager<NGridType>
         bool m_unloading = false;
         bool m_crashed = false;
         bool m_updateFinished = false;
+        bool m_useContinentUpdateBarrier = true;
         uint32 m_updateDiffMod;
         TimePoint m_currentTime;
         uint32 m_lastMvtSpellsUpdate = 0;

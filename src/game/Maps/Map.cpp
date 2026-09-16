@@ -1131,7 +1131,7 @@ void Map::UpdatePlayers(bool updateBots)
     lastPlayersUpdate = now;
 }
 
-void Map::DoUpdate(uint32 maxDiff)
+void Map::DoUpdate(uint32 maxDiff, bool useContinentUpdateBarrier)
 {
     uint32 now = WorldTimer::getMSTime();
     uint32 diff = WorldTimer::getMSTimeDiff(m_lastMapUpdate, now);
@@ -1144,7 +1144,9 @@ void Map::DoUpdate(uint32 maxDiff)
     if (HavePlayers())
         m_lastPlayerLeftTime = now;
 
+    m_useContinentUpdateBarrier = useContinentUpdateBarrier;
     Update(diff);
+    m_useContinentUpdateBarrier = true;
 }
 
 void Map::Update(uint32 t_diff)
@@ -1334,7 +1336,7 @@ void Map::Update(uint32 t_diff)
     uint32 additionnalWaitTime = 0;
     uint32 additionnalUpdateCounts = 0;
 
-    if (!Instanceable())
+    if (!Instanceable() && m_useContinentUpdateBarrier)
     {
         additionnalWaitTime = WorldTimer::getMSTime();
 

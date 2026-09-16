@@ -267,7 +267,7 @@ bool DragonsOfNightmare::GetAliveCountAndUpdateRespawnTime(std::vector<ObjectGui
             continue;
         }
 
-        auto instanceId = sMapMgr.GetContinentInstanceId(cData->position.mapId, cData->position.x, cData->position.y);
+        auto instanceId = sMapMgr.GetContinentInstanceId(cData->position.mapId, cData->position.x, cData->position.y, cData->position.z);
 
         // get the map that currently creature belongs to
         auto map = sMapMgr.FindMap(cData->position.mapId, instanceId);
@@ -874,7 +874,7 @@ void ScourgeInvasionEvent::Disable()
 
 Map* ScourgeInvasionEvent::GetMap(uint32 mapId, Position const& invZone)
 {
-    uint32 instId = sMapMgr.GetContinentInstanceId(mapId, invZone.x, invZone.y);
+    uint32 instId = sMapMgr.GetContinentInstanceId(mapId, invZone.x, invZone.y, invZone.z);
     Map* pMap = sMapMgr.FindMap(mapId, instId);
     if (!pMap)
         sLog.Out(LOG_BASIC, LOG_LVL_ERROR, "ScourgeInvasionEvent::GetMap found no map with mapId %u, x: %g, y: %g.", mapId, invZone.x, invZone.y);

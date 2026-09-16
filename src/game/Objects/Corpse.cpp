@@ -240,7 +240,7 @@ bool Corpse::LoadFromDB(uint32 lowguid, Field* fields)
     // no need to mark corpse as lootable, because corpses are not saved in battle grounds
 
     if (mapid <= MAX_CONTINENT_ID)
-        instanceid = sMapMgr.GetContinentInstanceId(mapid, positionX, positionY);
+        instanceid = sMapMgr.GetContinentInstanceId(mapid, positionX, positionY, positionZ);
     SetLocationInstanceId(instanceid);
     SetLocationMapId(mapid);
     Relocate(positionX, positionY, positionZ, orientation);

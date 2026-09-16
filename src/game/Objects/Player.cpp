@@ -450,7 +450,7 @@ bool Player::Create(uint32 guidlow, std::string const& name, uint8 race, uint8 c
     Relocate(info->positionX, info->positionY, info->positionZ, info->orientation);
 
     if (GetMapId() <= MAX_CONTINENT_ID)
-        SetLocationInstanceId(sMapMgr.GetContinentInstanceId(GetMapId(), GetPositionX(), GetPositionY()));
+        SetLocationInstanceId(sMapMgr.GetContinentInstanceId(GetMapId(), GetPositionX(), GetPositionY(), GetPositionZ()));
     SetMap(sMapMgr.CreateMap(info->mapId, this));
 
     uint8 powertype = cEntry->powerType;
@@ -1356,7 +1356,7 @@ void Player::Update(uint32 update_diff, uint32 p_time)
 
         bool transition = false;
 
-        uint16 newInstanceId = sMapMgr.GetContinentInstanceId(GetMap()->GetId(), GetPositionX(), GetPositionY(), &transition);
+        uint16 newInstanceId = sMapMgr.GetContinentInstanceId(GetMap()->GetId(), GetPositionX(), GetPositionY(), GetPositionZ(), &transition);
 
         if (newInstanceId != GetInstanceId())
         {
@@ -2074,7 +2074,7 @@ bool Player::TeleportTo(uint32 mapId, float x, float y, float z, float orientati
         if (state)
             instanceId = state->GetInstanceId();
         if (mapId <= MAX_CONTINENT_ID)
-            instanceId = sMapMgr.GetContinentInstanceId(mapId, x, y);
+            instanceId = sMapMgr.GetContinentInstanceId(mapId, x, y, z);
         Map* pMap = sMapMgr.FindMap(mapId, instanceId);
         if (pMap && !pMap->CanEnter(this))
             return false;
@@ -2107,7 +2107,7 @@ bool Player::ExecuteTeleportFar(ScheduledTeleportData* data)
     if (state)
         instanceId = state->GetInstanceId();
     if (mapId <= MAX_CONTINENT_ID)
-        instanceId = sMapMgr.GetContinentInstanceId(mapId, data->x, data->y);
+        instanceId = sMapMgr.GetContinentInstanceId(mapId, data->x, data->y, data->z);
     Map* pMap = sMapMgr.FindMap(mapId, instanceId);
     if (!pMap || pMap->CanEnter(this))
     {
@@ -14916,7 +14916,7 @@ bool Player::LoadFromDB(ObjectGuid guid, SqlQueryHolder* holder)
 
     // load the player's map here if it's not already loaded
     if (GetMapId() <= MAX_CONTINENT_ID)
-        SetLocationInstanceId(sMapMgr.GetContinentInstanceId(GetMapId(), GetPositionX(), GetPositionY()));
+        SetLocationInstanceId(sMapMgr.GetContinentInstanceId(GetMapId(), GetPositionX(), GetPositionY(), GetPositionZ()));
     SetMap(sMapMgr.CreateMap(GetMapId(), this));
 
     if (transGUID != 0)
@@ -14943,7 +14943,7 @@ bool Player::LoadFromDB(ObjectGuid guid, SqlQueryHolder* holder)
 
                 RelocateToHomebind();
                 if (GetMapId() <= MAX_CONTINENT_ID)
-                    SetLocationInstanceId(sMapMgr.GetContinentInstanceId(GetMapId(), GetPositionX(), GetPositionY()));
+                    SetLocationInstanceId(sMapMgr.GetContinentInstanceId(GetMapId(), GetPositionX(), GetPositionY(), GetPositionZ()));
                 SetMap(sMapMgr.CreateMap(GetMapId(), this));
             }
             else
@@ -14951,7 +14951,7 @@ bool Player::LoadFromDB(ObjectGuid guid, SqlQueryHolder* holder)
                 if (transport->GetMap() != this->GetMap())
                 {
                     if (transport->GetMapId() <= MAX_CONTINENT_ID)
-                        SetLocationInstanceId(sMapMgr.GetContinentInstanceId(transport->GetMapId(), transport->GetPositionX(), transport->GetPositionY()));
+                        SetLocationInstanceId(sMapMgr.GetContinentInstanceId(transport->GetMapId(), transport->GetPositionX(), transport->GetPositionY(), transport->GetPositionZ()));
                     SetMap(transport->GetMap());
                 }
                 Relocate(x, y, z, o);
@@ -14966,7 +14966,7 @@ bool Player::LoadFromDB(ObjectGuid guid, SqlQueryHolder* holder)
 
             RelocateToHomebind();
             if (GetMapId() <= MAX_CONTINENT_ID)
-                SetLocationInstanceId(sMapMgr.GetContinentInstanceId(GetMapId(), GetPositionX(), GetPositionY()));
+                SetLocationInstanceId(sMapMgr.GetContinentInstanceId(GetMapId(), GetPositionX(), GetPositionY(), GetPositionZ()));
             SetMap(sMapMgr.CreateMap(GetMapId(), this));
         }
     }
@@ -14990,7 +14990,7 @@ bool Player::LoadFromDB(ObjectGuid guid, SqlQueryHolder* holder)
                 Relocate(at->destination.x, at->destination.y, at->destination.z, at->destination.o);
                 SetLocationMapId(at->destination.mapId);
                 if (GetMapId() <= MAX_CONTINENT_ID)
-                    SetLocationInstanceId(sMapMgr.GetContinentInstanceId(GetMapId(), GetPositionX(), GetPositionY()));
+                    SetLocationInstanceId(sMapMgr.GetContinentInstanceId(GetMapId(), GetPositionX(), GetPositionY(), GetPositionZ()));
                 SetMap(sMapMgr.CreateMap(GetMapId(), this));
             }
             else if (GetMapId() == MAP_NAXXRAMAS) // Naxxramas
@@ -15000,7 +15000,7 @@ bool Player::LoadFromDB(ObjectGuid guid, SqlQueryHolder* holder)
                 Relocate(3362.15f, -3379.35f, 144.782f, 6.28319f);
                 SetLocationMapId(MAP_EASTERN_KINGDOMS);
                 if (GetMapId() <= MAX_CONTINENT_ID)
-                    SetLocationInstanceId(sMapMgr.GetContinentInstanceId(GetMapId(), GetPositionX(), GetPositionY()));
+                    SetLocationInstanceId(sMapMgr.GetContinentInstanceId(GetMapId(), GetPositionX(), GetPositionY(), GetPositionZ()));
                 SetMap(sMapMgr.CreateMap(GetMapId(), this));
             }
         }
@@ -15155,7 +15155,7 @@ bool Player::LoadFromDB(ObjectGuid guid, SqlQueryHolder* holder)
         //we can be relocated from taxi and still have an outdated Map pointer!
         //so we need to get a new Map pointer!
         if (GetMapId() <= MAX_CONTINENT_ID)
-            SetLocationInstanceId(sMapMgr.GetContinentInstanceId(GetMapId(), GetPositionX(), GetPositionY()));
+            SetLocationInstanceId(sMapMgr.GetContinentInstanceId(GetMapId(), GetPositionX(), GetPositionY(), GetPositionZ()));
         SetMap(sMapMgr.CreateMap(GetMapId(), this));
         SaveRecallPosition();                           // save as recall also to prevent recall and fall from sky
 

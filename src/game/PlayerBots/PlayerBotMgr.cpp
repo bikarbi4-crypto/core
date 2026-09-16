@@ -591,7 +591,7 @@ void PlayerBotMgr::AddBattleBot(BattleGroundQueueTypeId queueType, Team botTeam,
         return;
 
     // Spawn bot on GM Island
-    uint32 const instanceId = sMapMgr.GetContinentInstanceId(1, 16224.356f, 16284.763f);
+    uint32 const instanceId = sMapMgr.GetContinentInstanceId(1, 16224.356f, 16284.763f, 13.175f);
     BattleBotAI* ai = new BattleBotAI(botRace, botClass, botLevel, 1, instanceId, 16224.356f, 16284.763f, 13.175f, 4.56f, queueType, temporary);
     AddBot(ai);
 

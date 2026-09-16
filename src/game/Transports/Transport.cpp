@@ -116,7 +116,7 @@ bool ShipTransport::TeleportTransport(uint32 newMapid, float x, float y, float z
 {
     Map const* oldMap = GetMap();
 
-    uint32 newInstanceId = sMapMgr.GetContinentInstanceId(newMapid, x, y);
+    uint32 newInstanceId = sMapMgr.GetContinentInstanceId(newMapid, x, y, z);
     SetLocationInstanceId(newInstanceId);
     Map* newMap = sMapMgr.CreateMap(newMapid, this);
     GetMap()->Remove<ShipTransport>(this, false);

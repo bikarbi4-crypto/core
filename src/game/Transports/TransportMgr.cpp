@@ -385,7 +385,7 @@ ShipTransport* TransportMgr::CreateTransport(uint32 entry, Map* map)
     float o = frameItr->InitialOrientation;
 
     // do not create it on the wrong continent instance
-    uint32 instanceId = sMapMgr.GetContinentInstanceId(mapId, x, y);
+    uint32 instanceId = sMapMgr.GetContinentInstanceId(mapId, x, y, z);
     if (map->IsContinent() && instanceId != map->GetInstanceId())
         return nullptr;
 

@@ -2446,7 +2446,8 @@ void ObjectMgr::LoadCreatures(bool reload)
         data.movement_type      = fields[16].GetUInt8();
         data.spawn_flags        = spawnFlags;
         data.visibility_mod     = fields[21].GetFloat();
-        data.instanciatedContinentInstanceId = sMapMgr.GetContinentInstanceId(data.position.mapId, data.position.x, data.position.y);
+        data.instanciatedContinentInstanceId = sMapMgr.GetContinentInstanceId(
+            data.position.mapId, data.position.x, data.position.y, data.position.z);
         int16 gameEvent         = fields[17].GetInt16();
         int16 GuidPoolId        = fields[18].GetInt16();
         int16 EntryPoolId       = fields[19].GetInt16();
@@ -2600,7 +2601,8 @@ void ObjectMgr::LoadGameobjects(bool reload)
         data.spawntimesecsmax = fields[12].GetInt32();
         data.spawn_flags      = fields[18].GetUInt32();
         data.visibility_mod   = fields[19].GetFloat();
-        data.instanciatedContinentInstanceId = sMapMgr.GetContinentInstanceId(data.position.mapId, data.position.x, data.position.y);
+        data.instanciatedContinentInstanceId = sMapMgr.GetContinentInstanceId(
+            data.position.mapId, data.position.x, data.position.y, data.position.z);
 
         MapEntry const* mapEntry = sMapStorage.LookupEntry<MapEntry>(data.position.mapId);
         if (!mapEntry)

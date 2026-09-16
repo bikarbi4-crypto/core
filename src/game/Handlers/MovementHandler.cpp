@@ -99,7 +99,7 @@ void WorldSession::HandleMoveWorldportAck()
     if (!map)
     {
         if (loc.mapId <= MAX_CONTINENT_ID)
-            GetPlayer()->SetLocationInstanceId(sMapMgr.GetContinentInstanceId(loc.mapId, loc.x, loc.y));
+        GetPlayer()->SetLocationInstanceId(sMapMgr.GetContinentInstanceId(loc.mapId, loc.x, loc.y, loc.z));
         map = sMapMgr.CreateMap(loc.mapId, GetPlayer());
     }
 
@@ -276,7 +276,7 @@ void Player::ExecuteTeleportNear()
         if (sWorld.getConfig(CONFIG_BOOL_CONTINENTS_INSTANCIATE) && GetMap()->IsContinent())
         {
             bool transition = false;
-            if (sMapMgr.GetContinentInstanceId(GetMap()->GetId(), dest.x, dest.y, &transition) == GetInstanceId())
+            if (sMapMgr.GetContinentInstanceId(GetMap()->GetId(), dest.x, dest.y, dest.z, &transition) == GetInstanceId())
                 ResummonPetTemporaryUnSummonedIfAny();
         }
         else

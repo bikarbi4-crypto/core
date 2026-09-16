@@ -23,6 +23,8 @@
 #include "MapPersistentStateMgr.h"
 #include "Policies/SingletonImp.h"
 #include "Database/DatabaseEnv.h"
+#include "Database/DBCStores.h"
+#include "Config/Config.h"
 #include "Log.h"
 #include "GridDefines.h"
 #include "CellImpl.h"
@@ -34,6 +36,91 @@
 #include "BattleGround.h"
 #include "ThreadPool.h"
 #include "IO/Multithreading/CreateThread.h"
+
+#include <algorithm>
+#include <cmath>
+#include <iterator>
+#include <limits>
+#include <thread>
+
+namespace
+{
+    uint32 CountEnabledProcessors()
+    {
+        uint32 processorMask = sConfig.GetIntDefault("UseProcessors", 0);
+        if (!processorMask)
+        {
+            uint32 hardwareProcessors = std::thread::hardware_concurrency();
+            return hardwareProcessors ? hardwareProcessors : 1;
+        }
+
+        uint32 processorCount = 0;
+        while (processorMask)
+        {
+            processorCount += processorMask & 1u;
+            processorMask >>= 1;
+        }
+        return processorCount ? processorCount : 1;
+    }
+
+    struct ContinentShardGroup
+    {
+        std::vector<Map*> maps;
+        double load = 0.0;
+    };
+
+    bool AreaRectanglesAreNeighbors(WorldMapAreaEntry const* first, WorldMapAreaEntry const* second)
+    {
+        if (!first || !second || first->map_id != second->map_id)
+            return false;
+
+        float const firstMinX = std::min(first->x1, first->x2);
+        float const firstMaxX = std::max(first->x1, first->x2);
+        float const firstMinY = std::min(first->y1, first->y2);
+        float const firstMaxY = std::max(first->y1, first->y2);
+        float const secondMinX = std::min(second->x1, second->x2);
+        float const secondMaxX = std::max(second->x1, second->x2);
+        float const secondMinY = std::min(second->y1, second->y2);
+        float const secondMaxY = std::max(second->y1, second->y2);
+
+        // WorldMapArea rectangles are intentionally used only as a conservative
+        // locality check. The tolerance covers small gaps between neighboring
+        // zone rectangles without allowing distant zones to be merged.
+        static float const neighborTolerance = 1500.0f;
+        bool const yRangesOverlap = firstMinY <= secondMaxY + neighborTolerance && secondMinY <= firstMaxY + neighborTolerance;
+        bool const xRangesOverlap = firstMinX <= secondMaxX + neighborTolerance && secondMinX <= firstMaxX + neighborTolerance;
+        float const xGap = std::max(0.0f, std::max(firstMinX, secondMinX) - std::min(firstMaxX, secondMaxX));
+        float const yGap = std::max(0.0f, std::max(firstMinY, secondMinY) - std::min(firstMaxY, secondMaxY));
+
+        return (xGap <= neighborTolerance && yRangesOverlap) ||
+               (yGap <= neighborTolerance && xRangesOverlap);
+    }
+
+    bool LegacyContinentPartitionsAreNeighbors(uint32 mapId, uint32 firstInstanceId, uint32 secondInstanceId)
+    {
+        if (mapId == MAP_EASTERN_KINGDOMS)
+        {
+            static uint32 const order[] = { MAP0_TOP_NORTH, MAP0_MIDDLE_NORTH, MAP0_IRONFORGE_AREA,
+                                             MAP0_MIDDLE, MAP0_STORMWIND_AREA, MAP0_SOUTH };
+            auto first = std::find(std::begin(order), std::end(order), firstInstanceId);
+            auto second = std::find(std::begin(order), std::end(order), secondInstanceId);
+            return first != std::end(order) && second != std::end(order) &&
+                   std::abs(static_cast<int>(first - std::begin(order)) - static_cast<int>(second - std::begin(order))) == 1;
+        }
+
+        if (mapId == MAP_KALIMDOR)
+        {
+            static uint32 const order[] = { MAP1_NORTH, MAP1_DUROTAR, MAP1_ORGRIMMAR, MAP1_VALLEY,
+                                             MAP1_UPPER_MIDDLE, MAP1_LOWER_MIDDLE, MAP1_SOUTH };
+            auto first = std::find(std::begin(order), std::end(order), firstInstanceId);
+            auto second = std::find(std::begin(order), std::end(order), secondInstanceId);
+            return first != std::end(order) && second != std::end(order) &&
+                   std::abs(static_cast<int>(first - std::begin(order)) - static_cast<int>(second - std::begin(order))) == 1;
+        }
+
+        return false;
+    }
+}
 
 typedef MaNGOS::ClassLevelLockable<MapManager, std::recursive_mutex> MapManagerLock;
 INSTANTIATE_SINGLETON_2(MapManager, MapManagerLock);
@@ -59,11 +146,273 @@ MapManager::~MapManager()
     DeleteStateMachine();
 }
 
+void MapManager::InitializeContinentZoneInstanceIds()
+{
+    std::lock_guard<std::mutex> lock(m_continentZoneInstanceIdsLock);
+
+    if (m_continentZoneInstanceIdsInitialized)
+        return;
+
+    uint32 maxAreaId = 0;
+    uint32 areaCount = 0;
+
+    for (auto itr = sAreaStorage.begin<AreaEntry>(); itr < sAreaStorage.end<AreaEntry>(); ++itr)
+    {
+        if (itr->MapId < LAST_CONTINENT_ID && itr->IsZone())
+            maxAreaId = std::max(maxAreaId, itr->Id);
+        ++areaCount;
+    }
+
+    // Static spawn data can be loaded before the normal MapManager::Initialize
+    // call. If the AreaTable is not ready yet, leave the vectors empty so this
+    // method can initialize them on the first later lookup.
+    if (!areaCount || !maxAreaId)
+        return;
+
+    for (uint32 mapId = 0; mapId < LAST_CONTINENT_ID; ++mapId)
+        m_continentZoneInstanceIds[mapId].assign(maxAreaId + 1, 0);
+
+    for (uint32 mapId = 0; mapId < LAST_CONTINENT_ID; ++mapId)
+    {
+        std::vector<uint32> zoneIds;
+        for (auto itr = sAreaStorage.begin<AreaEntry>(); itr < sAreaStorage.end<AreaEntry>(); ++itr)
+            if (itr->MapId == mapId && itr->IsZone())
+                zoneIds.push_back(itr->Id);
+
+        std::sort(zoneIds.begin(), zoneIds.end());
+
+        uint16 nextInstanceId = CONTINENT_ZONE_INSTANCE_FIRST;
+        uint32 zoneCount = 0;
+
+        for (uint32 zoneId : zoneIds)
+        {
+            if (nextInstanceId >= RESERVED_INSTANCES_LAST)
+            {
+                sLog.Out(LOG_BASIC, LOG_LVL_ERROR,
+                    "Continent sharding: reserved instance id range exhausted for continent map %u.", mapId);
+                break;
+            }
+
+            m_continentZoneInstanceIds[mapId][zoneId] = nextInstanceId;
+            m_continentZoneByInstance[mapId][nextInstanceId] = zoneId;
+            ++nextInstanceId;
+            ++zoneCount;
+        }
+
+        sLog.Out(LOG_BASIC, LOG_LVL_MINIMAL,
+            "Continent sharding: mapped %u top-level zones on continent map %u.", zoneCount, mapId);
+    }
+
+    m_continentZoneInstanceIdsInitialized = true;
+}
+
+uint32 MapManager::GetContinentZoneInstanceId(uint32 mapId, uint32 zoneId)
+{
+    if (mapId >= LAST_CONTINENT_ID || !zoneId)
+        return 0;
+
+    bool needsInitialization = false;
+    {
+        std::lock_guard<std::mutex> lock(m_continentZoneInstanceIdsLock);
+        if (!m_continentZoneInstanceIds[mapId].empty())
+            return zoneId < m_continentZoneInstanceIds[mapId].size() ? m_continentZoneInstanceIds[mapId][zoneId] : 0;
+        needsInitialization = true;
+    }
+
+    if (needsInitialization)
+        InitializeContinentZoneInstanceIds();
+
+    std::lock_guard<std::mutex> lock(m_continentZoneInstanceIdsLock);
+    if (zoneId >= m_continentZoneInstanceIds[mapId].size())
+        return 0;
+
+    return m_continentZoneInstanceIds[mapId][zoneId];
+}
+
+uint32 MapManager::GetContinentZoneId(uint32 mapId, uint32 instanceId) const
+{
+    if (mapId >= LAST_CONTINENT_ID)
+        return 0;
+
+    std::lock_guard<std::mutex> lock(m_continentZoneInstanceIdsLock);
+    auto const itr = m_continentZoneByInstance[mapId].find(static_cast<uint16>(instanceId));
+    return itr != m_continentZoneByInstance[mapId].end() ? itr->second : 0;
+}
+
+uint32 MapManager::GetConfiguredContinentThreadCount() const
+{
+    return CountEnabledProcessors();
+}
+
+void MapManager::BuildContinentShardWorkloads(std::vector<Map*> const& maps, uint32 mapsDiff,
+                                              std::vector<std::function<void()>>& workloads)
+{
+    if (maps.empty())
+        return;
+
+    auto mapsAreNeighbors = [this](Map* first, Map* second)
+    {
+        if (!first || !second || first->GetId() != second->GetId())
+            return false;
+
+        uint32 const firstZoneId = GetContinentZoneId(first->GetId(), first->GetInstanceId());
+        uint32 const secondZoneId = GetContinentZoneId(second->GetId(), second->GetInstanceId());
+
+        if (firstZoneId && secondZoneId)
+        {
+            WorldMapAreaEntry const* firstArea = sWorldMapAreaStore.LookupEntry(firstZoneId);
+            WorldMapAreaEntry const* secondArea = sWorldMapAreaStore.LookupEntry(secondZoneId);
+            return AreaRectanglesAreNeighbors(firstArea, secondArea);
+        }
+
+        return LegacyContinentPartitionsAreNeighbors(first->GetId(), first->GetInstanceId(), second->GetInstanceId());
+    };
+
+    std::vector<Map*> mapsByContinent[LAST_CONTINENT_ID];
+    for (Map* map : maps)
+    {
+        if (map && map->GetId() < LAST_CONTINENT_ID)
+            mapsByContinent[map->GetId()].push_back(map);
+    }
+
+    uint32 const configuredThreads = std::max(1u, GetConfiguredContinentThreadCount());
+    uint32 const activeMapCount = static_cast<uint32>(maps.size());
+    uint32 const targetWorkloads = std::min(configuredThreads, std::max(1u, activeMapCount));
+    uint32 groupCount[LAST_CONTINENT_ID] = {};
+    double continentLoad[LAST_CONTINENT_ID] = {};
+
+    for (uint32 continent = 0; continent < LAST_CONTINENT_ID; ++continent)
+    {
+        if (!mapsByContinent[continent].empty())
+        {
+            groupCount[continent] = 1;
+            for (Map* map : mapsByContinent[continent])
+                continentLoad[continent] += std::max(1.0, map->GetAverageUpdateTimeMs10s());
+        }
+    }
+
+    uint32 currentGroupCount = groupCount[0] + groupCount[1];
+    while (currentGroupCount < targetWorkloads)
+    {
+        uint32 selectedContinent = LAST_CONTINENT_ID;
+        double selectedLoad = -1.0;
+
+        for (uint32 continent = 0; continent < LAST_CONTINENT_ID; ++continent)
+        {
+            if (groupCount[continent] >= mapsByContinent[continent].size())
+                continue;
+
+            double const loadPerGroup = continentLoad[continent] / groupCount[continent];
+            if (loadPerGroup > selectedLoad)
+            {
+                selectedContinent = continent;
+                selectedLoad = loadPerGroup;
+            }
+        }
+
+        if (selectedContinent == LAST_CONTINENT_ID)
+            break;
+
+        ++groupCount[selectedContinent];
+        ++currentGroupCount;
+    }
+
+    for (uint32 continent = 0; continent < LAST_CONTINENT_ID; ++continent)
+    {
+        if (mapsByContinent[continent].empty())
+            continue;
+
+        uint32 const wantedGroups = groupCount[continent];
+        std::vector<ContinentShardGroup> groups;
+        groups.reserve(mapsByContinent[continent].size());
+
+        for (Map* map : mapsByContinent[continent])
+        {
+            ContinentShardGroup group;
+            group.maps.push_back(map);
+            group.load = std::max(1.0, map->GetAverageUpdateTimeMs10s());
+            groups.push_back(std::move(group));
+        }
+
+        double totalLoad = 0.0;
+        for (ContinentShardGroup const& group : groups)
+            totalLoad += group.load;
+        double const idealLoad = totalLoad / std::max(1u, wantedGroups);
+
+        while (groups.size() > wantedGroups)
+        {
+            size_t bestFirst = groups.size();
+            size_t bestSecond = groups.size();
+            double bestScore = std::numeric_limits<double>::max();
+
+            for (size_t first = 0; first < groups.size(); ++first)
+            {
+                for (size_t second = first + 1; second < groups.size(); ++second)
+                {
+                    bool neighbors = false;
+                    for (Map* firstMap : groups[first].maps)
+                    {
+                        for (Map* secondMap : groups[second].maps)
+                        {
+                            if (mapsAreNeighbors(firstMap, secondMap))
+                            {
+                                neighbors = true;
+                                break;
+                            }
+                        }
+                        if (neighbors)
+                            break;
+                    }
+
+                    if (!neighbors)
+                        continue;
+
+                    double const combinedLoad = groups[first].load + groups[second].load;
+                    double const score = std::fabs(combinedLoad - idealLoad) +
+                        (std::fabs(groups[first].load - groups[second].load) * 0.05);
+                    if (score < bestScore)
+                    {
+                        bestScore = score;
+                        bestFirst = first;
+                        bestSecond = second;
+                    }
+                }
+            }
+
+            // No neighboring pair is available. Keep the groups separate even
+            // if the thread pool has fewer workers; a worker may process the
+            // separate workloads serially, but unrelated zones are never merged.
+            if (bestFirst == groups.size())
+                break;
+
+            groups[bestFirst].maps.insert(groups[bestFirst].maps.end(),
+                                          groups[bestSecond].maps.begin(), groups[bestSecond].maps.end());
+            groups[bestFirst].load += groups[bestSecond].load;
+            groups.erase(groups.begin() + bestSecond);
+        }
+
+        for (ContinentShardGroup& group : groups)
+        {
+            workloads.emplace_back([maps = std::move(group.maps), mapsDiff]()
+            {
+                for (Map* map : maps)
+                    if (map && !map->IsCrashed())
+                        map->DoUpdate(mapsDiff, false);
+            });
+        }
+    }
+}
+
 void
 MapManager::Initialize()
 {
     InitStateMachine();
     InitMaxInstanceId();
+
+    if (sWorld.getConfig(CONFIG_BOOL_CONTINENTS_INSTANCIATE) &&
+        sWorld.getConfig(CONFIG_BOOL_CONTINENTS_SHARDING))
+        InitializeContinentZoneInstanceIds();
+
     for (auto itr = sMapStorage.begin<MapEntry>(); itr < sMapStorage.end<MapEntry>(); ++itr)
     {
         bool load = false;
@@ -306,11 +655,16 @@ void MapManager::Update(uint32 diff)
     asyncMapUpdating = true;
 
     int continentsIdx = 0;
+    int legacyContinentIdx = 0;
     uint32 now = WorldTimer::getMSTime();
 
     uint32 inactiveTimeLimit = sWorld.getConfig(CONFIG_UINT32_EMPTY_MAPS_UPDATE_TIME);
     std::vector<std::function<void()>> continentsUpdaters;
     std::vector<std::function<void()>> instancesUpdaters;
+    std::vector<Map*> continentMaps;
+    bool const continentShardingEnabled =
+        sWorld.getConfig(CONFIG_BOOL_CONTINENTS_INSTANCIATE) &&
+        sWorld.getConfig(CONFIG_BOOL_CONTINENTS_SHARDING);
 
     for (MapMapType::iterator iter = i_maps.begin(); iter != i_maps.end(); ++iter)
     {
@@ -331,27 +685,62 @@ void MapManager::Update(uint32 diff)
         }
         else // One threat per continent part
         {
-            continentsUpdaters.emplace_back([iter,mapsDiff](){
-                Map *m = iter->second;
-                if (!m->IsUpdateFinished() || !sMapMgr.IsContinentUpdateFinished())
-                    m->DoUpdate(mapsDiff);
-            });
+            if (continentShardingEnabled)
+            {
+                if (iter->second->IsContinent())
+                    continentMaps.push_back(iter->second);
+                else
+                {
+                    continentsUpdaters.emplace_back([iter,mapsDiff](){
+                        Map *m = iter->second;
+                        if (!m->IsUpdateFinished() || !sMapMgr.IsContinentUpdateFinished())
+                            m->DoUpdate(mapsDiff);
+                    });
+                    ++legacyContinentIdx;
+                }
+            }
+            else
+            {
+                continentsUpdaters.emplace_back([iter,mapsDiff](){
+                    Map *m = iter->second;
+                    if (!m->IsUpdateFinished() || !sMapMgr.IsContinentUpdateFinished())
+                        m->DoUpdate(mapsDiff);
+                });
+            }
             continentsIdx++;
         }
     }
+
+    if (continentShardingEnabled)
+        BuildContinentShardWorkloads(continentMaps, mapsDiff, continentsUpdaters);
 
     std::vector<std::function<void()>> instanceCreators;
     instanceCreators.emplace_back([this]() {CreateNewInstancesForPlayers();});
     std::future<void> instances = m_instanceCreationThreads->processWorkload(std::move(instanceCreators),
         ThreadPool::Callable());
 
-    i_maxContinentThread = continentsIdx;
+    i_continentUpdateTaskCount = static_cast<uint32>(continentsUpdaters.size());
+    // Sharded workloads deliberately do not use the legacy continent barrier:
+    // each workload may contain multiple maps and must be allowed to finish
+    // them serially on its worker.
+    i_maxContinentThread = continentShardingEnabled ? legacyContinentIdx : continentsIdx;
     i_continentUpdateFinished.store(0);
 
-    if (!m_continentThreads || m_continentThreads->size() < continentsUpdaters.size())
+    size_t continentThreadCount = continentsUpdaters.size();
+    if (continentShardingEnabled)
+        continentThreadCount = std::min<size_t>(GetConfiguredContinentThreadCount(), continentThreadCount);
+
+    if (!m_continentThreads ||
+        (continentShardingEnabled ? m_continentThreads->size() != continentThreadCount
+                                  : m_continentThreads->size() < continentThreadCount))
     {
-        m_continentThreads.reset(new ThreadPool("MapContinent", continentsUpdaters.size()));
+        m_continentThreads.reset(new ThreadPool("MapContinent", continentThreadCount));
         m_continentThreads->start<>();
+
+        if (continentShardingEnabled)
+            sLog.Out(LOG_BASIC, LOG_LVL_MINIMAL,
+                "Continent sharding: %u neighboring workloads scheduled on %u worker threads.",
+                i_continentUpdateTaskCount, static_cast<uint32>(continentThreadCount));
     }
     std::future<void> continents = m_continentThreads->processWorkload(std::move(continentsUpdaters),
                                                                        ThreadPool::Callable());
@@ -639,6 +1028,26 @@ bool IsNorthTo(float x, float y, float const* limits, int count /* last case is 
         }
     }
     return insideCount % 2 == 1;
+}
+
+uint32 MapManager::GetContinentInstanceId(uint32 mapId, float x, float y, float z, bool* transitionArea)
+{
+    if (transitionArea)
+        *transitionArea = false;
+
+    if (!sWorld.getConfig(CONFIG_BOOL_CONTINENTS_INSTANCIATE))
+        return 0;
+
+    if (sWorld.getConfig(CONFIG_BOOL_CONTINENTS_SHARDING) && mapId < LAST_CONTINENT_ID)
+    {
+        uint32 const zoneId = sTerrainMgr.GetZoneId(mapId, x, y, z);
+        if (uint32 const instanceId = GetContinentZoneInstanceId(mapId, zoneId))
+            return instanceId;
+    }
+
+    // Keep the existing coordinate partition as a safe fallback for map
+    // positions without a usable AreaTable/terrain zone id.
+    return GetContinentInstanceId(mapId, x, y, transitionArea);
 }
 
 uint32 MapManager::GetContinentInstanceId(uint32 mapId, float x, float y, bool* transitionArea)
