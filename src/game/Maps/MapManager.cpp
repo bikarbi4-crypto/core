@@ -277,7 +277,11 @@ void MapManager::BuildContinentShardWorkloads(std::vector<Map*> const& maps, uin
 
     uint32 const configuredThreads = std::max(1u, GetConfiguredContinentThreadCount());
     uint32 const activeMapCount = static_cast<uint32>(maps.size());
-    uint32 const targetWorkloads = std::min(configuredThreads, std::max(1u, activeMapCount));
+    uint32 const workloadMultiplier = std::max(1u,
+        sWorld.getConfig(CONFIG_UINT32_CONTINENTS_SHARDING_WORKLOAD_MULTIPLIER));
+    uint64 const requestedWorkloads = static_cast<uint64>(configuredThreads) * workloadMultiplier;
+    uint32 const targetWorkloads = static_cast<uint32>(std::min<uint64>(
+        requestedWorkloads, static_cast<uint64>(std::max(1u, activeMapCount))));
     uint32 groupCount[LAST_CONTINENT_ID] = {};
     double continentLoad[LAST_CONTINENT_ID] = {};
 
