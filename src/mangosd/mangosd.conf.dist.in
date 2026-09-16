@@ -2660,6 +2660,11 @@ Visibility.ForceActiveObjects = 1
 #        Maximum auctions (per auction house, including shared) an account can have posted at once. eg. limit of 100 -> 100 on Alliance auction house, 100 on Neutral auction house
 #        Default: 0
 #
+#    Auction.OfflineExpire
+#        Controls whether auction expiration timers continue while the server is offline.
+#        Default: 1 (Enabled, auctions continue expiring while offline)
+#                 0 (Disabled - pause auction expiration while the server is offline)
+#
 #    Rate.Mining.Amount
 #    Rate.Mining.Next
 #        Mining Rates (Mining.Amount changes minimum/maximum usetimes of a deposit,
@@ -2821,6 +2826,7 @@ Rate.Auction.Deposit = 1
 Rate.Auction.Cut = 1
 Auction.Deposit.Min = 0
 Auction.AccountConcurrentLimit = 0
+Auction.OfflineExpire = 1
 Rate.Mining.Amount = 1
 Rate.Mining.Next = 1
 Rate.Talent = 1

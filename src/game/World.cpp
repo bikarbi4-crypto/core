@@ -212,6 +212,14 @@ World::~World()
 
 void World::Shutdown()
 {
+    time_t const shutdownTime = time(nullptr);
+    if (shutdownTime >= m_startTime)
+    {
+        uint32 const finalUptime = uint32(shutdownTime - m_startTime);
+        LoginDatabase.DirectPExecute("UPDATE `uptime` SET `uptime` = %u WHERE `realmid` = %u AND `starttime` = " UI64FMTD,
+                                     finalUptime, realmID, uint64(m_startTime));
+    }
+
     sPlayerBotMgr.DeleteAll();
     KickAll();                                     // save and kick all players
     UpdateSessions(1);                             // real players unload required UpdateSessions call
@@ -549,6 +557,7 @@ void World::LoadConfigSettings(bool reload)
     setConfig(CONFIG_FLOAT_RATE_AUCTION_CUT,                    "Rate.Auction.Cut", 1.0f);
     setConfigPos(CONFIG_UINT32_AUCTION_DEPOSIT_MIN,             "Auction.Deposit.Min", 0);
     setConfig(CONFIG_UINT32_ACCOUNT_CONCURRENT_AUCTION_LIMIT,   "Auction.AccountConcurrentLimit", 0);
+    setConfig(CONFIG_BOOL_AUCTION_OFFLINE_EXPIRE,               "Auction.OfflineExpire", true);
     setConfig(CONFIG_FLOAT_RATE_WAR_EFFORT_RESOURCE,            "Rate.WarEffortResourceComplete", 0.0f);
     setConfig(CONFIG_UINT32_WAR_EFFORT_AUTOCOMPLETE_PERIOD,     "WarEffortResourceCompletePeriod", 86400);
     setConfigPos(CONFIG_FLOAT_RATE_MINING_AMOUNT,       "Rate.Mining.Amount", 1.0f);
@@ -1706,6 +1715,33 @@ void World::SetInitialWorldSettings()
     sObjectMgr.LoadAreaTriggerLocales();
     sLog.Out(LOG_BASIC, LOG_LVL_MINIMAL, ">>> Localization strings loaded");
     sLog.Out(LOG_BASIC, LOG_LVL_MINIMAL, "");
+
+    if (!getConfig(CONFIG_BOOL_AUCTION_OFFLINE_EXPIRE))
+    {
+        std::unique_ptr<QueryResult> result{LoginDatabase.PQuery(
+            "SELECT `starttime`, `uptime` FROM `uptime` WHERE `realmid` = %u ORDER BY `starttime` DESC LIMIT 1", realmID)};
+
+        if (result)
+        {
+            Field* fields = result->Fetch();
+            uint64 const previousStartTime = fields[0].GetUInt64();
+            uint64 const previousUptime = fields[1].GetUInt64();
+            uint64 const previousShutdownTime = previousStartTime + previousUptime;
+            uint64 const currentTime = uint64(time(nullptr));
+
+            if (previousStartTime && previousUptime && previousShutdownTime < currentTime)
+            {
+                uint64 const offlineTime = currentTime - previousShutdownTime;
+                CharacterDatabase.PExecute(
+                    "UPDATE `auction` SET `expire_time` = `expire_time` + " UI64FMTD " WHERE `expire_time` > " UI64FMTD,
+                    offlineTime, previousShutdownTime);
+
+                sLog.Out(LOG_BASIC, LOG_LVL_MINIMAL,
+                         "Auction.OfflineExpire disabled: paused auction expiry for " UI64FMTD " seconds of server downtime.",
+                         offlineTime);
+            }
+        }
+    }
 
     // Load dynamic data tables from the database
     sLog.Out(LOG_BASIC, LOG_LVL_MINIMAL, "Loading Auctions...");
