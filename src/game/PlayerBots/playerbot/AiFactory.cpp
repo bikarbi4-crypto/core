@@ -701,6 +701,9 @@ void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const fa
             combatEngine->addStrategies("behind", "stealth", "poisons", "buff", NULL);
         }
     }
+
+    if (!facade->IsRealPlayer() && facade->HasRealPlayerMaster() && !player->InBattleGround())
+        combatEngine->addStrategy("roll");
 }
 
 Engine* AiFactory::createCombatEngine(Player* player, PlayerbotAI* const facade, AiObjectContext* AiObjectContext)
@@ -1048,6 +1051,9 @@ void AiFactory::AddDefaultNonCombatStrategies(Player* player, PlayerbotAI* const
     {
         nonCombatEngine->ChangeStrategy(sPlayerbotAIConfig.nonCombatStrategies);
     }
+
+    if (!facade->IsRealPlayer() && facade->HasRealPlayerMaster() && !player->InBattleGround())
+        nonCombatEngine->addStrategy("roll");
 
     // Battleground switch
     if (player->InBattleGround())

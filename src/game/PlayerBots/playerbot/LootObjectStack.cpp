@@ -119,6 +119,8 @@ void LootObject::Refresh(Player* bot, ObjectGuid guid, bool debug)
                 ai->TellDebug(ai->GetMaster(), "Creature flag lootable.", "debug loot");
 
             this->guid = guid;
+
+            return;
         }
 
         if (creature->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_SKINNABLE))
@@ -468,4 +470,3 @@ std::vector<LootObject> LootObjectStack::OrderByDistance(float maxDistance)
         result.push_back(i->second);
     return result;
 }
-
