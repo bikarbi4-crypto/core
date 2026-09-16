@@ -88,7 +88,9 @@ PlayerbotSecurityLevel PlayerbotSecurity::LevelFor(Player* from, DenyReason* rea
         if (bot->GetPlayerbotAI()->HasRealPlayerMaster() && bot->GetSession()->m_lfgInfo.queued)
 #endif
 #ifdef MANGOSBOT_ZERO
-        if (sWorld.GetLFGQueue().IsPlayerInQueue(bot->GetObjectGuid()))
+        // TEMPORARILY DISABLED: vanilla LFGQueue is not currently safe with
+        // threaded playerbot/map updates. Re-enable after it is fixed.
+        if (false)
 #endif
 #ifdef MANGOSBOT_TWO
         if (false/*sLFGMgr.GetQueueInfo(bot->GetObjectGuid())*/)
