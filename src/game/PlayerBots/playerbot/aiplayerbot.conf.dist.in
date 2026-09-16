@@ -1015,6 +1015,14 @@ AiPlayerbot.ContinentInstancedActivityScaling = 0
 AiPlayerbot.ContinentInstancedTargetMsWithPlayer = 40
 AiPlayerbot.ContinentInstancedTargetMsEmpty = 40
 
+# Gradually move safe, idle random bots from overloaded continent map shards to neighboring underloaded zones.
+# Requires Continents.Instanciate = 1 and Continents.Sharding = 1.
+AiPlayerbot.ContinentInstancedTeleport = 0
+AiPlayerbot.ContinentInstancedTeleportOverloadMs = 80
+AiPlayerbot.ContinentInstancedTeleportUnderloadMs = 45
+AiPlayerbot.ContinentInstancedTeleportMaxBotsPerCheck = 3
+AiPlayerbot.ContinentInstancedTeleportCooldown = 600
+
 # Maximum percentage change in bot activity per update tick. Lower values make activity scaling more gradual.
 # Set to 0 to disable rate limiting.
 # AiPlayerbot.MaxActivityRatePerTick = 0

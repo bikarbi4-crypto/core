@@ -9,6 +9,8 @@
 #include "Database/DatabaseEnv.h"
 #include "PlayerbotAI.h"
 #include "Player.h"
+#include "Map.h"
+#include "MapManager.h"
 #include "playerbot/AiFactory.h"
 #include "PlayerbotCommandServer.h"
 #include "MemoryMonitor.h"
@@ -49,6 +51,63 @@
 
 using namespace ai;
 using namespace MaNGOS;
+
+namespace
+{
+    bool IsLoadSheddingLocationAllowed(Player* bot, uint32 zoneId, uint32 areaId)
+    {
+        if (!bot)
+            return false;
+
+        auto isEnemyArea = [bot](AreaTableEntry const* area)
+        {
+            if (!area)
+                return false;
+
+            if (area->Team == AREATEAM_ALLY)
+                return bot->GetTeam() != ALLIANCE;
+
+            if (area->Team == AREATEAM_HORDE)
+                return bot->GetTeam() != HORDE;
+
+            return false;
+        };
+
+        AreaTableEntry const* zone = GetAreaEntryByAreaID(zoneId);
+        AreaTableEntry const* area = GetAreaEntryByAreaID(areaId);
+
+        // Avoid sending low-level bots into an opposing-faction zone while
+        // relocating them. Higher-level bots can travel through hostile zones
+        // normally, just like the existing random teleport system allows.
+        if (bot->GetLevel() < 21 && (isEnemyArea(zone) || isEnemyArea(area)))
+            return false;
+
+        // Preserve the existing starter-zone restrictions for low-level bots.
+        if (bot->GetLevel() < 30)
+        {
+            if ((zoneId == 12 || zoneId == 40) && bot->GetRace() != RACE_HUMAN)
+                return false;
+            if ((zoneId == 1 || zoneId == 38) && bot->GetRace() != RACE_DWARF)
+                return false;
+            if ((zoneId == 85 || zoneId == 130) && bot->GetRace() != RACE_UNDEAD)
+                return false;
+            if ((zoneId == 141 || zoneId == 148) && bot->GetRace() != RACE_NIGHTELF)
+                return false;
+            if ((zoneId == 14 || zoneId == 17) && !(bot->GetRace() == RACE_ORC || bot->GetRace() == RACE_TROLL))
+                return false;
+            if (zoneId == 215 && bot->GetRace() != RACE_TAUREN)
+                return false;
+#ifndef MANGOSBOT_ZERO
+            if ((zoneId == 3524 || zoneId == 3525) && bot->GetRace() != RACE_DRAENEI)
+                return false;
+            if ((zoneId == 3430 || zoneId == 3433) && bot->GetRace() != RACE_BLOODELF)
+                return false;
+#endif
+        }
+
+        return true;
+    }
+}
 
 INSTANTIATE_SINGLETON_1(RandomPlayerbotMgr);
 
@@ -765,6 +824,186 @@ float RandomPlayerbotMgr::getActivityPercentage(Player* bot)
     return std::min(activityPercentage, static_cast<float>(remoteActivityCap));
 }
 
+bool RandomPlayerbotMgr::FindContinentLoadSheddingLocation(Player* bot, uint32 mapId, uint32 zoneId,
+                                                           WorldLocation& location) const
+{
+    if (!bot || mapId >= MapManager::LAST_CONTINENT_ID || !zoneId)
+        return false;
+
+    auto findInLocations = [&](std::vector<WorldLocation> const& locations)
+    {
+        uint32 matches = 0;
+
+        for (WorldLocation const& candidate : locations)
+        {
+            if (candidate.mapId != mapId)
+                continue;
+
+            uint32 candidateZoneId = 0;
+            uint32 candidateAreaId = 0;
+            sTerrainMgr.GetZoneAndAreaId(candidateZoneId, candidateAreaId, candidate.mapId,
+                                         candidate.x, candidate.y, candidate.z);
+
+            if (candidateZoneId != zoneId || !IsLoadSheddingLocationAllowed(bot, candidateZoneId, candidateAreaId))
+                continue;
+
+            ++matches;
+            if (urand(1, matches) == 1)
+                location = candidate;
+        }
+
+        return matches != 0;
+    };
+
+    // Prefer the existing RPG cache because its points are generally towns,
+    // inns, and other safe locations. Fall back to the level cache if the RPG
+    // cache has no suitable point for this zone.
+    auto raceIt = rpgLocsCacheLevel.find(bot->GetRace());
+    if (raceIt != rpgLocsCacheLevel.end())
+    {
+        auto levelIt = raceIt->second.find(bot->GetLevel());
+        if (levelIt != raceIt->second.end() && findInLocations(levelIt->second))
+            return true;
+    }
+
+    auto levelIt = locsPerLevelCache.find(bot->GetLevel());
+    return levelIt != locsPerLevelCache.end() && findInLocations(levelIt->second);
+}
+
+void RandomPlayerbotMgr::BalanceContinentLoad()
+{
+    if (!sPlayerbotAIConfig.continentInstancedLoadShedding ||
+        !sWorld.getConfig(CONFIG_BOOL_CONTINENTS_INSTANCIATE) ||
+        !sWorld.getConfig(CONFIG_BOOL_CONTINENTS_SHARDING))
+        return;
+
+    time_t const now = time(nullptr);
+    uint32 const checkInterval = 30;
+
+    if (continentInstancedLoadSheddingTimer && now < continentInstancedLoadSheddingTimer + checkInterval)
+        return;
+
+    continentInstancedLoadSheddingTimer = now;
+
+    uint32 const maxBotsPerCheck = sPlayerbotAIConfig.continentInstancedLoadSheddingMaxBotsPerCheck;
+    if (!maxBotsPerCheck)
+        return;
+
+    uint32 const underloadMs = sPlayerbotAIConfig.continentInstancedLoadSheddingUnderloadMs;
+    uint32 const overloadMs = std::max(underloadMs + 1,
+        sPlayerbotAIConfig.continentInstancedLoadSheddingOverloadMs);
+
+    struct ContinentLoadMap
+    {
+        Map* map = nullptr;
+        uint32 mapId = 0;
+        uint32 instanceId = 0;
+        uint32 zoneId = 0;
+        double loadMs = 0.0;
+    };
+
+    std::vector<ContinentLoadMap> continentMaps;
+
+    for (uint32 mapId = 0; mapId < MapManager::LAST_CONTINENT_ID; ++mapId)
+    {
+        for (uint32 instanceId : sMapMgr.GetContinentInstanceIds(mapId))
+        {
+            uint32 const zoneId = sMapMgr.GetContinentZoneId(mapId, instanceId);
+            if (!zoneId)
+                continue;
+
+            Map* map = sMapMgr.FindMap(mapId, instanceId);
+            ContinentLoadMap loadMap;
+            loadMap.map = map;
+            loadMap.mapId = mapId;
+            loadMap.instanceId = instanceId;
+            loadMap.zoneId = zoneId;
+            loadMap.loadMs = map && map->GetAverageUpdateTimeSamples10s() ? map->GetAverageUpdateTimeMs10s() : 0.0;
+            continentMaps.push_back(loadMap);
+        }
+    }
+
+    std::sort(continentMaps.begin(), continentMaps.end(), [](ContinentLoadMap const& left, ContinentLoadMap const& right)
+    {
+        return left.loadMs > right.loadMs;
+    });
+
+    uint32 movedBots = 0;
+
+    for (ContinentLoadMap const& source : continentMaps)
+    {
+        if (movedBots >= maxBotsPerCheck || !source.map || source.loadMs < overloadMs || source.map->HaveRealPlayers())
+            continue;
+
+        ContinentLoadMap const* destination = nullptr;
+        for (ContinentLoadMap const& candidate : continentMaps)
+        {
+            if (candidate.mapId != source.mapId || candidate.instanceId == source.instanceId ||
+                candidate.loadMs >= underloadMs ||
+                (candidate.map && candidate.map->HaveRealPlayers()) ||
+                !sMapMgr.AreContinentZonesNeighbors(source.mapId, source.zoneId, candidate.zoneId))
+                continue;
+
+            if (!destination || candidate.loadMs < destination->loadMs)
+                destination = &candidate;
+        }
+
+        if (!destination)
+            continue;
+
+        Player* candidateBot = nullptr;
+        {
+            Map::PlayerList const& playersOnMap = source.map->GetPlayers();
+
+            for (Map::PlayerList::const_iterator itr = playersOnMap.begin(); itr != playersOnMap.end(); ++itr)
+            {
+                Player* bot = itr->getSource();
+                if (!bot || !bot->IsInWorld() || bot->isRealPlayer() || !IsRandomBot(bot))
+                    continue;
+
+                PlayerbotAI* botAI = bot->GetPlayerbotAI();
+                if (!botAI || botAI->IsRealPlayer() || botAI->IsActivityAllowedCached(ALL_ACTIVITY))
+                    continue;
+
+                if (bot->IsBeingTeleported() || bot->IsTaxiFlying() || bot->GetTransport() ||
+                    bot->IsInCombat() || !bot->IsAlive() || bot->GetGroup() ||
+                    botAI->HasRealPlayerMaster() || botAI->HasActivePlayerMaster() ||
+                    bot->GetSession()->IsLogingOut())
+                    continue;
+
+                time_t const lastTeleport = continentInstancedLoadSheddingLastTeleport[bot->GetGUIDLow()];
+                if (sPlayerbotAIConfig.continentInstancedLoadSheddingCooldown &&
+                    lastTeleport && now < lastTeleport + sPlayerbotAIConfig.continentInstancedLoadSheddingCooldown)
+                    continue;
+
+                candidateBot = bot;
+                break;
+            }
+        }
+
+        if (!candidateBot)
+            continue;
+
+        WorldLocation destinationLocation;
+        if (!FindContinentLoadSheddingLocation(candidateBot, destination->mapId, destination->zoneId, destinationLocation))
+            continue;
+
+        candidateBot->GetMotionMaster()->Clear();
+        if (!candidateBot->TeleportTo(destinationLocation.mapId, destinationLocation.x, destinationLocation.y,
+                                      destinationLocation.z, destinationLocation.o))
+            continue;
+
+        candidateBot->SendHeartBeat();
+        candidateBot->GetPlayerbotAI()->Reset(true);
+        continentInstancedLoadSheddingLastTeleport[candidateBot->GetGUIDLow()] = now;
+        ++movedBots;
+
+        sLog.Out(LOG_BASIC, LOG_LVL_MINIMAL,
+            "Continent load shedding: moved idle bot %s from zone %u (%.1f ms) to neighboring zone %u (%.1f ms).",
+            candidateBot->GetName(), source.zoneId, source.loadMs, destination->zoneId, destination->loadMs);
+    }
+}
+
 void RandomPlayerbotMgr::ScaleBotActivity()
 {
     UpdateRemoteBotActivityCap();
@@ -843,6 +1082,8 @@ void RandomPlayerbotMgr::ScaleBotActivity()
             }
         }
     }
+
+    BalanceContinentLoad();
 
     if (sPlayerbotAIConfig.hasLog("activity_pid.csv"))
     {

@@ -517,6 +517,11 @@ bool PlayerbotAIConfig::Initialize()
     continentInstancedActivityScaling = config.GetBoolDefault("AiPlayerbot.ContinentInstancedActivityScaling", false);
     continentInstancedTargetMsWithPlayer = config.GetIntDefault("AiPlayerbot.ContinentInstancedTargetMsWithPlayer", 40);
     continentInstancedTargetMsEmpty = config.GetIntDefault("AiPlayerbot.ContinentInstancedTargetMsEmpty", 40);
+    continentInstancedLoadShedding = config.GetBoolDefault("AiPlayerbot.ContinentInstancedLoadShedding", false);
+    continentInstancedLoadSheddingOverloadMs = config.GetIntDefault("AiPlayerbot.ContinentInstancedLoadSheddingOverloadMs", 80);
+    continentInstancedLoadSheddingUnderloadMs = config.GetIntDefault("AiPlayerbot.ContinentInstancedLoadSheddingUnderloadMs", 45);
+    continentInstancedLoadSheddingMaxBotsPerCheck = config.GetIntDefault("AiPlayerbot.ContinentInstancedLoadSheddingMaxBotsPerCheck", 3);
+    continentInstancedLoadSheddingCooldown = config.GetIntDefault("AiPlayerbot.ContinentInstancedLoadSheddingCooldown", 600);
     RandombotsWalkingRPG = config.GetBoolDefault("AiPlayerbot.RandombotsWalkingRPG", false);
     RandombotsWalkingRPGInDoors = config.GetBoolDefault("AiPlayerbot.RandombotsWalkingRPG.InDoors", false);
     minEnchantingBotLevel = config.GetIntDefault("AiPlayerbot.minEnchantingBotLevel", 60);

@@ -93,10 +93,13 @@ class MapManager : public MaNGOS::Singleton<MapManager, MaNGOS::ClassLevelLockab
 
     public:
         typedef std::map<MapID, Map* > MapMapType;
+        static int const LAST_CONTINENT_ID = 2;
 
         uint32 GetContinentInstanceId(uint32 mapId, float x, float y, bool* transitionArea = nullptr);
         uint32 GetContinentInstanceId(uint32 mapId, float x, float y, float z, bool* transitionArea = nullptr);
         std::vector<uint32> GetContinentInstanceIds(uint32 mapId);
+        uint32 GetContinentZoneId(uint32 mapId, uint32 instanceId) const;
+        bool AreContinentZonesNeighbors(uint32 mapId, uint32 firstZoneId, uint32 secondZoneId) const;
         Map* CreateMap(uint32, WorldObject const* obj);
         Map* CreateBgMap(uint32 mapid, BattleGround* bg);
         Map* CreateTestMap(uint32 mapid, bool instanced, float posX, float posY);
@@ -205,7 +208,6 @@ class MapManager : public MaNGOS::Singleton<MapManager, MaNGOS::ClassLevelLockab
 
         void InitializeContinentZoneInstanceIds();
         uint32 GetContinentZoneInstanceId(uint32 mapId, uint32 zoneId);
-        uint32 GetContinentZoneId(uint32 mapId, uint32 instanceId) const;
         uint32 GetConfiguredContinentThreadCount() const;
         void BuildContinentShardWorkloads(std::vector<Map*> const& maps, uint32 mapsDiff,
                                           std::vector<std::function<void()>>& workloads);
@@ -232,7 +234,6 @@ class MapManager : public MaNGOS::Singleton<MapManager, MaNGOS::ClassLevelLockab
         bool asyncMapUpdating = false;
 
         // Instanced continent zones
-        const static int LAST_CONTINENT_ID = 2;
         mutable std::mutex    m_continentZoneInstanceIdsLock;
         bool                  m_continentZoneInstanceIdsInitialized = false;
         std::vector<uint16> m_continentZoneInstanceIds[LAST_CONTINENT_ID];

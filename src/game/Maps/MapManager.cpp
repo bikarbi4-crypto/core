@@ -264,6 +264,16 @@ uint32 MapManager::GetContinentZoneId(uint32 mapId, uint32 instanceId) const
     return itr != m_continentZoneByInstance[mapId].end() ? itr->second : 0;
 }
 
+bool MapManager::AreContinentZonesNeighbors(uint32 mapId, uint32 firstZoneId, uint32 secondZoneId) const
+{
+    if (mapId >= LAST_CONTINENT_ID || !firstZoneId || !secondZoneId || firstZoneId == secondZoneId)
+        return false;
+
+    WorldMapAreaEntry const* firstArea = sWorldMapAreaStore.LookupEntry(firstZoneId);
+    WorldMapAreaEntry const* secondArea = sWorldMapAreaStore.LookupEntry(secondZoneId);
+    return AreaRectanglesAreNeighbors(firstArea, secondArea);
+}
+
 uint32 MapManager::GetConfiguredContinentThreadCount() const
 {
     return CountEnabledProcessors();
@@ -284,11 +294,7 @@ void MapManager::BuildContinentShardWorkloads(std::vector<Map*> const& maps, uin
         uint32 const secondZoneId = GetContinentZoneId(second->GetId(), second->GetInstanceId());
 
         if (firstZoneId && secondZoneId)
-        {
-            WorldMapAreaEntry const* firstArea = sWorldMapAreaStore.LookupEntry(firstZoneId);
-            WorldMapAreaEntry const* secondArea = sWorldMapAreaStore.LookupEntry(secondZoneId);
-            return AreaRectanglesAreNeighbors(firstArea, secondArea);
-        }
+            return AreContinentZonesNeighbors(first->GetId(), firstZoneId, secondZoneId);
 
         return LegacyContinentPartitionsAreNeighbors(first->GetId(), first->GetInstanceId(), second->GetInstanceId());
     };

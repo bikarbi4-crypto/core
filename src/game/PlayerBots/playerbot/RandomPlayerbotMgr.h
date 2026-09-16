@@ -16,6 +16,7 @@ class Player;
 class Unit;
 class Object;
 class Item;
+class Map;
 
 class CachedEvent
 {
@@ -71,6 +72,8 @@ class RandomPlayerbotMgr : public PlayerbotHolder
         virtual void UpdateAIInternal(uint32 elapsed, bool minimal = false) override;
 private:
         void ScaleBotActivity();
+        void BalanceContinentLoad();
+        bool FindContinentLoadSheddingLocation(Player* bot, uint32 mapId, uint32 zoneId, WorldLocation& location) const;
         void UpdateRemoteBotActivityCap();
         void LogPlayerLocation();
         void DelayedFacingFix();
@@ -190,6 +193,8 @@ public:
         float activityMod = 0.25;
         std::atomic<uint32> remoteBotActivityCap{100};
         time_t continentInstancedActivityTimer = 0;
+        time_t continentInstancedLoadSheddingTimer = 0;
+        std::unordered_map<uint32, time_t> continentInstancedLoadSheddingLastTeleport;
         std::map<std::string, uint32> databaseDelay;
         uint32 GetEventValue(uint32 bot, std::string event);
         std::string GetEventData(uint32 bot, std::string event);
