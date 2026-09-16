@@ -408,8 +408,33 @@ bool LootObject::IsLootPossible(Player* bot)
     return true;
 }
 
+float LootObjectStack::GetMaxLootDistance(float requestedDistance) const
+{
+    float maxDistance = requestedDistance;
+    PlayerbotAI* ai = bot ? bot->GetPlayerbotAI() : nullptr;
+
+    if (bot && bot->GetGroup() && ai && !ai->IsGroupLeader())
+    {
+        float groupMemberDistance = ai->HasActivePlayerMaster()
+            ? sPlayerbotAIConfig.groupMemberLootDistanceWithActiveMaster
+            : sPlayerbotAIConfig.groupMemberLootDistance;
+
+        if (!maxDistance || groupMemberDistance < maxDistance)
+            maxDistance = groupMemberDistance;
+    }
+
+    return maxDistance;
+}
+
 bool LootObjectStack::Add(ObjectGuid guid)
 {
+    LootObject loot(bot, guid);
+    WorldObject* wo = loot.IsEmpty() ? nullptr : loot.GetWorldObject(bot);
+    float maxDistance = GetMaxLootDistance();
+
+    if (wo && maxDistance && sServerFacade.GetDistance2d(bot, wo) > maxDistance)
+        return false;
+
     if (!availableLoot.insert(guid).second)
         return false;
 
@@ -450,6 +475,7 @@ LootObject LootObjectStack::GetLoot(float maxDistance)
 std::vector<LootObject> LootObjectStack::OrderByDistance(float maxDistance)
 {
     availableLoot.shrink(time(0) - 30);
+    maxDistance = GetMaxLootDistance(maxDistance);
 
     std::map<float, LootObject> sortedMap;
     LootTargetList safeCopy(availableLoot);

@@ -58,6 +58,7 @@ namespace ai
         LootObject GetLoot(float maxDistance = 0);
 
     private:
+        float GetMaxLootDistance(float requestedDistance = 0) const;
         std::vector<LootObject> OrderByDistance(float maxDistance = 0);
 
     private:
