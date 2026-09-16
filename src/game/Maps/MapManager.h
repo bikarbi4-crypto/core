@@ -96,6 +96,7 @@ class MapManager : public MaNGOS::Singleton<MapManager, MaNGOS::ClassLevelLockab
 
         uint32 GetContinentInstanceId(uint32 mapId, float x, float y, bool* transitionArea = nullptr);
         uint32 GetContinentInstanceId(uint32 mapId, float x, float y, float z, bool* transitionArea = nullptr);
+        std::vector<uint32> GetContinentInstanceIds(uint32 mapId);
         Map* CreateMap(uint32, WorldObject const* obj);
         Map* CreateBgMap(uint32 mapid, BattleGround* bg);
         Map* CreateTestMap(uint32 mapid, bool instanced, float posX, float posY);

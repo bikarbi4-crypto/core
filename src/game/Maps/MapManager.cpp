@@ -169,6 +169,7 @@ void MapManager::InitializeContinentZoneInstanceIds()
     if (!areaCount || !maxAreaId)
         return;
 
+    uint16 nextInstanceId = CONTINENT_ZONE_INSTANCE_FIRST;
     for (uint32 mapId = 0; mapId < LAST_CONTINENT_ID; ++mapId)
         m_continentZoneInstanceIds[mapId].assign(maxAreaId + 1, 0);
 
@@ -181,7 +182,6 @@ void MapManager::InitializeContinentZoneInstanceIds()
 
         std::sort(zoneIds.begin(), zoneIds.end());
 
-        uint16 nextInstanceId = CONTINENT_ZONE_INSTANCE_FIRST;
         uint32 zoneCount = 0;
 
         for (uint32 zoneId : zoneIds)
@@ -227,6 +227,31 @@ uint32 MapManager::GetContinentZoneInstanceId(uint32 mapId, uint32 zoneId)
         return 0;
 
     return m_continentZoneInstanceIds[mapId][zoneId];
+}
+
+std::vector<uint32> MapManager::GetContinentInstanceIds(uint32 mapId)
+{
+    std::vector<uint32> instanceIds;
+    if (mapId >= LAST_CONTINENT_ID)
+        return instanceIds;
+
+    bool needsInitialization = false;
+    {
+        std::lock_guard<std::mutex> lock(m_continentZoneInstanceIdsLock);
+        needsInitialization = m_continentZoneInstanceIds[mapId].empty();
+    }
+
+    if (needsInitialization)
+        InitializeContinentZoneInstanceIds();
+
+    std::lock_guard<std::mutex> lock(m_continentZoneInstanceIdsLock);
+    for (uint16 instanceId : m_continentZoneInstanceIds[mapId])
+    {
+        if (instanceId)
+            instanceIds.push_back(instanceId);
+    }
+
+    return instanceIds;
 }
 
 uint32 MapManager::GetContinentZoneId(uint32 mapId, uint32 instanceId) const

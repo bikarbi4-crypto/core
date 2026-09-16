@@ -46,6 +46,31 @@ static uint32 resetEventTypeDelay[MAX_RESET_EVENT_TYPE] = { 0,                  
                                                             60, 30, 10, 5           // (seconds) fast reset by gm command inform timer
 };
 
+static std::vector<uint32> GetContinentRespawnInstanceIds(uint32 mapId, uint32 instanceId)
+{
+    if (sWorld.getConfig(CONFIG_BOOL_CONTINENTS_INSTANCIATE) && mapId < 2)
+    {
+        if (sWorld.getConfig(CONFIG_BOOL_CONTINENTS_SHARDING))
+            return sMapMgr.GetContinentInstanceIds(mapId);
+
+        std::vector<uint32> instanceIds;
+        if (mapId == 0)
+        {
+            for (uint32 id = MAP0_FIRST; id < MAP0_LAST; ++id)
+                instanceIds.push_back(id);
+        }
+        else
+        {
+            for (uint32 id = MAP1_FIRST; id < MAP1_LAST; ++id)
+                instanceIds.push_back(id);
+        }
+
+        return instanceIds;
+    }
+
+    return { instanceId };
+}
+
 //== MapPersistentState functions ==========================
 MapPersistentState::MapPersistentState(uint16 MapId, uint32 InstanceId)
     : m_instanceid(InstanceId), m_mapid(MapId),
@@ -1110,24 +1135,7 @@ void MapPersistentStateManager::LoadCreatureRespawnTimes()
         if (!mapEntry)
             continue;
 
-        int beginInstance = instanceId;
-        int endInstance = instanceId + 1;
-        // Special case for instanciated continents
-        if (sWorld.getConfig(CONFIG_BOOL_CONTINENTS_INSTANCIATE))
-        {
-            if (mapEntry->id == 0)
-            {
-                beginInstance = MAP0_FIRST;
-                endInstance = MAP0_LAST;
-            }
-            if (mapEntry->id == 1)
-            {
-                beginInstance = MAP1_FIRST;
-                endInstance = MAP1_LAST;
-            }
-        }
-
-        for (int instance = beginInstance; instance < endInstance; ++instance)
+        for (uint32 instance : GetContinentRespawnInstanceIds(mapEntry->id, instanceId))
         {
             MapPersistentState* state = AddPersistentState(mapEntry, instance,
                 resetTime, mapEntry->IsDungeon(), true, false /*= initPools*/);
@@ -1190,21 +1198,7 @@ void MapPersistentStateManager::LoadGameobjectRespawnTimes()
         if (!mapEntry)
             continue;
 
-        int beginInstance = instanceId;
-        int endInstance = instanceId + 1;
-
-        if (mapEntry->id == 0)
-        {
-            beginInstance = MAP0_FIRST;
-            endInstance = MAP0_LAST;
-        }
-        if (mapEntry->id == 1)
-        {
-            beginInstance = MAP1_FIRST;
-            endInstance = MAP1_LAST;
-        }
-
-        for (int instance = beginInstance; instance < endInstance; ++instance)
+        for (uint32 instance : GetContinentRespawnInstanceIds(mapEntry->id, instanceId))
         {
             MapPersistentState* state = AddPersistentState(mapEntry, instance,
                 resetTime, mapEntry->IsDungeon(), true, false /*= initPools*/);
