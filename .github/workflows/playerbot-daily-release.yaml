@@ -1,0 +1,100 @@
+# Build and publish the latest Windows playerbot server once per day.
+name: Playerbot Daily Windows Release
+
+on:
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: playerbot-daily-release
+  cancel-in-progress: true
+
+jobs:
+  build-windows:
+    name: Build Windows playerbot release
+    runs-on: windows-2022
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          ref: vmangos-ike3-playerbots
+
+      - name: Configure Windows build
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build
+          cd build
+          cmake ../ \
+            -DBUILD_PLAYERBOTS=1 \
+            -DBUILD_EXTRACTORS=1 \
+            -DBUILD_FOR_HOST_CPU=0 \
+            -G "Visual Studio 17 2022" \
+            -A x64
+
+      - name: Build Windows release binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmake --build build --config Release --parallel
+
+      - name: Add build information
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f bin/Release/mangosd.exe
+          test -f bin/Release/realmd.exe
+          {
+            echo "Repository: $GITHUB_REPOSITORY"
+            echo "Branch: $GITHUB_REF_NAME"
+            echo "Commit: $GITHUB_SHA"
+            echo "Built (UTC): $(date -u '+%Y-%m-%d %H:%M:%S')"
+          } > bin/Release/playerbot-build-info.txt
+
+      - name: Create Windows archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./.github/scripts/package-windows-release.sh x64 playerbot-windows-x64.zip
+
+      - name: Upload Windows archive
+        uses: actions/upload-artifact@v7
+        with:
+          name: playerbot-windows-build
+          path: bin/playerbot-windows-x64.zip
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Publish latest playerbot release
+    needs: build-windows
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          ref: vmangos-ike3-playerbots
+          fetch-depth: 0
+
+      - name: Download Windows archive
+        uses: actions/download-artifact@v8
+        with:
+          name: playerbot-windows-build
+          path: release-assets
+
+      - name: Write release notes
+        run: |
+          cat > release-notes.md <<'RELEASE_NOTES'
+          This is the latest automated Windows x64 build of the `vmangos-ike3-playerbots` branch.
+
+      - name: Publish moving playerbot release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: ./.github/scripts/publish-moving-release.sh playerbot-latest "Playerbot Windows Build" release-assets release-notes.md
