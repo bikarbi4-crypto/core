@@ -183,7 +183,7 @@ struct AreaLocale
 using MapMutexType = std::mutex; // can be replaced with a null mutex
 
 // Instance IDs reserved for internal use (instanced continent parts, ...)
-#define RESERVED_INSTANCES_LAST 100
+#define RESERVED_INSTANCES_LAST 128
 
 enum TeleportLocation
 {
