@@ -54,7 +54,7 @@ using namespace MaNGOS;
 
 namespace
 {
-    bool IsLoadSheddingLocationAllowed(Player* bot, uint32 zoneId, uint32 areaId)
+    bool IsTeleportLocationAllowed(Player* bot, uint32 zoneId, uint32 areaId)
     {
         if (!bot)
             return false;
@@ -824,8 +824,8 @@ float RandomPlayerbotMgr::getActivityPercentage(Player* bot)
     return std::min(activityPercentage, static_cast<float>(remoteActivityCap));
 }
 
-bool RandomPlayerbotMgr::FindContinentLoadSheddingLocation(Player* bot, uint32 mapId, uint32 zoneId,
-                                                           WorldLocation& location) const
+bool RandomPlayerbotMgr::FindContinentTeleportLocation(Player* bot, uint32 mapId, uint32 zoneId,
+                                                       WorldLocation& location) const
 {
     if (!bot || mapId >= MapManager::LAST_CONTINENT_ID || !zoneId)
         return false;
@@ -844,7 +844,7 @@ bool RandomPlayerbotMgr::FindContinentLoadSheddingLocation(Player* bot, uint32 m
             sTerrainMgr.GetZoneAndAreaId(candidateZoneId, candidateAreaId, candidate.mapId,
                                          candidate.x, candidate.y, candidate.z);
 
-            if (candidateZoneId != zoneId || !IsLoadSheddingLocationAllowed(bot, candidateZoneId, candidateAreaId))
+            if (candidateZoneId != zoneId || !IsTeleportLocationAllowed(bot, candidateZoneId, candidateAreaId))
                 continue;
 
             ++matches;
@@ -872,7 +872,7 @@ bool RandomPlayerbotMgr::FindContinentLoadSheddingLocation(Player* bot, uint32 m
 
 void RandomPlayerbotMgr::BalanceContinentLoad()
 {
-    if (!sPlayerbotAIConfig.continentInstancedLoadShedding ||
+    if (!sPlayerbotAIConfig.continentInstancedTeleport ||
         !sWorld.getConfig(CONFIG_BOOL_CONTINENTS_INSTANCIATE) ||
         !sWorld.getConfig(CONFIG_BOOL_CONTINENTS_SHARDING))
         return;
@@ -880,18 +880,18 @@ void RandomPlayerbotMgr::BalanceContinentLoad()
     time_t const now = time(nullptr);
     uint32 const checkInterval = 30;
 
-    if (continentInstancedLoadSheddingTimer && now < continentInstancedLoadSheddingTimer + checkInterval)
+    if (continentInstancedTeleportTimer && now < continentInstancedTeleportTimer + checkInterval)
         return;
 
-    continentInstancedLoadSheddingTimer = now;
+    continentInstancedTeleportTimer = now;
 
-    uint32 const maxBotsPerCheck = sPlayerbotAIConfig.continentInstancedLoadSheddingMaxBotsPerCheck;
+    uint32 const maxBotsPerCheck = sPlayerbotAIConfig.continentInstancedTeleportMaxBotsPerCheck;
     if (!maxBotsPerCheck)
         return;
 
-    uint32 const underloadMs = sPlayerbotAIConfig.continentInstancedLoadSheddingUnderloadMs;
+    uint32 const underloadMs = sPlayerbotAIConfig.continentInstancedTeleportUnderloadMs;
     uint32 const overloadMs = std::max(underloadMs + 1,
-        sPlayerbotAIConfig.continentInstancedLoadSheddingOverloadMs);
+        sPlayerbotAIConfig.continentInstancedTeleportOverloadMs);
 
     struct ContinentLoadMap
     {
@@ -899,6 +899,8 @@ void RandomPlayerbotMgr::BalanceContinentLoad()
         uint32 mapId = 0;
         uint32 instanceId = 0;
         uint32 zoneId = 0;
+        uint32 botCount = 0;
+        float activityPercentage = -1.0f;
         double loadMs = 0.0;
     };
 
@@ -920,6 +922,19 @@ void RandomPlayerbotMgr::BalanceContinentLoad()
             loadMap.zoneId = zoneId;
             loadMap.loadMs = map && map->GetAverageUpdateTimeSamples10s() ? map->GetAverageUpdateTimeMs10s() : 0.0;
             continentMaps.push_back(loadMap);
+            if (map)
+            {
+                loadMap.activityPercentage = map->GetBotActivityPercentage();
+
+                Map::PlayerList const& players = map->GetPlayers();
+                for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)
+                {
+                    Player* bot = itr->getSource();
+                    if (bot && bot->IsInWorld() && !bot->isRealPlayer() && IsRandomBot(bot))
+                        ++loadMap.botCount;
+                }
+            }
+
         }
     }
 
@@ -932,7 +947,14 @@ void RandomPlayerbotMgr::BalanceContinentLoad()
 
     for (ContinentLoadMap const& source : continentMaps)
     {
-        if (movedBots >= maxBotsPerCheck || !source.map || source.loadMs < overloadMs || source.map->HaveRealPlayers())
+        bool const workloadOverloaded = source.loadMs >= overloadMs;
+        bool const activitySuppressed = sPlayerbotAIConfig.continentInstancedActivityScaling &&
+            source.activityPercentage >= 0.0f &&
+            source.activityPercentage <= sPlayerbotAIConfig.continentInstancedTeleportActivityThreshold &&
+            source.botCount >= sPlayerbotAIConfig.continentInstancedTeleportMinBots;
+
+        if (movedBots >= maxBotsPerCheck || !source.map || source.map->HaveRealPlayers() ||
+            (!workloadOverloaded && !activitySuppressed))
             continue;
 
         ContinentLoadMap const* destination = nullptr;
@@ -971,9 +993,9 @@ void RandomPlayerbotMgr::BalanceContinentLoad()
                     bot->GetSession()->IsLogingOut())
                     continue;
 
-                time_t const lastTeleport = continentInstancedLoadSheddingLastTeleport[bot->GetGUIDLow()];
-                if (sPlayerbotAIConfig.continentInstancedLoadSheddingCooldown &&
-                    lastTeleport && now < lastTeleport + sPlayerbotAIConfig.continentInstancedLoadSheddingCooldown)
+                time_t const lastTeleport = continentInstancedLastTeleport[bot->GetGUIDLow()];
+                if (sPlayerbotAIConfig.continentInstancedTeleportCooldown &&
+                    lastTeleport && now < lastTeleport + sPlayerbotAIConfig.continentInstancedTeleportCooldown)
                     continue;
 
                 candidateBot = bot;
@@ -985,7 +1007,7 @@ void RandomPlayerbotMgr::BalanceContinentLoad()
             continue;
 
         WorldLocation destinationLocation;
-        if (!FindContinentLoadSheddingLocation(candidateBot, destination->mapId, destination->zoneId, destinationLocation))
+        if (!FindContinentTeleportLocation(candidateBot, destination->mapId, destination->zoneId, destinationLocation))
             continue;
 
         candidateBot->GetMotionMaster()->Clear();
@@ -995,12 +1017,13 @@ void RandomPlayerbotMgr::BalanceContinentLoad()
 
         candidateBot->SendHeartBeat();
         candidateBot->GetPlayerbotAI()->Reset(true);
-        continentInstancedLoadSheddingLastTeleport[candidateBot->GetGUIDLow()] = now;
+        continentInstancedLastTeleport[candidateBot->GetGUIDLow()] = now;
         ++movedBots;
 
         sLog.Out(LOG_BASIC, LOG_LVL_MINIMAL,
-            "Continent load shedding: moved idle bot %s from zone %u (%.1f ms) to neighboring zone %u (%.1f ms).",
-            candidateBot->GetName(), source.zoneId, source.loadMs, destination->zoneId, destination->loadMs);
+            "Continent teleport: moved idle bot %s from zone %u (%.1f ms, %.1f%% activity) to neighboring zone %u (%.1f ms).",
+            candidateBot->GetName(), source.zoneId, source.loadMs, source.activityPercentage,
+            destination->zoneId, destination->loadMs);
     }
 }
 

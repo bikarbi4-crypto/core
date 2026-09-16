@@ -1022,6 +1022,8 @@ AiPlayerbot.ContinentInstancedTeleportOverloadMs = 80
 AiPlayerbot.ContinentInstancedTeleportUnderloadMs = 45
 AiPlayerbot.ContinentInstancedTeleportMaxBotsPerCheck = 3
 AiPlayerbot.ContinentInstancedTeleportCooldown = 600
+AiPlayerbot.ContinentInstancedTeleportActivityThreshold = 50
+AiPlayerbot.ContinentInstancedTeleportMinBots = 100
 
 # Maximum percentage change in bot activity per update tick. Lower values make activity scaling more gradual.
 # Set to 0 to disable rate limiting.

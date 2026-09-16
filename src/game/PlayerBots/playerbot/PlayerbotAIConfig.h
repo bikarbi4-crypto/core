@@ -250,11 +250,13 @@ public:
     bool continentInstancedActivityScaling;
     uint32 continentInstancedTargetMsWithPlayer;
     uint32 continentInstancedTargetMsEmpty;
-    bool continentInstancedLoadShedding;
-    uint32 continentInstancedLoadSheddingOverloadMs;
-    uint32 continentInstancedLoadSheddingUnderloadMs;
-    uint32 continentInstancedLoadSheddingMaxBotsPerCheck;
-    uint32 continentInstancedLoadSheddingCooldown;
+    bool continentInstancedTeleport;
+    uint32 continentInstancedTeleportOverloadMs;
+    uint32 continentInstancedTeleportUnderloadMs;
+    uint32 continentInstancedTeleportActivityThreshold;
+    uint32 continentInstancedTeleportMinBots;
+    uint32 continentInstancedTeleportMaxBotsPerCheck;
+    uint32 continentInstancedTeleportCooldown;
 
     uint32 minEnchantingBotLevel;
     uint32 randombotStartingLevel;
