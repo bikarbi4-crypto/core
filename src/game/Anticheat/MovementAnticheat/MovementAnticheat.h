@@ -92,7 +92,7 @@ class MovementAnticheat
         void LogMovementPacket(bool isClientPacket, WorldPacket const& packet);
         static bool IsLoggedOpcode(uint16 opcode);
 
-        bool IsInKnockBack() const { return m_knockBack; }
+        bool IsInKnockBack() const { return !IsDisabledForBot() && m_knockBack; }
 
         void OnKnockBack(Player* pPlayer, float speedxy, float speedz, float cos, float sin);
         void OnUnreachable(Unit* attacker);
@@ -102,6 +102,8 @@ class MovementAnticheat
         void OnDeath();
 
     private:
+        bool IsDisabledForBot(Player const* player = nullptr) const;
+
         bool HasEnoughBottingData();
         void ResetBottingStats();
         void CheckBotting(uint16 opcode, MovementInfo const& movementInfo);

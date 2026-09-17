@@ -94,6 +94,12 @@ MovementAnticheat::MovementAnticheat(Player* _me) : me(_me), m_session(_me->GetS
 {
 }
 
+bool MovementAnticheat::IsDisabledForBot(Player const* player) const
+{
+    return (me && me->GetSession()->GetRemoteAddress() == "<BOT>") ||
+        (player && player->GetSession()->GetRemoteAddress() == "<BOT>");
+}
+
 MovementInfo& MovementAnticheat::GetLastMovementInfo()
 {
     return me->m_movementInfo;
@@ -106,6 +112,9 @@ MovementInfo const& MovementAnticheat::GetLastMovementInfo() const
 
 uint32 MovementAnticheat::Update(Player* pPlayer, uint32 diff, std::stringstream& reason)
 {
+    if (IsDisabledForBot(pPlayer))
+        return CHEAT_ACTION_NONE;
+
     if (!sWorld.getConfig(CONFIG_BOOL_AC_MOVEMENT_ENABLED))
         return CHEAT_ACTION_NONE;
 
@@ -121,6 +130,9 @@ uint32 MovementAnticheat::Update(Player* pPlayer, uint32 diff, std::stringstream
 
 uint32 MovementAnticheat::Finalize(Player* pPlayer, std::stringstream& reason)
 {
+    if (IsDisabledForBot(pPlayer))
+        return CHEAT_ACTION_NONE;
+
     if (m_overspeedDistance > 0)
     {
         if (m_maxOverspeedDistance < m_overspeedDistance)
@@ -167,6 +179,9 @@ uint32 MovementAnticheat::Finalize(Player* pPlayer, std::stringstream& reason)
 
 void MovementAnticheat::AddCheats(uint32 cheats, uint32 count)
 {
+    if (IsDisabledForBot())
+        return;
+
     if (!cheats)
         return;
 
@@ -202,12 +217,18 @@ void MovementAnticheat::AddCheats(uint32 cheats, uint32 count)
 
 void MovementAnticheat::StoreCheat(uint32 type, uint32 count)
 {
+    if (IsDisabledForBot())
+        return;
+
     m_cheatOccuranceTotal[type] += count;
     m_cheatOccuranceTick[type] += count;
 }
 
 uint32 MovementAnticheat::ComputeCheatAction(std::stringstream& reason)
 {
+    if (IsDisabledForBot())
+        return CHEAT_ACTION_NONE;
+
     uint32 action = CHEAT_ACTION_NONE;
 
     auto AddPenaltyForCheat = [&action, &reason, this](bool total, CheatType cheatType, eConfigBoolValues enabledConfig, eConfigUInt32Values thresholdConfig, eConfigUInt32Values penaltyConfig)
@@ -400,6 +421,9 @@ bool MovementAnticheat::IsLoggedOpcode(uint16 opcode)
 
 void MovementAnticheat::LogMovementPacket(ServerPacket const& packet)
 {
+    if (IsDisabledForBot())
+        return;
+
     if (!sWorld.getConfig(CONFIG_BOOL_AC_MOVEMENT_ENABLED))
         return;
 
@@ -414,6 +438,9 @@ void MovementAnticheat::LogMovementPacket(ServerPacket const& packet)
 
 void MovementAnticheat::LogMovementPacket(bool isClientPacket, WorldPacket const& packet)
 {
+    if (IsDisabledForBot())
+        return;
+
     if (!sWorld.getConfig(CONFIG_BOOL_AC_MOVEMENT_ENABLED))
         return;
 
@@ -429,6 +456,9 @@ void MovementAnticheat::LogMovementPacket(bool isClientPacket, WorldPacket const
 
 void MovementAnticheat::HandleCommand(ChatHandler* handler) const
 {
+    if (IsDisabledForBot())
+        return;
+
     handler->PSendSysMessage("MaxSpaceDesync=%f", m_maxOverspeedDistance);
     handler->PSendSysMessage("MaxTimeDesync=%u", m_maxClientDesync);
 
@@ -440,6 +470,9 @@ void MovementAnticheat::HandleCommand(ChatHandler* handler) const
 
 void MovementAnticheat::Init()
 {
+    if (IsDisabledForBot())
+        return;
+
     m_cheatOccuranceTick.fill(0);
     m_cheatOccuranceTotal.fill(0);
 
@@ -458,6 +491,9 @@ void MovementAnticheat::Init()
 
 void MovementAnticheat::InitNewPlayer(Player* pPlayer)
 {
+    if (IsDisabledForBot(pPlayer))
+        return;
+
     me = pPlayer;
     m_jumpCount = 0;
     m_jumpFlagCount = 0;
@@ -467,6 +503,9 @@ void MovementAnticheat::InitNewPlayer(Player* pPlayer)
 
 void MovementAnticheat::ResetJumpCounters()
 {
+    if (IsDisabledForBot())
+        return;
+
     m_jumpCount = 0;
     m_jumpFlagCount = 0;
     m_jumpFlagTime = 0;
@@ -481,6 +520,9 @@ void MovementAnticheat::InitWallClimbLimits()
 
 void MovementAnticheat::OnKnockBack(Player* pPlayer, float speedxy, float speedz, float cos, float sin)
 {
+    if (IsDisabledForBot(pPlayer))
+        return;
+
     if (me != pPlayer)
         InitNewPlayer(pPlayer);
 
@@ -491,6 +533,9 @@ void MovementAnticheat::OnKnockBack(Player* pPlayer, float speedxy, float speedz
 
 void MovementAnticheat::OnUnreachable(Unit* attacker)
 {
+    if (IsDisabledForBot())
+        return;
+
     if (!sWorld.getConfig(CONFIG_BOOL_AC_MOVEMENT_ENABLED) ||
         !sWorld.getConfig(CONFIG_BOOL_AC_MOVEMENT_CHEAT_UNREACHABLE_ENABLED) ||
         (sWorld.getConfig(CONFIG_BOOL_AC_MOVEMENT_PLAYERS_ONLY) && (m_session->GetSecurity() != SEC_PLAYER)))
@@ -512,6 +557,9 @@ void MovementAnticheat::OnUnreachable(Unit* attacker)
 
 void MovementAnticheat::OnExplore(AreaEntry const* pArea)
 {
+    if (IsDisabledForBot())
+        return;
+
     if (!sWorld.getConfig(CONFIG_BOOL_AC_MOVEMENT_ENABLED) ||
         (sWorld.getConfig(CONFIG_BOOL_AC_MOVEMENT_PLAYERS_ONLY) && (m_session->GetSecurity() != SEC_PLAYER)))
         return;
@@ -526,6 +574,9 @@ void MovementAnticheat::OnExplore(AreaEntry const* pArea)
 
 void MovementAnticheat::OnWrongAckData()
 {
+    if (IsDisabledForBot())
+        return;
+
     if (!sWorld.getConfig(CONFIG_BOOL_AC_MOVEMENT_ENABLED) ||
         !sWorld.getConfig(CONFIG_BOOL_AC_MOVEMENT_CHEAT_WRONG_ACK_DATA_ENABLED) ||
         (sWorld.getConfig(CONFIG_BOOL_AC_MOVEMENT_PLAYERS_ONLY) && (m_session->GetSecurity() != SEC_PLAYER)))
@@ -536,6 +587,9 @@ void MovementAnticheat::OnWrongAckData()
 
 void MovementAnticheat::OnFailedToAckChange()
 {
+    if (IsDisabledForBot())
+        return;
+
     if (!sWorld.getConfig(CONFIG_BOOL_AC_MOVEMENT_ENABLED) ||
         !sWorld.getConfig(CONFIG_BOOL_AC_MOVEMENT_CHEAT_PENDING_ACK_DELAY_ENABLED) ||
         (sWorld.getConfig(CONFIG_BOOL_AC_MOVEMENT_PLAYERS_ONLY) && (m_session->GetSecurity() != SEC_PLAYER)))
@@ -620,11 +674,17 @@ bool ShouldRejectMovement(uint32 cheatFlags)
 
 void MovementAnticheat::OnDeath()
 {
+    if (IsDisabledForBot())
+        return;
+
     m_deathTime = WorldTimer::getMSTime();
 }
 
 uint32 MovementAnticheat::HandlePositionTests(Player* pPlayer, MovementInfo& movementInfo, uint16 opcode)
 {
+    if (IsDisabledForBot(pPlayer))
+        return 0;
+
     if (!sWorld.getConfig(CONFIG_BOOL_AC_MOVEMENT_ENABLED) ||
         (sWorld.getConfig(CONFIG_BOOL_AC_MOVEMENT_PLAYERS_ONLY) && (m_session->GetSecurity() != SEC_PLAYER)) ||
         !pPlayer->movespline->Finalized())
@@ -749,6 +809,9 @@ uint32 MovementAnticheat::HandlePositionTests(Player* pPlayer, MovementInfo& mov
 
 uint32 MovementAnticheat::HandleFlagTests(Player* pPlayer, MovementInfo& movementInfo, uint16 opcode)
 {
+    if (IsDisabledForBot(pPlayer))
+        return 0;
+
     if (!sWorld.getConfig(CONFIG_BOOL_AC_MOVEMENT_ENABLED) ||
         (sWorld.getConfig(CONFIG_BOOL_AC_MOVEMENT_PLAYERS_ONLY) && (m_session->GetSecurity() != SEC_PLAYER)))
         return 0;
@@ -870,6 +933,9 @@ uint32 MovementAnticheat::HandleFlagTests(Player* pPlayer, MovementInfo& movemen
 
 bool MovementAnticheat::HandleSplineDone(Player* pPlayer, MovementInfo const& movementInfo, uint32 splineId)
 {
+    if (IsDisabledForBot(pPlayer))
+        return true;
+
     if (me != pPlayer)
         InitNewPlayer(pPlayer);
 

@@ -17985,7 +17985,8 @@ bool Player::ActivateTaxiPathTo(std::vector<uint32> const& nodes, Creature const
         for (uint32 node : nodes)
             if (!m_taxi.IsTaximaskNodeKnown(node))
             {
-                GetSession()->ProcessAnticheatAction("PassiveAnticheat", "Taxi: Attempt to use unknown node.", CHEAT_ACTION_LOG | CHEAT_ACTION_REPORT_GMS);
+                if (GetSession()->GetRemoteAddress() != "<BOT>")
+                    GetSession()->ProcessAnticheatAction("PassiveAnticheat", "Taxi: Attempt to use unknown node.", CHEAT_ACTION_LOG | CHEAT_ACTION_REPORT_GMS);
                 return false;
             }
 

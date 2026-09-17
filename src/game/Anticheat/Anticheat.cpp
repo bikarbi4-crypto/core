@@ -72,6 +72,9 @@ MovementAnticheat* AnticheatManager::CreateAnticheatFor(Player* player)
 
 Warden* AnticheatManager::CreateWardenForInternal(WorldSession* client, BigNumber* K)
 {
+    if (client->GetRemoteAddress() == "<BOT>")
+        return nullptr;
+
 #if SUPPORTED_CLIENT_BUILD > CLIENT_BUILD_1_5_1
     if ((client->GetSecurity() != SEC_PLAYER) &&
         sWorld.getConfig(CONFIG_BOOL_AC_WARDEN_PLAYERS_ONLY))
@@ -182,4 +185,3 @@ void AnticheatManager::RemoveWardenSession(Warden* warden)
     std::lock_guard<std::mutex> guard(m_wardenSessionsMutex);
     m_wardenSessionsToRemove.push_back(warden);
 }
-

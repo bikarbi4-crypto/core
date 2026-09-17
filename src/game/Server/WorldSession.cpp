@@ -1232,6 +1232,9 @@ MovementAnticheat* WorldSession::GetCheatData()
 
 void WorldSession::ProcessAnticheatAction(char const* detector, char const* reason, uint32 cheatAction, uint32 banSeconds)
 {
+    if (GetRemoteAddress() == "<BOT>")
+        return;
+
     char const* action = "";
     if (cheatAction & CHEAT_ACTION_MUTE_PUB_CHANS)
     {
