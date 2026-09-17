@@ -379,6 +379,9 @@ bool KitePositionAction::Execute(Event& event)
 
     const bool tooClose = IsValidHostile(closest) && sServerFacade.GetDistance2d(bot, closest) <= KiteStrategy::GetMinDistance();
 
+    if (sServerFacade.isMoving(bot) && !tooClose)
+        return false;
+
     const time_t combatStart = ai->GetAiObjectContext()->GetValue<time_t>("combat start time")->Get();
 
     const time_t settledCombatStart = ai->GetAiObjectContext()->GetValue<time_t>("manual time", "kite settled combat start")->Get();

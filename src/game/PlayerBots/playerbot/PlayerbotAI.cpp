@@ -396,9 +396,6 @@ void PlayerbotAI::UpdateAI(uint32 elapsed, bool minimal)
     }
     else if (isMoving)
     {
-        if (!bot->IsTaxiFlying())
-            StopMoving();
-
         isMoving = false;
     }
 
@@ -8787,17 +8784,6 @@ void PlayerbotAI::StopMoving()
         bot->m_movementInfo.SetMovementFlags(MOVEFLAG_NONE);
 
     bot->StopMoving();
-    MovementInfo mInfo = bot->m_movementInfo;
-    float x, y, z;
-    bot->GetPosition(x, y, z);
-    float o = bot->GetPosition().o;
-    mInfo.ChangePosition(x, y, z, o);
-    WorldPacket data(MSG_MOVE_STOP);
-#ifdef MANGOSBOT_TWO
-    data << bot->GetObjectGuid().WriteAsPacked();
-#endif
-    data << mInfo;
-    { WorldPackets::Movement::MovementPacket movePkt; movePkt.ReadFromWorldPacket(data); bot->GetSession()->HandleMovementOpcodes(movePkt); };
 
     if (bot->GetMotionMaster()->GetCurrentMovementGeneratorType())
     {
