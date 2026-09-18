@@ -149,7 +149,7 @@ endif()
 add_library(${LIBRARY_NAME} STATIC ${LIBRARY_SRCS})
 
 if(MSVC)
-  target_compile_options(${LIBRARY_NAME} PRIVATE /MP /FS /bigobj)
+  target_compile_options(${LIBRARY_NAME} PRIVATE /MP /FS /EHsc /bigobj)
 endif()
 
 target_link_libraries(${LIBRARY_NAME}
