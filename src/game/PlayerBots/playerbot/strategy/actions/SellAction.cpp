@@ -76,6 +76,14 @@ bool SellAction::Sell(Player* requester, Item* item)
 {
     bool didSell = false;
 
+    if (!bot || !item)
+        return false;
+
+    WorldSession* session = bot->GetSession();
+
+    if (!session || session->GetPlayer() != bot || !bot->IsInWorld())
+        return false;
+
     // Never sell items the user has flagged to keep or force-equip.
     ForceItemUsage forceUsage = AI_VALUE2_EXISTS(ForceItemUsage, "force item usage", item->GetProto()->ItemId, ForceItemUsage::FORCE_USAGE_NONE);
     if (forceUsage == ForceItemUsage::FORCE_USAGE_KEEP || forceUsage == ForceItemUsage::FORCE_USAGE_EQUIP)
@@ -116,7 +124,7 @@ bool SellAction::Sell(Player* requester, Item* item)
 
         WorldPacket p;
         p << vendorguid << itemguid << count;
-        bot->GetSession()->HandleSellItemOpcode(MakeTypedPacket<WorldPackets::Item::SellItem>(p));
+        session->HandleSellItemOpcode(MakeTypedPacket<WorldPackets::Item::SellItem>(p));
 
         if (ai->HasCheat(BotCheatMask::gold))
         {

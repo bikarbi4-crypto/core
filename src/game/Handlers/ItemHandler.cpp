@@ -441,7 +441,9 @@ void WorldSession::HandleReadItemOpcode(WorldPackets::Item::ReadItem const& pack
 
 void WorldSession::HandleSellItemOpcode(WorldPackets::Item::SellItem const& packet)
 {
-    if (!packet.itemGuid || !GetPlayer()->IsInWorld())
+    Player* player = GetPlayer();
+
+    if (!player || !player->IsInWorld() || !packet.itemGuid)
         return;
 
     Creature* pCreature = GetPlayer()->GetNPCIfCanInteractWith(packet.vendorGuid, UNIT_NPC_FLAG_VENDOR);
