@@ -228,6 +228,12 @@ void PlayerbotFactory::Randomize(bool incremental, bool syncWithMaster)
     sLog.Out(LOG_BASIC, LOG_LVL_DETAIL, "Initializing bags...");
     InitBags();
 
+    if (sPlayerbotAIConfig.autoLearnQuestSpells)
+    {
+        AutoLearnSpellAction repairAction(ai);
+        repairAction.RepairQuestSpells(PlayerbotFactory::classQuestIds);
+    }
+
     sLog.Out(LOG_BASIC, LOG_LVL_DETAIL, "Initializing spells (step 1)...");
     InitAvailableSpells();
 
@@ -336,12 +342,6 @@ void PlayerbotFactory::Randomize(bool incremental, bool syncWithMaster)
         sLog.Out(LOG_BASIC, LOG_LVL_DETAIL, "Initializing pet...");
         InitPet();
         InitPetSpells();
-    }
-
-    if (sPlayerbotAIConfig.autoLearnQuestSpells)
-    {
-        AutoLearnSpellAction repairAction(ai);
-        repairAction.RepairPetSpells();
     }
 
     if (isRandomBot)

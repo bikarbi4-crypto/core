@@ -207,13 +207,20 @@ void AutoLearnSpellAction::RepairQuestSpells(const std::list<uint32>& questIds)
     std::ostringstream out;
 
     // Generic class quest rewards for all classes.
-    for (uint32 questId : questIds)
+    if (questIds.empty())
     {
-        Quest const* quest = sObjectMgr.GetQuestTemplate(questId);
-        if (!quest)
-            continue;
+        LearnQuestSpells(&out);
+    }
+    else
+    {
+        for (uint32 questId : questIds)
+        {
+            Quest const* quest = sObjectMgr.GetQuestTemplate(questId);
+            if (!quest)
+                continue;
 
-        LearnQuestSpell(quest, &out);
+            LearnQuestSpell(quest, &out);
+        }
     }
 
     LearnPetSpells(&out);
