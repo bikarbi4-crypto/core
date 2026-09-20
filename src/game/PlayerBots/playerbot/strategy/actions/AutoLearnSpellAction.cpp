@@ -47,27 +47,50 @@ void AutoLearnSpellAction::LearnSpells(std::ostringstream* out)
         LearnDroppedSpells(out);
 #endif
 
-    if (sPlayerbotAIConfig.autoLearnQuestSpells && bot->GetClass() == CLASS_HUNTER && bot->GetLevel() >= 10)
+    if (sPlayerbotAIConfig.autoLearnQuestSpells)
+        LearnPetSpells(out);
+}
+
+void AutoLearnSpellAction::LearnPetSpells(std::ostringstream* out)
+{
+    if (bot->GetClass() == CLASS_HUNTER && bot->GetLevel() >= 10)
     {
 #if !defined(MANGOSBOT_TWO)
-        if (!bot->HasSpell(5149))
-            bot->LearnSpell(5149, false); // Beast Training
+        LearnSpell(5149, out); // Beast Training
 #endif
 
-        if (!bot->HasSpell(883))
-            bot->LearnSpell(883, false); // Call Pet
+        LearnSpell(883, out); // Call Pet
+        LearnSpell(982, out); // Revive Pet
+        LearnSpell(6991, out); // Feed Pet
+        LearnSpell(1515, out); // Tame Beast
+        LearnSpell(2641, out); // Dismiss Pet
+    }
 
-        if (!bot->HasSpell(982))
-            bot->LearnSpell(982, false); // Revive Pet
+#ifndef MANGOSBOT_TWO
+    if (bot->GetClass() == CLASS_WARLOCK)
+    {
+        LearnSpell(688, out); // Summon Imp
 
-        if (!bot->HasSpell(6991))
-            bot->LearnSpell(6991, false); // Feed Pet
+        if (bot->GetLevel() >= 10)
+            LearnSpell(697, out); // Summon Voidwalker
 
-        if (!bot->HasSpell(1515))
-            bot->LearnSpell(1515, false); // Tame Beast
+        if (bot->GetLevel() >= 20)
+            LearnSpell(712, out); // Summon Succubus
 
-        if (!bot->HasSpell(2641))
-            bot->LearnSpell(2641, false); // Dismiss Pet
+        if (bot->GetLevel() >= 30)
+            LearnSpell(691, out); // Summon Felhunter
+    }
+#endif
+}
+
+void AutoLearnSpellAction::RepairPetSpells()
+{
+    std::ostringstream out;
+    LearnPetSpells(&out);
+
+    if (!out.str().empty())
+    {
+        sLog.Out(LOG_BASIC, LOG_LVL_DETAIL, "Bot %s repaired missing class pet spells", bot->GetName());
     }
 }
 
@@ -193,18 +216,7 @@ void AutoLearnSpellAction::RepairQuestSpells(const std::list<uint32>& questIds)
         LearnQuestSpell(quest, &out);
     }
 
-#ifdef MANGOSBOT_ZERO
-    // Hunter specific quest rewards
-    if (bot->GetClass() == CLASS_HUNTER && bot->GetLevel() >= 10)
-    {
-        LearnSpell(1515, &out); // Tame Beast
-        LearnSpell(883, &out); // Call Pet
-        LearnSpell(2641, &out); // Dismiss Pet
-        LearnSpell(982, &out); // Revive Pet
-        LearnSpell(6991, &out); // Feed Pet
-        LearnSpell(5149, &out); // Beast Training
-    }
-#endif
+    LearnPetSpells(&out);
 
     if (!out.str().empty())
     {

@@ -16,9 +16,11 @@ namespace ai
         virtual bool isUsefulWhenStunned() override { return true; }
 
         void RepairQuestSpells(const std::list<uint32>& questIds);
+        void RepairPetSpells();
 
     private:
         void LearnSpells(std::ostringstream* out);
+        void LearnPetSpells(std::ostringstream* out);
         void LearnTrainerSpells(std::ostringstream* out);
         void LearnQuestSpells(std::ostringstream* out);
         void LearnQuestSpell(Quest const* quest, std::ostringstream* out);

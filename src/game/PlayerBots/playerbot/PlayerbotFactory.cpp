@@ -16,6 +16,7 @@
 #include "playerbot/ServerFacade.h"
 #include "playerbot/AiFactory.h"
 #include "GuildMgr.h"
+#include "strategy/actions/AutoLearnSpellAction.h"
 
 #ifndef MANGOSBOT_ZERO
     #ifdef CMANGOS
@@ -335,6 +336,12 @@ void PlayerbotFactory::Randomize(bool incremental, bool syncWithMaster)
         sLog.Out(LOG_BASIC, LOG_LVL_DETAIL, "Initializing pet...");
         InitPet();
         InitPetSpells();
+    }
+
+    if (sPlayerbotAIConfig.autoLearnQuestSpells)
+    {
+        AutoLearnSpellAction repairAction(ai);
+        repairAction.RepairPetSpells();
     }
 
     if (isRandomBot)
