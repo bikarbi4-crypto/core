@@ -360,6 +360,11 @@ else if (guid.IsCorpse())
     if (Corpse* corpse = bot->GetMap()->GetCorpse(guid))
         loot = &corpse->loot;
 }
+else if (guid.IsGameObject())
+{
+    if (GameObject* gameObject = ai->GetGameObject(guid))
+        loot = &gameObject->loot;
+}
 
 if (!loot)
     return false;
