@@ -8,6 +8,7 @@
 // WorldState.h not in vmangos
 #include "playerbot/PlayerbotHelpMgr.h"
 #include "playerbot/strategy/actions/CheatAction.h"
+#include "World.h"
 
 #include "playerbot/TravelMgr.h"
 
@@ -524,6 +525,19 @@ bool PlayerbotAIConfig::Initialize()
     continentInstancedTeleportMinBots = config.GetIntDefault("AiPlayerbot.ContinentInstancedTeleportMinBots", 100);
     continentInstancedTeleportMaxBotsPerCheck = config.GetIntDefault("AiPlayerbot.ContinentInstancedTeleportMaxBotsPerCheck", 3);
     continentInstancedTeleportCooldown = config.GetIntDefault("AiPlayerbot.ContinentInstancedTeleportCooldown", 600);
+
+    sLog.Out(LOG_BASIC, LOG_LVL_MINIMAL,
+        "Continent teleport: config enabled=%u, activity scaling=%u, instanciate=%u, sharding=%u, overload=%u ms, underload=%u ms, max bots/check=%u, cooldown=%u s, inactive skip=%u.",
+        continentInstancedTeleport ? 1 : 0,
+        continentInstancedActivityScaling ? 1 : 0,
+        sWorld.getConfig(CONFIG_BOOL_CONTINENTS_INSTANCIATE) ? 1 : 0,
+        sWorld.getConfig(CONFIG_BOOL_CONTINENTS_SHARDING) ? 1 : 0,
+        continentInstancedTeleportOverloadMs,
+        continentInstancedTeleportUnderloadMs,
+        continentInstancedTeleportMaxBotsPerCheck,
+        continentInstancedTeleportCooldown,
+        sWorld.getConfig(CONFIG_UINT32_INACTIVE_PLAYERS_SKIP_UPDATES));
+
     RandombotsWalkingRPG = config.GetBoolDefault("AiPlayerbot.RandombotsWalkingRPG", false);
     RandombotsWalkingRPGInDoors = config.GetBoolDefault("AiPlayerbot.RandombotsWalkingRPG.InDoors", false);
     minEnchantingBotLevel = config.GetIntDefault("AiPlayerbot.minEnchantingBotLevel", 60);

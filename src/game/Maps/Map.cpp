@@ -2162,7 +2162,7 @@ void Map::RemoveAllObjectsInRemoveList()
 bool Map::HaveRealPlayers() const
 {
     for (const auto& itr : m_mapRefManager)
-        if (!itr.getSource()->IsBot())
+        if (itr.getSource()->isRealPlayer())
             return true;
     return false;
 }

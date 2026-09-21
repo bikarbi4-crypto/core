@@ -905,6 +905,7 @@ void RandomPlayerbotMgr::BalanceContinentLoad()
     };
 
     std::vector<ContinentLoadMap> continentMaps;
+    uint32 timedShards = 0;
 
     for (uint32 mapId = 0; mapId < MapManager::LAST_CONTINENT_ID; ++mapId)
     {
@@ -921,7 +922,9 @@ void RandomPlayerbotMgr::BalanceContinentLoad()
             loadMap.instanceId = instanceId;
             loadMap.zoneId = zoneId;
             loadMap.loadMs = map && map->GetAverageUpdateTimeSamples10s() ? map->GetAverageUpdateTimeMs10s() : 0.0;
-            continentMaps.push_back(loadMap);
+            if (map && map->GetAverageUpdateTimeSamples10s())
+                ++timedShards;
+
             if (map)
             {
                 loadMap.activityPercentage = map->GetBotActivityPercentage();
@@ -935,6 +938,7 @@ void RandomPlayerbotMgr::BalanceContinentLoad()
                 }
             }
 
+            continentMaps.push_back(loadMap);
         }
     }
 
@@ -944,6 +948,12 @@ void RandomPlayerbotMgr::BalanceContinentLoad()
     });
 
     uint32 movedBots = 0;
+    uint32 overloadedSources = 0;
+    uint32 activitySuppressedSources = 0;
+    uint32 eligibleSources = 0;
+    uint32 candidateDestinations = 0;
+    uint32 eligibleBots = 0;
+    uint32 validLocations = 0;
 
     for (ContinentLoadMap const& source : continentMaps)
     {
@@ -953,9 +963,16 @@ void RandomPlayerbotMgr::BalanceContinentLoad()
             source.activityPercentage <= sPlayerbotAIConfig.continentInstancedTeleportActivityThreshold &&
             source.botCount >= sPlayerbotAIConfig.continentInstancedTeleportMinBots;
 
+        if (workloadOverloaded)
+            ++overloadedSources;
+        if (activitySuppressed)
+            ++activitySuppressedSources;
+
         if (movedBots >= maxBotsPerCheck || !source.map || source.map->HaveRealPlayers() ||
             (!workloadOverloaded && !activitySuppressed))
             continue;
+
+        ++eligibleSources;
 
         ContinentLoadMap const* destination = nullptr;
         for (ContinentLoadMap const& candidate : continentMaps)
@@ -972,6 +989,8 @@ void RandomPlayerbotMgr::BalanceContinentLoad()
 
         if (!destination)
             continue;
+
+        ++candidateDestinations;
 
         Player* candidateBot = nullptr;
         {
@@ -1006,9 +1025,13 @@ void RandomPlayerbotMgr::BalanceContinentLoad()
         if (!candidateBot)
             continue;
 
+        ++eligibleBots;
+
         WorldLocation destinationLocation;
         if (!FindContinentTeleportLocation(candidateBot, destination->mapId, destination->zoneId, destinationLocation))
             continue;
+
+        ++validLocations;
 
         candidateBot->GetMotionMaster()->Clear();
         if (!candidateBot->TeleportTo(destinationLocation.mapId, destinationLocation.x, destinationLocation.y,
@@ -1025,6 +1048,11 @@ void RandomPlayerbotMgr::BalanceContinentLoad()
             candidateBot->GetName(), source.zoneId, source.loadMs, source.activityPercentage,
             destination->zoneId, destination->loadMs);
     }
+
+    sLog.Out(LOG_BASIC, LOG_LVL_MINIMAL,
+        "Continent teleport: scan shards=%u timed=%u overloaded=%u activity-suppressed=%u eligible-sources=%u destinations=%u eligible-bots=%u valid-locations=%u moved=%u.",
+        static_cast<uint32>(continentMaps.size()), timedShards, overloadedSources, activitySuppressedSources,
+        eligibleSources, candidateDestinations, eligibleBots, validLocations, movedBots);
 }
 
 void RandomPlayerbotMgr::ScaleBotActivity()
