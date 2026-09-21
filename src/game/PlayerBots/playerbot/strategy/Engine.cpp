@@ -149,7 +149,7 @@ bool Engine::DoNextAction(Unit* unit, int depth, bool minimal, bool isStunned)
             if (minimal && (relevance < 100))
                 continue;
             // NOTE: queue.Pop() deletes basket
-            ActionNode* actionNode = queue.Pop();
+            ActionNode* actionNode = queue.Pop(basket);
             Action* action = InitializeAction(actionNode);
 
             std::string actionName = (action ? action->getName() : "unknown");
@@ -215,12 +215,15 @@ bool Engine::DoNextAction(Unit* unit, int depth, bool minimal, bool isStunned)
                         }
                     }
 
-                    ActionBasket* peekAction = queue.Peek();
-                    if (relevance < oldRelevance && peekAction && peekAction->getRelevance() > relevance) //Relevance changed. Try again.
+                    if (relevance < oldRelevance) // Relevance changed. Only then inspect the remaining queue.
                     {
-                        modifiedActions.push_back(action);
-                        PushAgain(actionNode, relevance, event);
-                        continue;
+                        ActionBasket* peekAction = queue.Peek();
+                        if (peekAction && peekAction->getRelevance() > relevance)
+                        {
+                            modifiedActions.push_back(action);
+                            PushAgain(actionNode, relevance, event);
+                            continue;
+                        }
                     }
 
                     if (!skipPrerequisites)
@@ -350,7 +353,9 @@ bool Engine::DoNextAction(Unit* unit, int depth, bool minimal, bool isStunned)
     if (!actionExecuted)
         LogAction("no actions executed");
 
-    queue.RemoveExpired();
+    if (queue.Size())
+        queue.RemoveExpired();
+
     return actionExecuted;
 }
 
