@@ -18,10 +18,9 @@ namespace ai
     class NextAction
     {
     public:
-        NextAction(std::string name, float relevance = 0.0f)
+        NextAction(const std::string& name, float relevance = 0.0f) :
+            relevance(relevance), name(name)
         {
-            this->name = name;
-            this->relevance = relevance;
         }
         NextAction(const NextAction& o)
         {

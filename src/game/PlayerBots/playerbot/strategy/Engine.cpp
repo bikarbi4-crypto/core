@@ -390,7 +390,7 @@ bool Engine::MultiplyAndPush(NextAction** actions, float forceRelevance, bool sk
             NextAction* nextAction = actions[j];
             if (nextAction)
             {
-                ActionNode* actionNode = CreateActionNode(nextAction->getName());
+                ActionNode* actionNode = CreateActionNode(nextAction->getNameRef());
                 InitializeAction(actionNode);
 
                 bool shouldPush = false;
@@ -678,7 +678,7 @@ std::list<std::string> Engine::GetStrategies()
 void Engine::PushAgain(ActionNode* actionNode, float relevance, const Event& event)
 {
     NextAction** nextAction = new NextAction*[2];
-    nextAction[0] = new NextAction(actionNode->getName(), relevance);
+    nextAction[0] = new NextAction(actionNode->getNameRef(), relevance);
     nextAction[1] = NULL;
     MultiplyAndPush(nextAction, relevance, true, event, "again");
     delete actionNode;
@@ -700,7 +700,7 @@ Action* Engine::InitializeAction(ActionNode* actionNode)
     Action* action = actionNode->getAction();
     if (!action)
     {
-        action = aiObjectContext->GetAction(actionNode->getName());
+        action = aiObjectContext->GetAction(actionNode->getNameRef());
         actionNode->setAction(action);
     }
 
