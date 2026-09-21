@@ -1,4 +1,6 @@
 #pragma once
+#include <unordered_map>
+
 #include "playerbot/strategy/Value.h"
 #include "TargetValue.h"
 
@@ -15,6 +17,6 @@ namespace ai
 
     private:
         int GetTargetingPlayerCount(Unit* unit);
-        Unit* FindTargetForGrinding(int assistCount);
+        Unit* FindTargetForGrinding(int assistCount, std::unordered_map<uint32, bool>& needForQuestCache);
     };
 }

@@ -29,17 +29,19 @@ Unit* GrindTargetValue::Calculate()
     if (group)
         memberCount = group->GetMembersCount();
 
+    std::unordered_map<uint32, bool> needForQuestCache;
+
     Unit* target = NULL;
     uint32 assistCount = 0;
     while (!target && assistCount < memberCount)
     {
-        target = FindTargetForGrinding(assistCount++);
+        target = FindTargetForGrinding(assistCount++, needForQuestCache);
     }
 
     return target;
 }
 
-Unit* GrindTargetValue::FindTargetForGrinding(int assistCount)
+Unit* GrindTargetValue::FindTargetForGrinding(int assistCount, std::unordered_map<uint32, bool>& needForQuestCache)
 {
     uint32 memberCount = 1;
     Group* group = bot->GetGroup();
@@ -81,11 +83,7 @@ Unit* GrindTargetValue::FindTargetForGrinding(int assistCount)
     TravelTarget* travelTarget = AI_VALUE(TravelTarget*, "travel target");
     bool isGrindTravelDest = travelTarget && typeid(travelTarget->GetDestination()) == typeid(GrindTravelDestination);
 
-    struct MemberInfo {
-        Player* player;
-        float x, y;
-    };
-    std::vector<MemberInfo> groupMembers;
+    std::vector<Player*> groupMembers;
     if (group)
     {
         Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
@@ -93,12 +91,10 @@ Unit* GrindTargetValue::FindTargetForGrinding(int assistCount)
         for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
         {
             Player* member = sObjectMgr.GetPlayer(itr->guid);
-            if (member && sServerFacade.IsAlive(member))
-                groupMembers.push_back({ member, member->GetPositionX(), member->GetPositionY() });
+            if (member)
+                groupMembers.push_back(member);
         }
     }
-
-    std::unordered_map<uint32, bool> needForQuestCache;
 
 for (std::list<ObjectGuid>::iterator tIter = targets.begin(); tIter != targets.end(); tIter++)
     {
@@ -320,21 +316,23 @@ for (std::list<ObjectGuid>::iterator tIter = targets.begin(); tIter != targets.e
             }
         }
 
-        if (!bot->InBattleGround() && GetTargetingPlayerCount(unit) > assistCount)
+        if (!bot->InBattleGround())
         {
-            if (ai->HasStrategy("debug grind", BotState::BOT_STATE_NON_COMBAT))
-                ai->TellPlayer(GetMaster(), chat->formatWorldobject(unit) + " increased distance (" + std::to_string(GetTargetingPlayerCount(unit)) + " bots already targeting).");
+            const int targetingPlayerCount = GetTargetingPlayerCount(unit);
+            if (targetingPlayerCount > assistCount)
+            {
+                if (ai->HasStrategy("debug grind", BotState::BOT_STATE_NON_COMBAT))
+                    ai->TellPlayer(GetMaster(), chat->formatWorldobject(unit) + " increased distance (" + std::to_string(targetingPlayerCount) + " bots already targeting).");
 
-            newdistance =+ GetTargetingPlayerCount(unit) * 5;
+                newdistance =+ targetingPlayerCount * 5;
+            }
         }
 
         if (group)
         {
-            Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
-            for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
+            for (Player* member : groupMembers)
             {
-                Player* member = sObjectMgr.GetPlayer(itr->guid);
-                if (!member || !sServerFacade.IsAlive(member))
+                if (!sServerFacade.IsAlive(member))
                     continue;
 
                 newdistance = sServerFacade.GetDistance2d(member, unit);
