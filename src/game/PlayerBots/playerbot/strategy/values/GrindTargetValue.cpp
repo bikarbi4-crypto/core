@@ -81,11 +81,7 @@ Unit* GrindTargetValue::FindTargetForGrinding(int assistCount)
     TravelTarget* travelTarget = AI_VALUE(TravelTarget*, "travel target");
     bool isGrindTravelDest = travelTarget && typeid(travelTarget->GetDestination()) == typeid(GrindTravelDestination);
 
-    struct MemberInfo {
-        Player* player;
-        float x, y;
-    };
-    std::vector<MemberInfo> groupMembers;
+    std::vector<Player*> groupMembers;
     if (group)
     {
         Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
@@ -93,8 +89,8 @@ Unit* GrindTargetValue::FindTargetForGrinding(int assistCount)
         for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
         {
             Player* member = sObjectMgr.GetPlayer(itr->guid);
-            if (member && sServerFacade.IsAlive(member))
-                groupMembers.push_back({ member, member->GetPositionX(), member->GetPositionY() });
+            if (member)
+                groupMembers.push_back(member);
         }
     }
 
@@ -330,11 +326,9 @@ for (std::list<ObjectGuid>::iterator tIter = targets.begin(); tIter != targets.e
 
         if (group)
         {
-            Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
-            for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
+            for (Player* member : groupMembers)
             {
-                Player* member = sObjectMgr.GetPlayer(itr->guid);
-                if (!member || !sServerFacade.IsAlive(member))
+                if (!sServerFacade.IsAlive(member))
                     continue;
 
                 newdistance = sServerFacade.GetDistance2d(member, unit);
