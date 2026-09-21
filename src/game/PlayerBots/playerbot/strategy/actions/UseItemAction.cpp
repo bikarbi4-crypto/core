@@ -619,6 +619,26 @@ bool UseAction::UseItemInternal(Player* requester, uint32 itemId, Unit* unit, Ga
                 break;
         }
 
+        // V4: if this spell is specifically teaching the caster's pet and the
+        // full summon GUID is empty, the later CheckCast can only fail NO_PET.
+        bool learnsCasterPetSpell = false;
+        for (int effectIndex = EFFECT_INDEX_0; effectIndex <= EFFECT_INDEX_2; ++effectIndex)
+        {
+            if (spellInfo->Effect[effectIndex] == SPELL_EFFECT_LEARN_SPELL &&
+                spellInfo->EffectImplicitTargetA[effectIndex] == TARGET_UNIT_CASTER_PET)
+            {
+                learnsCasterPetSpell = true;
+                break;
+            }
+        }
+
+        if (learnsCasterPetSpell &&
+            !bot->HasCheatOption(PLAYER_CHEAT_NO_CHECK_CAST) &&
+            bot->GetPetGuid().IsEmpty())
+        {
+            break;
+        }
+
         // Build targets per spell
         bool validTarget = false;
         SpellCastTargets targets;
