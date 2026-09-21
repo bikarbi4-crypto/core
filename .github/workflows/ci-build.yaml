@@ -36,6 +36,7 @@ jobs:
     permissions:
       contents: read
     strategy:
+      fail-fast: false
       matrix:
         # Every supported client build is verified against Ubuntu GCC; the
         # latest (1.12.1.5875) additionally runs against Ubuntu Clang, Windows
