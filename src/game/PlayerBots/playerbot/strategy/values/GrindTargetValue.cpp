@@ -316,12 +316,16 @@ for (std::list<ObjectGuid>::iterator tIter = targets.begin(); tIter != targets.e
             }
         }
 
-        if (!bot->InBattleGround() && GetTargetingPlayerCount(unit) > assistCount)
+        if (!bot->InBattleGround())
         {
-            if (ai->HasStrategy("debug grind", BotState::BOT_STATE_NON_COMBAT))
-                ai->TellPlayer(GetMaster(), chat->formatWorldobject(unit) + " increased distance (" + std::to_string(GetTargetingPlayerCount(unit)) + " bots already targeting).");
+            const int targetingPlayerCount = GetTargetingPlayerCount(unit);
+            if (targetingPlayerCount > assistCount)
+            {
+                if (ai->HasStrategy("debug grind", BotState::BOT_STATE_NON_COMBAT))
+                    ai->TellPlayer(GetMaster(), chat->formatWorldobject(unit) + " increased distance (" + std::to_string(targetingPlayerCount) + " bots already targeting).");
 
-            newdistance =+ GetTargetingPlayerCount(unit) * 5;
+                newdistance =+ targetingPlayerCount * 5;
+            }
         }
 
         if (group)
