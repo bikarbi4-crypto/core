@@ -186,8 +186,18 @@ bool OpenLootAction::DoLoot(LootObject& lootObject)
     if (go && sServerFacade.GetDistance2d(bot, go) > INTERACTION_DISTANCE)
         return false;
 
-    if (go && ( go->GetGoState() == GO_STATE_ACTIVE))
-        return false;
+    if (go && go->GetGoState() == GO_STATE_ACTIVE)
+    {
+        // Pre-V0 loot-open stabilizer: an already-active lootable GO has
+        // progressed past opening. Stop movement and re-enter the normal
+        // CMSG_LOOT handler instead of treating the state as a hard failure.
+        ai->StopMoving();
+
+        WorldPacket packet(CMSG_LOOT, 8);
+        packet << lootObject.guid;
+        bot->GetSession()->HandleLootOpcode(MakeTypedPacket<WorldPackets::Loot::LootUnit>(packet));
+        return true;
+    }
 
     if (lootObject.skillId == SKILL_MINING)
         return ai->HasSkill(SKILL_MINING) ? ai->CastSpell(MINING, bot) : false;
