@@ -305,8 +305,11 @@ namespace ai
 #endif
 				;
 
-			// useful if no mount or with wsg flag
-			return !bot->IsMounted() || !firstmount;
+			// Keep the original mount eligibility, but do not re-select an already active Travel Form.
+			if (bot->IsMounted() && firstmount)
+				return false;
+
+			return bot->GetShapeshiftForm() != FORM_TRAVEL;
 		}
 	};
 

@@ -10,6 +10,30 @@
 
 using namespace ai;
 
+bool StopFollowAction::isUseful()
+{
+    // Preserve MovementAction::isUseful(), including the existing stay-strategy restriction.
+    if (!MovementAction::isUseful())
+        return false;
+
+    // PlayerbotAI::StopMoving clears movement flags other than ONTRANSPORT.
+    if (bot->GetUnitMovementFlags() & ~uint32(MOVEFLAG_ONTRANSPORT))
+        return true;
+
+    if (bot->HasUnitState(UNIT_STATE_MOVING))
+        return true;
+
+    // Unknown spline state is handled conservatively: keep StopFollow eligible.
+    if (!bot->movespline)
+        return true;
+
+    if (!bot->movespline->Finalized())
+        return true;
+
+    // A stationary FOLLOW/POINT/etc. generator still needs to be cleared.
+    return bot->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE;
+}
+
 bool FollowAction::Execute(Event& event)
 {
     bool moved = false;
