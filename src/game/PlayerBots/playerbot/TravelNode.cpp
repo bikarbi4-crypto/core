@@ -1542,11 +1542,13 @@ TravelNodeRoute TravelNodeMap::getRoute(TravelNode* start, TravelNode* goal, Uni
 
     while (!open.empty())
     {
-        std::sort(open.begin(), open.end(), [](TravelNodeStub* i, TravelNodeStub* j) {return i->m_f < j->m_f; });
+        // Pre-V0 routeopt: selecting the next A* node only needs the minimum;
+        // do not fully sort the entire open vector on every expansion.
+        auto minIt = std::min_element(open.begin(), open.end(),
+            [](TravelNodeStub* i, TravelNodeStub* j) { return i->m_f < j->m_f; });
 
-        currentNode = open.front(); // pop n node from open for which f is minimal
-
-        std::pop_heap(open.begin(), open.end(), [](TravelNodeStub* i, TravelNodeStub* j) {return i->m_f < j->m_f; });
+        currentNode = *minIt; // pop node from open for which f is minimal
+        *minIt = open.back();
         open.pop_back();
         currentNode->open = false;
 

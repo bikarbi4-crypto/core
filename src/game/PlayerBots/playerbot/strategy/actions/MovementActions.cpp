@@ -1418,6 +1418,11 @@ bool MovementAction::MoveTo(uint32 mapId, float x, float y, float z, bool idle, 
 
                 if (movePath.empty())
                 {
+                    // Pre-V0 cross-map pathguard: a failed graph route to another
+                    // map must not fall through to a same-map XYZ PathFinder.
+                    if (startPosition.getMapId() != endPosition.getMapId())
+                        return false;
+
                 // Debug path issues - use TellDebug for debug move
                 if (ai->HasStrategy("debug move", BotState::BOT_STATE_NON_COMBAT))
                 {
