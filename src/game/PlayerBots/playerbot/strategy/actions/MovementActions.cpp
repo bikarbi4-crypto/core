@@ -2973,11 +2973,13 @@ bool MovementAction::Flee(Unit* target)
         fleeDelay = 1;
     }
 
-    if (lastFlee && (sServerFacade.isMoving(bot) || (now - lastFlee) <= fleeDelay))
-        return true;
-
-    if (lastFlee)
-        AI_VALUE(LastMovement&, "last movement").lastFlee = 0;
+    if (lastFlee && sServerFacade.isMoving(bot))
+    {
+        if ((now - lastFlee) <= fleeDelay)
+        {
+            return true;
+        }
+    }
     
     const bool isHealer = ai->IsHeal(bot);
     const bool isTank = ai->IsTank(bot);
@@ -3086,8 +3088,6 @@ bool MovementAction::Flee(Unit* target)
     if (fleeTarget)
     {
         succeeded = MoveNear(fleeTarget);
-        if (succeeded)
-            AI_VALUE(LastMovement&, "last movement").lastFlee = now;
     }
 
     if (!ai->HasRealPlayerMaster() && !ai->IsRealPlayer(target))
@@ -3104,19 +3104,37 @@ bool MovementAction::Flee(Unit* target)
 
         if (mm->GetCurrentMovementGeneratorType() == CHASE_MOTION_TYPE)
         {
-            if (sServerFacade.GetChaseTarget(bot) == target &&
-                sServerFacade.GetChaseOffset(bot) == distance)
+            auto* chase = mm->GetCurrent();
+
+            if (nullptr /* GetCurrentTarget not in vmangos */ == target && sServerFacade.GetChaseOffset(bot) == distance)
                 return true;
         }
 
         mm->MoveChase(target, distance);
-        AI_VALUE(LastMovement&, "last movement").lastFlee = now;
         return true;
     }
 
     // Generate a position to flee
     if(!succeeded)
     {
+        if (lastFlee && bot->GetGroup())
+        {
+            if (!lastFlee)
+            {
+                AI_VALUE(LastMovement&, "last movement").lastFlee = now;
+            }
+            else
+            {
+                if ((now - lastFlee) > fleeDelay)
+                {
+                    AI_VALUE(LastMovement&, "last movement").lastFlee = 0;
+                }
+                else
+                {
+                    succeeded = false;
+                }
+            }
+        }
         bool fullDistance = false;
         if (target->IsPlayer())
             fullDistance = true;
