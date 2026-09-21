@@ -639,6 +639,22 @@ bool UseAction::UseItemInternal(Player* requester, uint32 itemId, Unit* unit, Ga
             break;
         }
 
+        // V5: only the two observed item spells get an ordinary readiness
+        // preflight. Preserve the original triggered/passive/autorepeat/event-
+        // cooldown/script paths and do not preflight GCD.
+        if ((spellInfo->Id == 8690 || spellInfo->Id == 15646) &&
+            successCasts == 0 &&
+            !bot->HasCheatOption(PLAYER_CHEAT_NO_CHECK_CAST) &&
+            !spellInfo->HasAttribute(SPELL_ATTR_PASSIVE) &&
+            !spellInfo->IsAutoRepeatRangedSpell() &&
+            !spellInfo->HasAttribute(SPELL_ATTR_COOLDOWN_ON_EVENT) &&
+            spellInfo->ScriptId == 0)
+        {
+            const ItemPrototype* castItemProto = itemUsed ? itemUsed->GetProto() : nullptr;
+            if (!bot->IsSpellReady(spellInfo, castItemProto))
+                break;
+        }
+
         // Build targets per spell
         bool validTarget = false;
         SpellCastTargets targets;
