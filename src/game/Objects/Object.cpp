@@ -27,6 +27,7 @@
 #include "World.h"
 #include "Creature.h"
 #include "Player.h"
+#include "PlayerBots/playerbot/PlayerbotAI.h"
 #include "GameObjectAI.h"
 #include "ObjectMgr.h"
 #include "ObjectGuid.h"
@@ -2945,12 +2946,26 @@ struct WorldObjectChangeAccumulator
 {
     UpdateDataMapType &i_updateDatas;
     WorldObject &i_object;
+
+    static bool IsInactiveBotCamera(Player* player)
+    {
+        if (!player)
+            return false;
+
+        PlayerbotAI* botAI = player->GetPlayerbotAI();
+        return botAI && !botAI->IsRealPlayer() && !botAI->IsActivityAllowedCached();
+    }
+
     WorldObjectChangeAccumulator(WorldObject &obj, UpdateDataMapType &d) : i_updateDatas(d), i_object(obj)
     {
         // send self fields changes in another way, otherwise
         // with new camera system when player's camera too far from player, camera wouldn't receive packets and changes from player
         if (i_object.IsType(TYPEMASK_PLAYER))
-            i_object.BuildUpdateDataForPlayer((Player*)&i_object, i_updateDatas);
+        {
+            Player* player = (Player*)&i_object;
+            if (!IsInactiveBotCamera(player))
+                i_object.BuildUpdateDataForPlayer(player, i_updateDatas);
+        }
     }
 
     void Visit(CameraMapType& m)
@@ -2958,6 +2973,9 @@ struct WorldObjectChangeAccumulator
         for (const auto& iter : m)
         {
             Player* owner = iter.getSource()->GetOwner();
+            if (!owner || IsInactiveBotCamera(owner))
+                continue;
+
             if (owner != &i_object && owner->IsInVisibleList_Unsafe(&i_object))
                 i_object.BuildUpdateDataForPlayer(owner, i_updateDatas);
         }
