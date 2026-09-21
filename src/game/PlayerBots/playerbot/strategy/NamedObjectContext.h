@@ -201,10 +201,11 @@ namespace ai
 
         T* Create(std::string name, PlayerbotAI* ai)
         {
-            if (created.find(name) == created.end())
+            auto it = created.find(name);
+            if (it == created.end())
                 return created[name] = NamedObjectFactory<T>::Create(name, ai);
 
-            return created[name];
+            return it->second;
         }
 
         virtual ~NamedObjectContext()
