@@ -55,6 +55,9 @@ NextAction** NextAction::mergeOwned(NextAction** left, NextAction** right)
     if (left && !right)
         return left;
 
+    if (!left && right)
+        return right;
+
     return merge(left, right);
 }
 
