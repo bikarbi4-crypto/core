@@ -10684,8 +10684,16 @@ void Unit::UpdateSplineMovement(uint32 t_diff)
     if (!MaNGOS::IsValidMapCoord(loc.x, loc.y, loc.z))
         return;
 
-    if (IsPlayer())
-        ((Player*)this)->SetPosition(loc.x, loc.y, loc.z, loc.orientation);
+    if (Player* player = ToPlayer())
+    {
+        player->SetPosition(loc.x, loc.y, loc.z, loc.orientation);
+
+        if (player->IsBot())
+        {
+            m_movementInfo.ChangePosition(player->GetPositionX(), player->GetPositionY(),
+                                          player->GetPositionZ(), player->GetOrientation());
+        }
+    }
     else
         GetMap()->CreatureRelocation((Creature*)this, loc.x, loc.y, loc.z, loc.orientation);
 }
