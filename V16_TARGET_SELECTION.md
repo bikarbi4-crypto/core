@@ -16,3 +16,5 @@ The existing `newdistance =+ ...` expression is intentionally preserved because 
 it would alter behavior rather than only remove redundant work.
 
 CI validation trigger branch for GitHub Actions.
+
+CI matrix retry with fail-fast disabled.
