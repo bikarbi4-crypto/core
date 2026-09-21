@@ -309,7 +309,15 @@ namespace ai
 			if (bot->IsMounted() && firstmount)
 				return false;
 
-			return bot->GetShapeshiftForm() != FORM_TRAVEL;
+			if (bot->GetShapeshiftForm() == FORM_TRAVEL)
+				return false;
+
+			// Preserve combat behavior; outside combat do not spend mana on Travel Form
+			// when the existing drink action already considers rest useful.
+			if (!bot->IsInCombat() && AI_VALUE(bool, "should drink"))
+				return false;
+
+			return true;
 		}
 	};
 

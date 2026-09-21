@@ -575,6 +575,40 @@ bool UseAction::UseItemInternal(Player* requester, uint32 itemId, Unit* unit, Ga
         if (spellInfo->HasAttribute(SPELL_ATTR_NOT_IN_COMBAT_ONLY_PEACEFUL) && bot->IsInCombat())
             continue;
 
+        // V2: prepare only peaceful seated food/drink item spells. This mirrors the
+        // exact old preflight and leaves all other item spells on their original path.
+        const bool restConsumable =
+            spellInfo->HasAttribute(SPELL_ATTR_NOT_IN_COMBAT_ONLY_PEACEFUL) &&
+            !bot->IsInCombat() &&
+            proto->Class == ITEM_CLASS_CONSUMABLE &&
+            (proto->SubClass == ITEM_SUBCLASS_CONSUMABLE || proto->SubClass == 5) &&
+            (spellData.SpellCategory == SPELLCATEGORY_ITEM_FOOD || spellData.SpellCategory == SPELLCATEGORY_ITEM_DRINK) &&
+            spellInfo->HasAttribute(SPELL_ATTR_ALLOW_WHILE_SITTING) &&
+            spellInfo->HasAuraInterruptFlag(AURA_INTERRUPT_STANDING_CANCELS);
+
+        if (restConsumable)
+        {
+            // Same early above-water failure used by Spell::CheckCast. Do this before
+            // stopping so swimming/water state cannot be erased by movement changes.
+            if (spellInfo->HasAuraInterruptFlag(AURA_INTERRUPT_UNDER_WATER_CANCELS) &&
+                (bot->IsSwimming() || (bot->IsInWater() && bot->IsInHighLiquid())))
+            {
+                continue;
+            }
+
+            if (bot->IsMoving() ||
+                bot->HasUnitState(UNIT_STATE_MOVING) ||
+                (bot->movespline && !bot->movespline->Finalized()))
+            {
+                ai->StopMoving();
+            }
+
+            // Only ordinary standing is converted to sitting. Sleep/dead/kneel/etc.
+            // keep their original state and continue through the normal cast checks.
+            if (bot->GetStandState() == UNIT_STAND_STATE_STAND)
+                bot->SetStandState(UNIT_STAND_STATE_SIT);
+        }
+
         // Build targets per spell
         bool validTarget = false;
         SpellCastTargets targets;

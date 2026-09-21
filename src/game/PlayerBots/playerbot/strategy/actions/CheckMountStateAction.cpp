@@ -449,7 +449,17 @@ bool CheckMountStateAction::Mount(Player* requester, bool limitSpeedToGroup)
         if (ai->HasStrategy("debug mount", BotState::BOT_STATE_NON_COMBAT))
             ai->TellPlayerNoFacing(requester, "Try to mount with " + chat->formatSpell(mount.GetSpellId()));
 
-        if (currentSpeed >= mount.GetSpeed(canFly))
+        uint32 candidateSpeed = mount.GetSpeed(canFly);
+        if (mount.GetSpellId() == 783)
+        {
+            if (bot->GetShapeshiftForm() == FORM_TRAVEL ||
+                (!bot->IsInCombat() && AI_VALUE(bool, "should drink")))
+            {
+                candidateSpeed = 0;
+            }
+        }
+
+        if (currentSpeed >= candidateSpeed)
         {
             if (ai->HasStrategy("debug mount", BotState::BOT_STATE_NON_COMBAT))
                 ai->TellPlayerNoFacing(requester, "Speed not faster than current.");
