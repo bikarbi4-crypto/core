@@ -35,6 +35,7 @@ jobs:
             -DBUILD_EXTRACTORS=0 \
             -DENABLE_MAILSENDER=1 \
             -DBUILD_WARNINGS_AS_ERROR=0 \
+            -DBUILD_PLAYERBOTS=1 \
             -DSUPPORTED_CLIENT_BUILD=5875 \
             -G "Visual Studio 17 2022" \
             -A x64
