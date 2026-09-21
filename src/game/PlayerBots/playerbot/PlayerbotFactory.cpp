@@ -1206,6 +1206,87 @@ void PlayerbotFactory::InitPetSpells()
         if (it != hunterPetSpells.end())
         {
             std::vector<uint32> activeSpellsToRemove;
+            static const std::unordered_set<uint32> disabledAutocastSpellIds = {
+                1742, 1753, 1754, 1755, 1756, 16697,
+                24450, 24452, 24453
+            };
+
+            std::vector<uint32> expectedActiveSpells;
+            for (const auto& pair : it->second)
+            {
+                if (pet->GetLevel() < pair.first)
+                    continue;
+
+                uint32 firstId = sSpellMgr.GetFirstSpellInChain(pair.second);
+                std::vector<uint32>::iterator expected = std::find_if(
+                    expectedActiveSpells.begin(), expectedActiveSpells.end(),
+                    [firstId](uint32 spellId)
+                    {
+                        return sSpellMgr.GetFirstSpellInChain(spellId) == firstId;
+                    });
+
+                if (expected == expectedActiveSpells.end())
+                    expectedActiveSpells.push_back(pair.second);
+                else if (sSpellMgr.IsHighRankOfSpell(pair.second, *expected))
+                    *expected = pair.second;
+            }
+
+            static const std::pair<uint32, uint32> growlRanks[] = {
+                {1, 2649}, {10, 14916}, {20, 14917}, {30, 14918},
+                {40, 14919}, {50, 14920}, {60, 14921}
+            };
+            uint32 expectedGrowlSpellId = 0;
+            for (const auto& rank : growlRanks)
+            {
+                if (pet->GetLevel() >= rank.first)
+                    expectedGrowlSpellId = rank.second;
+            }
+            if (expectedGrowlSpellId)
+                expectedActiveSpells.push_back(expectedGrowlSpellId);
+
+            std::vector<uint32> currentActiveSpells;
+            for (const auto& spell : pet->m_petSpells)
+            {
+                if (spell.second.state == PETSPELL_REMOVED || IsPassiveSpell(spell.first))
+                    continue;
+
+                currentActiveSpells.push_back(spell.first);
+            }
+
+            bool spellsCorrect = currentActiveSpells.size() == expectedActiveSpells.size();
+            if (spellsCorrect)
+            {
+                for (uint32 spellId : expectedActiveSpells)
+                {
+                    if (std::find(currentActiveSpells.begin(), currentActiveSpells.end(), spellId) == currentActiveSpells.end())
+                    {
+                        spellsCorrect = false;
+                        break;
+                    }
+                }
+            }
+
+            if (spellsCorrect)
+            {
+                bool autocastChanged = false;
+                for (uint32 spellId : disabledAutocastSpellIds)
+                {
+                    PetSpellMap::iterator spell = pet->m_petSpells.find(spellId);
+                    if (spell != pet->m_petSpells.end() &&
+                        spell->second.state != PETSPELL_REMOVED &&
+                        spell->second.active == ACT_ENABLED)
+                    {
+                        pet->ToggleAutocast(spellId, false);
+                        autocastChanged = true;
+                    }
+                }
+
+                if (autocastChanged)
+                    bot->PetSpellInitialize();
+
+                return;
+            }
+
 
             for (PetSpellMap::const_iterator spellItr = pet->m_petSpells.begin(); spellItr != pet->m_petSpells.end(); ++spellItr)
             {
@@ -1229,7 +1310,6 @@ void PlayerbotFactory::InitPetSpells()
             pet->CleanupActionBar();
 
             // Cower
-            static const std::unordered_set<uint32> cowerSpellIds = {1742, 1753, 1754, 1755, 1756, 16697};
 
             for (const auto& pair : it->second)
             {
@@ -1246,7 +1326,7 @@ void PlayerbotFactory::InitPetSpells()
                     if (!IsPassiveSpell(spellID))
                     {
                         // Cower should be available, but not autocast.
-                        const bool autocast = (cowerSpellIds.find(spellID) == cowerSpellIds.end());
+                        const bool autocast = (disabledAutocastSpellIds.find(spellID) == disabledAutocastSpellIds.end());
 
                         if (pet->HasSpell(spellID))
                         {
