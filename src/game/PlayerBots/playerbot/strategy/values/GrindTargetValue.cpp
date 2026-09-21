@@ -29,17 +29,19 @@ Unit* GrindTargetValue::Calculate()
     if (group)
         memberCount = group->GetMembersCount();
 
+    std::unordered_map<uint32, bool> needForQuestCache;
+
     Unit* target = NULL;
     uint32 assistCount = 0;
     while (!target && assistCount < memberCount)
     {
-        target = FindTargetForGrinding(assistCount++);
+        target = FindTargetForGrinding(assistCount++, needForQuestCache);
     }
 
     return target;
 }
 
-Unit* GrindTargetValue::FindTargetForGrinding(int assistCount)
+Unit* GrindTargetValue::FindTargetForGrinding(int assistCount, std::unordered_map<uint32, bool>& needForQuestCache)
 {
     uint32 memberCount = 1;
     Group* group = bot->GetGroup();
@@ -93,8 +95,6 @@ Unit* GrindTargetValue::FindTargetForGrinding(int assistCount)
                 groupMembers.push_back(member);
         }
     }
-
-    std::unordered_map<uint32, bool> needForQuestCache;
 
 for (std::list<ObjectGuid>::iterator tIter = targets.begin(); tIter != targets.end(); tIter++)
     {
