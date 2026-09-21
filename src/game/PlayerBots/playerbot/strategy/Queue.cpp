@@ -14,7 +14,7 @@ void Queue::Push(ActionBasket *action)
         for (std::list<ActionBasket*>::iterator iter = actions.begin(); iter != actions.end(); iter++)
         {
             ActionBasket* basket = *iter;
-            if (action->getAction()->getName() == basket->getAction()->getName())
+            if (action->getAction()->getNameRef() == basket->getAction()->getNameRef())
             {
                 if (basket->getRelevance() < action->getRelevance())
                 {

@@ -31,6 +31,7 @@ namespace ai
 
     public:
         std::string getName() const { return name; }
+        const std::string& getNameRef() const { return name; }
         float getRelevance() const { return relevance; }
 
     public:
@@ -134,6 +135,7 @@ namespace ai
         Action* getAction() { return action; }
         void setAction(Action* action) { this->action = action; }
         std::string getName() { return name; }
+        const std::string& getNameRef() const { return name; }
 
     public:
         NextAction** getContinuers() { return NextAction::merge(NextAction::clone(continuers), action->getContinuers()); }
