@@ -14,3 +14,5 @@ behavior are intentionally unchanged.
 
 The existing `newdistance =+ ...` expression is intentionally preserved because changing
 it would alter behavior rather than only remove redundant work.
+
+CI validation trigger branch for GitHub Actions.
