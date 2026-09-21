@@ -96,6 +96,14 @@ int32 MoveSplineInit::Launch()
 
     // corrent first vertex
     args.path[0] = real_position;
+
+    if (Player* pPlayer = unit.ToPlayer())
+    {
+        if (pPlayer->IsBot())
+            unit.m_movementInfo.ChangePosition(real_position.x, real_position.y,
+                                                real_position.z, unit.GetOrientation());
+    }
+
     uint32 moveFlags = unit.m_movementInfo.GetMovementFlags();
     uint32 oldMoveFlags = moveFlags;
     if (args.flags.done)
