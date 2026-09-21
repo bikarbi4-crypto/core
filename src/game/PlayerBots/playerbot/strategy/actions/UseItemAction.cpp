@@ -609,6 +609,16 @@ bool UseAction::UseItemInternal(Player* requester, uint32 itemId, Unit* unit, Ga
                 bot->SetStandState(UNIT_STAND_STATE_SIT);
         }
 
+        // V3: only the two observed battleground-location item spells get the
+        // same location predicate that the later Spell::CheckCast would use.
+        if ((spellInfo->Id == 22563 || spellInfo->Id == 22564) &&
+            !bot->HasCheatOption(PLAYER_CHEAT_NO_CHECK_CAST) &&
+            bot->GetCharmerOrOwnerPlayerOrPlayerItself() == bot)
+        {
+            if (sSpellMgr.GetSpellAllowedInLocationError(spellInfo, bot, bot) != SPELL_CAST_OK)
+                break;
+        }
+
         // Build targets per spell
         bool validTarget = false;
         SpellCastTargets targets;
