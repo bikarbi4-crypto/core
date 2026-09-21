@@ -50,6 +50,14 @@ NextAction** NextAction::merge(NextAction** left, NextAction** right)
     return res;
 }
 
+NextAction** NextAction::mergeOwned(NextAction** left, NextAction** right)
+{
+    if (left && !right)
+        return left;
+
+    return merge(left, right);
+}
+
 //NextAction** NextAction::array(uint8 nil, ...)
 NextAction** NextAction::array(uint32 n, ...)
 {

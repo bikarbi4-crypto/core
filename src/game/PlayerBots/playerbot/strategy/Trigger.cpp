@@ -43,7 +43,7 @@ TriggerNode::~TriggerNode()
 
 NextAction** TriggerNode::getHandlers()
 {
-	return NextAction::merge(NextAction::clone(handlers), trigger->getHandlers());
+	return NextAction::mergeOwned(NextAction::clone(handlers), trigger->getHandlers());
 }
 
 float TriggerNode::getFirstRelevance()
