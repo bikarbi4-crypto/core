@@ -81,7 +81,11 @@ The standalone tests include the actual production context/cache headers.
 They compare 400,000 mixed operations against `std::map`, 20,000 ordered
 inserts, erase/transplant and node stability, embedded NUL/high-byte keys,
 cached null fallback, qualification, reentrant factories, callback insertion
-during ordered traversal, and object destruction. AddressSanitizer is optional.
+during ordered traversal, and object destruction. The list tests compile class
+definitions and implementations extracted directly from production Action/Trigger
+sources, with game callbacks substituted. They cover null/allocated-empty lists,
+ownership, exact relevance bits and all four callback-before-clone paths.
+AddressSanitizer is optional.
 
 ```powershell
 cmake -S tests/playerbots -B build-tests -G "Visual Studio 17 2022" -A x64
