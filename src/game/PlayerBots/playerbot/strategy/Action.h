@@ -138,9 +138,21 @@ namespace ai
         const std::string& getNameRef() const { return name; }
 
     public:
-        NextAction** getContinuers() { return NextAction::mergeOwned(NextAction::clone(continuers), action->getContinuers()); }
-        NextAction** getAlternatives() { return NextAction::mergeOwned(NextAction::clone(alternatives), action->getAlternatives()); }
-        NextAction** getPrerequisites() { return NextAction::mergeOwned(NextAction::clone(prerequisites), action->getPrerequisites()); }
+        NextAction** getContinuers()
+        {
+            NextAction** dynamic = action->getContinuers();
+            return NextAction::mergeOwned(NextAction::clone(continuers), dynamic);
+        }
+        NextAction** getAlternatives()
+        {
+            NextAction** dynamic = action->getAlternatives();
+            return NextAction::mergeOwned(NextAction::clone(alternatives), dynamic);
+        }
+        NextAction** getPrerequisites()
+        {
+            NextAction** dynamic = action->getPrerequisites();
+            return NextAction::mergeOwned(NextAction::clone(prerequisites), dynamic);
+        }
 
     private:
         std::string name;

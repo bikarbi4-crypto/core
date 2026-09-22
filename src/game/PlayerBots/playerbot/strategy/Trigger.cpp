@@ -43,7 +43,10 @@ TriggerNode::~TriggerNode()
 
 NextAction** TriggerNode::getHandlers()
 {
-	return NextAction::mergeOwned(NextAction::clone(handlers), trigger->getHandlers());
+    // The binary baseline invokes the callback before cloning the template.
+    // Spell out the order instead of relying on argument evaluation order.
+    NextAction** dynamic = trigger->getHandlers();
+    return NextAction::mergeOwned(NextAction::clone(handlers), dynamic);
 }
 
 float TriggerNode::getFirstRelevance()
