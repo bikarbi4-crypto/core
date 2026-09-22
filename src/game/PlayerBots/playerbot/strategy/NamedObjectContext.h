@@ -5,6 +5,7 @@
 #include <set>
 #include <list>
 #include <map>
+#include "NamedObjectCache.h"
 
 namespace ai
 {
@@ -217,7 +218,7 @@ namespace ai
 
         void Clear()
         {
-            for (typename std::map<std::string, T*>::iterator i = created.begin(); i != created.end(); i++)
+            for (auto i = created.begin(); i != created.end(); i++)
             {
                 if (i->second)
                     delete i->second;
@@ -237,7 +238,7 @@ namespace ai
 
         void Update()
         {
-            for (typename std::map<std::string, T*>::iterator i = created.begin(); i != created.end(); i++)
+            for (auto i = created.begin(); i != created.end(); i++)
             {
                 if (i->second)
                     i->second->Update();
@@ -246,7 +247,7 @@ namespace ai
 
         void Reset()
         {
-            for (typename std::map<std::string, T*>::iterator i = created.begin(); i != created.end(); i++)
+            for (auto i = created.begin(); i != created.end(); i++)
             {
                 if (i->second)
                     i->second->Reset();
@@ -261,13 +262,13 @@ namespace ai
         std::set<std::string> GetCreated()
         {
             std::set<std::string> keys;
-            for (typename std::map<std::string, T*>::iterator it = created.begin(); it != created.end(); it++)
+            for (auto it = created.begin(); it != created.end(); it++)
                 keys.insert(it->first);
             return keys;
         }
 
     protected:
-        std::map<std::string, T*> created;
+        NamedObjectCache<T> created;
         bool shared;
         bool supportsSiblings;
     };
