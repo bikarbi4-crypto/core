@@ -30,18 +30,37 @@ Unit* GrindTargetValue::Calculate()
         memberCount = group->GetMembersCount();
 
     std::unordered_map<uint32, bool> needForQuestCache;
+    CalculationScratch scratch;
 
     Unit* target = NULL;
     uint32 assistCount = 0;
     while (!target && assistCount < memberCount)
     {
-        target = FindTargetForGrinding(assistCount++, needForQuestCache);
+        target = FindTargetForGrinding(assistCount++, needForQuestCache, scratch);
     }
 
     return target;
 }
 
-Unit* GrindTargetValue::FindTargetForGrinding(int assistCount, std::unordered_map<uint32, bool>& needForQuestCache)
+void GrindTargetValue::PrepareGroupMembers(Group* group, CalculationScratch& scratch)
+{
+    if (scratch.groupReady && scratch.group == group)
+        return;
+
+    scratch.group = group;
+    scratch.groupReady = true;
+    scratch.groupMembers.clear();
+    if (group)
+    {
+        Group::MemberSlotList const& slots = group->GetMemberSlots();
+        scratch.groupMembers.reserve(slots.size());
+        for (auto const& slot : slots)
+            if (Player* member = sObjectMgr.GetPlayer(slot.guid))
+                scratch.groupMembers.push_back(member);
+    }
+}
+
+Unit* GrindTargetValue::FindTargetForGrinding(int assistCount, std::unordered_map<uint32, bool>& needForQuestCache, CalculationScratch& scratch)
 {
     uint32 memberCount = 1;
     Group* group = bot->GetGroup();
@@ -83,18 +102,7 @@ Unit* GrindTargetValue::FindTargetForGrinding(int assistCount, std::unordered_ma
     TravelTarget* travelTarget = AI_VALUE(TravelTarget*, "travel target");
     bool isGrindTravelDest = travelTarget && typeid(travelTarget->GetDestination()) == typeid(GrindTravelDestination);
 
-    std::vector<Player*> groupMembers;
-    if (group)
-    {
-        Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
-        groupMembers.reserve(groupSlot.size());
-        for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
-        {
-            Player* member = sObjectMgr.GetPlayer(itr->guid);
-            if (member)
-                groupMembers.push_back(member);
-        }
-    }
+    PrepareGroupMembers(group, scratch);
 
 for (std::list<ObjectGuid>::iterator tIter = targets.begin(); tIter != targets.end(); tIter++)
     {
@@ -330,7 +338,7 @@ for (std::list<ObjectGuid>::iterator tIter = targets.begin(); tIter != targets.e
 
         if (group)
         {
-            for (Player* member : groupMembers)
+            for (Player* member : scratch.groupMembers)
             {
                 if (!sServerFacade.IsAlive(member))
                     continue;
