@@ -1228,6 +1228,11 @@ void PlayerbotAI::HandleTeleportAck()
 
 		WorldPackets::Movement::MoveTeleportAck teleportAck;
 		teleportAck.guid = bot->GetObjectGuid();
+#if SUPPORTED_CLIENT_BUILD > CLIENT_BUILD_1_9_4
+        // SendTeleportToController uses the old counter and then increments it.
+        // Preserve the working binary's modulo-2^32 acknowledgement value.
+        teleportAck.movementCounter = bot->GetMovementCounter() - 1u;
+#endif
         bot->GetSession()->HandleMoveTeleportAckOpcode(teleportAck);
 
         // add delay to simulate teleport delay
