@@ -1,6 +1,7 @@
 
 #include "playerbot/playerbot.h"
 #include "UseItemAction.h"
+#include "MoveSpline.h"
 
 #include "playerbot/PlayerbotAIConfig.h"
 #include "Database/DBCStore.h"

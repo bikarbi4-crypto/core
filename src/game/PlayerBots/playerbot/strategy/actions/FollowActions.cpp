@@ -1,6 +1,7 @@
 
 #include "playerbot/playerbot.h"
 #include "FollowActions.h"
+#include "MoveSpline.h"
 #include "playerbot/PlayerbotAIConfig.h"
 #include "playerbot/ServerFacade.h"
 #include "playerbot/strategy/values/Formations.h"
