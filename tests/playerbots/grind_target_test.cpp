@@ -26,6 +26,31 @@ static void Compare(Scenario scenario) {
     }
 }
 
+template<class Value> static Outcome EdgeCases(bool secondCalculation) {
+    Scenario scenario; scenario.members=7; scenario.targets=4; scenario.mixedPlayers=true; scenario.debug=true;
+    FixtureWorld world(scenario); activeWorld=&world;
+    world.group.slots.push_back(world.group.slots[1]); // Duplicate slots must keep their contribution.
+    world.group.slots.push_back({ObjectGuid(1234567)}); // An unresolved/offline member.
+    world.members[3]->alive=false;
+    world.members[0]->ai->context.Set<Unit*>("current target",nullptr);
+    world.members[2]->selection=ObjectGuid();
+    world.alternatePointer=std::make_unique<Creature>(*world.units[1]);
+    world.alternatePointer->mapId=44;
+    world.members[1]->ai->context.Set<Unit*>("current target",world.alternatePointer.get());
+    Value value(&world.ai);
+    Unit* target=value.Calculate();
+    if(secondCalculation) {
+        for(auto& p:world.members) {
+            p->alive=true;
+            if(p->ai) p->ai->context.Set<Unit*>("current target",world.units[2].get());
+            else p->selection=world.units[2]->guid;
+        }
+        world.messages.clear(); world.randomTrace.clear(); world.rng=scenario.seed;
+        target=value.Calculate();
+    }
+    return {target?target->guid.raw:0,world.messages,world.randomTrace,world.counters};
+}
+
 int main() {
     unsigned scenarios=0;
     for(unsigned members : {0u,1u,2u,5u,10u,40u})
@@ -46,6 +71,12 @@ int main() {
     }
     Scenario changing; changing.members=5; changing.targets=16; changing.allDead=true; changing.changingValues=true; changing.debug=true;
     Compare(changing); ++scenarios;
+    for(bool second : {false,true}) {
+        auto expected=EdgeCases<v16::GrindTargetValue>(second);
+        auto actual=EdgeCases<v17::GrindTargetValue>(second);
+        assert(expected.target==actual.target && expected.messages==actual.messages && expected.random==actual.random);
+        ++scenarios;
+    }
     // A fresh Calculate must observe changed selections; no snapshot survives it.
     FixtureWorld world({1,5,16}); activeWorld=&world;
     v17::GrindTargetValue value(&world.ai);

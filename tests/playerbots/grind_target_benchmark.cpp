@@ -12,12 +12,16 @@ int main() {
     std::cout << "case,members,candidates,v16_ns,a_ns,v17_ns,a_ratio,v17_ratio,player_lookups_v16,player_lookups_v17,current_target_reads_v16,current_target_reads_v17\n";
     for(const char* mode : {"found","none","all-dead","attacker"})
         for(unsigned members : {0u,5u,40u})
-            for(unsigned targets : {0u,1u,16u,64u}) {
+            for(unsigned targets : {0u,1u,2u,4u,16u,64u}) {
                 Scenario s; s.seed=17; s.members=members; s.targets=targets; s.mixedPlayers=true;
                 s.noTarget=std::string(mode)=="none"; s.allDead=std::string(mode)=="all-dead"; s.attackersFirst=std::string(mode)=="attacker";
                 FixtureWorld old(s),a(s),all(s);
                 std::vector<double> ot,at,nt;
-                const unsigned iterations=members==40?100u:1000u;
+                // Each timed batch lasts roughly 40ms or more; tiny fixed batches
+                // are distorted by timer granularity and CPU frequency changes.
+                double estimate=Measure<v16::GrindTargetValue>(old,50);
+                const unsigned iterations=static_cast<unsigned>(std::clamp(40000000.0/(std::max)(estimate,1.0),100.0,300000.0));
+                old.counters={}; a.counters={}; all.counters={};
                 for(unsigned pass=0;pass<7;++pass) {
                     double x,y,z;
                     if(pass%2) {z=Measure<v17::GrindTargetValue>(all,iterations); y=Measure<v17a::GrindTargetValue>(a,iterations); x=Measure<v16::GrindTargetValue>(old,iterations);}

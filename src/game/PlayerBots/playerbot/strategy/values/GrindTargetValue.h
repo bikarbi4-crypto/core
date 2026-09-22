@@ -26,10 +26,16 @@ namespace ai
             Group* group = nullptr;
             bool groupReady = false;
             std::vector<Player*> groupMembers;
+            Group* targetingGroup = nullptr;
+            bool targetingReady = false;
+            // Keep the original two equality rules: bot Unit* identity and
+            // human selection GUID. Sorted keys retain duplicate contributions.
+            std::vector<Unit*> botTargets;
+            std::vector<ObjectGuid> playerSelections;
         };
 
         void PrepareGroupMembers(Group* group, CalculationScratch& scratch);
-        int GetTargetingPlayerCount(Unit* unit);
+        int GetTargetingPlayerCount(Unit* unit, CalculationScratch& scratch, bool buildIndex);
         Unit* FindTargetForGrinding(int assistCount, std::unordered_map<uint32, bool>& needForQuestCache, CalculationScratch& scratch);
     };
 }

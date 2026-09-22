@@ -10,6 +10,7 @@
 #include "FreeMoveValues.h"
 #include "Formulas.h"
 #include "BattleGroundAV.h"
+#include <functional>
 
 using namespace ai;
 
@@ -326,7 +327,7 @@ for (std::list<ObjectGuid>::iterator tIter = targets.begin(); tIter != targets.e
 
         if (!bot->InBattleGround())
         {
-            const int targetingPlayerCount = GetTargetingPlayerCount(unit);
+            const int targetingPlayerCount = GetTargetingPlayerCount(unit, scratch, targets.size() > 2);
             if (targetingPlayerCount > assistCount)
             {
                 if (ai->HasStrategy("debug grind", BotState::BOT_STATE_NON_COMBAT))
@@ -376,25 +377,78 @@ for (std::list<ObjectGuid>::iterator tIter = targets.begin(); tIter != targets.e
     return result;
 }
 
-int GrindTargetValue::GetTargetingPlayerCount( Unit* unit )
+int GrindTargetValue::GetTargetingPlayerCount(Unit* unit, CalculationScratch& scratch, bool buildIndex)
 {
     Group* group = bot->GetGroup();
     if (!group)
         return 0;
 
-    int count = 0;
-    Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
-    for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
+    // One or two possible targets do not amortize allocating/sorting an index.
+    // Reuse resolved members but retain the original comparisons/read policy.
+    if (!buildIndex)
     {
-        Player *member = sObjectMgr.GetPlayer(itr->guid);
-        if( !member || !sServerFacade.IsAlive(member) || member == bot)
-            continue;
-
-        PlayerbotAI* ai = member->GetPlayerbotAI();
-        if ((ai && *ai->GetAiObjectContext()->GetValue<Unit*>("current target") == unit) ||
-            (!ai && member->GetSelectionGuid() == unit->GetObjectGuid()))
-            count++;
+        int count = 0;
+        auto countTarget = [&](Player* member)
+        {
+            if (!member || !sServerFacade.IsAlive(member) || member == bot)
+                return;
+            PlayerbotAI* memberAI = member->GetPlayerbotAI();
+            if ((memberAI && *memberAI->GetAiObjectContext()->GetValue<Unit*>("current target") == unit) ||
+                (!memberAI && member->GetSelectionGuid() == unit->GetObjectGuid()))
+                ++count;
+        };
+        if (scratch.groupReady && scratch.group == group)
+        {
+            for (Player* member : scratch.groupMembers)
+                countTarget(member);
+        }
+        else
+        {
+            for (auto const& slot : group->GetMemberSlots())
+                countTarget(sObjectMgr.GetPlayer(slot.guid));
+        }
+        return count;
     }
 
-    return count;
+    if (!scratch.targetingReady || scratch.targetingGroup != group)
+    {
+        scratch.botTargets.clear();
+        scratch.playerSelections.clear();
+        auto recordTarget = [&](Player* member)
+        {
+            if (!member || !sServerFacade.IsAlive(member) || member == bot)
+                return;
+
+            if (PlayerbotAI* memberAI = member->GetPlayerbotAI())
+            {
+                Unit* target = *memberAI->GetAiObjectContext()->GetValue<Unit*>("current target");
+                if (target)
+                    scratch.botTargets.push_back(target);
+            }
+            else
+                scratch.playerSelections.push_back(member->GetSelectionGuid());
+        };
+
+        // The distance-selection snapshot was prepared lazily at the same point
+        // as V16. A different group must not overwrite that pass's distance data.
+        if (scratch.groupReady && scratch.group == group)
+        {
+            for (Player* member : scratch.groupMembers)
+                recordTarget(member);
+        }
+        else
+        {
+            for (auto const& slot : group->GetMemberSlots())
+                recordTarget(sObjectMgr.GetPlayer(slot.guid));
+        }
+
+        std::sort(scratch.botTargets.begin(), scratch.botTargets.end(), std::less<Unit*>());
+        std::sort(scratch.playerSelections.begin(), scratch.playerSelections.end());
+        scratch.targetingGroup = group;
+        scratch.targetingReady = true;
+    }
+
+    const auto bots = std::equal_range(scratch.botTargets.begin(), scratch.botTargets.end(), unit, std::less<Unit*>());
+    const auto players = std::equal_range(scratch.playerSelections.begin(), scratch.playerSelections.end(), unit->GetObjectGuid());
+    return static_cast<int>((bots.second - bots.first) + (players.second - players.first));
 }
