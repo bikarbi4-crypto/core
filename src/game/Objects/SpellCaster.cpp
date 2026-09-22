@@ -1953,6 +1953,11 @@ SpellCastResult SpellCaster::CastSpell(SpellCaster* pTarget, uint32 spellId, boo
 
     if (!spellInfo)
     {
+        // SpellId 0 keeps the same failure result without formatting a diagnostic.
+        // Nonzero unknown IDs and successful lookups retain the original path.
+        if (spellId == 0)
+            return SPELL_FAILED_SPELL_UNAVAILABLE;
+
         if (triggeredByAura)
             sLog.Out(LOG_BASIC, LOG_LVL_ERROR, "CastSpell: unknown spell id %i by caster: %s triggered by aura %u (eff %u)", spellId, GetGuidStr().c_str(), triggeredByAura->GetId(), triggeredByAura->GetEffIndex());
         else
