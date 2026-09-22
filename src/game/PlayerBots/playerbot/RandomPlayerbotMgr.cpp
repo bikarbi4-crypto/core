@@ -4568,7 +4568,14 @@ std::list<std::string> RandomPlayerbotMgr::HandleConsoleDiff(std::string param)
         ss << "Avg diff (60 sec): " << sWorld.GetAverageDiff() << "\n";
         ss << "char db ping: " << sRandomPlayerbotMgr.GetDatabaseDelay("CharacterDatabase") << "\n";
         ss << "Sessions online: " << sWorld.GetActiveSessionCount() << "\n";
-        ss << "Bots online: " << sRandomPlayerbotMgr.botCount << " (active: " << sRandomPlayerbotMgr.activeBots << ")";
+        // Match the pre-V0 display correction without modifying activity bookkeeping.
+        uint32 uniqueBots;
+        {
+            std::shared_lock<std::shared_mutex> lock(sRandomPlayerbotMgr.m_playerBotsMutex);
+            uniqueBots = static_cast<uint32>(sRandomPlayerbotMgr.playerBots.size());
+        }
+        const uint32 uniqueActiveBots = sRandomPlayerbotMgr.activeBots - sRandomPlayerbotMgr.botCount + uniqueBots;
+        ss << "Bots online: " << uniqueBots << " (active: " << uniqueActiveBots << ")";
 
         messages.push_back(ss.str());
         return messages;
