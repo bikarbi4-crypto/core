@@ -35,7 +35,7 @@ namespace ai
     };
 
     template<class T>
-    class Value
+    class ValueBase
     {
     public:
         virtual T Get() = 0;
@@ -43,6 +43,19 @@ namespace ai
         virtual void Reset() {}
         virtual void Set(T value) = 0;
         operator T() { return Get(); }
+    };
+
+    template<class T>
+    class Value : public ValueBase<T> {};
+
+    // Scalar observations cannot leak a reference to storage that Set, Reset or
+    // a nested calculation may replace. Unknown list policies retain virtual Get.
+    template<class T, class Allocator>
+    class Value<std::list<T, Allocator>> : public ValueBase<std::list<T, Allocator>>
+    {
+    public:
+        virtual std::size_t GetSize() { return this->Get().size(); }
+        virtual bool IsEmpty() { return this->Get().empty(); }
     };
 
     template<class T>
@@ -59,6 +72,13 @@ namespace ai
     public:
         virtual T Get() override
         {
+            RefreshValue();
+            return value;
+        }
+
+    protected:
+        void RefreshValue()
+        {
             time_t now = time(0);
             if (!lastCheckTime || (checkInterval < 2 && (now - lastCheckTime > 0.1)) || now - lastCheckTime >= checkInterval / 2)
             {
@@ -70,8 +90,9 @@ namespace ai
 
                 value = Calculate();
             }
-            return value;
         }
+
+    public:
         virtual T LazyGet() override
         {
             if (!lastCheckTime)
@@ -287,6 +308,12 @@ namespace ai
     public:
         ObjectGuidListCalculatedValue(PlayerbotAI* ai, std::string name = "value", int checkInterval = 1) :
             CalculatedValue<std::list<ObjectGuid> >(ai, name, checkInterval) { this->lastCheckTime = time(0) - checkInterval / 2; }
+
+        // This family customizes Calculate, not the cache policy. Keep scalar
+        // reads and ordinary Get on the identical refresh/PMO path.
+        std::list<ObjectGuid> Get() final override { return CalculatedValue<std::list<ObjectGuid>>::Get(); }
+        std::size_t GetSize() final override { this->RefreshValue(); return this->value.size(); }
+        bool IsEmpty() final override { this->RefreshValue(); return this->value.empty(); }
 
         virtual std::string Format() override;
     };

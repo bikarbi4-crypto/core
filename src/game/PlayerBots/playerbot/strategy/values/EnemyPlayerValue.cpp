@@ -101,7 +101,7 @@ void EnemyPlayersValue::ApplyFilter(std::list<ObjectGuid>& targets, bool getOne)
 
 bool HasEnemyPlayersValue::Calculate()
 {
-    return !context->GetValue<std::list<ObjectGuid>>("enemy player targets", 1)->Get().empty();
+    return !context->GetValue<std::list<ObjectGuid>>("enemy player targets", 1)->IsEmpty();
 }
 
 Unit* EnemyPlayerValue::Calculate()

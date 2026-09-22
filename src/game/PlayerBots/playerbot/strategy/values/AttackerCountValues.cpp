@@ -60,22 +60,22 @@ bool HasAggroValue::Calculate()
 
 uint8 AttackersCountValue::Calculate()
 {
-    return context->GetValue<std::list<ObjectGuid>>("attackers")->Get().size();
+    return context->GetValue<std::list<ObjectGuid>>("attackers")->GetSize();
 }
 
 uint8 PossibleAttackTargetsCountValue::Calculate()
 {
-    return context->GetValue<std::list<ObjectGuid>>("possible attack targets")->Get().size();
+    return context->GetValue<std::list<ObjectGuid>>("possible attack targets")->GetSize();
 }
 
 bool HasAttackersValue::Calculate()
 {
-    return !context->GetValue<std::list<ObjectGuid>>("attackers", 1)->Get().empty();
+    return !context->GetValue<std::list<ObjectGuid>>("attackers", 1)->IsEmpty();
 }
 
 bool HasPossibleAttackTargetsValue::Calculate()
 {
-    return !context->GetValue<std::list<ObjectGuid>>("possible attack targets", 1)->Get().empty();
+    return !context->GetValue<std::list<ObjectGuid>>("possible attack targets", 1)->IsEmpty();
 }
 
 uint8 BalancePercentValue::Calculate()
