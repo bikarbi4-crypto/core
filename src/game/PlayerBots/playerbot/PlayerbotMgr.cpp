@@ -992,6 +992,12 @@ uint32 PlayerbotHolder::GetPlayerbotsAmount() const
     return amount;
 }
 
+uint32 PlayerbotHolder::GetPlayerbotEntryCount() const
+{
+    std::shared_lock<std::shared_mutex> lock(m_playerBotsMutex);
+    return static_cast<uint32>(playerBots.size());
+}
+
 PlayerbotMgr::PlayerbotMgr(Player* const master) : PlayerbotHolder(),  master(master), lastErrorTell(0)
 {
 }

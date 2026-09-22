@@ -47,6 +47,7 @@ public:
     std::string ListBots(Player* master, const std::string param);
     PlayerBotMap& GetAllBots() { return playerBots; }
     uint32 GetPlayerbotsAmount() const;
+    uint32 GetPlayerbotEntryCount() const;
 
     static std::string GetCommandTexts(const std::string& command);
     static std::unordered_map<std::string, std::string> GetCommandTexts();
