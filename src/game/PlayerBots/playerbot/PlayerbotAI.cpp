@@ -1556,6 +1556,10 @@ size_t PlayerbotAI::GetPendingBotOutgoingPacketCount()
 
 void PlayerbotAI::HandleBotOutgoingPacket(const WorldPacket& packet)
 {
+    // Match the working binary's chatguard. Direct HandleCommand dispatch is separate.
+    if (packet.GetOpcode() == SMSG_MESSAGECHAT)
+        return;
+
     if (packet.empty() && packet.GetOpcode() != MSG_RAID_READY_CHECK)
         return;
 
