@@ -20,6 +20,38 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Prepare pinned runtime build tools and legacy CRT
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $nasmZip = Join-Path $env:RUNNER_TEMP 'vmangos-nasm.zip'
+          Invoke-WebRequest 'https://www.nasm.us/pub/nasm/releasebuilds/2.16.03/win64/nasm-2.16.03-win64.zip' -OutFile $nasmZip
+          if ((Get-FileHash $nasmZip -Algorithm SHA256).Hash -ne '3EE4782247BCB874378D02F7EAB4E294A84D3D15F3F6EE2DE2F47A46AA7226E6') { throw 'NASM hash mismatch' }
+          $nasmRoot = Join-Path $env:RUNNER_TEMP 'vmangos-nasm'
+          Expand-Archive -LiteralPath $nasmZip -DestinationPath $nasmRoot
+          Join-Path $nasmRoot 'nasm-2.16.03' | Out-File $env:GITHUB_PATH -Append
+          # Install only on this disposable CI host; the artifact states this prerequisite.
+          $legacyCrt = Join-Path $env:RUNNER_TEMP 'vmangos-vcredist2008-x64.exe'
+          Invoke-WebRequest 'https://download.microsoft.com/download/5/d/8/5d8c65cb-c849-4025-8e95-c3966cafd8ae/vcredist_x64.exe' -OutFile $legacyCrt
+          if ((Get-FileHash $legacyCrt -Algorithm SHA256).Hash -ne 'C5E273A4A16AB4D5471E91C7477719A2F45DDADB76C7F98A38FA5074A6838654') { throw 'VC2008 runtime hash mismatch' }
+          $install = Start-Process -FilePath $legacyCrt -ArgumentList '/q','/norestart' -Wait -PassThru -WindowStyle Hidden
+          if ($install.ExitCode -notin @(0, 3010, 1638)) { throw "VC2008 runtime installation failed: $($install.ExitCode)" }
+
+      - name: Build matching OpenSSL 3 runtime
+        shell: cmd
+        run: |
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+          if errorlevel 1 exit /b 1
+          git clone --branch openssl-3.0.14 --depth 1 https://github.com/openssl/openssl.git "%RUNNER_TEMP%\vmangos-openssl3"
+          if errorlevel 1 exit /b 1
+          cd /d "%RUNNER_TEMP%\vmangos-openssl3"
+          git checkout --detach 9cff14fd97814baf8a9a07d8447960a64d616ada
+          if errorlevel 1 exit /b 1
+          perl Configure VC-WIN64A shared no-tests
+          if errorlevel 1 exit /b 1
+          nmake build_libs
+          if errorlevel 1 exit /b 1
+
       - name: Build pinned cURL dependency
         shell: cmd
         run: |
@@ -77,10 +109,19 @@ jobs:
           Get-Item -LiteralPath bin/RelWithDebInfo/mangosd.exe,bin/RelWithDebInfo/mangosd.pdb | Out-Null
           New-Item -ItemType Directory -Force -Path bin/RelWithDebInfo/runtime,bin/RelWithDebInfo/validation | Out-Null
           Copy-Item -LiteralPath dep/windows/lib/x64_release/libmySQL.dll,dep/windows/lib/x64_release/libeay32.dll,dep/windows/optional_dependencies/curl/lib/libcurl.dll -Destination bin/RelWithDebInfo/runtime
+          Copy-Item -LiteralPath "$env:RUNNER_TEMP/vmangos-openssl3/libssl-3-x64.dll","$env:RUNNER_TEMP/vmangos-openssl3/libcrypto-3-x64.dll" -Destination bin/RelWithDebInfo/runtime
+          New-Item -ItemType Directory -Force -Path bin/RelWithDebInfo/licenses | Out-Null
+          Copy-Item -LiteralPath "$env:RUNNER_TEMP/vmangos-openssl3/LICENSE.txt" -Destination bin/RelWithDebInfo/licenses/OpenSSL-3-LICENSE.txt
           Copy-Item -LiteralPath build-tests/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/source-tests.log
           Copy-Item -LiteralPath build-tests-asan/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/source-tests-asan.log
           Copy-Item -LiteralPath build-tests/grind_contracts.json -Destination bin/RelWithDebInfo/validation/grind-source-provenance.json
           Copy-Item -LiteralPath docs/V17_TARGET_HOT_VALUES.md -Destination bin/RelWithDebInfo/README_V17.md
+
+      - name: Check packaged DLL loading without a world or database
+        shell: pwsh
+        run: |
+          python tests/playerbots/check_windows_runtime.py bin/RelWithDebInfo (git rev-parse HEAD)
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Record build identity
         shell: pwsh
@@ -89,7 +130,7 @@ jobs:
           $artifactRoot = (Resolve-Path bin/RelWithDebInfo).Path
           $files = Get-ChildItem $artifactRoot -Recurse -File | Where-Object { $_.Name -in @('mangosd.exe', 'mangosd.pdb') -or $_.Extension -eq '.dll' }
           $hashes = @($files | ForEach-Object { @{ path = [IO.Path]::GetRelativePath($artifactRoot, $_.FullName).Replace('\','/'); bytes = $_.Length; sha256 = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash } })
-          @{ commit = (git rev-parse HEAD); source_baseline = 'cea7ba955f5c0d57ff76d63e53f97f34b1d3ab4c'; client_build = 5875; configuration = 'RelWithDebInfo'; architecture = 'x64'; playerbots = $true; source_tests = '4/4'; asan_tests = '4/4'; files = $hashes; runtime_prerequisites = @('Microsoft Visual C++ 2015-2022 x64 runtime', 'Microsoft Visual C++ 2008 x64 CRT for the bundled libmySQL.dll') } | ConvertTo-Json -Depth 4 | Set-Content bin/RelWithDebInfo/build-info.json
+          @{ commit = (git rev-parse HEAD); source_baseline = 'cea7ba955f5c0d57ff76d63e53f97f34b1d3ab4c'; client_build = 5875; configuration = 'RelWithDebInfo'; architecture = 'x64'; playerbots = $true; source_tests = '4/4'; asan_tests = '4/4'; runtime_smoke = 'passed --version with packaged DLLs and system-only PATH'; openssl3_runtime = '3.0.14 / 9cff14fd97814baf8a9a07d8447960a64d616ada'; files = $hashes; runtime_prerequisites = @('Microsoft Visual C++ 2015-2022 x64 runtime', 'Microsoft Visual C++ 2008 x64 CRT for the bundled libmySQL.dll') } | ConvertTo-Json -Depth 4 | Set-Content bin/RelWithDebInfo/build-info.json
 
       - name: Upload cumulative validation build
         uses: actions/upload-artifact@v4
@@ -99,6 +140,7 @@ jobs:
             bin/RelWithDebInfo/mangosd.exe
             bin/RelWithDebInfo/mangosd.pdb
             bin/RelWithDebInfo/runtime/*.dll
+            bin/RelWithDebInfo/licenses/*
             bin/RelWithDebInfo/validation/*
             bin/RelWithDebInfo/README_V17.md
             bin/RelWithDebInfo/build-info.json

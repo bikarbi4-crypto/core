@@ -157,10 +157,18 @@ four ASan tests, then publishes
 
 * mangosd.exe and its matching mangosd.pdb;
 * build-info.json with source identity and EXE/PDB/DLL hashes;
-* runtime/libmySQL.dll, runtime/libeay32.dll, runtime/libcurl.dll;
+* runtime/libmySQL.dll, runtime/libeay32.dll, runtime/libcurl.dll,
+  runtime/libssl-3-x64.dll and runtime/libcrypto-3-x64.dll;
 * source/ASan test logs and extracted-source provenance.
 
-The runtime folder contains the repository's application DLLs and pinned cURL.
+The runtime folder contains the repository's application DLLs, pinned cURL and
+OpenSSL 3.0.14 rebuilt from commit `9cff14fd97814baf8a9a07d8447960a64d616ada`.
+The OpenSSL 3 version matches the inspected working installation; its license
+is included. The core already imports this SSL DLL through its checked-in
+import library. Both local and CI builds have that dependency. No installed
+server DLLs are uploaded. Before publishing, CI runs only `--version` with the
+packaged DLLs in an isolated directory and a Windows-system-only PATH; the
+resulting loader/revision check is in `validation/runtime-smoke.json`.
 It does not replace an installation automatically. Its bundled libmySQL.dll
 requires the Microsoft VC++ 2008 x64 CRT; the other application components need
 the VC++ 2015-2022 x64 runtime. Existing working server DLLs should not be blindly
