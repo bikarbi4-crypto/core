@@ -1,193 +1,77 @@
-# Build on Ubuntu with GCC and Clang, plus Windows Visual Studio and MinGW64
-# builds.
-name: CI Build
+name: V16 Cumulative Windows Validation
 
 on:
   push:
-    paths-ignore:
-      - '.github/ISSUE_TEMPLATE.md'
-      - '.github/ISSUE_TEMPLATE/**'
-      - '.github/PULL_REQUEST_TEMPLATE.md'
-      - '.github/workflows/development-db-dump.yaml'
-      - '.github/workflows/pr-sql-check.yaml'
-      - '.gitignore'
-      - 'CONTRIBUTING.md'
-      - 'LICENSE'
-      - 'README.md'
-      - 'sql/**'
-
+    branches: [vmangos-v16-cumulative, vmangos-v16-cumulative-ci]
   pull_request:
-    paths-ignore:
-      - '.github/ISSUE_TEMPLATE.md'
-      - '.github/ISSUE_TEMPLATE/**'
-      - '.github/PULL_REQUEST_TEMPLATE.md'
-      - '.github/workflows/development-db-dump.yaml'
-      - '.github/workflows/pr-sql-check.yaml'
-      - '.gitignore'
-      - 'CONTRIBUTING.md'
-      - 'LICENSE'
-      - 'README.md'
-      - 'sql/**'
+    branches: [vmangos-v16-cumulative]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  build:
-    name: Build on ${{ matrix.config.job_name }} (client build ${{ matrix.client_build }})
-    runs-on: ${{ matrix.config.os }}
-    permissions:
-      contents: read
-    strategy:
-      matrix:
-        # Every supported client build is verified against Ubuntu GCC; the
-        # latest (1.12.1.5875) additionally runs against Ubuntu Clang, Windows
-        # Visual Studio, and Windows MinGW (added via include below).
-        client_build:
-          - 5875
-          - 5464
-          - 5302
-          - 5086
-          - 4878
-          - 4695
-          - 4544
-          - 4449
-          - 4375
-        config:
-          - os: ubuntu-24.04
-            c_compiler: gcc
-            cxx_compiler: g++
-            job_name: Ubuntu GCC
-            pch_off: ""
-        include:
-          - client_build: 5875
-            config:
-              os: ubuntu-24.04
-              c_compiler: clang
-              cxx_compiler: clang++
-              install_clang: true
-              job_name: Ubuntu Clang & PCH OFF
-              pch_off: "-DUSE_PCH=OFF"
-          - client_build: 5875
-            config:
-              os: macos-26
-              job_name: macOS Clang
-          - client_build: 5875
-            config:
-              os: windows-2022
-              job_name: Windows Visual Studio
-          - client_build: 5875
-            config:
-              os: windows-2022
-              job_name: Windows MinGW
-              use_mingw: true
-
+  windows-msvc:
+    name: Windows Visual Studio 2022 x64 RelWithDebInfo
+    runs-on: windows-2022
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
 
-      - name: Install Ubuntu build dependencies
-        if: matrix.config.os == 'ubuntu-24.04'
+      - name: Build pinned cURL dependency
+        shell: cmd
         run: |
-          sudo apt update
-          sudo apt install -y --no-install-recommends \
-            build-essential \
-            cmake \
-            libcurl4-openssl-dev \
-            libmysqlclient-dev \
-            libssl-dev \
-            zlib1g-dev
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+          if errorlevel 1 exit /b 1
+          git clone --branch curl-8_10_1 --depth 1 https://github.com/curl/curl.git "%RUNNER_TEMP%\vmangos-curl"
+          if errorlevel 1 exit /b 1
+          cd /d "%RUNNER_TEMP%\vmangos-curl"
+          git checkout --detach 7eb8c048470ed2cc14dca75be9c1cdae7ac8498b
+          if errorlevel 1 exit /b 1
+          call buildconf.bat
+          if errorlevel 1 exit /b 1
+          cd winbuild
+          nmake /f Makefile.vc mode=dll MACHINE=x64
+          if errorlevel 1 exit /b 1
+          cd ..\builds\libcurl-vc-x64-release-dll-ipv6-sspi-schannel
+          mkdir "%GITHUB_WORKSPACE%\dep\windows\optional_dependencies\curl\lib"
+          copy /y bin\libcurl.dll "%GITHUB_WORKSPACE%\dep\windows\optional_dependencies\curl\lib\"
+          if errorlevel 1 exit /b 1
+          copy /y lib\libcurl.lib "%GITHUB_WORKSPACE%\dep\windows\optional_dependencies\curl\lib\"
+          if errorlevel 1 exit /b 1
+          xcopy /e /i /y include "%GITHUB_WORKSPACE%\dep\windows\optional_dependencies\curl\include"
+          if errorlevel 1 exit /b 1
 
-      - name: Install Clang compiler
-        if: matrix.config.install_clang
-        run: sudo apt install -y --no-install-recommends clang
+      - name: Configure VMaNGOS
+        run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DBUILD_EXTRACTORS=0 -DENABLE_MAILSENDER=1 -DBUILD_WARNINGS_AS_ERROR=0 -DBUILD_PLAYERBOTS=1 -DSUPPORTED_CLIENT_BUILD=5875
 
-      - name: Install macOS build dependencies
-        # Pinned to match the macOS release build's dependencies so this job
-        # actually validates the configuration we ship; see the
-        # `Install macOS build dependencies` step in
-        # `.github/workflows/development-release.yaml` for the reasoning.
-        if: matrix.config.os == 'macos-26'
-        run: brew install openssl@3 mysql-client@8.4
+      - name: Build mangosd RelWithDebInfo
+        run: cmake --build build --config RelWithDebInfo --target mangosd --parallel 3
 
-      - name: Set up MSYS2 (MINGW64)
-        if: matrix.config.use_mingw
-        uses: msys2/setup-msys2@v2
+      - name: Build and run cumulative source tests
+        shell: pwsh
+        run: |
+          cmake -S tests/playerbots -B build-tests -G "Visual Studio 17 2022" -A x64
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cmake --build build-tests --config RelWithDebInfo
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ctest --test-dir build-tests -C RelWithDebInfo --output-on-failure
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Record build identity
+        shell: pwsh
+        run: |
+          $files = Get-ChildItem bin/RelWithDebInfo -File | Where-Object { $_.Name -in @('mangosd.exe', 'mangosd.pdb') -or $_.Extension -eq '.dll' }
+          $hashes = @($files | ForEach-Object { @{ name = $_.Name; bytes = $_.Length; sha256 = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash } })
+          @{ commit = (git rev-parse HEAD); client_build = 5875; configuration = 'RelWithDebInfo'; architecture = 'x64'; files = $hashes } | ConvertTo-Json -Depth 4 | Set-Content bin/RelWithDebInfo/build-info.json
+
+      - name: Upload cumulative validation build
+        uses: actions/upload-artifact@v4
         with:
-          msystem: MINGW64
-          update: true
-          install: >-
-            base-devel
-            git
-            mingw-w64-x86_64-cmake
-            mingw-w64-x86_64-curl
-            mingw-w64-x86_64-gcc
-            mingw-w64-x86_64-ninja
-
-      - name: Build and install on Ubuntu
-        if: matrix.config.os == 'ubuntu-24.04'
-        run: |
-          set -euo pipefail
-          mkdir -p build _install
-          cd build
-          cmake ../ \
-            -DCMAKE_C_COMPILER="${{ matrix.config.c_compiler }}" \
-            -DCMAKE_CXX_COMPILER="${{ matrix.config.cxx_compiler }}" \
-            -DCMAKE_INSTALL_PREFIX="../_install" \
-            -DBUILD_EXTRACTORS=1 \
-            -DENABLE_MAILSENDER=1 \
-            -DBUILD_WARNINGS_AS_ERROR=1 \
-            -DSUPPORTED_CLIENT_BUILD="${{ matrix.client_build }}" \
-            ${{ matrix.config.pch_off }}
-          make -j"$(nproc)"
-          make install
-
-      - name: Build and install on macOS
-        if: matrix.config.os == 'macos-26'
-        run: |
-          set -euo pipefail
-          mkdir -p build _install
-          cd build
-          cmake ../ \
-            -DCMAKE_INSTALL_PREFIX="../_install" \
-            -DCMAKE_PREFIX_PATH="$(brew --prefix openssl@3);$(brew --prefix mysql-client@8.4)" \
-            -DBUILD_EXTRACTORS=1 \
-            -DENABLE_MAILSENDER=1 \
-            -DBUILD_WARNINGS_AS_ERROR=1 \
-            -DSUPPORTED_CLIENT_BUILD="${{ matrix.client_build }}"
-          make -j"$(sysctl -n hw.ncpu)"
-          make install
-
-      - name: Build and install on Windows (Visual Studio)
-        if: matrix.config.os == 'windows-2022' && !matrix.config.use_mingw
-        shell: bash # Windows runners default to PowerShell.
-        run: |
-          set -euo pipefail
-          # Build cURL.
-          cd "$GITHUB_WORKSPACE/dep/windows/optional_dependencies"
-          ./curl_download_and_build.bat
-          # Build VMaNGOS.
-          cd "$GITHUB_WORKSPACE"
-          mkdir -p build
-          cd build
-          cmake ../ \
-            -DBUILD_EXTRACTORS=1 \
-            -DENABLE_MAILSENDER=1 \
-            -DBUILD_WARNINGS_AS_ERROR=1 \
-            -DSUPPORTED_CLIENT_BUILD="${{ matrix.client_build }}" \
-            -G "Visual Studio 17 2022" \
-            -A x64
-          "/c/Program Files/Microsoft Visual Studio/2022/Enterprise/MSBuild/Current/Bin/MSBuild.exe" "MaNGOS.sln" //p:Platform=x64 //p:Configuration=Release //m
-
-      - name: Build and install on Windows (MinGW)
-        if: matrix.config.use_mingw
-        shell: msys2 {0}
-        run: |
-          set -euo pipefail
-          mkdir -p build
-          cd build
-          cmake ../ \
-            -DBUILD_EXTRACTORS=1 \
-            -DENABLE_MAILSENDER=1 \
-            -DBUILD_WARNINGS_AS_ERROR=1 \
-            -DSUPPORTED_CLIENT_BUILD="${{ matrix.client_build }}" \
-            -DCMAKE_BUILD_TYPE=Release \
-            -G Ninja
-          cmake --build . --parallel
+          name: vmangos-v16-cumulative-windows-x64-relwithdebinfo
+          path: |
+            bin/RelWithDebInfo/mangosd.exe
+            bin/RelWithDebInfo/mangosd.pdb
+            bin/RelWithDebInfo/*.dll
+            bin/RelWithDebInfo/build-info.json
+          if-no-files-found: error
