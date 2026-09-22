@@ -45,6 +45,7 @@ static void RefreshMatrix() {
 }
 
 static void NoCopiesAndReentry() {
+    static_assert(sizeof(v16::ObjectGuidListCalculatedValue)==sizeof(v17::ObjectGuidListCalculatedValue));
     sPlayerbotAIConfig.perfMonEnabled = false;
     fixtureTime = 10000;
     OldList oldValue(2); NewList newValue(2);
@@ -74,6 +75,15 @@ static void NoCopiesAndReentry() {
     oldValue.Reset(); newValue.Reset();
     for (int i = 0; i < 3; ++i) assert(oldValue.Get().size() == newValue.GetSize());
     assert(oldValue.calculates == newValue.calculates);
+    std::size_t observedSize=0;
+    bool observedEmpty=true;
+    {
+        auto owner=std::make_unique<NewList>(2);
+        owner->generatedSize=9;
+        observedSize=owner->GetSize(); observedEmpty=owner->IsEmpty();
+        owner->Set({}); owner->Reset();
+    }
+    assert(observedSize==9 && !observedEmpty); // Remain valid after Set/Reset/owner destruction.
 }
 
 template<class Base> class ManualFilter : public Base {

@@ -1,8 +1,8 @@
-name: V16 Cumulative Windows Validation
+name: V17 Target Hot Values Windows Validation
 
 on:
   push:
-    branches: [vmangos-v16-cumulative, vmangos-v16-cumulative-ci]
+    branches: [vmangos-v17-target-hot-values]
   pull_request:
     branches: [vmangos-v16-cumulative]
   workflow_dispatch:
@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Build pinned cURL dependency
         shell: cmd
@@ -58,20 +60,46 @@ jobs:
           ctest --test-dir build-tests -C RelWithDebInfo --output-on-failure
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
+      - name: Check source tests with AddressSanitizer
+        shell: pwsh
+        run: |
+          cmake -S tests/playerbots -B build-tests-asan -G "Visual Studio 17 2022" -A x64 -DVMANGOS_TEST_ASAN=ON
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cmake --build build-tests-asan --config RelWithDebInfo --target context_cache_test action_lists_test value_metadata_test grind_target_test --parallel 3
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ctest --test-dir build-tests-asan -C RelWithDebInfo --output-on-failure
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Stage application DLLs and validation evidence
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Get-Item -LiteralPath bin/RelWithDebInfo/mangosd.exe,bin/RelWithDebInfo/mangosd.pdb | Out-Null
+          New-Item -ItemType Directory -Force -Path bin/RelWithDebInfo/runtime,bin/RelWithDebInfo/validation | Out-Null
+          Copy-Item -LiteralPath dep/windows/lib/x64_release/libmySQL.dll,dep/windows/lib/x64_release/libeay32.dll,dep/windows/optional_dependencies/curl/lib/libcurl.dll -Destination bin/RelWithDebInfo/runtime
+          Copy-Item -LiteralPath build-tests/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/source-tests.log
+          Copy-Item -LiteralPath build-tests-asan/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/source-tests-asan.log
+          Copy-Item -LiteralPath build-tests/grind_contracts.json -Destination bin/RelWithDebInfo/validation/grind-source-provenance.json
+          Copy-Item -LiteralPath docs/V17_TARGET_HOT_VALUES.md -Destination bin/RelWithDebInfo/README_V17.md
+
       - name: Record build identity
         shell: pwsh
         run: |
-          $files = Get-ChildItem bin/RelWithDebInfo -File | Where-Object { $_.Name -in @('mangosd.exe', 'mangosd.pdb') -or $_.Extension -eq '.dll' }
-          $hashes = @($files | ForEach-Object { @{ name = $_.Name; bytes = $_.Length; sha256 = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash } })
-          @{ commit = (git rev-parse HEAD); client_build = 5875; configuration = 'RelWithDebInfo'; architecture = 'x64'; files = $hashes } | ConvertTo-Json -Depth 4 | Set-Content bin/RelWithDebInfo/build-info.json
+          $ErrorActionPreference = 'Stop'
+          $artifactRoot = (Resolve-Path bin/RelWithDebInfo).Path
+          $files = Get-ChildItem $artifactRoot -Recurse -File | Where-Object { $_.Name -in @('mangosd.exe', 'mangosd.pdb') -or $_.Extension -eq '.dll' }
+          $hashes = @($files | ForEach-Object { @{ path = [IO.Path]::GetRelativePath($artifactRoot, $_.FullName).Replace('\','/'); bytes = $_.Length; sha256 = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash } })
+          @{ commit = (git rev-parse HEAD); source_baseline = 'cea7ba955f5c0d57ff76d63e53f97f34b1d3ab4c'; client_build = 5875; configuration = 'RelWithDebInfo'; architecture = 'x64'; playerbots = $true; source_tests = '4/4'; asan_tests = '4/4'; files = $hashes; runtime_prerequisites = @('Microsoft Visual C++ 2015-2022 x64 runtime', 'Microsoft Visual C++ 2008 x64 CRT for the bundled libmySQL.dll') } | ConvertTo-Json -Depth 4 | Set-Content bin/RelWithDebInfo/build-info.json
 
       - name: Upload cumulative validation build
         uses: actions/upload-artifact@v4
         with:
-          name: vmangos-v16-cumulative-windows-x64-relwithdebinfo
+          name: vmangos-v17-target-hot-values-windows-x64-relwithdebinfo
           path: |
             bin/RelWithDebInfo/mangosd.exe
             bin/RelWithDebInfo/mangosd.pdb
-            bin/RelWithDebInfo/*.dll
+            bin/RelWithDebInfo/runtime/*.dll
+            bin/RelWithDebInfo/validation/*
+            bin/RelWithDebInfo/README_V17.md
             bin/RelWithDebInfo/build-info.json
           if-no-files-found: error

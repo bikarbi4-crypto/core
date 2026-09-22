@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.22)
 project(PlayerbotCumulativeTests LANGUAGES CXX)
 enable_testing()
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
@@ -72,3 +72,11 @@ add_test(NAME context_cache COMMAND context_cache_test)
 add_test(NAME action_lists COMMAND action_lists_test)
 add_test(NAME value_metadata COMMAND value_metadata_test)
 add_test(NAME grind_target COMMAND grind_target_test)
+set_tests_properties(context_cache action_lists value_metadata grind_target PROPERTIES TIMEOUT 60)
+if(MSVC AND VMANGOS_TEST_ASAN)
+    # CTest may run outside a VS Developer Prompt. Make the compiler's matching
+    # ASan DLL discoverable for these child processes only.
+    get_filename_component(VMANGOS_TEST_COMPILER_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
+    set_tests_properties(context_cache action_lists value_metadata grind_target PROPERTIES
+        ENVIRONMENT_MODIFICATION "PATH=path_list_prepend:${VMANGOS_TEST_COMPILER_DIR}")
+endif()

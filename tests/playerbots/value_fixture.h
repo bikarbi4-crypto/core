@@ -18,7 +18,14 @@ using uint8 = std::uint8_t;
 using uint32 = std::uint32_t;
 inline time_t fixtureTime = 10000;
 inline std::uint64_t clockCalls = 0;
-inline time_t FixtureTime(time_t*) { ++clockCalls; return fixtureTime; }
+inline time_t FixtureTime(time_t*) {
+#ifdef VALUE_BENCHMARK
+    return std::time(nullptr); // Measure the real CRT clock cost on the warm Get path.
+#else
+    ++clockCalls;
+    return fixtureTime;
+#endif
+}
 
 #ifdef VALUE_BENCHMARK
 using ObjectGuid = std::uint64_t;
