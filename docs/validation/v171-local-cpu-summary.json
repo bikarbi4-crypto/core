@@ -36,6 +36,30 @@
     "exit_code": 0
   },
   {
+    "file": "full-chain-final-repeat-cpu.json",
+    "peak_whole_pc_cpu_percent": 31.72,
+    "samples": 87,
+    "exit_code": 0
+  },
+  {
+    "file": "full-chain-narrow-build-cpu.json",
+    "peak_whole_pc_cpu_percent": 30.08,
+    "samples": 8,
+    "exit_code": 0
+  },
+  {
+    "file": "full-chain-narrow-cpu.json",
+    "peak_whole_pc_cpu_percent": 26.27,
+    "samples": 87,
+    "exit_code": 0
+  },
+  {
+    "file": "full-chain-narrow-repeat-cpu.json",
+    "peak_whole_pc_cpu_percent": 41.89,
+    "samples": 92,
+    "exit_code": 0
+  },
+  {
     "file": "full-chain-repeat-cpu.json",
     "peak_whole_pc_cpu_percent": 22.46,
     "samples": 66,

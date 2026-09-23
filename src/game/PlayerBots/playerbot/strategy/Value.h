@@ -45,21 +45,25 @@ namespace ai
         operator T() { return Get(); }
     };
 
-    // Scalar observations cannot leak a reference to storage that Set, Reset or
-    // a nested calculation may replace. Unknown list policies retain virtual Get.
-    // Keep the V16 inheritance depth: an extra common base adds RTTI traversal
-    // on failed casts even though successful GetValue casts stop before it.
-    template<class T, class Allocator>
-    class Value<std::list<T, Allocator>>
+    // Restrict the V17 interface base to its list specialization. Ordinary
+    // values keep the V16 RTTI depth; the list policies retain their V17 ABI.
+    template<class T>
+    class ValueBase
     {
     public:
-        using List = std::list<T, Allocator>;
-        virtual List Get() = 0;
-        virtual List LazyGet() = 0;
+        virtual T Get() = 0;
+        virtual T LazyGet() = 0;
         virtual void Reset() {}
-        virtual void Set(List value) = 0;
-        operator List() { return Get(); }
+        virtual void Set(T value) = 0;
+        operator T() { return Get(); }
+    };
 
+    // Scalar observations cannot leak a reference to storage that Set, Reset or
+    // a nested calculation may replace. Unknown list policies retain virtual Get.
+    template<class T, class Allocator>
+    class Value<std::list<T, Allocator>> : public ValueBase<std::list<T, Allocator>>
+    {
+    public:
         virtual std::size_t GetSize() { return this->Get().size(); }
         virtual bool IsEmpty() { return this->Get().empty(); }
     };

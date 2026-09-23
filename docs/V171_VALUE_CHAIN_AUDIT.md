@@ -3,9 +3,9 @@
 The accepted gameplay control remains V16, `cea7ba955f5c0d57ff76d63e53f97f34b1d3ab4c`.
 V17 is preserved at `e93226fb808e71e2d221bfa9baba950e2bb248f0`.
 V17.1 descends from that exact V17. Its only gameplay source change is in
-`Value.h`: remove the incidental `ValueBase<T>` inheritance level, restore
-the original primary `Value<T>` interface, and declare the same interface
-directly in the list specialization. The list metadata methods, refresh
+`Value.h`: remove the incidental `ValueBase<T>` inheritance level from
+ordinary non-list values and restore the original primary `Value<T>` interface.
+The list specialization retains its exact V17 interface and base. The list metadata methods, refresh
 policy, Get copy semantics, PMO behavior, V17-A/B and all cumulative V0-V16
 code remain intact.
 
@@ -80,7 +80,8 @@ V17 regression. The extra RefreshValue helper is inlined into the measured
 scalar Get implementations. Successful RTTI is around 30-35 ns and stops
 at Value before the additional base. A deliberate wrong-type lookup scans
 the full hierarchy and costs about 6 ns more in V17. The scoped V17.1
-change removes that extra RTTI descriptor. Frequency of wrong-type lookups
+change removes that extra RTTI descriptor for non-list types. Lists retain
+their V17 hierarchy, including its failed-cast cost. Frequency of wrong-type lookups
 in real gameplay is unknown; usual unchecked GetValue calls expect a
 matching type.
 
@@ -89,6 +90,26 @@ For a warm calculated list of eight GUIDs, full size/empty access is about
 manual/single policies keep their virtual Get fallback. Refresh measurements
 include Calculate, so the size improvement is smaller there. See retained
 measurements rather than assuming every scalar or every list read improves.
+
+The initial broader candidate also removed the list interface base. Two
+process runs showed a repeatable loss in the manual/single list GetSize
+fallback: about 22-24 ns for eight entries and 230-240 ns for 64 entries.
+Ordinary Get and IsEmpty did not show that loss. The normalized compiler
+instructions of GetSize and its Get callee matched, so a precise machine-level
+cause was not established; code/data layout is a possible contributor, not
+a proven explanation. This candidate was rejected. Final V17.1 leaves the
+entire list hierarchy and policies byte-for-byte equal to V17, with the
+non-list RTTI correction retained. Final measurements are `v171-full-chain-final.csv`
+and `v171-full-chain-final-repeat.csv`; `v171-discarded-broad-candidate*.csv`
+retain the rejected candidate's results. Do not confuse its superseded CI
+run with the final HEAD's build.
+
+The final repeat ran with substantially higher background variation: even
+identical-code controls diverged strongly, and the whole-PC CPU sample peak
+rose from 26.27% to 41.89%. Those rows are retained, but cannot support a
+precise timing conclusion or an inferred regression. The clean final run,
+source identity checks, and semantic tests support the narrower correction;
+they do not establish a live-server performance gain.
 
 ## V17-B amortization
 
