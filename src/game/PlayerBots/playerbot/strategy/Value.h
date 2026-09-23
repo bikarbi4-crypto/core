@@ -35,7 +35,7 @@ namespace ai
     };
 
     template<class T>
-    class ValueBase
+    class Value
     {
     public:
         virtual T Get() = 0;
@@ -45,15 +45,21 @@ namespace ai
         operator T() { return Get(); }
     };
 
-    template<class T>
-    class Value : public ValueBase<T> {};
-
     // Scalar observations cannot leak a reference to storage that Set, Reset or
     // a nested calculation may replace. Unknown list policies retain virtual Get.
+    // Keep the V16 inheritance depth: an extra common base adds RTTI traversal
+    // on failed casts even though successful GetValue casts stop before it.
     template<class T, class Allocator>
-    class Value<std::list<T, Allocator>> : public ValueBase<std::list<T, Allocator>>
+    class Value<std::list<T, Allocator>>
     {
     public:
+        using List = std::list<T, Allocator>;
+        virtual List Get() = 0;
+        virtual List LazyGet() = 0;
+        virtual void Reset() {}
+        virtual void Set(List value) = 0;
+        operator List() { return Get(); }
+
         virtual std::size_t GetSize() { return this->Get().size(); }
         virtual bool IsEmpty() { return this->Get().empty(); }
     };
