@@ -1,0 +1,68 @@
+[
+  {
+    "file": "full-chain-before-all-cpu.json",
+    "peak_whole_pc_cpu_percent": 24.59,
+    "samples": 66,
+    "exit_code": 0
+  },
+  {
+    "file": "full-chain-build-cpu.json",
+    "peak_whole_pc_cpu_percent": 29.49,
+    "samples": 6,
+    "exit_code": 0
+  },
+  {
+    "file": "full-chain-candidate-build-cpu.json",
+    "peak_whole_pc_cpu_percent": 36.95,
+    "samples": 7,
+    "exit_code": 0
+  },
+  {
+    "file": "full-chain-candidate-cpu.json",
+    "peak_whole_pc_cpu_percent": 27.4,
+    "samples": 82,
+    "exit_code": 0
+  },
+  {
+    "file": "full-chain-final-build-cpu.json",
+    "peak_whole_pc_cpu_percent": 36.32,
+    "samples": 7,
+    "exit_code": 0
+  },
+  {
+    "file": "full-chain-final-cpu.json",
+    "peak_whole_pc_cpu_percent": 19.28,
+    "samples": 87,
+    "exit_code": 0
+  },
+  {
+    "file": "full-chain-repeat-cpu.json",
+    "peak_whole_pc_cpu_percent": 22.46,
+    "samples": 66,
+    "exit_code": 0
+  },
+  {
+    "file": "grind-before-cpu.json",
+    "peak_whole_pc_cpu_percent": 20.31,
+    "samples": 59,
+    "exit_code": 0
+  },
+  {
+    "file": "quick-cpu.json",
+    "peak_whole_pc_cpu_percent": 16.94,
+    "samples": 18,
+    "exit_code": 0
+  },
+  {
+    "file": "tests-asan-build-cpu.json",
+    "peak_whole_pc_cpu_percent": 38.38,
+    "samples": 7,
+    "exit_code": 0
+  },
+  {
+    "file": "tests-build-cpu.json",
+    "peak_whole_pc_cpu_percent": 33.18,
+    "samples": 5,
+    "exit_code": 0
+  }
+]

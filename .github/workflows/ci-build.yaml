@@ -1,8 +1,8 @@
-name: V17 Target Hot Values Windows Validation
+name: V17.1 Value RTTI Audit Windows Validation
 
 on:
   push:
-    branches: [vmangos-v17-target-hot-values]
+    branches: [vmangos-v17-1-value-rtti]
   pull_request:
     branches: [vmangos-v16-cumulative]
   workflow_dispatch:
@@ -102,6 +102,16 @@ jobs:
           ctest --test-dir build-tests-asan -C RelWithDebInfo --output-on-failure
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
+      - name: Check production Value lookup and RTTI contracts
+        shell: pwsh
+        run: |
+          cmake -S tests/playerbots/full_chain -B build-chain-audit -G "Visual Studio 17 2022" -A x64 -DAUDIT_CANDIDATE=ON
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cmake --build build-chain-audit --config RelWithDebInfo --parallel 2
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & build-chain-audit/RelWithDebInfo/full_chain_audit.exe --check > build-chain-audit/contracts.csv
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
       - name: Stage application DLLs and validation evidence
         shell: pwsh
         run: |
@@ -115,7 +125,9 @@ jobs:
           Copy-Item -LiteralPath build-tests/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/source-tests.log
           Copy-Item -LiteralPath build-tests-asan/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/source-tests-asan.log
           Copy-Item -LiteralPath build-tests/grind_contracts.json -Destination bin/RelWithDebInfo/validation/grind-source-provenance.json
-          Copy-Item -LiteralPath docs/V17_TARGET_HOT_VALUES.md -Destination bin/RelWithDebInfo/README_V17.md
+          Copy-Item -LiteralPath docs/V171_VALUE_CHAIN_AUDIT.md -Destination bin/RelWithDebInfo/README_V171.md
+          Copy-Item -LiteralPath build-chain-audit/contracts.csv -Destination bin/RelWithDebInfo/validation/value-chain-contracts.csv
+          Copy-Item -LiteralPath build-chain-audit/generated/provenance.json -Destination bin/RelWithDebInfo/validation/value-chain-provenance.json
 
       - name: Check packaged DLL loading without a world or database
         shell: pwsh
@@ -135,13 +147,13 @@ jobs:
       - name: Upload cumulative validation build
         uses: actions/upload-artifact@v4
         with:
-          name: vmangos-v17-target-hot-values-windows-x64-relwithdebinfo
+          name: vmangos-v17-1-value-rtti-windows-x64-relwithdebinfo
           path: |
             bin/RelWithDebInfo/mangosd.exe
             bin/RelWithDebInfo/mangosd.pdb
             bin/RelWithDebInfo/runtime/*.dll
             bin/RelWithDebInfo/licenses/*
             bin/RelWithDebInfo/validation/*
-            bin/RelWithDebInfo/README_V17.md
+            bin/RelWithDebInfo/README_V171.md
             bin/RelWithDebInfo/build-info.json
           if-no-files-found: error
