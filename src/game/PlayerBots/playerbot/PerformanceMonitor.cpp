@@ -21,15 +21,24 @@ std::unique_ptr<PerformanceMonitorOperation> PerformanceMonitor::start(Performan
         return {};
     }
 
-    auto md = mapsData.find(mapId);
-
-    if (md == mapsData.end())
-        return nullptr;
-
-    auto id = md->second.find(instanceId);
-
-    if (id == md->second.end())
-        return nullptr;
+    // RandomPlayerbotMgr pre-warms this registry only on its enabled update
+    // path. Existing/new instances must also work immediately after PMO ON.
+    performanceMetricMap* instanceData = nullptr;
+    {
+        std::shared_lock<std::shared_mutex> guard(registryLock);
+        auto map = mapsData.find(mapId);
+        if (map != mapsData.end())
+        {
+            auto instance = map->second.find(instanceId);
+            if (instance != map->second.end())
+                instanceData = &instance->second;
+        }
+    }
+    if (!instanceData)
+    {
+        std::unique_lock<std::shared_mutex> guard(registryLock);
+        instanceData = &mapsData[mapId][instanceId];
+    }
 
     std::vector<std::string> localStack;
 
@@ -44,7 +53,9 @@ std::unique_ptr<PerformanceMonitorOperation> PerformanceMonitor::start(Performan
         localStack = {name};
     }
 
-    auto& pd = id->second[metric][localStack];
+    // std::map insertion keeps this pointer stable; Reset never erases nodes.
+    // Keep per-map key construction/timing outside the registry lock.
+    auto& pd = (*instanceData)[metric][localStack];
 
     return std::make_unique<PerformanceMonitorOperation>(pd, name, stack);
 }
@@ -97,6 +108,7 @@ std::string StackString(const std::vector<std::string>& stack, bool fullStack = 
 
 void PerformanceMonitor::PrintStats(bool perTick, bool fullStack, bool showMap)
 {
+    std::unique_lock<std::shared_mutex> guard(registryLock);
     if (mapsData.empty())
         return;
 
@@ -282,6 +294,7 @@ void PerformanceMonitor::PrintStats(bool perTick, bool fullStack, bool showMap)
 
 void PerformanceMonitor::Reset()
 {
+    std::unique_lock<std::shared_mutex> guard(registryLock);
     for (auto& [mapId, mapData] : mapsData)
     {
         for (auto& [instanceId, instanceData] : mapData)
@@ -301,6 +314,7 @@ void PerformanceMonitor::Init(uint32 mapId, uint32 instanceId)
 {    
     if (sPlayerbotAIConfig.perfMonEnabled)
     {
+        std::unique_lock<std::shared_mutex> guard(registryLock);
         mapsData[mapId][instanceId];
     }
 }                       

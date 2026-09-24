@@ -6,6 +6,7 @@
 #include "PlayerbotAIBase.h"
 
 #include <mutex>
+#include <shared_mutex>
 #include <chrono>
 #include <ctime>
 
@@ -80,7 +81,9 @@ class PerformanceMonitor
     private:
         performanceMetricMap data;
         performanceMapMap mapsData;
-        //std::mutex lock;
+        // Protect registry creation/traversal when maps first encounter PMO
+        // after a runtime toggle. No registry work is done while disabled.
+        std::shared_mutex registryLock;
 };
 
 

@@ -695,9 +695,12 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool minimal)
 
     MirrorAh();
 
-    for (auto& [mapId, map] : sMapMgr.Maps())
+    if (sPlayerbotAIConfig.perfMonEnabled)
     {
-        sPerformanceMonitor.Init(map->GetId(), map->GetInstanceId());
+        for (auto& [mapId, map] : sMapMgr.Maps())
+        {
+            sPerformanceMonitor.Init(map->GetId(), map->GetInstanceId());
+        }
     }
 
     //Ping character database.
