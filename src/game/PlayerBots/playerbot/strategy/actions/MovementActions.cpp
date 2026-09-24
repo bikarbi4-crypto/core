@@ -488,7 +488,9 @@ bool MovementAction::MinimalMove(PlayerbotAI* ai)
     if (lastMove.nextTeleport > now)
         return false;
 
-    auto pmo1 = sPerformanceMonitor.start(PERF_MON_ACTION, "minimalMove", ai);
+    std::unique_ptr<PerformanceMonitorOperation> pmo1;
+    if (sPlayerbotAIConfig.perfMonEnabled)
+        pmo1 = sPerformanceMonitor.start(PERF_MON_ACTION, "minimalMove", ai);
 
     lastMove.nextTeleport = now + sPlayerbotAIConfig.passiveDelay/1000; //For teleports/transports/ect 
 

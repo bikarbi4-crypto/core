@@ -75,7 +75,9 @@ bool BuyAction::Execute(Event& event)
                 // reputation discount 
                 uint32 price = uint32(floor(proto->BuyPrice * bot->GetReputationPriceDiscount(pCreature)));
 
-                auto pmo = sPerformanceMonitor.start(PERF_MON_VALUE, "IsWorthBuyingFromVendorToResellAtAH", ai);
+                std::unique_ptr<PerformanceMonitorOperation> pmo;
+                if (sPlayerbotAIConfig.perfMonEnabled)
+                    pmo = sPerformanceMonitor.start(PERF_MON_VALUE, "IsWorthBuyingFromVendorToResellAtAH", ai);
 
                 // if item is worth selling to AH? 
                 bool canFlipAH = ItemUsageValue::IsWorthBuyingFromVendorToResellAtAH(proto, tItem->maxcount > 0);

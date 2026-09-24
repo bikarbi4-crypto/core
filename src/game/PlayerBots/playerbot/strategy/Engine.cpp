@@ -153,13 +153,14 @@ bool Engine::DoNextAction(Unit* unit, int depth, bool minimal, bool isStunned)
             ActionNode* actionNode = queue.Pop(basket);
             Action* action = InitializeAction(actionNode);
 
-            std::string actionName = (action ? action->getName() : "unknown");
-            if (!event.getSource().empty())
-                actionName += " <" + event.getSource() + ">";
-            
             std::unique_ptr<PerformanceMonitorOperation> pmo1;
             if (sPlayerbotAIConfig.perfMonEnabled)
+            {
+                std::string actionName = (action ? action->getName() : "unknown");
+                if (!event.getSource().empty())
+                    actionName += " <" + event.getSource() + ">";
                 pmo1 = sPerformanceMonitor.start(PERF_MON_ACTION, std::move(actionName), ai);
+            }
 
             if(action)
                 action->setRelevance(relevance);
@@ -451,24 +452,32 @@ ActionResult Engine::ExecuteAction(const std::string& name, Event& event)
     ActionNode* actionNode = CreateActionNode(name);
     if (actionNode)
     {
-        auto pmo1 = sPerformanceMonitor.start(PERF_MON_ACTION, name, ai);
+        std::unique_ptr<PerformanceMonitorOperation> pmo1;
+        if (sPlayerbotAIConfig.perfMonEnabled)
+            pmo1 = sPerformanceMonitor.start(PERF_MON_ACTION, name, ai);
         Action* action = InitializeAction(actionNode);
         if (action)
         {
-            auto pmo2 = sPerformanceMonitor.start(PERF_MON_ACTION, "isUseful", ai);
+            std::unique_ptr<PerformanceMonitorOperation> pmo2;
+            if (sPlayerbotAIConfig.perfMonEnabled)
+                pmo2 = sPerformanceMonitor.start(PERF_MON_ACTION, "isUseful", ai);
             bool isUseful = action->isUseful();
             pmo2.reset();
             
             if (isUseful)
             {
-                auto pmo3 = sPerformanceMonitor.start(PERF_MON_ACTION, "isPossible", ai);
+                std::unique_ptr<PerformanceMonitorOperation> pmo3;
+                if (sPlayerbotAIConfig.perfMonEnabled)
+                    pmo3 = sPerformanceMonitor.start(PERF_MON_ACTION, "isPossible", ai);
                 bool isPossible = action->isPossible();
                 pmo3.reset();
 
                 if (isPossible)
                 {
                     action->MakeVerbose(event.getOwner() != nullptr);
-                    auto pmo4 = sPerformanceMonitor.start(PERF_MON_ACTION, "Execute", ai);
+                    std::unique_ptr<PerformanceMonitorOperation> pmo4;
+                    if (sPlayerbotAIConfig.perfMonEnabled)
+                        pmo4 = sPerformanceMonitor.start(PERF_MON_ACTION, "Execute", ai);
                     bool executionResult = ListenAndExecute(action, event);
                     pmo4.reset();
 
