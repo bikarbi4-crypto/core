@@ -317,25 +317,33 @@ PerformanceMonitorOperation::~PerformanceMonitorOperation()
 
 void PerformanceMonitorOperation::finish()
 {
-    if (!sPlayerbotAIConfig.perfMonEnabled)
-        return;
-
-    std::chrono::milliseconds finished = (std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now())).time_since_epoch();
-    uint32 elapsed = (finished - started).count();
-
-   // std::lock_guard<std::mutex> guard(data.lock);
-    if (elapsed > 0)
+    // Preserve the existing finish-time sampling policy: a scope ending while
+    // disabled contributes no time/count, but still owns a stack entry.
+    if (sPlayerbotAIConfig.perfMonEnabled)
     {
-        if (!data.minTime || data.minTime > elapsed)
-            data.minTime = elapsed;
-        if (!data.maxTime || data.maxTime < elapsed)
-            data.maxTime = elapsed;
-        data.totalTime += elapsed;
+        std::chrono::milliseconds finished = (std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now())).time_since_epoch();
+        uint32 elapsed = (finished - started).count();
+
+        // std::lock_guard<std::mutex> guard(data.lock);
+        if (elapsed > 0)
+        {
+            if (!data.minTime || data.minTime > elapsed)
+                data.minTime = elapsed;
+            if (!data.maxTime || data.maxTime < elapsed)
+                data.maxTime = elapsed;
+            data.totalTime += elapsed;
+        }
+        data.count++;
     }
-    data.count++;
 
     if (stack)
-        stack->erase(std::remove(stack->begin(), stack->end(), name), stack->end());
+    {
+        // Named AI scopes nest in LIFO order. Remove only the innermost matching
+        // entry; erase-remove also removed still-live parents with the same name.
+        auto frame = std::find(stack->rbegin(), stack->rend(), name);
+        if (frame != stack->rend())
+            stack->erase(std::next(frame).base());
+    }
 }
 
 #include "Chat.h"
