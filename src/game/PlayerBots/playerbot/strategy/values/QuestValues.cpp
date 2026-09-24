@@ -401,11 +401,12 @@ bool NeedForQuestValue::Calculate()
 			continue;
 
 		bool destinationsChecked = false;
+		const std::string objectiveQualifierPrefix = "{" + std::to_string(questId) + ",";
 		for (uint32 objective = 0; objective < QUEST_OBJECTIVES_COUNT; objective++)
 		{
-			std::vector<std::string> qualifier = { std::to_string(questId), std::to_string(objective) };
+			const std::string qualifier = objectiveQualifierPrefix + std::to_string(objective) + "}";
 
-			if (!AI_VALUE2(bool, "need quest objective", Qualified::MultiQualify(qualifier, ",")))
+			if (!AI_VALUE2(bool, "need quest objective", qualifier))
 				continue;
 
 			// This query uses the quest id and the same travel snapshot, not the
