@@ -1,0 +1,39 @@
+Start testing: Sep 24 06:55 RTZ 2 (зима)
+----------------------------------------------------------
+1/1 Testing: quest_contracts
+1/1 Test: quest_contracts
+Command: "LOCAL_WORK/quest-build/RelWithDebInfo/quest_test.exe"
+Directory: LOCAL_WORK/quest-build
+"quest_contracts" start time: Sep 24 06:55 RTZ 2 (зима)
+Output:
+----------------------------------------------------------
+destination counts: v171 objectives=0 calls=0 distances=0
+destination counts: a_only objectives=0 calls=0 distances=0
+destination counts: b_only objectives=0 calls=0 distances=0
+destination counts: c_only objectives=0 calls=0 distances=0
+destination counts: v18 objectives=0 calls=0 distances=0
+destination counts: v171 objectives=1 calls=1 distances=16
+destination counts: a_only objectives=1 calls=1 distances=16
+destination counts: b_only objectives=1 calls=1 distances=16
+destination counts: c_only objectives=1 calls=1 distances=16
+destination counts: v18 objectives=1 calls=1 distances=16
+destination counts: v171 objectives=2 calls=2 distances=32
+destination counts: a_only objectives=2 calls=1 distances=16
+destination counts: b_only objectives=2 calls=2 distances=32
+destination counts: c_only objectives=2 calls=2 distances=32
+destination counts: v18 objectives=2 calls=1 distances=16
+destination counts: v171 objectives=4 calls=4 distances=64
+destination counts: a_only objectives=4 calls=1 distances=16
+destination counts: b_only objectives=4 calls=4 distances=64
+destination counts: c_only objectives=4 calls=4 distances=64
+destination counts: v18 objectives=4 calls=1 distances=16
+quest parity: 34000 observations passed across V17.1, A, B, C and V18; policy/reentry/exception/qualifier checks passed
+<end of output>
+Test time =   0.64 sec
+----------------------------------------------------------
+Test Passed.
+"quest_contracts" end time: Sep 24 06:55 RTZ 2 (зима)
+"quest_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Sep 24 06:55 RTZ 2 (зима)

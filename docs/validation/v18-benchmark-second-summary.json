@@ -1,0 +1,1038 @@
+{
+  "quest-0-miss": {
+    "v171": {
+      "median_ns": 3907.807,
+      "min_ns": 3631.07,
+      "max_ns": 4651.836,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 1567.919,
+      "min_ns": 1542.627,
+      "max_ns": 2445.602,
+      "n": 8,
+      "change_percent": -59.88
+    },
+    "c_only": {
+      "median_ns": 4297.616,
+      "min_ns": 3705.85,
+      "max_ns": 4813.208,
+      "n": 8,
+      "change_percent": 9.98
+    },
+    "b_only": {
+      "median_ns": 1563.877,
+      "min_ns": 1539.966,
+      "max_ns": 1737.646,
+      "n": 8,
+      "change_percent": -59.98
+    },
+    "a_only": {
+      "median_ns": 4138.798,
+      "min_ns": 3651.964,
+      "max_ns": 4559.451,
+      "n": 8,
+      "change_percent": 5.91
+    }
+  },
+  "quest-0-first": {
+    "v171": {
+      "median_ns": 4098.356,
+      "min_ns": 3658.046,
+      "max_ns": 4513.07,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 1582.091,
+      "min_ns": 1539.767,
+      "max_ns": 1877.903,
+      "n": 8,
+      "change_percent": -61.4
+    },
+    "c_only": {
+      "median_ns": 4043.173,
+      "min_ns": 3732.357,
+      "max_ns": 4540.204,
+      "n": 8,
+      "change_percent": -1.35
+    },
+    "b_only": {
+      "median_ns": 1592.657,
+      "min_ns": 1544.618,
+      "max_ns": 2172.084,
+      "n": 8,
+      "change_percent": -61.14
+    },
+    "a_only": {
+      "median_ns": 4016.537,
+      "min_ns": 3675.862,
+      "max_ns": 4365.615,
+      "n": 8,
+      "change_percent": -2.0
+    }
+  },
+  "quest-0-last": {
+    "v171": {
+      "median_ns": 4091.305,
+      "min_ns": 3640.649,
+      "max_ns": 6446.856,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 1620.76,
+      "min_ns": 1545.958,
+      "max_ns": 2078.04,
+      "n": 8,
+      "change_percent": -60.39
+    },
+    "c_only": {
+      "median_ns": 4093.391,
+      "min_ns": 3826.451,
+      "max_ns": 5098.753,
+      "n": 8,
+      "change_percent": 0.05
+    },
+    "b_only": {
+      "median_ns": 1633.63,
+      "min_ns": 1547.446,
+      "max_ns": 1818.461,
+      "n": 8,
+      "change_percent": -60.07
+    },
+    "a_only": {
+      "median_ns": 3924.997,
+      "min_ns": 3645.033,
+      "max_ns": 4315.954,
+      "n": 8,
+      "change_percent": -4.06
+    }
+  },
+  "quest-1-miss": {
+    "v171": {
+      "median_ns": 4975.897,
+      "min_ns": 4623.432,
+      "max_ns": 5673.425,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 2325.332,
+      "min_ns": 2092.006,
+      "max_ns": 2706.834,
+      "n": 8,
+      "change_percent": -53.27
+    },
+    "c_only": {
+      "median_ns": 5079.52,
+      "min_ns": 4778.337,
+      "max_ns": 8354.92,
+      "n": 8,
+      "change_percent": 2.08
+    },
+    "b_only": {
+      "median_ns": 2143.578,
+      "min_ns": 2021.8,
+      "max_ns": 2735.973,
+      "n": 8,
+      "change_percent": -56.92
+    },
+    "a_only": {
+      "median_ns": 5283.173,
+      "min_ns": 4436.659,
+      "max_ns": 5542.319,
+      "n": 8,
+      "change_percent": 6.18
+    }
+  },
+  "quest-1-first": {
+    "v171": {
+      "median_ns": 1226.179,
+      "min_ns": 1131.549,
+      "max_ns": 1596.765,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 1043.771,
+      "min_ns": 817.549,
+      "max_ns": 1339.279,
+      "n": 8,
+      "change_percent": -14.88
+    },
+    "c_only": {
+      "median_ns": 1207.474,
+      "min_ns": 1173.354,
+      "max_ns": 1547.605,
+      "n": 8,
+      "change_percent": -1.53
+    },
+    "b_only": {
+      "median_ns": 905.643,
+      "min_ns": 816.539,
+      "max_ns": 1987.981,
+      "n": 8,
+      "change_percent": -26.14
+    },
+    "a_only": {
+      "median_ns": 1349.718,
+      "min_ns": 1183.373,
+      "max_ns": 1718.251,
+      "n": 8,
+      "change_percent": 10.08
+    }
+  },
+  "quest-1-last": {
+    "v171": {
+      "median_ns": 1270.558,
+      "min_ns": 1095.937,
+      "max_ns": 1512.175,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 981.269,
+      "min_ns": 843.147,
+      "max_ns": 1099.024,
+      "n": 8,
+      "change_percent": -22.77
+    },
+    "c_only": {
+      "median_ns": 1246.036,
+      "min_ns": 1167.498,
+      "max_ns": 1740.232,
+      "n": 8,
+      "change_percent": -1.93
+    },
+    "b_only": {
+      "median_ns": 871.534,
+      "min_ns": 837.792,
+      "max_ns": 1310.091,
+      "n": 8,
+      "change_percent": -31.41
+    },
+    "a_only": {
+      "median_ns": 1268.843,
+      "min_ns": 1145.614,
+      "max_ns": 1531.882,
+      "n": 8,
+      "change_percent": -0.13
+    }
+  },
+  "quest-2-miss": {
+    "v171": {
+      "median_ns": 5587.905,
+      "min_ns": 5162.687,
+      "max_ns": 6413.092,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 2107.441,
+      "min_ns": 2004.857,
+      "max_ns": 3866.049,
+      "n": 8,
+      "change_percent": -62.29
+    },
+    "c_only": {
+      "median_ns": 5554.779,
+      "min_ns": 5110.243,
+      "max_ns": 7658.857,
+      "n": 8,
+      "change_percent": -0.59
+    },
+    "b_only": {
+      "median_ns": 2627.498,
+      "min_ns": 2487.702,
+      "max_ns": 2745.657,
+      "n": 8,
+      "change_percent": -52.98
+    },
+    "a_only": {
+      "median_ns": 5074.221,
+      "min_ns": 4756.974,
+      "max_ns": 5776.697,
+      "n": 8,
+      "change_percent": -9.19
+    }
+  },
+  "quest-2-first": {
+    "v171": {
+      "median_ns": 1243.09,
+      "min_ns": 1121.981,
+      "max_ns": 1554.146,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 959.543,
+      "min_ns": 844.982,
+      "max_ns": 1384.877,
+      "n": 8,
+      "change_percent": -22.81
+    },
+    "c_only": {
+      "median_ns": 1302.368,
+      "min_ns": 1147.738,
+      "max_ns": 1717.518,
+      "n": 8,
+      "change_percent": 4.77
+    },
+    "b_only": {
+      "median_ns": 1020.885,
+      "min_ns": 810.185,
+      "max_ns": 1107.914,
+      "n": 8,
+      "change_percent": -17.88
+    },
+    "a_only": {
+      "median_ns": 1236.849,
+      "min_ns": 1150.29,
+      "max_ns": 2341.408,
+      "n": 8,
+      "change_percent": -0.5
+    }
+  },
+  "quest-2-last": {
+    "v171": {
+      "median_ns": 1348.586,
+      "min_ns": 1164.869,
+      "max_ns": 1727.063,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 861.098,
+      "min_ns": 814.75,
+      "max_ns": 1128.551,
+      "n": 8,
+      "change_percent": -36.15
+    },
+    "c_only": {
+      "median_ns": 1296.12,
+      "min_ns": 1115.648,
+      "max_ns": 1452.434,
+      "n": 8,
+      "change_percent": -3.89
+    },
+    "b_only": {
+      "median_ns": 887.11,
+      "min_ns": 821.927,
+      "max_ns": 1280.081,
+      "n": 8,
+      "change_percent": -34.22
+    },
+    "a_only": {
+      "median_ns": 1310.38,
+      "min_ns": 1157.814,
+      "max_ns": 1746.809,
+      "n": 8,
+      "change_percent": -2.83
+    }
+  },
+  "quest-4-miss": {
+    "v171": {
+      "median_ns": 6375.659,
+      "min_ns": 6233.317,
+      "max_ns": 7207.812,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 2060.385,
+      "min_ns": 1979.036,
+      "max_ns": 2885.205,
+      "n": 8,
+      "change_percent": -67.68
+    },
+    "c_only": {
+      "median_ns": 6465.3,
+      "min_ns": 6014.681,
+      "max_ns": 8523.21,
+      "n": 8,
+      "change_percent": 1.41
+    },
+    "b_only": {
+      "median_ns": 3660.482,
+      "min_ns": 3093.864,
+      "max_ns": 4624.512,
+      "n": 8,
+      "change_percent": -42.59
+    },
+    "a_only": {
+      "median_ns": 5012.891,
+      "min_ns": 4404.281,
+      "max_ns": 6690.137,
+      "n": 8,
+      "change_percent": -21.37
+    }
+  },
+  "quest-4-first": {
+    "v171": {
+      "median_ns": 1402.838,
+      "min_ns": 1192.233,
+      "max_ns": 1532.487,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 947.687,
+      "min_ns": 814.485,
+      "max_ns": 1127.026,
+      "n": 8,
+      "change_percent": -32.45
+    },
+    "c_only": {
+      "median_ns": 1389.202,
+      "min_ns": 1170.363,
+      "max_ns": 1800.039,
+      "n": 8,
+      "change_percent": -0.97
+    },
+    "b_only": {
+      "median_ns": 851.758,
+      "min_ns": 795.971,
+      "max_ns": 1189.182,
+      "n": 8,
+      "change_percent": -39.28
+    },
+    "a_only": {
+      "median_ns": 1214.488,
+      "min_ns": 1138.628,
+      "max_ns": 1831.463,
+      "n": 8,
+      "change_percent": -13.43
+    }
+  },
+  "quest-4-last": {
+    "v171": {
+      "median_ns": 1411.94,
+      "min_ns": 1106.234,
+      "max_ns": 1590.173,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 937.219,
+      "min_ns": 803.759,
+      "max_ns": 1182.827,
+      "n": 8,
+      "change_percent": -33.62
+    },
+    "c_only": {
+      "median_ns": 1381.124,
+      "min_ns": 1161.038,
+      "max_ns": 1506.662,
+      "n": 8,
+      "change_percent": -2.18
+    },
+    "b_only": {
+      "median_ns": 850.188,
+      "min_ns": 824.519,
+      "max_ns": 1044.211,
+      "n": 8,
+      "change_percent": -39.79
+    },
+    "a_only": {
+      "median_ns": 1418.349,
+      "min_ns": 1137.549,
+      "max_ns": 1778.921,
+      "n": 8,
+      "change_percent": 0.45
+    }
+  },
+  "quests-3-miss": {
+    "v171": {
+      "median_ns": 14893.925,
+      "min_ns": 13091.982,
+      "max_ns": 17743.875,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 7424.302,
+      "min_ns": 6067.032,
+      "max_ns": 8892.48,
+      "n": 8,
+      "change_percent": -50.15
+    },
+    "c_only": {
+      "median_ns": 15563.247,
+      "min_ns": 13543.576,
+      "max_ns": 19312.052,
+      "n": 8,
+      "change_percent": 4.49
+    },
+    "b_only": {
+      "median_ns": 9805.503,
+      "min_ns": 9336.504,
+      "max_ns": 11197.012,
+      "n": 8,
+      "change_percent": -34.16
+    },
+    "a_only": {
+      "median_ns": 11908.267,
+      "min_ns": 10136.902,
+      "max_ns": 12288.546,
+      "n": 8,
+      "change_percent": -20.05
+    }
+  },
+  "quests-20-miss": {
+    "v171": {
+      "median_ns": 104028.285,
+      "min_ns": 97666.058,
+      "max_ns": 123102.19,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 49953.467,
+      "min_ns": 44355.109,
+      "max_ns": 78706.934,
+      "n": 8,
+      "change_percent": -51.98
+    },
+    "c_only": {
+      "median_ns": 106924.635,
+      "min_ns": 99614.234,
+      "max_ns": 131771.168,
+      "n": 8,
+      "change_percent": 2.78
+    },
+    "b_only": {
+      "median_ns": 79904.197,
+      "min_ns": 71961.679,
+      "max_ns": 111005.839,
+      "n": 8,
+      "change_percent": -23.19
+    },
+    "a_only": {
+      "median_ns": 74455.84,
+      "min_ns": 70355.839,
+      "max_ns": 99727.372,
+      "n": 8,
+      "change_percent": -28.43
+    }
+  },
+  "item-objectives-warm": {
+    "v171": {
+      "median_ns": 9140.56,
+      "min_ns": 8242.005,
+      "max_ns": 9876.332,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 4360.614,
+      "min_ns": 3811.472,
+      "max_ns": 7023.126,
+      "n": 8,
+      "change_percent": -52.29
+    },
+    "c_only": {
+      "median_ns": 7168.203,
+      "min_ns": 6225.324,
+      "max_ns": 9625.083,
+      "n": 8,
+      "change_percent": -21.58
+    },
+    "b_only": {
+      "median_ns": 8636.901,
+      "min_ns": 7144.173,
+      "max_ns": 10683.559,
+      "n": 8,
+      "change_percent": -5.51
+    },
+    "a_only": {
+      "median_ns": 8050.316,
+      "min_ns": 7507.438,
+      "max_ns": 9051.942,
+      "n": 8,
+      "change_percent": -11.93
+    }
+  },
+  "item-objectives-refresh": {
+    "v171": {
+      "median_ns": 9097.32,
+      "min_ns": 8274.236,
+      "max_ns": 12454.255,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 3984.227,
+      "min_ns": 3742.736,
+      "max_ns": 5025.576,
+      "n": 8,
+      "change_percent": -56.2
+    },
+    "c_only": {
+      "median_ns": 7140.574,
+      "min_ns": 6224.495,
+      "max_ns": 8481.899,
+      "n": 8,
+      "change_percent": -21.51
+    },
+    "b_only": {
+      "median_ns": 7449.435,
+      "min_ns": 7019.981,
+      "max_ns": 9985.52,
+      "n": 8,
+      "change_percent": -18.11
+    },
+    "a_only": {
+      "median_ns": 8617.09,
+      "min_ns": 7493.23,
+      "max_ns": 11889.516,
+      "n": 8,
+      "change_percent": -5.28
+    }
+  },
+  "drop-0": {
+    "v171": {
+      "median_ns": 959.141,
+      "min_ns": 845.598,
+      "max_ns": 1147.191,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 850.862,
+      "min_ns": 743.782,
+      "max_ns": 1010.603,
+      "n": 8,
+      "change_percent": -11.29
+    },
+    "c_only": {
+      "median_ns": 827.843,
+      "min_ns": 765.65,
+      "max_ns": 998.378,
+      "n": 8,
+      "change_percent": -13.69
+    },
+    "b_only": {
+      "median_ns": 938.712,
+      "min_ns": 834.966,
+      "max_ns": 1123.804,
+      "n": 8,
+      "change_percent": -2.13
+    },
+    "a_only": {
+      "median_ns": 958.185,
+      "min_ns": 824.535,
+      "max_ns": 1280.975,
+      "n": 8,
+      "change_percent": -0.1
+    }
+  },
+  "vendor-0": {
+    "v171": {
+      "median_ns": 895.33,
+      "min_ns": 819.061,
+      "max_ns": 977.638,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 792.091,
+      "min_ns": 756.818,
+      "max_ns": 1081.435,
+      "n": 8,
+      "change_percent": -11.53
+    },
+    "c_only": {
+      "median_ns": 782.184,
+      "min_ns": 738.783,
+      "max_ns": 949.837,
+      "n": 8,
+      "change_percent": -12.64
+    },
+    "b_only": {
+      "median_ns": 831.047,
+      "min_ns": 814.819,
+      "max_ns": 1136.162,
+      "n": 8,
+      "change_percent": -7.18
+    },
+    "a_only": {
+      "median_ns": 924.552,
+      "min_ns": 820.159,
+      "max_ns": 1103.504,
+      "n": 8,
+      "change_percent": 3.26
+    }
+  },
+  "drop-1": {
+    "v171": {
+      "median_ns": 535.057,
+      "min_ns": 464.815,
+      "max_ns": 565.293,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 425.099,
+      "min_ns": 364.016,
+      "max_ns": 536.943,
+      "n": 8,
+      "change_percent": -20.55
+    },
+    "c_only": {
+      "median_ns": 390.283,
+      "min_ns": 363.319,
+      "max_ns": 529.13,
+      "n": 8,
+      "change_percent": -27.06
+    },
+    "b_only": {
+      "median_ns": 524.251,
+      "min_ns": 436.065,
+      "max_ns": 609.29,
+      "n": 8,
+      "change_percent": -2.02
+    },
+    "a_only": {
+      "median_ns": 473.496,
+      "min_ns": 437.961,
+      "max_ns": 617.5,
+      "n": 8,
+      "change_percent": -11.51
+    }
+  },
+  "vendor-1": {
+    "v171": {
+      "median_ns": 1057.63,
+      "min_ns": 890.134,
+      "max_ns": 1566.707,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 921.09,
+      "min_ns": 740.102,
+      "max_ns": 1176.521,
+      "n": 8,
+      "change_percent": -12.91
+    },
+    "c_only": {
+      "median_ns": 818.297,
+      "min_ns": 724.015,
+      "max_ns": 1153.134,
+      "n": 8,
+      "change_percent": -22.63
+    },
+    "b_only": {
+      "median_ns": 948.6,
+      "min_ns": 845.242,
+      "max_ns": 1670.502,
+      "n": 8,
+      "change_percent": -10.31
+    },
+    "a_only": {
+      "median_ns": 1057.633,
+      "min_ns": 871.02,
+      "max_ns": 1278.162,
+      "n": 8,
+      "change_percent": 0.0
+    }
+  },
+  "drop-8": {
+    "v171": {
+      "median_ns": 725.479,
+      "min_ns": 629.014,
+      "max_ns": 770.34,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 394.351,
+      "min_ns": 361.161,
+      "max_ns": 429.823,
+      "n": 8,
+      "change_percent": -45.64
+    },
+    "c_only": {
+      "median_ns": 398.451,
+      "min_ns": 369.114,
+      "max_ns": 614.425,
+      "n": 8,
+      "change_percent": -45.08
+    },
+    "b_only": {
+      "median_ns": 649.188,
+      "min_ns": 622.585,
+      "max_ns": 818.729,
+      "n": 8,
+      "change_percent": -10.52
+    },
+    "a_only": {
+      "median_ns": 767.018,
+      "min_ns": 630.245,
+      "max_ns": 848.414,
+      "n": 8,
+      "change_percent": 5.73
+    }
+  },
+  "vendor-8": {
+    "v171": {
+      "median_ns": 1259.633,
+      "min_ns": 1103.672,
+      "max_ns": 1716.598,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 840.478,
+      "min_ns": 750.844,
+      "max_ns": 1156.757,
+      "n": 8,
+      "change_percent": -33.28
+    },
+    "c_only": {
+      "median_ns": 786.5,
+      "min_ns": 753.573,
+      "max_ns": 1074.593,
+      "n": 8,
+      "change_percent": -37.56
+    },
+    "b_only": {
+      "median_ns": 1242.78,
+      "min_ns": 1104.813,
+      "max_ns": 1587.825,
+      "n": 8,
+      "change_percent": -1.34
+    },
+    "a_only": {
+      "median_ns": 1182.149,
+      "min_ns": 1046.073,
+      "max_ns": 1496.112,
+      "n": 8,
+      "change_percent": -6.15
+    }
+  },
+  "drop-64": {
+    "v171": {
+      "median_ns": 2903.949,
+      "min_ns": 2684.813,
+      "max_ns": 3750.445,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 448.945,
+      "min_ns": 364.76,
+      "max_ns": 524.431,
+      "n": 8,
+      "change_percent": -84.54
+    },
+    "c_only": {
+      "median_ns": 382.18,
+      "min_ns": 363.748,
+      "max_ns": 493.618,
+      "n": 8,
+      "change_percent": -86.84
+    },
+    "b_only": {
+      "median_ns": 2905.617,
+      "min_ns": 2686.218,
+      "max_ns": 3143.197,
+      "n": 8,
+      "change_percent": 0.06
+    },
+    "a_only": {
+      "median_ns": 2876.695,
+      "min_ns": 2660.417,
+      "max_ns": 4186.703,
+      "n": 8,
+      "change_percent": -0.94
+    }
+  },
+  "vendor-64": {
+    "v171": {
+      "median_ns": 3457.584,
+      "min_ns": 3094.022,
+      "max_ns": 3951.266,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 769.498,
+      "min_ns": 741.691,
+      "max_ns": 1009.639,
+      "n": 8,
+      "change_percent": -77.74
+    },
+    "c_only": {
+      "median_ns": 928.456,
+      "min_ns": 757.709,
+      "max_ns": 1234.713,
+      "n": 8,
+      "change_percent": -73.15
+    },
+    "b_only": {
+      "median_ns": 3255.457,
+      "min_ns": 3036.849,
+      "max_ns": 3848.408,
+      "n": 8,
+      "change_percent": -5.85
+    },
+    "a_only": {
+      "median_ns": 3383.886,
+      "min_ns": 3104.749,
+      "max_ns": 3698.923,
+      "n": 8,
+      "change_percent": -2.13
+    }
+  },
+  "drop-reset-0": {
+    "v171": {
+      "median_ns": 1386.637,
+      "min_ns": 1180.074,
+      "max_ns": 2766.199,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 993.328,
+      "min_ns": 898.233,
+      "max_ns": 1256.018,
+      "n": 8,
+      "change_percent": -28.36
+    },
+    "c_only": {
+      "median_ns": 985.044,
+      "min_ns": 907.614,
+      "max_ns": 1227.933,
+      "n": 8,
+      "change_percent": -28.96
+    },
+    "b_only": {
+      "median_ns": 1427.91,
+      "min_ns": 1192.422,
+      "max_ns": 1994.837,
+      "n": 8,
+      "change_percent": 2.98
+    },
+    "a_only": {
+      "median_ns": 1434.11,
+      "min_ns": 1202.102,
+      "max_ns": 1911.912,
+      "n": 8,
+      "change_percent": 3.42
+    }
+  },
+  "drop-reset-1": {
+    "v171": {
+      "median_ns": 646.022,
+      "min_ns": 604.867,
+      "max_ns": 806.448,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 761.298,
+      "min_ns": 660.265,
+      "max_ns": 973.901,
+      "n": 8,
+      "change_percent": 17.84
+    },
+    "c_only": {
+      "median_ns": 645.715,
+      "min_ns": 616.812,
+      "max_ns": 747.956,
+      "n": 8,
+      "change_percent": -0.05
+    },
+    "b_only": {
+      "median_ns": 700.26,
+      "min_ns": 612.396,
+      "max_ns": 796.454,
+      "n": 8,
+      "change_percent": 8.4
+    },
+    "a_only": {
+      "median_ns": 644.972,
+      "min_ns": 635.348,
+      "max_ns": 776.303,
+      "n": 8,
+      "change_percent": -0.16
+    }
+  },
+  "drop-reset-8": {
+    "v171": {
+      "median_ns": 1214.349,
+      "min_ns": 1136.138,
+      "max_ns": 1468.679,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 1291.522,
+      "min_ns": 1102.9,
+      "max_ns": 1656.612,
+      "n": 8,
+      "change_percent": 6.36
+    },
+    "c_only": {
+      "median_ns": 1220.232,
+      "min_ns": 1117.439,
+      "max_ns": 1468.75,
+      "n": 8,
+      "change_percent": 0.48
+    },
+    "b_only": {
+      "median_ns": 1355.079,
+      "min_ns": 1086.538,
+      "max_ns": 1547.152,
+      "n": 8,
+      "change_percent": 11.59
+    },
+    "a_only": {
+      "median_ns": 1171.674,
+      "min_ns": 1094.002,
+      "max_ns": 1352.428,
+      "n": 8,
+      "change_percent": -3.51
+    }
+  },
+  "drop-reset-64": {
+    "v171": {
+      "median_ns": 5889.093,
+      "min_ns": 4723.56,
+      "max_ns": 7433.891,
+      "n": 8,
+      "change_percent": 0.0
+    },
+    "v18": {
+      "median_ns": 4873.82,
+      "min_ns": 4672.352,
+      "max_ns": 7012.523,
+      "n": 8,
+      "change_percent": -17.24
+    },
+    "c_only": {
+      "median_ns": 5620.382,
+      "min_ns": 4710.219,
+      "max_ns": 6453.809,
+      "n": 8,
+      "change_percent": -4.56
+    },
+    "b_only": {
+      "median_ns": 5284.337,
+      "min_ns": 4574.21,
+      "max_ns": 9316.983,
+      "n": 8,
+      "change_percent": -10.27
+    },
+    "a_only": {
+      "median_ns": 5043.572,
+      "min_ns": 4876.96,
+      "max_ns": 8215.162,
+      "n": 8,
+      "change_percent": -14.36
+    }
+  }
+}

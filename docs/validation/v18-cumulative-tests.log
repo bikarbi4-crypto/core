@@ -1,0 +1,67 @@
+Start testing: Sep 24 06:52 RTZ 2 (зима)
+----------------------------------------------------------
+1/4 Testing: context_cache
+1/4 Test: context_cache
+Command: "LOCAL_WORK/cumulative-tests/RelWithDebInfo/context_cache_test.exe"
+Directory: LOCAL_WORK/cumulative-tests
+"context_cache" start time: Sep 24 06:52 RTZ 2 (зима)
+Output:
+----------------------------------------------------------
+PASS: 400000 differential operations; 20000 sorted inserts; stable nodes; cached nulls; qualified names; reentrant factories and ordered updates; ownership.
+<end of output>
+Test time =   0.54 sec
+----------------------------------------------------------
+Test Passed.
+"context_cache" end time: Sep 24 06:52 RTZ 2 (зима)
+"context_cache" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/4 Testing: action_lists
+2/4 Test: action_lists
+Command: "LOCAL_WORK/cumulative-tests/RelWithDebInfo/action_lists_test.exe"
+Directory: LOCAL_WORK/cumulative-tests
+"action_lists" start time: Sep 24 06:52 RTZ 2 (зима)
+Output:
+----------------------------------------------------------
+PASS: production V11-V13 ownership matrix, null/empty distinction, exact float bits, names, all four callback-before-clone paths.
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"action_lists" end time: Sep 24 06:52 RTZ 2 (зима)
+"action_lists" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/4 Testing: value_metadata
+3/4 Test: value_metadata
+Command: "LOCAL_WORK/cumulative-tests/RelWithDebInfo/value_metadata_test.exe"
+Directory: LOCAL_WORK/cumulative-tests
+"value_metadata" start time: Sep 24 06:52 RTZ 2 (зима)
+Output:
+----------------------------------------------------------
+PASS: production V16/V17 refresh, PMO, Calculate, LazyGet, Set, Reset, reentry, manual/single/memory policies, five consumers and zero element copies; scalar results cannot dangle.
+<end of output>
+Test time =   0.15 sec
+----------------------------------------------------------
+Test Passed.
+"value_metadata" end time: Sep 24 06:52 RTZ 2 (зима)
+"value_metadata" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/4 Testing: grind_target
+4/4 Test: grind_target
+Command: "LOCAL_WORK/cumulative-tests/RelWithDebInfo/grind_target_test.exe"
+Directory: LOCAL_WORK/cumulative-tests
+"grind_target" start time: Sep 24 06:52 RTZ 2 (зима)
+Output:
+----------------------------------------------------------
+PASS: 2195 deterministic production V16/A/V17 scenarios; target, random draws, debug messages, refresh reads and distance ordering match.
+<end of output>
+Test time =   0.12 sec
+----------------------------------------------------------
+Test Passed.
+"grind_target" end time: Sep 24 06:52 RTZ 2 (зима)
+"grind_target" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Sep 24 06:52 RTZ 2 (зима)

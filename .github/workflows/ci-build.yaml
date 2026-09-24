@@ -1,10 +1,10 @@
-name: V17.1 Value RTTI Audit Windows Validation
+name: V18 Quest Hot Path Windows Validation
 
 on:
   push:
-    branches: [vmangos-v17-1-value-rtti]
+    branches: [vmangos-v18-quest-hot-values]
   pull_request:
-    branches: [vmangos-v16-cumulative]
+    branches: [vmangos-v18-quest-hot-values]
   workflow_dispatch:
 
 permissions:
@@ -112,6 +112,22 @@ jobs:
           & build-chain-audit/RelWithDebInfo/full_chain_audit.exe --check > build-chain-audit/contracts.csv
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
+      - name: Check V17.1 versus V18 quest contracts
+        shell: pwsh
+        run: |
+          cmake -S tests/playerbots/quest_audit -B build-quest-audit -G "Visual Studio 17 2022" -A x64
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cmake --build build-quest-audit --config RelWithDebInfo --target quest_test --parallel 2
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ctest --test-dir build-quest-audit -C RelWithDebInfo --output-on-failure
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cmake -S tests/playerbots/quest_audit -B build-quest-asan -G "Visual Studio 17 2022" -A x64 -DQUEST_ASAN=ON
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cmake --build build-quest-asan --config RelWithDebInfo --parallel 2
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ctest --test-dir build-quest-asan -C RelWithDebInfo --output-on-failure
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
       - name: Stage application DLLs and validation evidence
         shell: pwsh
         run: |
@@ -125,7 +141,12 @@ jobs:
           Copy-Item -LiteralPath build-tests/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/source-tests.log
           Copy-Item -LiteralPath build-tests-asan/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/source-tests-asan.log
           Copy-Item -LiteralPath build-tests/grind_contracts.json -Destination bin/RelWithDebInfo/validation/grind-source-provenance.json
-          Copy-Item -LiteralPath docs/V171_VALUE_CHAIN_AUDIT.md -Destination bin/RelWithDebInfo/README_V171.md
+          Copy-Item -LiteralPath docs/V18_QUEST_HOT_PATH.md -Destination bin/RelWithDebInfo/README_V18.md
+          Copy-Item -LiteralPath docs/OPTIMIZATION_TODO.md -Destination bin/RelWithDebInfo/OPTIMIZATION_TODO.md
+          Copy-Item -LiteralPath build-quest-audit/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/quest-tests.log
+          Copy-Item -LiteralPath build-quest-asan/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/quest-tests-asan.log
+          Copy-Item -LiteralPath build-quest-audit/generated/provenance.json -Destination bin/RelWithDebInfo/validation/quest-source-provenance.json
+          Copy-Item -Path docs/validation/v18-* -Destination bin/RelWithDebInfo/validation
           Copy-Item -LiteralPath build-chain-audit/contracts.csv -Destination bin/RelWithDebInfo/validation/value-chain-contracts.csv
           Copy-Item -LiteralPath build-chain-audit/generated/provenance.json -Destination bin/RelWithDebInfo/validation/value-chain-provenance.json
 
@@ -142,18 +163,19 @@ jobs:
           $artifactRoot = (Resolve-Path bin/RelWithDebInfo).Path
           $files = Get-ChildItem $artifactRoot -Recurse -File | Where-Object { $_.Name -in @('mangosd.exe', 'mangosd.pdb') -or $_.Extension -eq '.dll' }
           $hashes = @($files | ForEach-Object { @{ path = [IO.Path]::GetRelativePath($artifactRoot, $_.FullName).Replace('\','/'); bytes = $_.Length; sha256 = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash } })
-          @{ commit = (git rev-parse HEAD); source_baseline = 'cea7ba955f5c0d57ff76d63e53f97f34b1d3ab4c'; client_build = 5875; configuration = 'RelWithDebInfo'; architecture = 'x64'; playerbots = $true; source_tests = '4/4'; asan_tests = '4/4'; runtime_smoke = 'passed --version with packaged DLLs and system-only PATH'; openssl3_runtime = '3.0.14 / 9cff14fd97814baf8a9a07d8447960a64d616ada'; files = $hashes; runtime_prerequisites = @('Microsoft Visual C++ 2015-2022 x64 runtime', 'Microsoft Visual C++ 2008 x64 CRT for the bundled libmySQL.dll') } | ConvertTo-Json -Depth 4 | Set-Content bin/RelWithDebInfo/build-info.json
+          @{ commit = (git rev-parse HEAD); source_baseline = '2ea64f9d27563ac410bacea79de6e2e2671b01c3'; fallback = 'cea7ba955f5c0d57ff76d63e53f97f34b1d3ab4c'; client_build = 5875; configuration = 'RelWithDebInfo'; architecture = 'x64'; playerbots = $true; source_tests = '4/4'; asan_tests = '4/4'; quest_tests = 'passed'; quest_asan_tests = 'passed'; runtime_smoke = 'passed --version with packaged DLLs and system-only PATH'; openssl3_runtime = '3.0.14 / 9cff14fd97814baf8a9a07d8447960a64d616ada'; files = $hashes; runtime_prerequisites = @('Microsoft Visual C++ 2015-2022 x64 runtime', 'Microsoft Visual C++ 2008 x64 CRT for the bundled libmySQL.dll') } | ConvertTo-Json -Depth 4 | Set-Content bin/RelWithDebInfo/build-info.json
 
       - name: Upload cumulative validation build
         uses: actions/upload-artifact@v4
         with:
-          name: vmangos-v17-1-value-rtti-windows-x64-relwithdebinfo
+          name: vmangos-v18-quest-hot-values-windows-x64-relwithdebinfo
           path: |
             bin/RelWithDebInfo/mangosd.exe
             bin/RelWithDebInfo/mangosd.pdb
             bin/RelWithDebInfo/runtime/*.dll
             bin/RelWithDebInfo/licenses/*
             bin/RelWithDebInfo/validation/*
-            bin/RelWithDebInfo/README_V171.md
+            bin/RelWithDebInfo/README_V18.md
+            bin/RelWithDebInfo/OPTIMIZATION_TODO.md
             bin/RelWithDebInfo/build-info.json
           if-no-files-found: error

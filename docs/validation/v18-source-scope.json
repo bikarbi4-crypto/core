@@ -1,0 +1,18 @@
+{
+  "baseline": "2ea64f9d27563ac410bacea79de6e2e2671b01c3",
+  "fallback": "cea7ba955f5c0d57ff76d63e53f97f34b1d3ab4c",
+  "both_are_ancestors": true,
+  "production_files_changed": [
+    "src/game/PlayerBots/playerbot/strategy/values/LootValues.h",
+    "src/game/PlayerBots/playerbot/strategy/values/QuestValues.cpp",
+    "src/game/PlayerBots/playerbot/strategy/values/VendorValues.h"
+  ],
+  "all_other_production_files_identical_to_V171": true,
+  "V17_ABC_preserved": true,
+  "source_blob_ids": {
+    "src/game/PlayerBots/playerbot/strategy/values/LootValues.h": "da71010b280dae6c7270fed392c1d0648db74600",
+    "src/game/PlayerBots/playerbot/strategy/values/QuestValues.cpp": "04dbface94db01918ac2e517f7f197f05d3dfdcc",
+    "src/game/PlayerBots/playerbot/strategy/values/VendorValues.h": "6bf9b7ffe4e930d3a4958be2592d212848c9dd82",
+    "src/game/PlayerBots/playerbot/strategy/Value.h": "7812e4a5914437954c09f7aa21bbbd5c222328b3"
+  }
+}

@@ -13,10 +13,12 @@ accepted when they were written; this decision supersedes them for development.
   trash with roughly 5-10 available targets. Record raid-instance time,
   reaction, target switching, healing, spikes and overall diff. Keep population,
   AI settings and observation windows comparable; separate PMO windows.
-- [ ] V18 Quest Hot Path Batch: source parity, same-work microbenchmarks,
-  Windows VS2022 x64 RelWithDebInfo / PlayerBots / client 5875 build, then
-  user gameplay validation. Standalone microbenchmarks do not establish an
-  overall server speedup.
+- [x] V18 source parity and same-work microbenchmarks, including negative
+  samples and MSVC AddressSanitizer checks.
+- [ ] V18 user gameplay validation with the published Windows VS2022 x64
+  RelWithDebInfo / PlayerBots / client 5875 package. Final CI status belongs
+  to the exact-HEAD delivery manifest. Standalone microbenchmarks do not
+  establish an overall server speedup.
 
 Existing unrelated Mema, AddCooldown, UseItem residuals and other open runtime
 investigations remain pending; V18 does not close or modify them.

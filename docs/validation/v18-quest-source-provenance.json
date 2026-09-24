@@ -1,0 +1,85 @@
+{
+  "baseline": "2ea64f9d27563ac410bacea79de6e2e2671b01c3",
+  "variants": {
+    "v171": {
+      "A": false,
+      "B": false,
+      "C": false,
+      "need_sha256": "5654cac73523dc986d81893f7c3593d4c4fa02e5dd8c42e8fb51f7c5ea7de6ca",
+      "header_sha256": "d90b94147ea7d9ce672331bf16b65ffee36f7ff35b327d773e8d151e514023c1",
+      "bodies_sha256": "ef436dd382acbfd5b97fa3300fb8b0dfd036ee98bda8d3c949472ed808cba995"
+    },
+    "a_only": {
+      "A": true,
+      "B": false,
+      "C": false,
+      "need_sha256": "e4f17a8dcce5f46827c32354e933fd6c382140d5855a7a2cd611306a3e356daf",
+      "header_sha256": "39c2a2e03b3d17768a9a506377aa99a6ba899ced7c6cf3939926dc73b339da12",
+      "bodies_sha256": "6ad8741789bd7279536bade1084685ddf56cd8dac1259887c69d50d4a4c5e30f"
+    },
+    "b_only": {
+      "A": false,
+      "B": true,
+      "C": false,
+      "need_sha256": "419fc9729befa775e643419f1d2ef2b17bda47a3097d4a2af3255f0bcfe3e0ec",
+      "header_sha256": "01b9ec2c176bb5a13f11503e6a735fcd3ad43530f749df876667644f2a8bbf79",
+      "bodies_sha256": "7d15ea1f436138b69685eb6323df51af2fcddfc9a82d349825425315ca2664dc"
+    },
+    "c_only": {
+      "A": false,
+      "B": false,
+      "C": true,
+      "need_sha256": "5654cac73523dc986d81893f7c3593d4c4fa02e5dd8c42e8fb51f7c5ea7de6ca",
+      "header_sha256": "953503a471e6ae91d1e898a67697461e52fa9c2d82e73cd73cdf1fa02f277d1b",
+      "bodies_sha256": "c9bc07720aaa2307d4df39928e2afb1c7f67b478180101b9319d9b06e0bc19b2"
+    },
+    "v18": {
+      "A": true,
+      "B": true,
+      "C": true,
+      "need_sha256": "2d6ea3307c55f783dfc4743bd7f4a65a4d8c2617f2579198e4f85ae0948661b2",
+      "header_sha256": "f59aacbeaafd0ff96d8bef4e340849b19ca8f7bfd4d9269d2c03e72b252f58a8",
+      "bodies_sha256": "0a30e1dd0772ddfb7f4b5217c849344b43f8cfe47534ac108eabf74dacc062b0"
+    }
+  },
+  "sources": {
+    "2ea64f9d27563ac410bacea79de6e2e2671b01c3:src/game/PlayerBots/playerbot/strategy/values/QuestValues.cpp": "ebb457fd5cba63265db775bf6f62b37487c675b1f810f52e8d297bd0f4511710",
+    "working:src/game/PlayerBots/playerbot/strategy/values/QuestValues.cpp": "3a0e5f56b3491d4fc784c9c082992f11cc964cdce3da956b09a23fca60281e1c",
+    "2ea64f9d27563ac410bacea79de6e2e2671b01c3:src/game/PlayerBots/playerbot/PlayerbotAIAware.h": "01ec8535fe2fd14d6f06257095fc901fbe61321a23e953eaf7564638a9baff47",
+    "working:src/game/PlayerBots/playerbot/PlayerbotAIAware.h": "01ec8535fe2fd14d6f06257095fc901fbe61321a23e953eaf7564638a9baff47",
+    "2ea64f9d27563ac410bacea79de6e2e2671b01c3:src/game/PlayerBots/playerbot/strategy/AiObject.h": "10eab26d5f06d382ac80b7d6cd0cc89b0e730bcf85ab2fc72943127fbb5cadcf",
+    "working:src/game/PlayerBots/playerbot/strategy/AiObject.h": "10eab26d5f06d382ac80b7d6cd0cc89b0e730bcf85ab2fc72943127fbb5cadcf",
+    "2ea64f9d27563ac410bacea79de6e2e2671b01c3:src/game/PlayerBots/playerbot/strategy/AiObjectContext.h": "5dd155127ca83805bf4b6494a3199f06a17a3a4f51930cd952689024607f7f7e",
+    "working:src/game/PlayerBots/playerbot/strategy/AiObjectContext.h": "5dd155127ca83805bf4b6494a3199f06a17a3a4f51930cd952689024607f7f7e",
+    "2ea64f9d27563ac410bacea79de6e2e2671b01c3:src/game/PlayerBots/playerbot/strategy/NamedObjectCache.h": "fe25b192ffe3cc091abda1bd78e143c3bcc1d12c288630f59a977554a907c5ee",
+    "working:src/game/PlayerBots/playerbot/strategy/NamedObjectCache.h": "fe25b192ffe3cc091abda1bd78e143c3bcc1d12c288630f59a977554a907c5ee",
+    "2ea64f9d27563ac410bacea79de6e2e2671b01c3:src/game/PlayerBots/playerbot/strategy/NamedObjectContext.h": "2742e6df6c740daa1fd1100766e9e65fd8c3d9d95f674a20bae66a4b5f0b79fe",
+    "working:src/game/PlayerBots/playerbot/strategy/NamedObjectContext.h": "2742e6df6c740daa1fd1100766e9e65fd8c3d9d95f674a20bae66a4b5f0b79fe",
+    "2ea64f9d27563ac410bacea79de6e2e2671b01c3:src/game/PlayerBots/playerbot/strategy/values/SharedValueContext.h": "7ff67a0e0f37e0b32afafe816b58738a178398f17900de6167ffe5bb87ad5116",
+    "working:src/game/PlayerBots/playerbot/strategy/values/SharedValueContext.h": "7ff67a0e0f37e0b32afafe816b58738a178398f17900de6167ffe5bb87ad5116",
+    "2ea64f9d27563ac410bacea79de6e2e2671b01c3:src/game/PlayerBots/playerbot/strategy/values/QuestValues.h": "9aeebd3115244596b72fce1696dc0c2629a57a6a655a67547ca9fa77d968de5c",
+    "working:src/game/PlayerBots/playerbot/strategy/values/QuestValues.h": "9aeebd3115244596b72fce1696dc0c2629a57a6a655a67547ca9fa77d968de5c",
+    "2ea64f9d27563ac410bacea79de6e2e2671b01c3:src/game/PlayerBots/playerbot/strategy/values/LootValues.cpp": "15e697b3764143b6a4d9789a391f2b92c567fd257d932acb668f1446ff31ab70",
+    "working:src/game/PlayerBots/playerbot/strategy/values/LootValues.cpp": "15e697b3764143b6a4d9789a391f2b92c567fd257d932acb668f1446ff31ab70",
+    "2ea64f9d27563ac410bacea79de6e2e2671b01c3:src/game/PlayerBots/playerbot/strategy/values/VendorValues.cpp": "159ba64c4ed6dc97bf943ba571860139ee56240a17e07758f79ed3c42aafaf24",
+    "working:src/game/PlayerBots/playerbot/strategy/values/VendorValues.cpp": "159ba64c4ed6dc97bf943ba571860139ee56240a17e07758f79ed3c42aafaf24",
+    "2ea64f9d27563ac410bacea79de6e2e2671b01c3:src/game/PlayerBots/playerbot/TravelMgr.cpp": "4c74dae980e38ba7af1b3c7378be58a7cea42a2d5779fa95a71149832d9f561c",
+    "working:src/game/PlayerBots/playerbot/TravelMgr.cpp": "4c74dae980e38ba7af1b3c7378be58a7cea42a2d5779fa95a71149832d9f561c",
+    "2ea64f9d27563ac410bacea79de6e2e2671b01c3:src/game/PlayerBots/playerbot/strategy/Value.h": "d46851649bf428560007d3f55dcdd516cfa440d4a50d30aacafff9d9fece0b50",
+    "working:src/game/PlayerBots/playerbot/strategy/Value.h": "d46851649bf428560007d3f55dcdd516cfa440d4a50d30aacafff9d9fece0b50",
+    "2ea64f9d27563ac410bacea79de6e2e2671b01c3:src/game/PlayerBots/playerbot/strategy/values/LootValues.h": "f2a00df353a96c40d909aa4153c0e161e647e74e5614364d5cd020325643dc1e",
+    "2ea64f9d27563ac410bacea79de6e2e2671b01c3:src/game/PlayerBots/playerbot/strategy/values/VendorValues.h": "3283628314ea821ce444134451e73238d7084b18d322e21b0206958ea6b6c34b",
+    "working:src/game/PlayerBots/playerbot/strategy/values/LootValues.h": "c82761b23ce6f50813c0e10ec01337b5bb92aa601b71b29f70ba48c7100ac7ef",
+    "working:src/game/PlayerBots/playerbot/strategy/values/VendorValues.h": "d9dc1ac0e34a85f1922f6d0dcb4b3aa8ac5bb86077d2c461688ccad8075b4e17",
+    "2ea64f9d27563ac410bacea79de6e2e2671b01c3:src/game/PlayerBots/playerbot/TravelMgr.h": "0f3e74d665b38c5fa22d4c20a6addb025f47c0c6cd6cb479334963164c3d93b2",
+    "working:src/game/PlayerBots/playerbot/TravelMgr.h": "0f3e74d665b38c5fa22d4c20a6addb025f47c0c6cd6cb479334963164c3d93b2",
+    "2ea64f9d27563ac410bacea79de6e2e2671b01c3:src/game/PlayerBots/playerbot/WorldSquare.h": "53c559a6be073dcb3bb44c7e29e5c8020e6de9eb69e9e81b3f02599120c40d8f",
+    "working:src/game/PlayerBots/playerbot/WorldSquare.h": "53c559a6be073dcb3bb44c7e29e5c8020e6de9eb69e9e81b3f02599120c40d8f",
+    "2ea64f9d27563ac410bacea79de6e2e2671b01c3:src/game/PlayerBots/playerbot/WorldSquare.cpp": "78d12ef60fe3ec06c761d7b4ae2e0eb47b962c474637d8e5bbe02bb53d228f4a",
+    "working:src/game/PlayerBots/playerbot/WorldSquare.cpp": "78d12ef60fe3ec06c761d7b4ae2e0eb47b962c474637d8e5bbe02bb53d228f4a",
+    "2ea64f9d27563ac410bacea79de6e2e2671b01c3:src/game/PlayerBots/playerbot/WorldPosition.h": "26e68e3160ab6df95309582c799dcb95753ad429d803786308b908ae4977f1be",
+    "working:src/game/PlayerBots/playerbot/WorldPosition.h": "26e68e3160ab6df95309582c799dcb95753ad429d803786308b908ae4977f1be",
+    "2ea64f9d27563ac410bacea79de6e2e2671b01c3:src/game/PlayerBots/playerbot/strategy/values/TravelValues.h": "bd6cd96bae702c5bd15e68b837ac7cfa5b462049f1c5526115f9aa11df2b1bd8",
+    "working:src/game/PlayerBots/playerbot/strategy/values/TravelValues.h": "bd6cd96bae702c5bd15e68b837ac7cfa5b462049f1c5526115f9aa11df2b1bd8"
+  }
+}
