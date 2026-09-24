@@ -1,0 +1,2195 @@
+?scope_0@v19@@YAXPEAVPlayerbotAI@1@PEAUAction@1@AEAUEvent@1@@Z PROC ; v19::scope_0, COMDAT
+
+; 2    : {
+
+$LN330:
+	mov	rax, rsp
+	mov	QWORD PTR [rax+16], rbx
+	mov	QWORD PTR [rax+24], rsi
+	mov	QWORD PTR [rax+32], rdi
+	push	rbp
+	push	r12
+	push	r13
+	push	r14
+	push	r15
+	lea	rbp, QWORD PTR [rax-95]
+	sub	rsp, 240				; 000000f0H
+	movaps	XMMWORD PTR [rax-56], xmm6
+	movaps	XMMWORD PTR [rax-72], xmm7
+	mov	rax, QWORD PTR __security_cookie
+	xor	rax, rsp
+	mov	QWORD PTR __$ArrayPad$[rbp-185], rax
+	mov	rsi, rcx
+	xor	r12d, r12d
+	mov	DWORD PTR $T1[rbp-185], r12d
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 1531 :         : _Ty1(), _Myval2(_STD forward<_Other2>(_Val2)...) {}
+
+	mov	ebx, r12d
+	mov	QWORD PTR pmo$[rbp-185], rbx
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 5    :     if (sPlayerbotAIConfig.perfMonEnabled)
+
+	cmp	BYTE PTR ?sPlayerbotAIConfig@v19@@3UConfig@1@A, r12b
+	je	$LN195@scope_0
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\source\tests\playerbots\pmo_audit\services.h
+
+; 67   :     explicit WorldPosition(Bot* bot) : mapId(bot->GetMapId())
+
+	mov	edx, DWORD PTR [rcx]
+
+; 73   :     bool isOverworld() const { return mapId == 0 || mapId == 1 || mapId == 530 || mapId == 571 || mapId == 609; }
+
+	test	edx, edx
+	je	SHORT $LN6@scope_0
+	cmp	edx, 1
+	je	SHORT $LN6@scope_0
+	cmp	edx, 530				; 00000212H
+	je	SHORT $LN6@scope_0
+	cmp	edx, 571				; 0000023bH
+	je	SHORT $LN6@scope_0
+	xorps	xmm0, xmm0
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 493  :         _CONSTEXPR20 _Bxty() noexcept : _Buf() {} // user-provided, for fancy pointers
+
+	movups	XMMWORD PTR $T2[rbp-185], xmm0
+
+; 890  :             _My_data._Mysize = _Count;
+
+	movdqa	xmm1, XMMWORD PTR __xmm@000000000000000f0000000000000001
+	movdqu	XMMWORD PTR $T2[rbp-169], xmm1
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_string_view.hpp
+
+; 121  :         _CSTD memcpy(_First1, _First2, _Count * sizeof(_Elem));
+
+	mov	WORD PTR $T2[rbp-185], 73		; 00000049H
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 7    :         std::string mapString = WorldPosition(bot).isInstance() ? "I" : std::to_string(bot->GetMapId());
+
+	lea	rax, QWORD PTR $T2[rbp-185]
+	mov	edi, 1
+	jmp	SHORT $LN7@scope_0
+$LN6@scope_0:
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\string
+
+; 468  :     return _Integral_to_string<char>(_Val);
+
+	lea	rcx, QWORD PTR $T6[rbp-185]
+	call	??$_Integral_to_string@DI@std@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@0@I@Z ; std::_Integral_to_string<char,unsigned int>
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 7    :         std::string mapString = WorldPosition(bot).isInstance() ? "I" : std::to_string(bot->GetMapId());
+
+	lea	rax, QWORD PTR $T6[rbp-185]
+	mov	edi, 10
+$LN7@scope_0:
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 1286 :                 _CSTD memcpy(_My_data_mem, _Right_data_mem, _Memcpy_val_size);
+
+	movups	xmm7, XMMWORD PTR [rax]
+	movups	XMMWORD PTR mapString$5[rbp-185], xmm7
+	movups	xmm6, XMMWORD PTR [rax+16]
+	movups	XMMWORD PTR mapString$5[rbp-169], xmm6
+
+; 1287 : 
+; 1288 :                 _Right_data._Mysize = 0;
+
+	mov	QWORD PTR [rax+16], r12
+
+; 1289 :                 _Right_data._Myres  = _Small_string_capacity;
+
+	mov	ebx, 15
+	mov	QWORD PTR [rax+24], rbx
+
+; 1290 :                 _Right_data._Activate_SSO_buffer();
+; 1291 :                 _Traits::assign(_Right_data._Bx._Buf[0], _Elem());
+
+	mov	BYTE PTR [rax], 0
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 7    :         std::string mapString = WorldPosition(bot).isInstance() ? "I" : std::to_string(bot->GetMapId());
+
+	test	dil, 2
+	je	SHORT $LN279@scope_0
+	and	edi, -3
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 3083 :         if (_My_data._Large_mode_engaged()) {
+
+	mov	rdx, QWORD PTR $T6[rbp-161]
+	cmp	rdx, rbx
+	jbe	SHORT $LN279@scope_0
+
+; 852  :         _Al.deallocate(_Old_ptr, _Capacity + 1); // +1 for null terminator
+
+	inc	rdx
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 985  :         _STD _Deallocate<_New_alignof<_Ty>>(_Ptr, sizeof(_Ty) * _Count);
+
+	mov	rcx, QWORD PTR $T6[rbp-185]
+	mov	rax, rcx
+
+; 284  :         if (_Bytes >= _Big_allocation_threshold) {
+
+	cmp	rdx, 4096				; 00001000H
+	jb	SHORT $LN284@scope_0
+
+; 202  :     _Bytes += _Non_user_size;
+
+	add	rdx, 39					; 00000027H
+
+; 203  : 
+; 204  :     const uintptr_t* const _Ptr_user = static_cast<uintptr_t*>(_Ptr);
+; 205  :     const uintptr_t _Ptr_container   = _Ptr_user[-1];
+
+	mov	rcx, QWORD PTR [rcx-8]
+
+; 206  : 
+; 207  :     // If the following asserts, it likely means that we are performing
+; 208  :     // an aligned delete on memory coming from an unaligned allocation.
+; 209  :     _STL_ASSERT(_Ptr_user[-2] == _Big_allocation_sentinel, "invalid argument");
+; 210  : 
+; 211  :     // Extra paranoia on aligned allocation/deallocation; ensure _Ptr_container is
+; 212  :     // in range [_Min_back_shift, _Non_user_size]
+; 213  : #ifdef _DEBUG
+; 214  :     constexpr uintptr_t _Min_back_shift = 2 * sizeof(void*);
+; 215  : #else // ^^^ defined(_DEBUG) / !defined(_DEBUG) vvv
+; 216  :     constexpr uintptr_t _Min_back_shift = sizeof(void*);
+; 217  : #endif // ^^^ !defined(_DEBUG) ^^^
+; 218  :     const uintptr_t _Back_shift = reinterpret_cast<uintptr_t>(_Ptr) - _Ptr_container;
+; 219  :     _STL_VERIFY(_Back_shift >= _Min_back_shift && _Back_shift <= _Non_user_size, "invalid argument");
+
+	sub	rax, rcx
+	sub	rax, 8
+	cmp	rax, 31
+	jbe	SHORT $LN284@scope_0
+	mov	QWORD PTR [rsp+32], r12
+	xor	r9d, r9d
+	xor	r8d, r8d
+	xor	edx, edx
+	xor	ecx, ecx
+	call	QWORD PTR __imp__invoke_watson
+	int	3
+$LN284@scope_0:
+
+; 289  :         ::operator delete(_Ptr, _Bytes);
+
+	call	??3@YAXPEAX_K@Z				; operator delete
+	npad	1
+$LN279@scope_0:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 7    :         std::string mapString = WorldPosition(bot).isInstance() ? "I" : std::to_string(bot->GetMapId());
+
+	test	dil, 1
+	je	SHORT $LN310@scope_0
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 3083 :         if (_My_data._Large_mode_engaged()) {
+
+	mov	rdx, QWORD PTR $T2[rbp-161]
+	cmp	rdx, 15
+	jbe	SHORT $LN310@scope_0
+
+; 852  :         _Al.deallocate(_Old_ptr, _Capacity + 1); // +1 for null terminator
+
+	inc	rdx
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 985  :         _STD _Deallocate<_New_alignof<_Ty>>(_Ptr, sizeof(_Ty) * _Count);
+
+	mov	rcx, QWORD PTR $T2[rbp-185]
+	mov	rax, rcx
+
+; 284  :         if (_Bytes >= _Big_allocation_threshold) {
+
+	cmp	rdx, 4096				; 00001000H
+	jb	SHORT $LN315@scope_0
+
+; 202  :     _Bytes += _Non_user_size;
+
+	add	rdx, 39					; 00000027H
+
+; 203  : 
+; 204  :     const uintptr_t* const _Ptr_user = static_cast<uintptr_t*>(_Ptr);
+; 205  :     const uintptr_t _Ptr_container   = _Ptr_user[-1];
+
+	mov	rcx, QWORD PTR [rcx-8]
+
+; 206  : 
+; 207  :     // If the following asserts, it likely means that we are performing
+; 208  :     // an aligned delete on memory coming from an unaligned allocation.
+; 209  :     _STL_ASSERT(_Ptr_user[-2] == _Big_allocation_sentinel, "invalid argument");
+; 210  : 
+; 211  :     // Extra paranoia on aligned allocation/deallocation; ensure _Ptr_container is
+; 212  :     // in range [_Min_back_shift, _Non_user_size]
+; 213  : #ifdef _DEBUG
+; 214  :     constexpr uintptr_t _Min_back_shift = 2 * sizeof(void*);
+; 215  : #else // ^^^ defined(_DEBUG) / !defined(_DEBUG) vvv
+; 216  :     constexpr uintptr_t _Min_back_shift = sizeof(void*);
+; 217  : #endif // ^^^ !defined(_DEBUG) ^^^
+; 218  :     const uintptr_t _Back_shift = reinterpret_cast<uintptr_t>(_Ptr) - _Ptr_container;
+; 219  :     _STL_VERIFY(_Back_shift >= _Min_back_shift && _Back_shift <= _Non_user_size, "invalid argument");
+
+	sub	rax, rcx
+	sub	rax, 8
+	cmp	rax, 31
+	jbe	SHORT $LN315@scope_0
+	mov	QWORD PTR [rsp+32], r12
+	xor	r9d, r9d
+	xor	r8d, r8d
+	xor	edx, edx
+	xor	ecx, ecx
+	call	QWORD PTR __imp__invoke_watson
+	int	3
+$LN315@scope_0:
+
+; 289  :         ::operator delete(_Ptr, _Bytes);
+
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN310@scope_0:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 8    :         pmo = sPerformanceMonitor.start(PERF_MON_TOTAL, "PlayerbotAI::UpdateAI " + mapString, nullptr, bot->GetMapId(), bot->GetInstanceId());
+
+	call	?instance@PerformanceMonitor@v19@@SAAEAV12@XZ ; v19::PerformanceMonitor::instance
+	mov	QWORD PTR tv1231[rbp-185], rax
+	mov	eax, DWORD PTR [rsi+4]
+	mov	DWORD PTR tv1232[rbp-185], eax
+	mov	eax, DWORD PTR [rsi]
+	mov	DWORD PTR tv1233[rbp-185], eax
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 3164 :     if (_Right.max_size() - _Right_size < _Left_size) {
+
+	mov	rax, 9223372036854775807		; 7fffffffffffffffH
+	mov	rcx, rax
+	movq	r15, xmm6
+	sub	rcx, r15
+	cmp	rcx, 22
+	jb	$LN328@scope_0
+
+; 444  :         const value_type* _Result = _Bx._Buf;
+
+	lea	r13, QWORD PTR mapString$5[rbp-185]
+
+; 445  :         if (_Large_mode_engaged()) {
+
+	movq	rsi, xmm7
+	psrldq	xmm6, 8
+	movq	r14, xmm6
+	cmp	r14, 15
+	cmova	r13, rsi
+	xorps	xmm0, xmm0
+
+; 493  :         _CONSTEXPR20 _Bxty() noexcept : _Buf() {} // user-provided, for fancy pointers
+
+	movups	XMMWORD PTR $T3[rbp-185], xmm0
+
+; 517  :     size_type _Mysize = 0; // current length of string (size)
+
+	mov	QWORD PTR $T3[rbp-169], r12
+
+; 518  :     size_type _Myres  = 0; // current storage reserved for string (capacity)
+
+	mov	QWORD PTR $T3[rbp-161], r12
+
+; 1056 :         const auto _New_size    = static_cast<size_type>(_Left_size + _Right_size);
+
+	lea	r12, QWORD PTR [r15+22]
+
+; 1057 :         size_type _New_capacity = _Small_string_capacity;
+; 1058 :         auto& _My_data          = _Mypair._Myval2;
+; 1059 :         _Elem* _Ptr             = _My_data._Bx._Buf;
+
+	lea	rdi, QWORD PTR $T3[rbp-185]
+
+; 1060 :         auto&& _Alproxy         = _GET_PROXY_ALLOCATOR(_Alty, _Getal());
+; 1061 :         _Container_proxy_ptr<_Alty> _Proxy(_Alproxy, _My_data); // throws
+; 1062 : 
+; 1063 :         if (_New_capacity < _New_size) {
+
+	cmp	r12, 15
+	jbe	SHORT $LN95@scope_0
+
+; 2978 :         const size_type _Masked = _Requested | _Alloc_mask;
+
+	mov	rbx, r12
+	or	rbx, 15
+	cmp	rbx, rax
+
+; 2979 :         if (_Masked > _Max) { // the mask overflows, settle for max_size()
+
+	jbe	SHORT $LN111@scope_0
+
+; 2980 :             return _Max;
+
+	mov	rbx, rax
+	mov	rcx, -9223372036854775808		; 8000000000000000H
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 253  :             return _Allocate_manually_vector_aligned<_Traits>(_Bytes);
+
+	call	??$_Allocate_manually_vector_aligned@U_Default_allocate_traits@std@@@std@@YAPEAX_K@Z ; std::_Allocate_manually_vector_aligned<std::_Default_allocate_traits>
+	jmp	SHORT $LN326@scope_0
+$LN111@scope_0:
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 2987 :         return (_STD max)(_Masked, _Old + _Old / 2);
+
+	mov	eax, 22
+	cmp	rbx, rax
+	cmovb	rbx, rax
+
+; 825  :         ++_Capacity; // Take null terminator into consideration
+
+	lea	rcx, QWORD PTR [rbx+1]
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 227  :     if (_Bytes == 0) {
+
+	test	rcx, rcx
+	jne	SHORT $LN125@scope_0
+
+; 228  :         return nullptr;
+
+	xor	edi, edi
+	jmp	SHORT $LN124@scope_0
+$LN125@scope_0:
+
+; 229  :     }
+; 230  : 
+; 231  : #if _HAS_CXX20 // TRANSITION, GH-1532
+; 232  :     if (_STD is_constant_evaluated()) {
+; 233  :         return _Traits::_Allocate(_Bytes);
+; 234  :     }
+; 235  : #endif // _HAS_CXX20
+; 236  : 
+; 237  : #ifdef __cpp_aligned_new
+; 238  :     if constexpr (_Align > __STDCPP_DEFAULT_NEW_ALIGNMENT__) {
+; 239  :         size_t _Passed_align = _Align;
+; 240  : #if defined(_M_IX86) || defined(_M_X64)
+; 241  :         if (_Bytes >= _Big_allocation_threshold) {
+; 242  :             // boost the alignment of big allocations to help autovectorization
+; 243  :             _Passed_align = (_STD max)(_Align, _Big_allocation_alignment);
+; 244  :         }
+; 245  : #endif // defined(_M_IX86) || defined(_M_X64)
+; 246  :         return _Traits::_Allocate_aligned(_Bytes, _Passed_align);
+; 247  :     } else
+; 248  : #endif // defined(__cpp_aligned_new)
+; 249  :     {
+; 250  : #if defined(_M_IX86) || defined(_M_X64)
+; 251  :         if (_Bytes >= _Big_allocation_threshold) {
+
+	cmp	rcx, 4096				; 00001000H
+	jb	SHORT $LN126@scope_0
+
+; 253  :             return _Allocate_manually_vector_aligned<_Traits>(_Bytes);
+
+	call	??$_Allocate_manually_vector_aligned@U_Default_allocate_traits@std@@@std@@YAPEAX_K@Z ; std::_Allocate_manually_vector_aligned<std::_Default_allocate_traits>
+	jmp	SHORT $LN326@scope_0
+$LN126@scope_0:
+
+; 136  :         return ::operator new(_Bytes);
+
+	call	??2@YAPEAX_K@Z				; operator new
+$LN326@scope_0:
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 1067 :             _Construct_in_place(_My_data._Bx._Ptr, _Fancyptr);
+
+	mov	rdi, rax
+$LN124@scope_0:
+	mov	QWORD PTR $T3[rbp-185], rdi
+$LN95@scope_0:
+
+; 1068 :         }
+; 1069 : 
+; 1070 :         _My_data._Mysize = _New_size;
+
+	mov	QWORD PTR $T3[rbp-169], r12
+
+; 1071 :         _My_data._Myres  = _New_capacity;
+
+	mov	QWORD PTR $T3[rbp-161], rbx
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_string_view.hpp
+
+; 121  :         _CSTD memcpy(_First1, _First2, _Count * sizeof(_Elem));
+
+	movups	xmm0, XMMWORD PTR ??_C@_0BH@OMDMFKOB@PlayerbotAI?3?3UpdateAI?5@
+	movups	XMMWORD PTR [rdi], xmm0
+	mov	eax, DWORD PTR ??_C@_0BH@OMDMFKOB@PlayerbotAI?3?3UpdateAI?5@+16
+	mov	DWORD PTR [rdi+16], eax
+	movzx	eax, WORD PTR ??_C@_0BH@OMDMFKOB@PlayerbotAI?3?3UpdateAI?5@+20
+	mov	WORD PTR [rdi+20], ax
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 1073 :         _Traits::copy(_Ptr + static_cast<ptrdiff_t>(_Left_size), _Right_ptr, _Right_size);
+
+	lea	rcx, QWORD PTR [rdi+22]
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_string_view.hpp
+
+; 121  :         _CSTD memcpy(_First1, _First2, _Count * sizeof(_Elem));
+
+	mov	r8, r15
+	mov	rdx, r13
+	call	memcpy
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 1074 :         _Traits::assign(_Ptr[_New_size], _Elem());
+
+	mov	BYTE PTR [rdi+r12], 0
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 8    :         pmo = sPerformanceMonitor.start(PERF_MON_TOTAL, "PlayerbotAI::UpdateAI " + mapString, nullptr, bot->GetMapId(), bot->GetInstanceId());
+
+	mov	eax, DWORD PTR tv1232[rbp-185]
+	mov	DWORD PTR [rsp+48], eax
+	mov	eax, DWORD PTR tv1233[rbp-185]
+	mov	DWORD PTR [rsp+40], eax
+	xor	r15d, r15d
+	mov	QWORD PTR [rsp+32], r15
+	lea	r9, QWORD PTR $T3[rbp-185]
+	mov	r8d, 4
+	lea	rdx, QWORD PTR $T4[rbp-185]
+	mov	rcx, QWORD PTR tv1231[rbp-185]
+	call	?start@PerformanceMonitor@v19@@QEAA?AV?$unique_ptr@VPerformanceMonitorOperation@v19@@U?$default_delete@VPerformanceMonitorOperation@v19@@@std@@@std@@W4PerformanceMetric@2@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@4@PEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@II@Z ; v19::PerformanceMonitor::start
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\utility
+
+; 773  :     _Ty _Old_val = static_cast<_Ty&&>(_Val);
+
+	mov	rbx, QWORD PTR [rax]
+
+; 774  :     _Val         = static_cast<_Other&&>(_New_val);
+
+	mov	QWORD PTR [rax], r15
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory
+
+; 3426 :         if (_Mypair._Myval2) {
+
+	mov	rdi, QWORD PTR $T4[rbp-185]
+	test	rdi, rdi
+	je	SHORT $LN172@scope_0
+	mov	rcx, rdi
+	call	??1PerformanceMonitorOperation@v19@@QEAA@XZ ; v19::PerformanceMonitorOperation::~PerformanceMonitorOperation
+	mov	edx, 56					; 00000038H
+	mov	rcx, rdi
+	call	??3@YAXPEAX_K@Z				; operator delete
+	npad	1
+$LN172@scope_0:
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 3083 :         if (_My_data._Large_mode_engaged()) {
+
+	cmp	r14, 15
+	jbe	SHORT $LN195@scope_0
+
+; 852  :         _Al.deallocate(_Old_ptr, _Capacity + 1); // +1 for null terminator
+
+	lea	rdx, QWORD PTR [r14+1]
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 985  :         _STD _Deallocate<_New_alignof<_Ty>>(_Ptr, sizeof(_Ty) * _Count);
+
+	mov	rax, rsi
+
+; 284  :         if (_Bytes >= _Big_allocation_threshold) {
+
+	cmp	rdx, 4096				; 00001000H
+	jb	SHORT $LN200@scope_0
+
+; 202  :     _Bytes += _Non_user_size;
+
+	add	rdx, 39					; 00000027H
+
+; 203  : 
+; 204  :     const uintptr_t* const _Ptr_user = static_cast<uintptr_t*>(_Ptr);
+; 205  :     const uintptr_t _Ptr_container   = _Ptr_user[-1];
+
+	mov	rsi, QWORD PTR [rsi-8]
+
+; 206  : 
+; 207  :     // If the following asserts, it likely means that we are performing
+; 208  :     // an aligned delete on memory coming from an unaligned allocation.
+; 209  :     _STL_ASSERT(_Ptr_user[-2] == _Big_allocation_sentinel, "invalid argument");
+; 210  : 
+; 211  :     // Extra paranoia on aligned allocation/deallocation; ensure _Ptr_container is
+; 212  :     // in range [_Min_back_shift, _Non_user_size]
+; 213  : #ifdef _DEBUG
+; 214  :     constexpr uintptr_t _Min_back_shift = 2 * sizeof(void*);
+; 215  : #else // ^^^ defined(_DEBUG) / !defined(_DEBUG) vvv
+; 216  :     constexpr uintptr_t _Min_back_shift = sizeof(void*);
+; 217  : #endif // ^^^ !defined(_DEBUG) ^^^
+; 218  :     const uintptr_t _Back_shift = reinterpret_cast<uintptr_t>(_Ptr) - _Ptr_container;
+; 219  :     _STL_VERIFY(_Back_shift >= _Min_back_shift && _Back_shift <= _Non_user_size, "invalid argument");
+
+	sub	rax, rsi
+	sub	rax, 8
+	cmp	rax, 31
+	jbe	SHORT $LN200@scope_0
+	mov	QWORD PTR [rsp+32], r15
+	xor	r9d, r9d
+	xor	r8d, r8d
+	xor	edx, edx
+	xor	ecx, ecx
+	call	QWORD PTR __imp__invoke_watson
+	int	3
+$LN200@scope_0:
+
+; 289  :         ::operator delete(_Ptr, _Bytes);
+
+	mov	rcx, rsi
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN195@scope_0:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 10   : Work("scope body");
+
+	lea	rcx, OFFSET FLAT:??_C@_0L@JFEBODI@scope?5body@
+	call	?Work@v19@@YAXPEBD@Z			; v19::Work
+	npad	1
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory
+
+; 3426 :         if (_Mypair._Myval2) {
+
+	test	rbx, rbx
+	je	SHORT $LN34@scope_0
+	mov	rcx, rbx
+	call	??1PerformanceMonitorOperation@v19@@QEAA@XZ ; v19::PerformanceMonitorOperation::~PerformanceMonitorOperation
+	mov	edx, 56					; 00000038H
+	mov	rcx, rbx
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN34@scope_0:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 11   : }
+
+	mov	rcx, QWORD PTR __$ArrayPad$[rbp-185]
+	xor	rcx, rsp
+	call	__security_check_cookie
+	lea	r11, QWORD PTR [rsp+240]
+	mov	rbx, QWORD PTR [r11+56]
+	mov	rsi, QWORD PTR [r11+64]
+	mov	rdi, QWORD PTR [r11+72]
+	movaps	xmm6, XMMWORD PTR [r11-16]
+	movaps	xmm7, XMMWORD PTR [r11-32]
+	mov	rsp, r11
+	pop	r15
+	pop	r14
+	pop	r13
+	pop	r12
+	pop	rbp
+	ret	0
+$LN328@scope_0:
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 3165 :         _Xlen_string();
+
+	call	?_Xlen_string@std@@YAXXZ		; std::_Xlen_string
+	npad	1
+$LN325@scope_0:
+?scope_0@v19@@YAXPEAVPlayerbotAI@1@PEAUAction@1@AEAUEvent@1@@Z ENDP ; v19::scope_0
+
+?scope_32@v19@@YAXPEAVPlayerbotAI@1@PEAUAction@1@AEAUEvent@1@@Z PROC ; v19::scope_32, COMDAT
+
+; 300  : {
+
+$LN498:
+	push	rbp
+	push	rbx
+	push	rsi
+	push	rdi
+	push	r12
+	push	r14
+	push	r15
+	lea	rbp, QWORD PTR [rsp-39]
+	sub	rsp, 208				; 000000d0H
+	mov	rax, QWORD PTR __security_cookie
+	xor	rax, rsp
+	mov	QWORD PTR __$ArrayPad$[rbp-169], rax
+	mov	rdi, r8
+	mov	r15, rcx
+	xor	r12d, r12d
+	mov	DWORD PTR $T2[rbp-169], r12d
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 1531 :         : _Ty1(), _Myval2(_STD forward<_Other2>(_Val2)...) {}
+
+	mov	ebx, r12d
+	mov	QWORD PTR pmo1$[rbp-169], rbx
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 303  :             if (sPlayerbotAIConfig.perfMonEnabled)
+
+	cmp	BYTE PTR ?sPlayerbotAIConfig@v19@@3UConfig@1@A, r12b
+	je	$LN197@scope_32
+
+; 305  :                 std::string actionName = (action ? action->getName() : "unknown");
+
+	test	rdx, rdx
+	je	SHORT $LN7@scope_32
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\source\tests\playerbots\pmo_audit\services.h
+
+; 98   :         return name;
+
+	lea	rcx, QWORD PTR $T6[rbp-169]
+	call	??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAA@AEBV01@@Z ; std::basic_string<char,std::char_traits<char>,std::allocator<char> >::basic_string<char,std::char_traits<char>,std::allocator<char> >
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 305  :                 std::string actionName = (action ? action->getName() : "unknown");
+
+	lea	rax, QWORD PTR $T6[rbp-169]
+	mov	ebx, 9
+	jmp	SHORT $LN8@scope_32
+$LN7@scope_32:
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 493  :         _CONSTEXPR20 _Bxty() noexcept : _Buf() {} // user-provided, for fancy pointers
+
+	movdqa	xmm0, XMMWORD PTR __xmm@00000000000000070000000000000000
+	movdqu	XMMWORD PTR $T4[rbp-161], xmm0
+
+; 891  :             _My_data._Myres  = _Small_string_capacity;
+
+	mov	QWORD PTR $T4[rbp-145], 15
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_string_view.hpp
+
+; 121  :         _CSTD memcpy(_First1, _First2, _Count * sizeof(_Elem));
+
+	mov	rax, QWORD PTR ??_C@_07CIFAGBMG@unknown@
+	mov	DWORD PTR $T4[rbp-169], eax
+	movzx	eax, WORD PTR ??_C@_07CIFAGBMG@unknown@+4
+	mov	WORD PTR $T4[rbp-165], ax
+	movzx	eax, BYTE PTR ??_C@_07CIFAGBMG@unknown@+6
+	mov	BYTE PTR $T4[rbp-163], al
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 898  :                 _Traits::assign(_My_data._Bx._Buf[_Count], _Elem());
+
+	mov	BYTE PTR $T4[rbp-162], 0
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 305  :                 std::string actionName = (action ? action->getName() : "unknown");
+
+	lea	rax, QWORD PTR $T4[rbp-169]
+	mov	ebx, 2
+$LN8@scope_32:
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 1286 :                 _CSTD memcpy(_My_data_mem, _Right_data_mem, _Memcpy_val_size);
+
+	movups	xmm0, XMMWORD PTR [rax]
+	movups	XMMWORD PTR actionName$3[rbp-169], xmm0
+	movups	xmm1, XMMWORD PTR [rax+16]
+	movups	XMMWORD PTR actionName$3[rbp-153], xmm1
+
+; 1287 : 
+; 1288 :                 _Right_data._Mysize = 0;
+
+	mov	QWORD PTR [rax+16], r12
+
+; 1289 :                 _Right_data._Myres  = _Small_string_capacity;
+
+	mov	QWORD PTR [rax+24], 15
+
+; 1290 :                 _Right_data._Activate_SSO_buffer();
+; 1291 :                 _Traits::assign(_Right_data._Bx._Buf[0], _Elem());
+
+	mov	BYTE PTR [rax], 0
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 305  :                 std::string actionName = (action ? action->getName() : "unknown");
+
+	test	bl, 2
+	je	SHORT $LN281@scope_32
+	and	ebx, -3
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 3083 :         if (_My_data._Large_mode_engaged()) {
+
+	mov	rdx, QWORD PTR $T4[rbp-145]
+	cmp	rdx, 15
+	jbe	SHORT $LN281@scope_32
+
+; 852  :         _Al.deallocate(_Old_ptr, _Capacity + 1); // +1 for null terminator
+
+	inc	rdx
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 985  :         _STD _Deallocate<_New_alignof<_Ty>>(_Ptr, sizeof(_Ty) * _Count);
+
+	mov	rcx, QWORD PTR $T4[rbp-169]
+	mov	rax, rcx
+
+; 284  :         if (_Bytes >= _Big_allocation_threshold) {
+
+	cmp	rdx, 4096				; 00001000H
+	jb	SHORT $LN286@scope_32
+
+; 202  :     _Bytes += _Non_user_size;
+
+	add	rdx, 39					; 00000027H
+
+; 203  : 
+; 204  :     const uintptr_t* const _Ptr_user = static_cast<uintptr_t*>(_Ptr);
+; 205  :     const uintptr_t _Ptr_container   = _Ptr_user[-1];
+
+	mov	rcx, QWORD PTR [rcx-8]
+
+; 206  : 
+; 207  :     // If the following asserts, it likely means that we are performing
+; 208  :     // an aligned delete on memory coming from an unaligned allocation.
+; 209  :     _STL_ASSERT(_Ptr_user[-2] == _Big_allocation_sentinel, "invalid argument");
+; 210  : 
+; 211  :     // Extra paranoia on aligned allocation/deallocation; ensure _Ptr_container is
+; 212  :     // in range [_Min_back_shift, _Non_user_size]
+; 213  : #ifdef _DEBUG
+; 214  :     constexpr uintptr_t _Min_back_shift = 2 * sizeof(void*);
+; 215  : #else // ^^^ defined(_DEBUG) / !defined(_DEBUG) vvv
+; 216  :     constexpr uintptr_t _Min_back_shift = sizeof(void*);
+; 217  : #endif // ^^^ !defined(_DEBUG) ^^^
+; 218  :     const uintptr_t _Back_shift = reinterpret_cast<uintptr_t>(_Ptr) - _Ptr_container;
+; 219  :     _STL_VERIFY(_Back_shift >= _Min_back_shift && _Back_shift <= _Non_user_size, "invalid argument");
+
+	sub	rax, rcx
+	sub	rax, 8
+	cmp	rax, 31
+	jbe	SHORT $LN286@scope_32
+	mov	QWORD PTR [rsp+32], r12
+	xor	r9d, r9d
+	xor	r8d, r8d
+	xor	edx, edx
+	xor	ecx, ecx
+	call	QWORD PTR __imp__invoke_watson
+	int	3
+$LN286@scope_32:
+
+; 289  :         ::operator delete(_Ptr, _Bytes);
+
+	call	??3@YAXPEAX_K@Z				; operator delete
+	npad	1
+$LN281@scope_32:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 305  :                 std::string actionName = (action ? action->getName() : "unknown");
+
+	test	bl, 1
+	je	SHORT $LN312@scope_32
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 3083 :         if (_My_data._Large_mode_engaged()) {
+
+	mov	rdx, QWORD PTR $T6[rbp-145]
+	cmp	rdx, 15
+	jbe	SHORT $LN312@scope_32
+
+; 852  :         _Al.deallocate(_Old_ptr, _Capacity + 1); // +1 for null terminator
+
+	inc	rdx
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 985  :         _STD _Deallocate<_New_alignof<_Ty>>(_Ptr, sizeof(_Ty) * _Count);
+
+	mov	rcx, QWORD PTR $T6[rbp-169]
+	mov	rax, rcx
+
+; 284  :         if (_Bytes >= _Big_allocation_threshold) {
+
+	cmp	rdx, 4096				; 00001000H
+	jb	SHORT $LN317@scope_32
+
+; 202  :     _Bytes += _Non_user_size;
+
+	add	rdx, 39					; 00000027H
+
+; 203  : 
+; 204  :     const uintptr_t* const _Ptr_user = static_cast<uintptr_t*>(_Ptr);
+; 205  :     const uintptr_t _Ptr_container   = _Ptr_user[-1];
+
+	mov	rcx, QWORD PTR [rcx-8]
+
+; 206  : 
+; 207  :     // If the following asserts, it likely means that we are performing
+; 208  :     // an aligned delete on memory coming from an unaligned allocation.
+; 209  :     _STL_ASSERT(_Ptr_user[-2] == _Big_allocation_sentinel, "invalid argument");
+; 210  : 
+; 211  :     // Extra paranoia on aligned allocation/deallocation; ensure _Ptr_container is
+; 212  :     // in range [_Min_back_shift, _Non_user_size]
+; 213  : #ifdef _DEBUG
+; 214  :     constexpr uintptr_t _Min_back_shift = 2 * sizeof(void*);
+; 215  : #else // ^^^ defined(_DEBUG) / !defined(_DEBUG) vvv
+; 216  :     constexpr uintptr_t _Min_back_shift = sizeof(void*);
+; 217  : #endif // ^^^ !defined(_DEBUG) ^^^
+; 218  :     const uintptr_t _Back_shift = reinterpret_cast<uintptr_t>(_Ptr) - _Ptr_container;
+; 219  :     _STL_VERIFY(_Back_shift >= _Min_back_shift && _Back_shift <= _Non_user_size, "invalid argument");
+
+	sub	rax, rcx
+	sub	rax, 8
+	cmp	rax, 31
+	ja	SHORT $LN102@scope_32
+$LN317@scope_32:
+
+; 289  :         ::operator delete(_Ptr, _Bytes);
+
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN312@scope_32:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\source\tests\playerbots\pmo_audit\services.h
+
+; 85   :         return source;
+
+	mov	rdx, rdi
+	lea	rcx, QWORD PTR $T7[rbp-169]
+	call	??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAA@AEBV01@@Z ; std::basic_string<char,std::char_traits<char>,std::allocator<char> >::basic_string<char,std::char_traits<char>,std::allocator<char> >
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 3083 :         if (_My_data._Large_mode_engaged()) {
+
+	mov	rdx, QWORD PTR $T7[rbp-145]
+	cmp	rdx, 15
+	jbe	SHORT $LN98@scope_32
+
+; 852  :         _Al.deallocate(_Old_ptr, _Capacity + 1); // +1 for null terminator
+
+	inc	rdx
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 985  :         _STD _Deallocate<_New_alignof<_Ty>>(_Ptr, sizeof(_Ty) * _Count);
+
+	mov	rcx, QWORD PTR $T7[rbp-169]
+	mov	rax, rcx
+
+; 284  :         if (_Bytes >= _Big_allocation_threshold) {
+
+	cmp	rdx, 4096				; 00001000H
+	jb	SHORT $LN103@scope_32
+
+; 202  :     _Bytes += _Non_user_size;
+
+	add	rdx, 39					; 00000027H
+
+; 203  : 
+; 204  :     const uintptr_t* const _Ptr_user = static_cast<uintptr_t*>(_Ptr);
+; 205  :     const uintptr_t _Ptr_container   = _Ptr_user[-1];
+
+	mov	rcx, QWORD PTR [rcx-8]
+
+; 206  : 
+; 207  :     // If the following asserts, it likely means that we are performing
+; 208  :     // an aligned delete on memory coming from an unaligned allocation.
+; 209  :     _STL_ASSERT(_Ptr_user[-2] == _Big_allocation_sentinel, "invalid argument");
+; 210  : 
+; 211  :     // Extra paranoia on aligned allocation/deallocation; ensure _Ptr_container is
+; 212  :     // in range [_Min_back_shift, _Non_user_size]
+; 213  : #ifdef _DEBUG
+; 214  :     constexpr uintptr_t _Min_back_shift = 2 * sizeof(void*);
+; 215  : #else // ^^^ defined(_DEBUG) / !defined(_DEBUG) vvv
+; 216  :     constexpr uintptr_t _Min_back_shift = sizeof(void*);
+; 217  : #endif // ^^^ !defined(_DEBUG) ^^^
+; 218  :     const uintptr_t _Back_shift = reinterpret_cast<uintptr_t>(_Ptr) - _Ptr_container;
+; 219  :     _STL_VERIFY(_Back_shift >= _Min_back_shift && _Back_shift <= _Non_user_size, "invalid argument");
+
+	sub	rax, rcx
+	sub	rax, 8
+	cmp	rax, 31
+	jbe	SHORT $LN103@scope_32
+$LN102@scope_32:
+	mov	QWORD PTR [rsp+32], r12
+	xor	r9d, r9d
+	xor	r8d, r8d
+	xor	edx, edx
+	xor	ecx, ecx
+	call	QWORD PTR __imp__invoke_watson
+	int	3
+$LN103@scope_32:
+
+; 289  :         ::operator delete(_Ptr, _Bytes);
+
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN98@scope_32:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 306  :                 if (!event.getSource().empty())
+
+	cmp	QWORD PTR $T7[rbp-153], 0
+	je	$LN484@scope_32
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\source\tests\playerbots\pmo_audit\services.h
+
+; 85   :         return source;
+
+	mov	rdx, rdi
+	lea	rcx, QWORD PTR $T9[rbp-169]
+	call	??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAA@AEBV01@@Z ; std::basic_string<char,std::char_traits<char>,std::allocator<char> >::basic_string<char,std::char_traits<char>,std::allocator<char> >
+	npad	1
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 307  :                     actionName += " <" + event.getSource() + ">";
+
+	lea	r8, QWORD PTR $T9[rbp-169]
+	lea	rdx, OFFSET FLAT:??_C@_02ELAABJPC@?5?$DM@
+	lea	rcx, QWORD PTR $T8[rbp-169]
+	call	??$?HDU?$char_traits@D@std@@V?$allocator@D@1@@std@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@0@QEBD$$QEAV10@@Z ; std::operator+<char,std::char_traits<char>,std::allocator<char> >
+	mov	rcx, rax
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 1512 :         const size_type _Old_size = _Mypair._Myval2._Mysize;
+
+	mov	rdx, QWORD PTR [rax+16]
+
+; 1513 :         if (_Count <= _Mypair._Myval2._Myres - _Old_size) {
+
+	mov	r8, QWORD PTR [rax+24]
+	mov	rax, r8
+	sub	rax, rdx
+	cmp	rax, 1
+	jb	SHORT $LN337@scope_32
+
+; 1514 :             _ASAN_STRING_MODIFY(*this, _Old_size, _Old_size + _Count);
+; 1515 :             _Mypair._Myval2._Mysize = _Old_size + _Count;
+
+	lea	rax, QWORD PTR [rdx+1]
+	mov	QWORD PTR [rcx+16], rax
+
+; 435  :         value_type* _Result = _Bx._Buf;
+
+	mov	rax, rcx
+
+; 436  :         if (_Large_mode_engaged()) {
+
+	cmp	r8, 15
+	jbe	SHORT $LN340@scope_32
+
+; 437  :             _Result = _Unfancy(_Bx._Ptr);
+
+	mov	rax, QWORD PTR [rcx]
+$LN340@scope_32:
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_string_view.hpp
+
+; 174  :         _CSTD memmove(_First1, _First2, _Count * sizeof(_Elem));
+
+	mov	WORD PTR [rax+rdx], 62			; 0000003eH
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 1519 :             return *this;
+
+	jmp	SHORT $LN336@scope_32
+$LN337@scope_32:
+
+; 1520 :         }
+; 1521 : 
+; 1522 :         return _Reallocate_grow_by(
+
+	mov	QWORD PTR [rsp+32], 1
+	lea	r9, OFFSET FLAT:??_C@_01PPODPGHN@?$DO@
+	xor	r8d, r8d
+	mov	edx, 1
+	call	??$_Reallocate_grow_by@V<lambda_65e615be2a453ca0576c979606f46740>@@PEBD_K@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAAAEAV01@_KV<lambda_65e615be2a453ca0576c979606f46740>@@PEBD_K@Z ; std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Reallocate_grow_by<<lambda_65e615be2a453ca0576c979606f46740>,char const *,unsigned __int64>
+	mov	rcx, rax
+$LN336@scope_32:
+
+; 1286 :                 _CSTD memcpy(_My_data_mem, _Right_data_mem, _Memcpy_val_size);
+
+	movups	xmm0, XMMWORD PTR [rcx]
+	movups	XMMWORD PTR $T5[rbp-169], xmm0
+	movups	xmm1, XMMWORD PTR [rcx+16]
+	movups	XMMWORD PTR $T5[rbp-153], xmm1
+
+; 1287 : 
+; 1288 :                 _Right_data._Mysize = 0;
+
+	mov	QWORD PTR [rcx+16], r12
+
+; 1289 :                 _Right_data._Myres  = _Small_string_capacity;
+
+	mov	QWORD PTR [rcx+24], 15
+
+; 1290 :                 _Right_data._Activate_SSO_buffer();
+; 1291 :                 _Traits::assign(_Right_data._Bx._Buf[0], _Elem());
+
+	mov	BYTE PTR [rcx], 0
+
+; 444  :         const value_type* _Result = _Bx._Buf;
+
+	lea	r9, QWORD PTR $T5[rbp-169]
+
+; 445  :         if (_Large_mode_engaged()) {
+
+	movq	rdi, xmm0
+	movdqa	xmm0, xmm1
+	psrldq	xmm0, 8
+	movq	r14, xmm0
+	cmp	r14, 15
+	cmova	r9, rdi
+
+; 1512 :         const size_type _Old_size = _Mypair._Myval2._Mysize;
+
+	mov	rcx, QWORD PTR actionName$3[rbp-153]
+	mov	rdx, QWORD PTR actionName$3[rbp-145]
+	mov	rax, rdx
+	sub	rax, rcx
+
+; 1513 :         if (_Count <= _Mypair._Myval2._Myres - _Old_size) {
+
+	movq	rsi, xmm1
+	cmp	rsi, rax
+	ja	SHORT $LN390@scope_32
+
+; 1514 :             _ASAN_STRING_MODIFY(*this, _Old_size, _Old_size + _Count);
+; 1515 :             _Mypair._Myval2._Mysize = _Old_size + _Count;
+
+	lea	rax, QWORD PTR [rsi+rcx]
+	mov	QWORD PTR actionName$3[rbp-153], rax
+
+; 435  :         value_type* _Result = _Bx._Buf;
+
+	lea	rbx, QWORD PTR actionName$3[rbp-169]
+
+; 436  :         if (_Large_mode_engaged()) {
+
+	cmp	rdx, 15
+	cmova	rbx, QWORD PTR actionName$3[rbp-169]
+
+; 1517 :             _Traits::move(_Old_ptr + _Old_size, _Ptr, _Count);
+
+	add	rbx, rcx
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_string_view.hpp
+
+; 174  :         _CSTD memmove(_First1, _First2, _Count * sizeof(_Elem));
+
+	mov	r8, rsi
+	mov	rdx, r9
+	mov	rcx, rbx
+	call	memmove
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 1518 :             _Traits::assign(_Old_ptr[_Old_size + _Count], _Elem());
+
+	mov	BYTE PTR [rsi+rbx], 0
+
+; 1519 :             return *this;
+
+	jmp	SHORT $LN389@scope_32
+$LN390@scope_32:
+
+; 1520 :         }
+; 1521 : 
+; 1522 :         return _Reallocate_grow_by(
+
+	mov	QWORD PTR [rsp+32], rsi
+	xor	r8d, r8d
+	mov	rdx, rsi
+	lea	rcx, QWORD PTR actionName$3[rbp-169]
+	call	??$_Reallocate_grow_by@V<lambda_65e615be2a453ca0576c979606f46740>@@PEBD_K@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAAAEAV01@_KV<lambda_65e615be2a453ca0576c979606f46740>@@PEBD_K@Z ; std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Reallocate_grow_by<<lambda_65e615be2a453ca0576c979606f46740>,char const *,unsigned __int64>
+	mov	r14, QWORD PTR $T5[rbp-145]
+	mov	rdi, QWORD PTR $T5[rbp-169]
+$LN389@scope_32:
+
+; 3083 :         if (_My_data._Large_mode_engaged()) {
+
+	cmp	r14, 15
+	jbe	SHORT $LN422@scope_32
+
+; 852  :         _Al.deallocate(_Old_ptr, _Capacity + 1); // +1 for null terminator
+
+	lea	rdx, QWORD PTR [r14+1]
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 985  :         _STD _Deallocate<_New_alignof<_Ty>>(_Ptr, sizeof(_Ty) * _Count);
+
+	mov	rax, rdi
+
+; 284  :         if (_Bytes >= _Big_allocation_threshold) {
+
+	cmp	rdx, 4096				; 00001000H
+	jb	SHORT $LN427@scope_32
+
+; 202  :     _Bytes += _Non_user_size;
+
+	add	rdx, 39					; 00000027H
+
+; 203  : 
+; 204  :     const uintptr_t* const _Ptr_user = static_cast<uintptr_t*>(_Ptr);
+; 205  :     const uintptr_t _Ptr_container   = _Ptr_user[-1];
+
+	mov	rdi, QWORD PTR [rdi-8]
+
+; 206  : 
+; 207  :     // If the following asserts, it likely means that we are performing
+; 208  :     // an aligned delete on memory coming from an unaligned allocation.
+; 209  :     _STL_ASSERT(_Ptr_user[-2] == _Big_allocation_sentinel, "invalid argument");
+; 210  : 
+; 211  :     // Extra paranoia on aligned allocation/deallocation; ensure _Ptr_container is
+; 212  :     // in range [_Min_back_shift, _Non_user_size]
+; 213  : #ifdef _DEBUG
+; 214  :     constexpr uintptr_t _Min_back_shift = 2 * sizeof(void*);
+; 215  : #else // ^^^ defined(_DEBUG) / !defined(_DEBUG) vvv
+; 216  :     constexpr uintptr_t _Min_back_shift = sizeof(void*);
+; 217  : #endif // ^^^ !defined(_DEBUG) ^^^
+; 218  :     const uintptr_t _Back_shift = reinterpret_cast<uintptr_t>(_Ptr) - _Ptr_container;
+; 219  :     _STL_VERIFY(_Back_shift >= _Min_back_shift && _Back_shift <= _Non_user_size, "invalid argument");
+
+	sub	rax, rdi
+	sub	rax, 8
+	cmp	rax, 31
+	jbe	SHORT $LN427@scope_32
+	mov	QWORD PTR [rsp+32], r12
+	xor	r9d, r9d
+	xor	r8d, r8d
+	xor	edx, edx
+	xor	ecx, ecx
+	call	QWORD PTR __imp__invoke_watson
+	int	3
+$LN427@scope_32:
+
+; 289  :         ::operator delete(_Ptr, _Bytes);
+
+	mov	rcx, rdi
+	call	??3@YAXPEAX_K@Z				; operator delete
+	npad	1
+$LN422@scope_32:
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 3083 :         if (_My_data._Large_mode_engaged()) {
+
+	mov	rdx, QWORD PTR $T8[rbp-145]
+	cmp	rdx, 15
+	jbe	SHORT $LN453@scope_32
+
+; 852  :         _Al.deallocate(_Old_ptr, _Capacity + 1); // +1 for null terminator
+
+	inc	rdx
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 985  :         _STD _Deallocate<_New_alignof<_Ty>>(_Ptr, sizeof(_Ty) * _Count);
+
+	mov	rcx, QWORD PTR $T8[rbp-169]
+	mov	rax, rcx
+
+; 284  :         if (_Bytes >= _Big_allocation_threshold) {
+
+	cmp	rdx, 4096				; 00001000H
+	jb	SHORT $LN458@scope_32
+
+; 202  :     _Bytes += _Non_user_size;
+
+	add	rdx, 39					; 00000027H
+
+; 203  : 
+; 204  :     const uintptr_t* const _Ptr_user = static_cast<uintptr_t*>(_Ptr);
+; 205  :     const uintptr_t _Ptr_container   = _Ptr_user[-1];
+
+	mov	rcx, QWORD PTR [rcx-8]
+
+; 206  : 
+; 207  :     // If the following asserts, it likely means that we are performing
+; 208  :     // an aligned delete on memory coming from an unaligned allocation.
+; 209  :     _STL_ASSERT(_Ptr_user[-2] == _Big_allocation_sentinel, "invalid argument");
+; 210  : 
+; 211  :     // Extra paranoia on aligned allocation/deallocation; ensure _Ptr_container is
+; 212  :     // in range [_Min_back_shift, _Non_user_size]
+; 213  : #ifdef _DEBUG
+; 214  :     constexpr uintptr_t _Min_back_shift = 2 * sizeof(void*);
+; 215  : #else // ^^^ defined(_DEBUG) / !defined(_DEBUG) vvv
+; 216  :     constexpr uintptr_t _Min_back_shift = sizeof(void*);
+; 217  : #endif // ^^^ !defined(_DEBUG) ^^^
+; 218  :     const uintptr_t _Back_shift = reinterpret_cast<uintptr_t>(_Ptr) - _Ptr_container;
+; 219  :     _STL_VERIFY(_Back_shift >= _Min_back_shift && _Back_shift <= _Non_user_size, "invalid argument");
+
+	sub	rax, rcx
+	sub	rax, 8
+	cmp	rax, 31
+	jbe	SHORT $LN458@scope_32
+	mov	QWORD PTR [rsp+32], r12
+	xor	r9d, r9d
+	xor	r8d, r8d
+	xor	edx, edx
+	xor	ecx, ecx
+	call	QWORD PTR __imp__invoke_watson
+	int	3
+$LN458@scope_32:
+
+; 289  :         ::operator delete(_Ptr, _Bytes);
+
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN453@scope_32:
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 3090 :         _My_data._Mysize = 0;
+
+	movdqa	xmm0, XMMWORD PTR __xmm@000000000000000f0000000000000000
+	movdqu	XMMWORD PTR $T8[rbp-153], xmm0
+
+; 3091 :         _My_data._Myres  = _Small_string_capacity;
+; 3092 :         // the _Traits::assign is last so the codegen doesn't think the char write can alias this
+; 3093 :         _Traits::assign(_My_data._Bx._Buf[0], _Elem());
+
+	mov	BYTE PTR $T8[rbp-169], 0
+
+; 3083 :         if (_My_data._Large_mode_engaged()) {
+
+	mov	rdx, QWORD PTR $T9[rbp-145]
+	cmp	rdx, 15
+	jbe	SHORT $LN484@scope_32
+
+; 852  :         _Al.deallocate(_Old_ptr, _Capacity + 1); // +1 for null terminator
+
+	inc	rdx
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 985  :         _STD _Deallocate<_New_alignof<_Ty>>(_Ptr, sizeof(_Ty) * _Count);
+
+	mov	rcx, QWORD PTR $T9[rbp-169]
+	mov	rax, rcx
+
+; 284  :         if (_Bytes >= _Big_allocation_threshold) {
+
+	cmp	rdx, 4096				; 00001000H
+	jb	SHORT $LN489@scope_32
+
+; 202  :     _Bytes += _Non_user_size;
+
+	add	rdx, 39					; 00000027H
+
+; 203  : 
+; 204  :     const uintptr_t* const _Ptr_user = static_cast<uintptr_t*>(_Ptr);
+; 205  :     const uintptr_t _Ptr_container   = _Ptr_user[-1];
+
+	mov	rcx, QWORD PTR [rcx-8]
+
+; 206  : 
+; 207  :     // If the following asserts, it likely means that we are performing
+; 208  :     // an aligned delete on memory coming from an unaligned allocation.
+; 209  :     _STL_ASSERT(_Ptr_user[-2] == _Big_allocation_sentinel, "invalid argument");
+; 210  : 
+; 211  :     // Extra paranoia on aligned allocation/deallocation; ensure _Ptr_container is
+; 212  :     // in range [_Min_back_shift, _Non_user_size]
+; 213  : #ifdef _DEBUG
+; 214  :     constexpr uintptr_t _Min_back_shift = 2 * sizeof(void*);
+; 215  : #else // ^^^ defined(_DEBUG) / !defined(_DEBUG) vvv
+; 216  :     constexpr uintptr_t _Min_back_shift = sizeof(void*);
+; 217  : #endif // ^^^ !defined(_DEBUG) ^^^
+; 218  :     const uintptr_t _Back_shift = reinterpret_cast<uintptr_t>(_Ptr) - _Ptr_container;
+; 219  :     _STL_VERIFY(_Back_shift >= _Min_back_shift && _Back_shift <= _Non_user_size, "invalid argument");
+
+	sub	rax, rcx
+	sub	rax, 8
+	cmp	rax, 31
+	jbe	SHORT $LN489@scope_32
+	mov	QWORD PTR [rsp+32], r12
+	xor	r9d, r9d
+	xor	r8d, r8d
+	xor	edx, edx
+	xor	ecx, ecx
+	call	QWORD PTR __imp__invoke_watson
+	int	3
+$LN489@scope_32:
+
+; 289  :         ::operator delete(_Ptr, _Bytes);
+
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN484@scope_32:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 308  :                 pmo1 = sPerformanceMonitor.start(PERF_MON_ACTION, std::move(actionName), ai);
+
+	call	?instance@PerformanceMonitor@v19@@SAAEAV12@XZ ; v19::PerformanceMonitor::instance
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 1286 :                 _CSTD memcpy(_My_data_mem, _Right_data_mem, _Memcpy_val_size);
+
+	movups	xmm0, XMMWORD PTR actionName$3[rbp-169]
+	movups	XMMWORD PTR $T10[rbp-169], xmm0
+	movups	xmm1, XMMWORD PTR actionName$3[rbp-153]
+	movups	XMMWORD PTR $T10[rbp-153], xmm1
+
+; 1287 : 
+; 1288 :                 _Right_data._Mysize = 0;
+
+	mov	QWORD PTR actionName$3[rbp-153], r12
+
+; 1289 :                 _Right_data._Myres  = _Small_string_capacity;
+
+	mov	QWORD PTR actionName$3[rbp-145], 15
+
+; 1290 :                 _Right_data._Activate_SSO_buffer();
+; 1291 :                 _Traits::assign(_Right_data._Bx._Buf[0], _Elem());
+
+	mov	BYTE PTR actionName$3[rbp-169], 0
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 308  :                 pmo1 = sPerformanceMonitor.start(PERF_MON_ACTION, std::move(actionName), ai);
+
+	mov	QWORD PTR [rsp+32], r15
+	lea	r9, QWORD PTR $T10[rbp-169]
+	mov	r8d, 2
+	lea	rdx, QWORD PTR $T1[rbp-169]
+	mov	rcx, rax
+	call	?start@PerformanceMonitor@v19@@QEAA?AV?$unique_ptr@VPerformanceMonitorOperation@v19@@U?$default_delete@VPerformanceMonitorOperation@v19@@@std@@@std@@W4PerformanceMetric@2@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@4@PEAVPlayerbotAI@2@@Z ; v19::PerformanceMonitor::start
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\utility
+
+; 773  :     _Ty _Old_val = static_cast<_Ty&&>(_Val);
+
+	mov	rbx, QWORD PTR [rax]
+
+; 774  :     _Val         = static_cast<_Other&&>(_New_val);
+
+	mov	QWORD PTR [rax], r12
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory
+
+; 3426 :         if (_Mypair._Myval2) {
+
+	mov	rdi, QWORD PTR $T1[rbp-169]
+	test	rdi, rdi
+	je	SHORT $LN174@scope_32
+	mov	rcx, rdi
+	call	??1PerformanceMonitorOperation@v19@@QEAA@XZ ; v19::PerformanceMonitorOperation::~PerformanceMonitorOperation
+	mov	edx, 56					; 00000038H
+	mov	rcx, rdi
+	call	??3@YAXPEAX_K@Z				; operator delete
+	npad	1
+$LN174@scope_32:
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 3083 :         if (_My_data._Large_mode_engaged()) {
+
+	mov	rdx, QWORD PTR actionName$3[rbp-145]
+	cmp	rdx, 15
+	jbe	SHORT $LN197@scope_32
+
+; 852  :         _Al.deallocate(_Old_ptr, _Capacity + 1); // +1 for null terminator
+
+	inc	rdx
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 985  :         _STD _Deallocate<_New_alignof<_Ty>>(_Ptr, sizeof(_Ty) * _Count);
+
+	mov	rcx, QWORD PTR actionName$3[rbp-169]
+	mov	rax, rcx
+
+; 284  :         if (_Bytes >= _Big_allocation_threshold) {
+
+	cmp	rdx, 4096				; 00001000H
+	jb	SHORT $LN202@scope_32
+
+; 202  :     _Bytes += _Non_user_size;
+
+	add	rdx, 39					; 00000027H
+
+; 203  : 
+; 204  :     const uintptr_t* const _Ptr_user = static_cast<uintptr_t*>(_Ptr);
+; 205  :     const uintptr_t _Ptr_container   = _Ptr_user[-1];
+
+	mov	rcx, QWORD PTR [rcx-8]
+
+; 206  : 
+; 207  :     // If the following asserts, it likely means that we are performing
+; 208  :     // an aligned delete on memory coming from an unaligned allocation.
+; 209  :     _STL_ASSERT(_Ptr_user[-2] == _Big_allocation_sentinel, "invalid argument");
+; 210  : 
+; 211  :     // Extra paranoia on aligned allocation/deallocation; ensure _Ptr_container is
+; 212  :     // in range [_Min_back_shift, _Non_user_size]
+; 213  : #ifdef _DEBUG
+; 214  :     constexpr uintptr_t _Min_back_shift = 2 * sizeof(void*);
+; 215  : #else // ^^^ defined(_DEBUG) / !defined(_DEBUG) vvv
+; 216  :     constexpr uintptr_t _Min_back_shift = sizeof(void*);
+; 217  : #endif // ^^^ !defined(_DEBUG) ^^^
+; 218  :     const uintptr_t _Back_shift = reinterpret_cast<uintptr_t>(_Ptr) - _Ptr_container;
+; 219  :     _STL_VERIFY(_Back_shift >= _Min_back_shift && _Back_shift <= _Non_user_size, "invalid argument");
+
+	sub	rax, rcx
+	sub	rax, 8
+	cmp	rax, 31
+	jbe	SHORT $LN202@scope_32
+	mov	QWORD PTR [rsp+32], r12
+	xor	r9d, r9d
+	xor	r8d, r8d
+	xor	edx, edx
+	xor	ecx, ecx
+	call	QWORD PTR __imp__invoke_watson
+	int	3
+$LN202@scope_32:
+
+; 289  :         ::operator delete(_Ptr, _Bytes);
+
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN197@scope_32:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 310  : Work("scope body");
+
+	lea	rcx, OFFSET FLAT:??_C@_0L@JFEBODI@scope?5body@
+	call	?Work@v19@@YAXPEBD@Z			; v19::Work
+	npad	1
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory
+
+; 3426 :         if (_Mypair._Myval2) {
+
+	test	rbx, rbx
+	je	SHORT $LN39@scope_32
+	mov	rcx, rbx
+	call	??1PerformanceMonitorOperation@v19@@QEAA@XZ ; v19::PerformanceMonitorOperation::~PerformanceMonitorOperation
+	mov	edx, 56					; 00000038H
+	mov	rcx, rbx
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN39@scope_32:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 311  : }
+
+	mov	rcx, QWORD PTR __$ArrayPad$[rbp-169]
+	xor	rcx, rsp
+	call	__security_check_cookie
+	add	rsp, 208				; 000000d0H
+	pop	r15
+	pop	r14
+	pop	r12
+	pop	rdi
+	pop	rsi
+	pop	rbx
+	pop	rbp
+	ret	0
+$LN495@scope_32:
+?scope_32@v19@@YAXPEAVPlayerbotAI@1@PEAUAction@1@AEAUEvent@1@@Z ENDP ; v19::scope_32
+
+?UpdateAI@PlayerbotAIBase@v19@@QEAAXI@Z PROC		; v19::PlayerbotAIBase::UpdateAI, COMDAT
+
+; 495  : {
+
+$LN126:
+	mov	QWORD PTR [rsp+16], rbx
+	push	rbp
+	push	rsi
+	push	rdi
+	sub	rsp, 96					; 00000060H
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\utility
+
+; 773  :     _Ty _Old_val = static_cast<_Ty&&>(_Val);
+
+	mov	rbx, QWORD PTR [rcx+8]
+
+; 774  :     _Val         = static_cast<_Other&&>(_New_val);
+
+	xor	ebp, ebp
+	mov	QWORD PTR [rcx+8], rbp
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 495  : {
+
+	mov	esi, edx
+	mov	rdi, rcx
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory
+
+; 3470 :         if (_Old) {
+
+	test	rbx, rbx
+	je	SHORT $LN22@UpdateAI
+	mov	rcx, rbx
+	call	??1PerformanceMonitorOperation@v19@@QEAA@XZ ; v19::PerformanceMonitorOperation::~PerformanceMonitorOperation
+	mov	edx, 56					; 00000038H
+	mov	rcx, rbx
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN22@UpdateAI:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 497  :     if (sPlayerbotAIConfig.perfMonEnabled)
+
+	cmp	BYTE PTR ?sPlayerbotAIConfig@v19@@3UConfig@1@A, bpl
+	je	$LN110@UpdateAI
+
+; 498  :         totalPmo = sPerformanceMonitor.start(PERF_MON_TOTAL, "PlayerbotAIBase::FullTick");
+
+	call	?instance@PerformanceMonitor@v19@@SAAEAV12@XZ ; v19::PerformanceMonitor::instance
+	xorps	xmm0, xmm0
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 517  :     size_type _Mysize = 0; // current length of string (size)
+
+	mov	QWORD PTR $T1[rsp+16], rbp
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 136  :         return ::operator new(_Bytes);
+
+	mov	ecx, 32					; 00000020H
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 518  :     size_type _Myres  = 0; // current storage reserved for string (capacity)
+
+	mov	QWORD PTR $T1[rsp+24], rbp
+
+; 493  :         _CONSTEXPR20 _Bxty() noexcept : _Buf() {} // user-provided, for fancy pointers
+
+	movups	XMMWORD PTR $T1[rsp], xmm0
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 498  :         totalPmo = sPerformanceMonitor.start(PERF_MON_TOTAL, "PlayerbotAIBase::FullTick");
+
+	mov	rbx, rax
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 136  :         return ::operator new(_Bytes);
+
+	call	??2@YAPEAX_K@Z				; operator new
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_string_view.hpp
+
+; 121  :         _CSTD memcpy(_First1, _First2, _Count * sizeof(_Elem));
+
+	movups	xmm0, XMMWORD PTR ??_C@_0BK@IJHCDMBF@PlayerbotAIBase?3?3FullTick@
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 913  :         _Construct_in_place(_My_data._Bx._Ptr, _New_ptr);
+
+	mov	QWORD PTR $T1[rsp], rax
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 498  :         totalPmo = sPerformanceMonitor.start(PERF_MON_TOTAL, "PlayerbotAIBase::FullTick");
+
+	lea	r9, QWORD PTR $T1[rsp]
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 915  :         _My_data._Mysize = _Count;
+
+	mov	QWORD PTR $T1[rsp+16], 25
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 498  :         totalPmo = sPerformanceMonitor.start(PERF_MON_TOTAL, "PlayerbotAIBase::FullTick");
+
+	lea	rdx, QWORD PTR $T2[rsp]
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 916  :         _My_data._Myres  = _New_capacity;
+
+	mov	QWORD PTR $T1[rsp+24], 31
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 498  :         totalPmo = sPerformanceMonitor.start(PERF_MON_TOTAL, "PlayerbotAIBase::FullTick");
+
+	mov	r8d, 4
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_string_view.hpp
+
+; 121  :         _CSTD memcpy(_First1, _First2, _Count * sizeof(_Elem));
+
+	movups	XMMWORD PTR [rax], xmm0
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 498  :         totalPmo = sPerformanceMonitor.start(PERF_MON_TOTAL, "PlayerbotAIBase::FullTick");
+
+	mov	DWORD PTR [rsp+48], ebp
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_string_view.hpp
+
+; 121  :         _CSTD memcpy(_First1, _First2, _Count * sizeof(_Elem));
+
+	movsd	xmm0, QWORD PTR ??_C@_0BK@IJHCDMBF@PlayerbotAIBase?3?3FullTick@+16
+	movsd	QWORD PTR [rax+16], xmm0
+	movzx	ecx, BYTE PTR ??_C@_0BK@IJHCDMBF@PlayerbotAIBase?3?3FullTick@+24
+	mov	BYTE PTR [rax+24], cl
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 498  :         totalPmo = sPerformanceMonitor.start(PERF_MON_TOTAL, "PlayerbotAIBase::FullTick");
+
+	mov	rcx, rbx
+	mov	DWORD PTR [rsp+40], ebp
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 922  :             _Traits::assign(_Unfancy(_New_ptr)[_Count], _Elem());
+
+	mov	BYTE PTR [rax+25], bpl
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 498  :         totalPmo = sPerformanceMonitor.start(PERF_MON_TOTAL, "PlayerbotAIBase::FullTick");
+
+	mov	QWORD PTR [rsp+32], rbp
+	call	?start@PerformanceMonitor@v19@@QEAA?AV?$unique_ptr@VPerformanceMonitorOperation@v19@@U?$default_delete@VPerformanceMonitorOperation@v19@@@std@@@std@@W4PerformanceMetric@2@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@4@PEAV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@II@Z ; v19::PerformanceMonitor::start
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\utility
+
+; 773  :     _Ty _Old_val = static_cast<_Ty&&>(_Val);
+
+	mov	rdx, QWORD PTR [rax]
+
+; 774  :     _Val         = static_cast<_Other&&>(_New_val);
+
+	mov	QWORD PTR [rax], rbp
+
+; 773  :     _Ty _Old_val = static_cast<_Ty&&>(_Val);
+
+	mov	rbx, QWORD PTR [rdi+8]
+
+; 774  :     _Val         = static_cast<_Other&&>(_New_val);
+
+	mov	QWORD PTR [rdi+8], rdx
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory
+
+; 3470 :         if (_Old) {
+
+	test	rbx, rbx
+	je	SHORT $LN97@UpdateAI
+	mov	rcx, rbx
+	call	??1PerformanceMonitorOperation@v19@@QEAA@XZ ; v19::PerformanceMonitorOperation::~PerformanceMonitorOperation
+	mov	edx, 56					; 00000038H
+	mov	rcx, rbx
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN97@UpdateAI:
+
+; 3426 :         if (_Mypair._Myval2) {
+
+	mov	rbx, QWORD PTR $T2[rsp]
+	test	rbx, rbx
+	je	SHORT $LN110@UpdateAI
+	mov	rcx, rbx
+	call	??1PerformanceMonitorOperation@v19@@QEAA@XZ ; v19::PerformanceMonitorOperation::~PerformanceMonitorOperation
+	mov	edx, 56					; 00000038H
+	mov	rcx, rbx
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN110@UpdateAI:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 505  :     if (!CanUpdateAIInternal())
+
+	mov	ecx, DWORD PTR [rdi]
+	sub	ecx, esi
+	cmp	DWORD PTR [rdi], esi
+	cmovbe	ecx, ebp
+	mov	DWORD PTR [rdi], ecx
+	cmp	ecx, 100				; 00000064H
+	jae	SHORT $LN1@UpdateAI
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\source\tests\playerbots\pmo_audit\services.h
+
+; 127  :     void UpdateAIInternal(uint32) { Work("UpdateAIInternal"); }
+
+	lea	rcx, OFFSET FLAT:??_C@_0BB@BOHCNPOJ@UpdateAIInternal@
+	call	?Work@v19@@YAXPEBD@Z			; v19::Work
+
+; 128  :     void YieldAIInternalThread() { Work("YieldAIInternalThread"); }
+
+	lea	rcx, OFFSET FLAT:??_C@_0BG@GJFENLOO@YieldAIInternalThread@
+	call	?Work@v19@@YAXPEBD@Z			; v19::Work
+$LN1@UpdateAI:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 510  : }
+
+	mov	rbx, QWORD PTR [rsp+136]
+	add	rsp, 96					; 00000060H
+	pop	rdi
+	pop	rsi
+	pop	rbp
+	ret	0
+?UpdateAI@PlayerbotAIBase@v19@@QEAAXI@Z ENDP		; v19::PlayerbotAIBase::UpdateAI
+
+?ExecuteAction@Engine@v19@@QEAA?AW4ActionResult@2@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAUEvent@2@@Z PROC ; v19::Engine::ExecuteAction, COMDAT
+
+; 441  : {
+
+$LN477:
+	mov	QWORD PTR [rsp+16], rbx
+	push	rbp
+	push	rsi
+	push	rdi
+	push	r12
+	push	r13
+	push	r14
+	push	r15
+	mov	rbp, rsp
+	sub	rsp, 112				; 00000070H
+	mov	r14, rdx
+	mov	r15, rcx
+
+; 442  :     ActionResult actionResult = ACTION_RESULT_UNKNOWN;
+
+	xor	esi, esi
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\source\tests\playerbots\pmo_audit\services.h
+
+; 113  :     ActionNode* CreateActionNode(const std::string&) { Work("CreateActionNode"); return action.flags&1 ? nullptr : new ActionNode; }
+
+	lea	rcx, OFFSET FLAT:??_C@_0BB@BJPCMBCF@CreateActionNode@
+	call	?Work@v19@@YAXPEBD@Z			; v19::Work
+	lea	r12, QWORD PTR [r15+8]
+	test	BYTE PTR [r12+32], 1
+	jne	$LN474@ExecuteAct
+	mov	ecx, 1
+	call	??2@YAPEAX_K@Z				; operator new
+	mov	r13, rax
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 444  :     if (actionNode)
+
+	test	rax, rax
+	je	$LN474@ExecuteAct
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 1531 :         : _Ty1(), _Myval2(_STD forward<_Other2>(_Val2)...) {}
+
+	mov	edi, esi
+	mov	QWORD PTR pmo1$1[rbp-112], rsi
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 447  :         if (sPlayerbotAIConfig.perfMonEnabled)
+
+	cmp	BYTE PTR ?sPlayerbotAIConfig@v19@@3UConfig@1@A, sil
+	je	SHORT $LN87@ExecuteAct
+
+; 448  :             pmo1 = sPerformanceMonitor.start(PERF_MON_ACTION, name, ai);
+
+	call	?instance@PerformanceMonitor@v19@@SAAEAV12@XZ ; v19::PerformanceMonitor::instance
+	mov	rdi, rax
+	mov	rbx, QWORD PTR [r15]
+	mov	rdx, r14
+	lea	rcx, QWORD PTR $T5[rbp-112]
+	call	??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAA@AEBV01@@Z ; std::basic_string<char,std::char_traits<char>,std::allocator<char> >::basic_string<char,std::char_traits<char>,std::allocator<char> >
+	mov	QWORD PTR [rsp+32], rbx
+	mov	r9, rax
+	mov	r8d, 2
+	lea	rdx, QWORD PTR $T9[rbp-112]
+	mov	rcx, rdi
+	call	?start@PerformanceMonitor@v19@@QEAA?AV?$unique_ptr@VPerformanceMonitorOperation@v19@@U?$default_delete@VPerformanceMonitorOperation@v19@@@std@@@std@@W4PerformanceMetric@2@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@4@PEAVPlayerbotAI@2@@Z ; v19::PerformanceMonitor::start
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\utility
+
+; 773  :     _Ty _Old_val = static_cast<_Ty&&>(_Val);
+
+	mov	rdi, QWORD PTR [rax]
+
+; 774  :     _Val         = static_cast<_Other&&>(_New_val);
+
+	mov	QWORD PTR [rax], rsi
+	mov	QWORD PTR pmo1$1[rbp-112], rdi
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory
+
+; 3426 :         if (_Mypair._Myval2) {
+
+	mov	rbx, QWORD PTR $T9[rbp-112]
+	test	rbx, rbx
+	je	SHORT $LN87@ExecuteAct
+	mov	rcx, rbx
+	call	??1PerformanceMonitorOperation@v19@@QEAA@XZ ; v19::PerformanceMonitorOperation::~PerformanceMonitorOperation
+	mov	edx, 56					; 00000038H
+	mov	rcx, rbx
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN87@ExecuteAct:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\source\tests\playerbots\pmo_audit\services.h
+
+; 114  :     Action* InitializeAction(ActionNode*) { Work("InitializeAction"); return action.flags&2 ? nullptr : &action; }
+
+	lea	rcx, OFFSET FLAT:??_C@_0BB@PKBCPBBO@InitializeAction@
+	call	?Work@v19@@YAXPEBD@Z			; v19::Work
+	test	BYTE PTR [r15+40], 2
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 450  :         if (action)
+
+	mov	r14, rsi
+	cmove	r14, r12
+	test	r14, r14
+	je	$LN124@ExecuteAct
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 1531 :         : _Ty1(), _Myval2(_STD forward<_Other2>(_Val2)...) {}
+
+	mov	QWORD PTR pmo2$10[rbp-112], rsi
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 452  :             std::unique_ptr<PerformanceMonitorOperation> pmo2;
+
+	mov	rbx, rsi
+
+; 453  :             if (sPlayerbotAIConfig.perfMonEnabled)
+
+	cmp	BYTE PTR ?sPlayerbotAIConfig@v19@@3UConfig@1@A, bl
+	je	SHORT $LN212@ExecuteAct
+
+; 454  :                 pmo2 = sPerformanceMonitor.start(PERF_MON_ACTION, "isUseful", ai);
+
+	call	?instance@PerformanceMonitor@v19@@SAAEAV12@XZ ; v19::PerformanceMonitor::instance
+	mov	rcx, rax
+	xorps	xmm0, xmm0
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 493  :         _CONSTEXPR20 _Bxty() noexcept : _Buf() {} // user-provided, for fancy pointers
+
+	movups	XMMWORD PTR $T6[rbp-112], xmm0
+
+; 890  :             _My_data._Mysize = _Count;
+
+	mov	QWORD PTR $T6[rbp-96], 8
+
+; 891  :             _My_data._Myres  = _Small_string_capacity;
+
+	mov	QWORD PTR $T6[rbp-88], 15
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_string_view.hpp
+
+; 121  :         _CSTD memcpy(_First1, _First2, _Count * sizeof(_Elem));
+
+	mov	rax, 7815265314284073833		; 6c75666573557369H
+	mov	QWORD PTR $T6[rbp-112], rax
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 898  :                 _Traits::assign(_My_data._Bx._Buf[_Count], _Elem());
+
+	mov	BYTE PTR $T6[rbp-104], bl
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 454  :                 pmo2 = sPerformanceMonitor.start(PERF_MON_ACTION, "isUseful", ai);
+
+	mov	rax, QWORD PTR [r15]
+	mov	QWORD PTR [rsp+32], rax
+	lea	r9, QWORD PTR $T6[rbp-112]
+	mov	r8d, 2
+	lea	rdx, QWORD PTR $T11[rbp-112]
+	call	?start@PerformanceMonitor@v19@@QEAA?AV?$unique_ptr@VPerformanceMonitorOperation@v19@@U?$default_delete@VPerformanceMonitorOperation@v19@@@std@@@std@@W4PerformanceMetric@2@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@4@PEAVPlayerbotAI@2@@Z ; v19::PerformanceMonitor::start
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\utility
+
+; 773  :     _Ty _Old_val = static_cast<_Ty&&>(_Val);
+
+	mov	rbx, QWORD PTR [rax]
+
+; 774  :     _Val         = static_cast<_Other&&>(_New_val);
+
+	mov	QWORD PTR [rax], rsi
+	mov	QWORD PTR pmo2$10[rbp-112], rbx
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory
+
+; 3426 :         if (_Mypair._Myval2) {
+
+	mov	r12, QWORD PTR $T11[rbp-112]
+	test	r12, r12
+	je	SHORT $LN212@ExecuteAct
+	mov	rcx, r12
+	call	??1PerformanceMonitorOperation@v19@@QEAA@XZ ; v19::PerformanceMonitorOperation::~PerformanceMonitorOperation
+	mov	edx, 56					; 00000038H
+	mov	rcx, r12
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN212@ExecuteAct:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\source\tests\playerbots\pmo_audit\services.h
+
+; 100  :     bool isUseful() { Work("isUseful"); return !(flags & 4); }
+
+	lea	rcx, OFFSET FLAT:??_C@_08ODFPCNFA@isUseful@
+	call	?Work@v19@@YAXPEBD@Z			; v19::Work
+	mov	r12d, DWORD PTR [r14+32]
+	and	r12d, 4
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\utility
+
+; 774  :     _Val         = static_cast<_Other&&>(_New_val);
+
+	mov	QWORD PTR pmo2$10[rbp-112], rsi
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory
+
+; 3470 :         if (_Old) {
+
+	test	rbx, rbx
+	je	SHORT $LN111@ExecuteAct
+	mov	rcx, rbx
+	call	??1PerformanceMonitorOperation@v19@@QEAA@XZ ; v19::PerformanceMonitorOperation::~PerformanceMonitorOperation
+	mov	edx, 56					; 00000038H
+	mov	rcx, rbx
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN111@ExecuteAct:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 458  :             if (isUseful)
+
+	test	r12d, r12d
+	jne	$LN6@ExecuteAct
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 1531 :         : _Ty1(), _Myval2(_STD forward<_Other2>(_Val2)...) {}
+
+	mov	QWORD PTR pmo3$12[rbp-112], rsi
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 460  :                 std::unique_ptr<PerformanceMonitorOperation> pmo3;
+
+	mov	rbx, rsi
+
+; 461  :                 if (sPlayerbotAIConfig.perfMonEnabled)
+
+	cmp	BYTE PTR ?sPlayerbotAIConfig@v19@@3UConfig@1@A, bl
+	je	SHORT $LN381@ExecuteAct
+
+; 462  :                     pmo3 = sPerformanceMonitor.start(PERF_MON_ACTION, "isPossible", ai);
+
+	call	?instance@PerformanceMonitor@v19@@SAAEAV12@XZ ; v19::PerformanceMonitor::instance
+	mov	rcx, rax
+	xorps	xmm0, xmm0
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 493  :         _CONSTEXPR20 _Bxty() noexcept : _Buf() {} // user-provided, for fancy pointers
+
+	movups	XMMWORD PTR $T7[rbp-112], xmm0
+
+; 890  :             _My_data._Mysize = _Count;
+
+	mov	QWORD PTR $T7[rbp-96], 10
+
+; 891  :             _My_data._Myres  = _Small_string_capacity;
+
+	mov	QWORD PTR $T7[rbp-88], 15
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_string_view.hpp
+
+; 121  :         _CSTD memcpy(_First1, _First2, _Count * sizeof(_Elem));
+
+	movsd	xmm0, QWORD PTR ??_C@_0L@NFHKBJJP@isPossible@
+	movsd	QWORD PTR $T7[rbp-112], xmm0
+	movzx	eax, WORD PTR ??_C@_0L@NFHKBJJP@isPossible@+8
+	mov	WORD PTR $T7[rbp-104], ax
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 898  :                 _Traits::assign(_My_data._Bx._Buf[_Count], _Elem());
+
+	mov	BYTE PTR $T7[rbp-102], bl
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 462  :                     pmo3 = sPerformanceMonitor.start(PERF_MON_ACTION, "isPossible", ai);
+
+	mov	rax, QWORD PTR [r15]
+	mov	QWORD PTR [rsp+32], rax
+	lea	r9, QWORD PTR $T7[rbp-112]
+	mov	r8d, 2
+	lea	rdx, QWORD PTR $T2[rbp-112]
+	call	?start@PerformanceMonitor@v19@@QEAA?AV?$unique_ptr@VPerformanceMonitorOperation@v19@@U?$default_delete@VPerformanceMonitorOperation@v19@@@std@@@std@@W4PerformanceMetric@2@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@4@PEAVPlayerbotAI@2@@Z ; v19::PerformanceMonitor::start
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\utility
+
+; 773  :     _Ty _Old_val = static_cast<_Ty&&>(_Val);
+
+	mov	rbx, QWORD PTR [rax]
+
+; 774  :     _Val         = static_cast<_Other&&>(_New_val);
+
+	mov	QWORD PTR [rax], rsi
+	mov	QWORD PTR pmo3$12[rbp-112], rbx
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory
+
+; 3426 :         if (_Mypair._Myval2) {
+
+	mov	r12, QWORD PTR $T2[rbp-112]
+	test	r12, r12
+	je	SHORT $LN381@ExecuteAct
+	mov	rcx, r12
+	call	??1PerformanceMonitorOperation@v19@@QEAA@XZ ; v19::PerformanceMonitorOperation::~PerformanceMonitorOperation
+	mov	edx, 56					; 00000038H
+	mov	rcx, r12
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN381@ExecuteAct:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\source\tests\playerbots\pmo_audit\services.h
+
+; 101  :     bool isPossible() { Work("isPossible"); return !(flags & 8); }
+
+	lea	rcx, OFFSET FLAT:??_C@_0L@NFHKBJJP@isPossible@
+	call	?Work@v19@@YAXPEBD@Z			; v19::Work
+	mov	r14d, DWORD PTR [r14+32]
+	and	r14d, 8
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\utility
+
+; 774  :     _Val         = static_cast<_Other&&>(_New_val);
+
+	mov	QWORD PTR pmo3$12[rbp-112], rsi
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory
+
+; 3470 :         if (_Old) {
+
+	test	rbx, rbx
+	je	SHORT $LN236@ExecuteAct
+	mov	rcx, rbx
+	call	??1PerformanceMonitorOperation@v19@@QEAA@XZ ; v19::PerformanceMonitorOperation::~PerformanceMonitorOperation
+	mov	edx, 56					; 00000038H
+	mov	rcx, rbx
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN236@ExecuteAct:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 466  :                 if (isPossible)
+
+	test	r14d, r14d
+	jne	$LN9@ExecuteAct
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\source\tests\playerbots\pmo_audit\services.h
+
+; 102  :     void MakeVerbose(bool) { Work("MakeVerbose"); }
+
+	lea	rcx, OFFSET FLAT:??_C@_0M@EGOIECEA@MakeVerbose@
+	call	?Work@v19@@YAXPEBD@Z			; v19::Work
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xmemory
+
+; 1531 :         : _Ty1(), _Myval2(_STD forward<_Other2>(_Val2)...) {}
+
+	mov	rbx, rsi
+	mov	QWORD PTR pmo4$4[rbp-112], rbx
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 469  :                     std::unique_ptr<PerformanceMonitorOperation> pmo4;
+
+	mov	r12, rsi
+
+; 470  :                     if (sPlayerbotAIConfig.perfMonEnabled)
+
+	cmp	BYTE PTR ?sPlayerbotAIConfig@v19@@3UConfig@1@A, r12b
+	je	$LN468@ExecuteAct
+
+; 471  :                         pmo4 = sPerformanceMonitor.start(PERF_MON_ACTION, "Execute", ai);
+
+	call	?instance@PerformanceMonitor@v19@@SAAEAV12@XZ ; v19::PerformanceMonitor::instance
+	mov	rcx, rax
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 493  :         _CONSTEXPR20 _Bxty() noexcept : _Buf() {} // user-provided, for fancy pointers
+
+	mov	QWORD PTR $T8[rbp-104], rsi
+
+; 890  :             _My_data._Mysize = _Count;
+
+	mov	QWORD PTR $T8[rbp-96], 7
+
+; 891  :             _My_data._Myres  = _Small_string_capacity;
+
+	mov	QWORD PTR $T8[rbp-88], 15
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\__msvc_string_view.hpp
+
+; 121  :         _CSTD memcpy(_First1, _First2, _Count * sizeof(_Elem));
+
+	mov	rax, QWORD PTR ??_C@_07LFBPOOOH@Execute@
+	mov	DWORD PTR $T8[rbp-112], eax
+	movzx	eax, WORD PTR ??_C@_07LFBPOOOH@Execute@+4
+	mov	WORD PTR $T8[rbp-108], ax
+	movzx	eax, BYTE PTR ??_C@_07LFBPOOOH@Execute@+6
+	mov	BYTE PTR $T8[rbp-106], al
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring
+
+; 898  :                 _Traits::assign(_My_data._Bx._Buf[_Count], _Elem());
+
+	mov	BYTE PTR $T8[rbp-105], r12b
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 471  :                         pmo4 = sPerformanceMonitor.start(PERF_MON_ACTION, "Execute", ai);
+
+	mov	rax, QWORD PTR [r15]
+	mov	QWORD PTR [rsp+32], rax
+	lea	r9, QWORD PTR $T8[rbp-112]
+	mov	r8d, 2
+	lea	rdx, QWORD PTR $T3[rbp-112]
+	call	?start@PerformanceMonitor@v19@@QEAA?AV?$unique_ptr@VPerformanceMonitorOperation@v19@@U?$default_delete@VPerformanceMonitorOperation@v19@@@std@@@std@@W4PerformanceMetric@2@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@4@PEAVPlayerbotAI@2@@Z ; v19::PerformanceMonitor::start
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\utility
+
+; 773  :     _Ty _Old_val = static_cast<_Ty&&>(_Val);
+
+	mov	rbx, QWORD PTR [rax]
+
+; 774  :     _Val         = static_cast<_Other&&>(_New_val);
+
+	mov	QWORD PTR [rax], rsi
+	mov	r12, rbx
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory
+
+; 3426 :         if (_Mypair._Myval2) {
+
+	mov	r14, QWORD PTR $T3[rbp-112]
+	test	r14, r14
+	je	SHORT $LN468@ExecuteAct
+	mov	rcx, r14
+	call	??1PerformanceMonitorOperation@v19@@QEAA@XZ ; v19::PerformanceMonitorOperation::~PerformanceMonitorOperation
+	mov	edx, 56					; 00000038H
+	mov	rcx, r14
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN468@ExecuteAct:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\source\tests\playerbots\pmo_audit\services.h
+
+; 115  :     bool ListenAndExecute(Action*, Event&) { Work("ListenAndExecute"); return !(action.flags&16); }
+
+	lea	rcx, OFFSET FLAT:??_C@_0BB@NKIMDGFL@ListenAndExecute@
+	call	?Work@v19@@YAXPEBD@Z			; v19::Work
+	mov	r14d, DWORD PTR [r15+40]
+	and	r14d, 16
+	test	r12, r12
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory
+
+; 3470 :         if (_Old) {
+
+	je	SHORT $LN351@ExecuteAct
+	mov	rcx, rbx
+	call	??1PerformanceMonitorOperation@v19@@QEAA@XZ ; v19::PerformanceMonitorOperation::~PerformanceMonitorOperation
+	mov	edx, 56					; 00000038H
+	mov	rcx, rbx
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN351@ExecuteAct:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\source\tests\playerbots\pmo_audit\services.h
+
+; 103  :     int getContinuers() { Work("getContinuers"); return 0; }
+
+	lea	rcx, OFFSET FLAT:??_C@_0O@GCEEAMMB@getContinuers@
+	call	?Work@v19@@YAXPEBD@Z			; v19::Work
+
+; 116  :     void MultiplyAndPush(int,float,bool,Event&,const char*) { Work("MultiplyAndPush"); }
+
+	lea	rcx, OFFSET FLAT:??_C@_0BA@DDHGOJGG@MultiplyAndPush@
+	call	?Work@v19@@YAXPEBD@Z			; v19::Work
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 476  :                     actionResult = executionResult ? ACTION_RESULT_OK : ACTION_RESULT_FAILED;
+
+	test	r14d, r14d
+	setne	sil
+	inc	esi
+
+; 477  :                 }
+
+	jmp	SHORT $LN10@ExecuteAct
+$LN9@ExecuteAct:
+
+; 478  :                 else
+; 479  :                 {
+; 480  :                     actionResult = ACTION_RESULT_IMPOSSIBLE;
+
+	mov	esi, 3
+$LN10@ExecuteAct:
+
+; 481  :                 }
+; 482  :             }
+
+	jmp	SHORT $LN7@ExecuteAct
+$LN6@ExecuteAct:
+
+; 483  :             else
+; 484  :             {
+; 485  :                 actionResult = ACTION_RESULT_USELESS;
+
+	mov	esi, 4
+$LN7@ExecuteAct:
+$LN124@ExecuteAct:
+
+; 486  :             }
+; 487  :         }
+; 488  :         delete actionNode;
+
+	mov	edx, 1
+	mov	rcx, r13
+	call	??3@YAXPEAX_K@Z				; operator delete
+	npad	1
+; File C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory
+
+; 3426 :         if (_Mypair._Myval2) {
+
+	test	rdi, rdi
+	je	SHORT $LN474@ExecuteAct
+	mov	rcx, rdi
+	call	??1PerformanceMonitorOperation@v19@@QEAA@XZ ; v19::PerformanceMonitorOperation::~PerformanceMonitorOperation
+	mov	edx, 56					; 00000038H
+	mov	rcx, rdi
+	call	??3@YAXPEAX_K@Z				; operator delete
+$LN474@ExecuteAct:
+; File C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v19\pmo-build\generated\v19_scopes.inc
+
+; 492  : }
+
+	mov	eax, esi
+	mov	rbx, QWORD PTR [rsp+184]
+	add	rsp, 112				; 00000070H
+	pop	r15
+	pop	r14
+	pop	r13
+	pop	r12
+	pop	rdi
+	pop	rsi
+	pop	rbp
+	ret	0
+?ExecuteAction@Engine@v19@@QEAA?AW4ActionResult@2@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAUEvent@2@@Z ENDP ; v19::Engine::ExecuteAction

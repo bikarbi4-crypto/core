@@ -1,0 +1,17 @@
+{
+  "baseline": "fbab350b6cde7a40735d778986382807d6287048",
+  "production_files": [
+    "src/game/PlayerBots/playerbot/PerformanceMonitor.cpp",
+    "src/game/PlayerBots/playerbot/PerformanceMonitor.h",
+    "src/game/PlayerBots/playerbot/PlayerbotAI.cpp",
+    "src/game/PlayerBots/playerbot/PlayerbotAIBase.cpp",
+    "src/game/PlayerBots/playerbot/PlayerbotFactory.cpp",
+    "src/game/PlayerBots/playerbot/RandomPlayerbotMgr.cpp",
+    "src/game/PlayerBots/playerbot/strategy/Engine.cpp",
+    "src/game/PlayerBots/playerbot/strategy/actions/AhAction.cpp",
+    "src/game/PlayerBots/playerbot/strategy/actions/BuyAction.cpp",
+    "src/game/PlayerBots/playerbot/strategy/actions/MovementActions.cpp"
+  ],
+  "cumulative_ancestors_verified": true,
+  "outside_pmo_source_and_reset_order": "generator asserts identical after stripping only PMO fragments and map registry warmup guard"
+}

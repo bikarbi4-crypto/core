@@ -1,0 +1,1806 @@
+{
+  "raw_rows": 1584,
+  "warmup_round": 0,
+  "medians": [
+    {
+      "case": 0,
+      "name": "sPerformanceMonitor.start(PERF_MON_TOTAL, \"PlayerbotAI::UpdateAI \" + mapString, nullptr, bot->GetMapId(), bot->GetInstanceId());",
+      "enabled": false,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 3.7939249999999998,
+        "v18": 44.91005
+      },
+      "percent": -91.55216928059532,
+      "min_ns": {
+        "v19": 3.64191,
+        "v18": 42.5823
+      },
+      "max_ns": {
+        "v19": 4.72109,
+        "v18": 52.4778
+      },
+      "mad_ns": {
+        "v19": 0.12729499999999971,
+        "v18": 2.010349999999999
+      }
+    },
+    {
+      "case": 0,
+      "name": "sPerformanceMonitor.start(PERF_MON_TOTAL, \"PlayerbotAI::UpdateAI \" + mapString, nullptr, bot->GetMapId(), bot->GetInstanceId());",
+      "enabled": false,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 3.801755,
+        "v18": 38.2249
+      },
+      "percent": -90.05424474622563,
+      "min_ns": {
+        "v19": 3.68651,
+        "v18": 36.6175
+      },
+      "max_ns": {
+        "v19": 4.20774,
+        "v18": 42.7636
+      },
+      "mad_ns": {
+        "v19": 0.03438999999999992,
+        "v18": 1.5878999999999976
+      }
+    },
+    {
+      "case": 0,
+      "name": "sPerformanceMonitor.start(PERF_MON_TOTAL, \"PlayerbotAI::UpdateAI \" + mapString, nullptr, bot->GetMapId(), bot->GetInstanceId());",
+      "enabled": true,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 272.5565,
+        "v18": 257.901
+      },
+      "percent": 5.682606891791808,
+      "min_ns": {
+        "v19": 264.925,
+        "v18": 254.705
+      },
+      "max_ns": {
+        "v19": 376.366,
+        "v18": 358.967
+      },
+      "mad_ns": {
+        "v19": 6.3245000000000005,
+        "v18": 2.255500000000012
+      }
+    },
+    {
+      "case": 0,
+      "name": "sPerformanceMonitor.start(PERF_MON_TOTAL, \"PlayerbotAI::UpdateAI \" + mapString, nullptr, bot->GetMapId(), bot->GetInstanceId());",
+      "enabled": true,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 279.89300000000003,
+        "v18": 269.2545
+      },
+      "percent": 3.9510945963763033,
+      "min_ns": {
+        "v19": 261.637,
+        "v18": 254.577
+      },
+      "max_ns": {
+        "v19": 382.729,
+        "v18": 311.409
+      },
+      "mad_ns": {
+        "v19": 17.82000000000002,
+        "v18": 10.721499999999992
+      }
+    },
+    {
+      "case": 1,
+      "name": "sPerformanceMonitor.start(PERF_MON_TOTAL, \"PlayerbotAI::UpdateAIReaction \" + mapString, nullptr, bot->GetMapId(), bot->GetInstanceId());",
+      "enabled": false,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 3.83124,
+        "v18": 43.581050000000005
+      },
+      "percent": -91.2089314048193,
+      "min_ns": {
+        "v19": 3.65701,
+        "v18": 41.6225
+      },
+      "max_ns": {
+        "v19": 5.63207,
+        "v18": 54.9083
+      },
+      "mad_ns": {
+        "v19": 0.17028999999999983,
+        "v18": 1.3865999999999943
+      }
+    },
+    {
+      "case": 1,
+      "name": "sPerformanceMonitor.start(PERF_MON_TOTAL, \"PlayerbotAI::UpdateAIReaction \" + mapString, nullptr, bot->GetMapId(), bot->GetInstanceId());",
+      "enabled": false,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 3.860155,
+        "v18": 37.97715
+      },
+      "percent": -89.83558534539848,
+      "min_ns": {
+        "v19": 3.73766,
+        "v18": 36.9183
+      },
+      "max_ns": {
+        "v19": 5.13669,
+        "v18": 44.6965
+      },
+      "mad_ns": {
+        "v19": 0.1031599999999997,
+        "v18": 1.0222000000000016
+      }
+    },
+    {
+      "case": 1,
+      "name": "sPerformanceMonitor.start(PERF_MON_TOTAL, \"PlayerbotAI::UpdateAIReaction \" + mapString, nullptr, bot->GetMapId(), bot->GetInstanceId());",
+      "enabled": true,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 280.1675,
+        "v18": 265.5075
+      },
+      "percent": 5.521501275858509,
+      "min_ns": {
+        "v19": 269.08,
+        "v18": 261.642
+      },
+      "max_ns": {
+        "v19": 342.521,
+        "v18": 321.235
+      },
+      "mad_ns": {
+        "v19": 6.778500000000008,
+        "v18": 2.625499999999988
+      }
+    },
+    {
+      "case": 1,
+      "name": "sPerformanceMonitor.start(PERF_MON_TOTAL, \"PlayerbotAI::UpdateAIReaction \" + mapString, nullptr, bot->GetMapId(), bot->GetInstanceId());",
+      "enabled": true,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 286.1785,
+        "v18": 262.1155
+      },
+      "percent": 9.180304102580727,
+      "min_ns": {
+        "v19": 267.254,
+        "v18": 255.981
+      },
+      "max_ns": {
+        "v19": 414.848,
+        "v18": 442.631
+      },
+      "mad_ns": {
+        "v19": 17.773499999999984,
+        "v18": 2.8245000000000005
+      }
+    },
+    {
+      "case": 2,
+      "name": "sPerformanceMonitor.start(PERF_MON_TOTAL, \"PlayerbotAI::UpdateAIInternal \" + mapString, nullptr, bot->GetMapId(), bot->GetInstanceId());",
+      "enabled": false,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 4.605995,
+        "v18": 45.4902
+      },
+      "percent": -89.87475324355576,
+      "min_ns": {
+        "v19": 3.71511,
+        "v18": 42.0801
+      },
+      "max_ns": {
+        "v19": 6.43341,
+        "v18": 48.5745
+      },
+      "mad_ns": {
+        "v19": 0.6342850000000002,
+        "v18": 1.9159499999999987
+      }
+    },
+    {
+      "case": 2,
+      "name": "sPerformanceMonitor.start(PERF_MON_TOTAL, \"PlayerbotAI::UpdateAIInternal \" + mapString, nullptr, bot->GetMapId(), bot->GetInstanceId());",
+      "enabled": false,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 3.8735749999999998,
+        "v18": 38.0802
+      },
+      "percent": -89.82785016885416,
+      "min_ns": {
+        "v19": 3.80302,
+        "v18": 36.2747
+      },
+      "max_ns": {
+        "v19": 6.48949,
+        "v18": 42.5829
+      },
+      "mad_ns": {
+        "v19": 0.06153500000000012,
+        "v18": 1.5207999999999977
+      }
+    },
+    {
+      "case": 2,
+      "name": "sPerformanceMonitor.start(PERF_MON_TOTAL, \"PlayerbotAI::UpdateAIInternal \" + mapString, nullptr, bot->GetMapId(), bot->GetInstanceId());",
+      "enabled": true,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 275.9175,
+        "v18": 264.882
+      },
+      "percent": 4.166194758420727,
+      "min_ns": {
+        "v19": 272.235,
+        "v18": 260.387
+      },
+      "max_ns": {
+        "v19": 350.391,
+        "v18": 300.545
+      },
+      "mad_ns": {
+        "v19": 1.25,
+        "v18": 1.2545000000000073
+      }
+    },
+    {
+      "case": 2,
+      "name": "sPerformanceMonitor.start(PERF_MON_TOTAL, \"PlayerbotAI::UpdateAIInternal \" + mapString, nullptr, bot->GetMapId(), bot->GetInstanceId());",
+      "enabled": true,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 273.7555,
+        "v18": 271.39750000000004
+      },
+      "percent": 0.8688363009975886,
+      "min_ns": {
+        "v19": 269.427,
+        "v18": 260.775
+      },
+      "max_ns": {
+        "v19": 450.332,
+        "v18": 408.404
+      },
+      "mad_ns": {
+        "v19": 3.7649999999999864,
+        "v18": 10.356000000000051
+      }
+    },
+    {
+      "case": 3,
+      "name": "sPerformanceMonitor.start(PERF_MON_TOTAL, \"PlayerbotAIBase::FullTick\");",
+      "enabled": false,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.376875,
+        "v18": 29.7232
+      },
+      "percent": -92.00330045217204,
+      "min_ns": {
+        "v19": 2.26163,
+        "v18": 28.9195
+      },
+      "max_ns": {
+        "v19": 4.73263,
+        "v18": 35.1552
+      },
+      "mad_ns": {
+        "v19": 0.0958150000000002,
+        "v18": 0.7944999999999993
+      }
+    },
+    {
+      "case": 3,
+      "name": "sPerformanceMonitor.start(PERF_MON_TOTAL, \"PlayerbotAIBase::FullTick\");",
+      "enabled": false,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.36424,
+        "v18": 30.3032
+      },
+      "percent": -92.19805169091053,
+      "min_ns": {
+        "v19": 2.30035,
+        "v18": 29.1529
+      },
+      "max_ns": {
+        "v19": 2.48768,
+        "v18": 38.0796
+      },
+      "mad_ns": {
+        "v19": 0.047374999999999945,
+        "v18": 1.0144000000000002
+      }
+    },
+    {
+      "case": 3,
+      "name": "sPerformanceMonitor.start(PERF_MON_TOTAL, \"PlayerbotAIBase::FullTick\");",
+      "enabled": true,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 257.034,
+        "v18": 244.1135
+      },
+      "percent": 5.29282485401259,
+      "min_ns": {
+        "v19": 248.721,
+        "v18": 236.426
+      },
+      "max_ns": {
+        "v19": 349.648,
+        "v18": 289.041
+      },
+      "mad_ns": {
+        "v19": 5.975999999999985,
+        "v18": 2.4949999999999903
+      }
+    },
+    {
+      "case": 3,
+      "name": "sPerformanceMonitor.start(PERF_MON_TOTAL, \"PlayerbotAIBase::FullTick\");",
+      "enabled": true,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 253.47250000000003,
+        "v18": 242.757
+      },
+      "percent": 4.414084866759782,
+      "min_ns": {
+        "v19": 248.658,
+        "v18": 236.045
+      },
+      "max_ns": {
+        "v19": 391.857,
+        "v18": 248.77
+      },
+      "mad_ns": {
+        "v19": 3.5424999999999898,
+        "v18": 3.0050000000000097
+      }
+    },
+    {
+      "case": 4,
+      "name": "sPerformanceMonitor.start(PERF_MON_RNDBOT, \"PlayerbotFactory_Reset\");",
+      "enabled": false,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.93396,
+        "v18": 30.3202
+      },
+      "percent": -90.32341475320084,
+      "min_ns": {
+        "v19": 2.88336,
+        "v18": 29.2797
+      },
+      "max_ns": {
+        "v19": 3.90228,
+        "v18": 34.5707
+      },
+      "mad_ns": {
+        "v19": 0.04360999999999993,
+        "v18": 0.9225000000000012
+      }
+    },
+    {
+      "case": 4,
+      "name": "sPerformanceMonitor.start(PERF_MON_RNDBOT, \"PlayerbotFactory_Reset\");",
+      "enabled": false,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.907145,
+        "v18": 29.68365
+      },
+      "percent": -90.20624148310603,
+      "min_ns": {
+        "v19": 2.87162,
+        "v18": 29.1516
+      },
+      "max_ns": {
+        "v19": 3.48845,
+        "v18": 35.3433
+      },
+      "mad_ns": {
+        "v19": 0.027269999999999905,
+        "v18": 0.41580000000000084
+      }
+    },
+    {
+      "case": 4,
+      "name": "sPerformanceMonitor.start(PERF_MON_RNDBOT, \"PlayerbotFactory_Reset\");",
+      "enabled": true,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 254.993,
+        "v18": 244.04149999999998
+      },
+      "percent": 4.487556419707306,
+      "min_ns": {
+        "v19": 251.18,
+        "v18": 237.854
+      },
+      "max_ns": {
+        "v19": 307.461,
+        "v18": 323.977
+      },
+      "mad_ns": {
+        "v19": 2.1544999999999987,
+        "v18": 3.257499999999979
+      }
+    },
+    {
+      "case": 4,
+      "name": "sPerformanceMonitor.start(PERF_MON_RNDBOT, \"PlayerbotFactory_Reset\");",
+      "enabled": true,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 258.582,
+        "v18": 247.7265
+      },
+      "percent": 4.382050366028678,
+      "min_ns": {
+        "v19": 251.772,
+        "v18": 241.803
+      },
+      "max_ns": {
+        "v19": 365.808,
+        "v18": 301.759
+      },
+      "mad_ns": {
+        "v19": 4.281000000000006,
+        "v18": 4.408499999999989
+      }
+    },
+    {
+      "case": 25,
+      "name": "sPerformanceMonitor.start(PERF_MON_RNDBOT, \"AsyncBotLogin\");",
+      "enabled": false,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.518515,
+        "v18": 7.099595
+      },
+      "percent": -64.52593422582555,
+      "min_ns": {
+        "v19": 2.43744,
+        "v18": 6.79469
+      },
+      "max_ns": {
+        "v19": 3.16447,
+        "v18": 9.06098
+      },
+      "mad_ns": {
+        "v19": 0.03807499999999986,
+        "v18": 0.11357000000000017
+      }
+    },
+    {
+      "case": 25,
+      "name": "sPerformanceMonitor.start(PERF_MON_RNDBOT, \"AsyncBotLogin\");",
+      "enabled": false,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.823895,
+        "v18": 7.122154999999999
+      },
+      "percent": -60.35055401068918,
+      "min_ns": {
+        "v19": 2.50227,
+        "v18": 6.77429
+      },
+      "max_ns": {
+        "v19": 4.65732,
+        "v18": 10.7945
+      },
+      "mad_ns": {
+        "v19": 0.30829499999999976,
+        "v18": 0.1558299999999999
+      }
+    },
+    {
+      "case": 25,
+      "name": "sPerformanceMonitor.start(PERF_MON_RNDBOT, \"AsyncBotLogin\");",
+      "enabled": true,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 143.16649999999998,
+        "v18": 131.2905
+      },
+      "percent": 9.045589741832028,
+      "min_ns": {
+        "v19": 133.763,
+        "v18": 124.614
+      },
+      "max_ns": {
+        "v19": 184.628,
+        "v18": 164.446
+      },
+      "mad_ns": {
+        "v19": 5.415499999999994,
+        "v18": 5.984499999999997
+      }
+    },
+    {
+      "case": 25,
+      "name": "sPerformanceMonitor.start(PERF_MON_RNDBOT, \"AsyncBotLogin\");",
+      "enabled": true,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 141.0565,
+        "v18": 124.65549999999999
+      },
+      "percent": 13.15706085972943,
+      "min_ns": {
+        "v19": 128.078,
+        "v18": 117.31
+      },
+      "max_ns": {
+        "v19": 174.267,
+        "v18": 162.132
+      },
+      "mad_ns": {
+        "v19": 6.619500000000002,
+        "v18": 6.640000000000001
+      }
+    },
+    {
+      "case": 26,
+      "name": "sPerformanceMonitor.start(PERF_MON_RNDBOT,\n        onlineBotCount < maxAllowedBotCount ? \"RandomPlayerbotMgr::Login\" : \"RandomPlayerbotMgr::UpdateAIInternal\");",
+      "enabled": false,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.6313050000000002,
+        "v18": 36.789
+      },
+      "percent": -92.84757672130256,
+      "min_ns": {
+        "v19": 2.46185,
+        "v18": 34.0111
+      },
+      "max_ns": {
+        "v19": 4.01798,
+        "v18": 49.4096
+      },
+      "mad_ns": {
+        "v19": 0.12927000000000022,
+        "v18": 2.4845000000000006
+      }
+    },
+    {
+      "case": 26,
+      "name": "sPerformanceMonitor.start(PERF_MON_RNDBOT,\n        onlineBotCount < maxAllowedBotCount ? \"RandomPlayerbotMgr::Login\" : \"RandomPlayerbotMgr::UpdateAIInternal\");",
+      "enabled": false,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.663635,
+        "v18": 37.753600000000006
+      },
+      "percent": -92.94468606967283,
+      "min_ns": {
+        "v19": 2.5594,
+        "v18": 35.2411
+      },
+      "max_ns": {
+        "v19": 6.03765,
+        "v18": 44.4561
+      },
+      "mad_ns": {
+        "v19": 0.04239999999999999,
+        "v18": 2.3129000000000026
+      }
+    },
+    {
+      "case": 26,
+      "name": "sPerformanceMonitor.start(PERF_MON_RNDBOT,\n        onlineBotCount < maxAllowedBotCount ? \"RandomPlayerbotMgr::Login\" : \"RandomPlayerbotMgr::UpdateAIInternal\");",
+      "enabled": true,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 257.8515,
+        "v18": 249.1395
+      },
+      "percent": 3.4968361098902445,
+      "min_ns": {
+        "v19": 254.671,
+        "v18": 243.142
+      },
+      "max_ns": {
+        "v19": 284.538,
+        "v18": 259.979
+      },
+      "mad_ns": {
+        "v19": 1.6205000000000211,
+        "v18": 2.3770000000000095
+      }
+    },
+    {
+      "case": 26,
+      "name": "sPerformanceMonitor.start(PERF_MON_RNDBOT,\n        onlineBotCount < maxAllowedBotCount ? \"RandomPlayerbotMgr::Login\" : \"RandomPlayerbotMgr::UpdateAIInternal\");",
+      "enabled": true,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 260.308,
+        "v18": 252.291
+      },
+      "percent": 3.1776797428366477,
+      "min_ns": {
+        "v19": 255.803,
+        "v18": 245.96
+      },
+      "max_ns": {
+        "v19": 334.857,
+        "v18": 255.865
+      },
+      "mad_ns": {
+        "v19": 2.2409999999999854,
+        "v18": 1.7870000000000061
+      }
+    },
+    {
+      "case": 32,
+      "name": "sPerformanceMonitor.start(PERF_MON_ACTION, std::move(actionName), ai);",
+      "enabled": false,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 3.95633,
+        "v18": 175.92849999999999
+      },
+      "percent": -97.75117164075178,
+      "min_ns": {
+        "v19": 3.92915,
+        "v18": 169.128
+      },
+      "max_ns": {
+        "v19": 5.38007,
+        "v18": 185.753
+      },
+      "mad_ns": {
+        "v19": 0.019570000000000087,
+        "v18": 4.0115000000000265
+      }
+    },
+    {
+      "case": 32,
+      "name": "sPerformanceMonitor.start(PERF_MON_ACTION, std::move(actionName), ai);",
+      "enabled": false,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 4.085255,
+        "v18": 176.98000000000002
+      },
+      "percent": -97.69168550118657,
+      "min_ns": {
+        "v19": 3.88364,
+        "v18": 169.607
+      },
+      "max_ns": {
+        "v19": 5.31287,
+        "v18": 222.112
+      },
+      "mad_ns": {
+        "v19": 0.18608000000000002,
+        "v18": 4.717500000000015
+      }
+    },
+    {
+      "case": 32,
+      "name": "sPerformanceMonitor.start(PERF_MON_ACTION, std::move(actionName), ai);",
+      "enabled": true,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 510.33000000000004,
+        "v18": 496.025
+      },
+      "percent": 2.8839272214102207,
+      "min_ns": {
+        "v19": 501.383,
+        "v18": 489.677
+      },
+      "max_ns": {
+        "v19": 536.01,
+        "v18": 545.033
+      },
+      "mad_ns": {
+        "v19": 4.629999999999967,
+        "v18": 3.0515000000000043
+      }
+    },
+    {
+      "case": 32,
+      "name": "sPerformanceMonitor.start(PERF_MON_ACTION, std::move(actionName), ai);",
+      "enabled": true,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 509.895,
+        "v18": 496.9735
+      },
+      "percent": 2.600038030196772,
+      "min_ns": {
+        "v19": 506.013,
+        "v18": 491.22
+      },
+      "max_ns": {
+        "v19": 543.953,
+        "v18": 518.643
+      },
+      "mad_ns": {
+        "v19": 1.32650000000001,
+        "v18": 1.8094999999999857
+      }
+    },
+    {
+      "case": 34,
+      "name": "sPerformanceMonitor.start(PERF_MON_ACTION, \"isPossible\", ai);",
+      "enabled": false,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.512025,
+        "v18": 2.540375
+      },
+      "percent": -1.1159769719037538,
+      "min_ns": {
+        "v19": 2.46988,
+        "v18": 2.48475
+      },
+      "max_ns": {
+        "v19": 4.16275,
+        "v18": 3.63382
+      },
+      "mad_ns": {
+        "v19": 0.030830000000000135,
+        "v18": 0.05494500000000002
+      }
+    },
+    {
+      "case": 34,
+      "name": "sPerformanceMonitor.start(PERF_MON_ACTION, \"isPossible\", ai);",
+      "enabled": false,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.514815,
+        "v18": 2.50343
+      },
+      "percent": 0.45477604726316123,
+      "min_ns": {
+        "v19": 2.47462,
+        "v18": 2.46403
+      },
+      "max_ns": {
+        "v19": 2.57596,
+        "v18": 2.67017
+      },
+      "mad_ns": {
+        "v19": 0.019805000000000073,
+        "v18": 0.0345749999999998
+      }
+    },
+    {
+      "case": 34,
+      "name": "sPerformanceMonitor.start(PERF_MON_ACTION, \"isPossible\", ai);",
+      "enabled": true,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 134.202,
+        "v18": 124.3475
+      },
+      "percent": 7.924968334707172,
+      "min_ns": {
+        "v19": 131.594,
+        "v18": 121.285
+      },
+      "max_ns": {
+        "v19": 147.134,
+        "v18": 173.949
+      },
+      "mad_ns": {
+        "v19": 1.6550000000000011,
+        "v18": 0.8490000000000038
+      }
+    },
+    {
+      "case": 34,
+      "name": "sPerformanceMonitor.start(PERF_MON_ACTION, \"isPossible\", ai);",
+      "enabled": true,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 135.14499999999998,
+        "v18": 128.76049999999998
+      },
+      "percent": 4.9584305745939306,
+      "min_ns": {
+        "v19": 131.889,
+        "v18": 122.022
+      },
+      "max_ns": {
+        "v19": 164.71,
+        "v18": 196.015
+      },
+      "mad_ns": {
+        "v19": 1.5949999999999704,
+        "v18": 5.522999999999975
+      }
+    },
+    {
+      "case": 38,
+      "name": "sPerformanceMonitor.start(PERF_MON_ACTION, \"isPossible\", ai);",
+      "enabled": false,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.7318499999999997,
+        "v18": 6.87499
+      },
+      "percent": -60.26394220209775,
+      "min_ns": {
+        "v19": 2.69144,
+        "v18": 6.81843
+      },
+      "max_ns": {
+        "v19": 2.79175,
+        "v18": 8.37449
+      },
+      "mad_ns": {
+        "v19": 0.03836499999999954,
+        "v18": 0.04747000000000057
+      }
+    },
+    {
+      "case": 38,
+      "name": "sPerformanceMonitor.start(PERF_MON_ACTION, \"isPossible\", ai);",
+      "enabled": false,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.7714,
+        "v18": 6.860010000000001
+      },
+      "percent": -59.60064198157147,
+      "min_ns": {
+        "v19": 2.66806,
+        "v18": 6.77335
+      },
+      "max_ns": {
+        "v19": 3.98553,
+        "v18": 7.74637
+      },
+      "mad_ns": {
+        "v19": 0.0889399999999998,
+        "v18": 0.04712499999999986
+      }
+    },
+    {
+      "case": 38,
+      "name": "sPerformanceMonitor.start(PERF_MON_ACTION, \"isPossible\", ai);",
+      "enabled": true,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 133.4365,
+        "v18": 122.7865
+      },
+      "percent": 8.673591966543537,
+      "min_ns": {
+        "v19": 131.293,
+        "v18": 121.302
+      },
+      "max_ns": {
+        "v19": 138.546,
+        "v18": 127.533
+      },
+      "mad_ns": {
+        "v19": 1.9579999999999984,
+        "v18": 1.0599999999999952
+      }
+    },
+    {
+      "case": 38,
+      "name": "sPerformanceMonitor.start(PERF_MON_ACTION, \"isPossible\", ai);",
+      "enabled": true,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 134.23649999999998,
+        "v18": 123.9435
+      },
+      "percent": 8.304590398044255,
+      "min_ns": {
+        "v19": 131.953,
+        "v18": 121.053
+      },
+      "max_ns": {
+        "v19": 163.03,
+        "v18": 182.524
+      },
+      "mad_ns": {
+        "v19": 1.2269999999999754,
+        "v18": 2.3684999999999974
+      }
+    },
+    {
+      "case": 40,
+      "name": "sPerformanceMonitor.start(PERF_MON_TRIGGER, trigger->getName(), ai);",
+      "enabled": false,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.50466,
+        "v18": 2.513955
+      },
+      "percent": -0.36973613290612883,
+      "min_ns": {
+        "v19": 2.45382,
+        "v18": 2.45555
+      },
+      "max_ns": {
+        "v19": 3.38964,
+        "v18": 3.50435
+      },
+      "mad_ns": {
+        "v19": 0.029444999999999943,
+        "v18": 0.011740000000000084
+      }
+    },
+    {
+      "case": 40,
+      "name": "sPerformanceMonitor.start(PERF_MON_TRIGGER, trigger->getName(), ai);",
+      "enabled": false,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.51781,
+        "v18": 2.52242
+      },
+      "percent": -0.18276099935775614,
+      "min_ns": {
+        "v19": 2.44093,
+        "v18": 2.45327
+      },
+      "max_ns": {
+        "v19": 3.59361,
+        "v18": 2.8088
+      },
+      "mad_ns": {
+        "v19": 0.022215000000000096,
+        "v18": 0.03402499999999997
+      }
+    },
+    {
+      "case": 40,
+      "name": "sPerformanceMonitor.start(PERF_MON_TRIGGER, trigger->getName(), ai);",
+      "enabled": true,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 339.0875,
+        "v18": 328.5145
+      },
+      "percent": 3.218427192711437,
+      "min_ns": {
+        "v19": 331.361,
+        "v18": 324.119
+      },
+      "max_ns": {
+        "v19": 406.62,
+        "v18": 529.971
+      },
+      "mad_ns": {
+        "v19": 7.2135000000000105,
+        "v18": 2.5655000000000143
+      }
+    },
+    {
+      "case": 40,
+      "name": "sPerformanceMonitor.start(PERF_MON_TRIGGER, trigger->getName(), ai);",
+      "enabled": true,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 335.59000000000003,
+        "v18": 327.2195
+      },
+      "percent": 2.5580688192482492,
+      "min_ns": {
+        "v19": 331.83,
+        "v18": 325.426
+      },
+      "max_ns": {
+        "v19": 340.915,
+        "v18": 333.217
+      },
+      "mad_ns": {
+        "v19": 1.9099999999999682,
+        "v18": 1.1995000000000005
+      }
+    },
+    {
+      "case": 41,
+      "name": "sPerformanceMonitor.start(PERF_MON_VALUE, AiNamedObject::getName(), this->ai);",
+      "enabled": false,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.531285,
+        "v18": 2.515015
+      },
+      "percent": 0.6469146307278573,
+      "min_ns": {
+        "v19": 2.48478,
+        "v18": 2.46977
+      },
+      "max_ns": {
+        "v19": 3.26168,
+        "v18": 2.65846
+      },
+      "mad_ns": {
+        "v19": 0.034704999999999986,
+        "v18": 0.026590000000000114
+      }
+    },
+    {
+      "case": 41,
+      "name": "sPerformanceMonitor.start(PERF_MON_VALUE, AiNamedObject::getName(), this->ai);",
+      "enabled": false,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.561745,
+        "v18": 2.51344
+      },
+      "percent": 1.921868037430774,
+      "min_ns": {
+        "v19": 2.50719,
+        "v18": 2.49027
+      },
+      "max_ns": {
+        "v19": 3.39085,
+        "v18": 3.37006
+      },
+      "mad_ns": {
+        "v19": 0.05036000000000018,
+        "v18": 0.016100000000000003
+      }
+    },
+    {
+      "case": 41,
+      "name": "sPerformanceMonitor.start(PERF_MON_VALUE, AiNamedObject::getName(), this->ai);",
+      "enabled": true,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 338.6165,
+        "v18": 328.091
+      },
+      "percent": 3.208103849236932,
+      "min_ns": {
+        "v19": 334.907,
+        "v18": 324.755
+      },
+      "max_ns": {
+        "v19": 490.859,
+        "v18": 334.808
+      },
+      "mad_ns": {
+        "v19": 2.5394999999999754,
+        "v18": 1.0889999999999986
+      }
+    },
+    {
+      "case": 41,
+      "name": "sPerformanceMonitor.start(PERF_MON_VALUE, AiNamedObject::getName(), this->ai);",
+      "enabled": true,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 364.233,
+        "v18": 331.9595
+      },
+      "percent": 9.722119716411193,
+      "min_ns": {
+        "v19": 333.7,
+        "v18": 325.646
+      },
+      "max_ns": {
+        "v19": 503.307,
+        "v18": 474.052
+      },
+      "mad_ns": {
+        "v19": 24.41549999999998,
+        "v18": 5.215000000000003
+      }
+    },
+    {
+      "case": 42,
+      "name": "sPerformanceMonitor.start(PERF_MON_VALUE, AiNamedObject::getName(), this->ai);",
+      "enabled": false,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.4886850000000003,
+        "v18": 2.50639
+      },
+      "percent": -0.7063944557710422,
+      "min_ns": {
+        "v19": 2.46001,
+        "v18": 2.47779
+      },
+      "max_ns": {
+        "v19": 2.64103,
+        "v18": 2.92271
+      },
+      "mad_ns": {
+        "v19": 0.016999999999999682,
+        "v18": 0.016589999999999883
+      }
+    },
+    {
+      "case": 42,
+      "name": "sPerformanceMonitor.start(PERF_MON_VALUE, AiNamedObject::getName(), this->ai);",
+      "enabled": false,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.5134600000000002,
+        "v18": 2.5212250000000003
+      },
+      "percent": -0.3079852056044219,
+      "min_ns": {
+        "v19": 2.49092,
+        "v18": 2.48321
+      },
+      "max_ns": {
+        "v19": 3.64194,
+        "v18": 2.66877
+      },
+      "mad_ns": {
+        "v19": 0.013849999999999918,
+        "v18": 0.029530000000000278
+      }
+    },
+    {
+      "case": 42,
+      "name": "sPerformanceMonitor.start(PERF_MON_VALUE, AiNamedObject::getName(), this->ai);",
+      "enabled": true,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 337.558,
+        "v18": 329.4705
+      },
+      "percent": 2.454696247463728,
+      "min_ns": {
+        "v19": 330.594,
+        "v18": 323.784
+      },
+      "max_ns": {
+        "v19": 402.923,
+        "v18": 474.886
+      },
+      "mad_ns": {
+        "v19": 4.236999999999995,
+        "v18": 4.489999999999981
+      }
+    },
+    {
+      "case": 42,
+      "name": "sPerformanceMonitor.start(PERF_MON_VALUE, AiNamedObject::getName(), this->ai);",
+      "enabled": true,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 336.5225,
+        "v18": 328.60450000000003
+      },
+      "percent": 2.4095835571332547,
+      "min_ns": {
+        "v19": 330.48,
+        "v18": 323.885
+      },
+      "max_ns": {
+        "v19": 386.157,
+        "v18": 371.824
+      },
+      "mad_ns": {
+        "v19": 3.6454999999999984,
+        "v18": 2.85450000000003
+      }
+    },
+    {
+      "case": 44,
+      "name": "sPerformanceMonitor.start(PERF_MON_VALUE, \"IsWorthBuyingFromAhToResellAtAH\", ai);",
+      "enabled": false,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.5079000000000002,
+        "v18": 30.8604
+      },
+      "percent": -91.87340410364091,
+      "min_ns": {
+        "v19": 2.4674,
+        "v18": 29.7202
+      },
+      "max_ns": {
+        "v19": 3.1821,
+        "v18": 33.1867
+      },
+      "mad_ns": {
+        "v19": 0.02615500000000015,
+        "v18": 0.9607499999999991
+      }
+    },
+    {
+      "case": 44,
+      "name": "sPerformanceMonitor.start(PERF_MON_VALUE, \"IsWorthBuyingFromAhToResellAtAH\", ai);",
+      "enabled": false,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.5604699999999996,
+        "v18": 30.718449999999997
+      },
+      "percent": -91.66471615592584,
+      "min_ns": {
+        "v19": 2.46018,
+        "v18": 29.7179
+      },
+      "max_ns": {
+        "v19": 4.27722,
+        "v18": 35.1555
+      },
+      "mad_ns": {
+        "v19": 0.051679999999999726,
+        "v18": 0.9432999999999971
+      }
+    },
+    {
+      "case": 44,
+      "name": "sPerformanceMonitor.start(PERF_MON_VALUE, \"IsWorthBuyingFromAhToResellAtAH\", ai);",
+      "enabled": true,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 300.0385,
+        "v18": 289.2395
+      },
+      "percent": 3.7335841059052965,
+      "min_ns": {
+        "v19": 291.475,
+        "v18": 281.472
+      },
+      "max_ns": {
+        "v19": 352.545,
+        "v18": 413.163
+      },
+      "mad_ns": {
+        "v19": 6.236999999999995,
+        "v18": 5.004499999999979
+      }
+    },
+    {
+      "case": 44,
+      "name": "sPerformanceMonitor.start(PERF_MON_VALUE, \"IsWorthBuyingFromAhToResellAtAH\", ai);",
+      "enabled": true,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 305.31449999999995,
+        "v18": 290.03999999999996
+      },
+      "percent": 5.266342573438143,
+      "min_ns": {
+        "v19": 296.12,
+        "v18": 281.899
+      },
+      "max_ns": {
+        "v19": 429.248,
+        "v18": 441.784
+      },
+      "mad_ns": {
+        "v19": 8.506999999999948,
+        "v18": 7.255999999999972
+      }
+    },
+    {
+      "case": 45,
+      "name": "sPerformanceMonitor.start(PERF_MON_VALUE, \"IsWorthBuyingFromVendorToResellAtAH\", ai);",
+      "enabled": false,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.542985,
+        "v18": 30.94495
+      },
+      "percent": -91.78222941061466,
+      "min_ns": {
+        "v19": 2.48988,
+        "v18": 29.8114
+      },
+      "max_ns": {
+        "v19": 3.57121,
+        "v18": 39.2359
+      },
+      "mad_ns": {
+        "v19": 0.02611499999999989,
+        "v18": 0.9191999999999982
+      }
+    },
+    {
+      "case": 45,
+      "name": "sPerformanceMonitor.start(PERF_MON_VALUE, \"IsWorthBuyingFromVendorToResellAtAH\", ai);",
+      "enabled": false,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.530455,
+        "v18": 30.546300000000002
+      },
+      "percent": -91.71600161066971,
+      "min_ns": {
+        "v19": 2.48891,
+        "v18": 30.2529
+      },
+      "max_ns": {
+        "v19": 2.64197,
+        "v18": 35.1504
+      },
+      "mad_ns": {
+        "v19": 0.031155000000000044,
+        "v18": 0.262850000000002
+      }
+    },
+    {
+      "case": 45,
+      "name": "sPerformanceMonitor.start(PERF_MON_VALUE, \"IsWorthBuyingFromVendorToResellAtAH\", ai);",
+      "enabled": true,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 322.1255,
+        "v18": 305.53700000000003
+      },
+      "percent": 5.429293342541142,
+      "min_ns": {
+        "v19": 314.331,
+        "v18": 298.482
+      },
+      "max_ns": {
+        "v19": 441.939,
+        "v18": 578.677
+      },
+      "mad_ns": {
+        "v19": 7.646999999999991,
+        "v18": 6.639500000000027
+      }
+    },
+    {
+      "case": 45,
+      "name": "sPerformanceMonitor.start(PERF_MON_VALUE, \"IsWorthBuyingFromVendorToResellAtAH\", ai);",
+      "enabled": true,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 312.69100000000003,
+        "v18": 303.604
+      },
+      "percent": 2.993043569913456,
+      "min_ns": {
+        "v19": 309.35,
+        "v18": 298.884
+      },
+      "max_ns": {
+        "v19": 318.718,
+        "v18": 309.493
+      },
+      "mad_ns": {
+        "v19": 0.8510000000000275,
+        "v18": 3.870999999999981
+      }
+    },
+    {
+      "case": 46,
+      "name": "sPerformanceMonitor.start(PERF_MON_ACTION, \"minimalMove\", ai);",
+      "enabled": false,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.508865,
+        "v18": 6.89143
+      },
+      "percent": -63.59442089667892,
+      "min_ns": {
+        "v19": 2.45056,
+        "v18": 6.79427
+      },
+      "max_ns": {
+        "v19": 3.89266,
+        "v18": 7.75843
+      },
+      "mad_ns": {
+        "v19": 0.04082999999999992,
+        "v18": 0.05890499999999976
+      }
+    },
+    {
+      "case": 46,
+      "name": "sPerformanceMonitor.start(PERF_MON_ACTION, \"minimalMove\", ai);",
+      "enabled": false,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 2.51044,
+        "v18": 6.88992
+      },
+      "percent": -63.563582741163906,
+      "min_ns": {
+        "v19": 2.45414,
+        "v18": 6.85731
+      },
+      "max_ns": {
+        "v19": 2.58476,
+        "v18": 6.96465
+      },
+      "mad_ns": {
+        "v19": 0.032424999999999926,
+        "v18": 0.02175500000000019
+      }
+    },
+    {
+      "case": 46,
+      "name": "sPerformanceMonitor.start(PERF_MON_ACTION, \"minimalMove\", ai);",
+      "enabled": true,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 134.4865,
+        "v18": 124.24000000000001
+      },
+      "percent": 8.24734385061172,
+      "min_ns": {
+        "v19": 131.845,
+        "v18": 122.045
+      },
+      "max_ns": {
+        "v19": 145.757,
+        "v18": 140.416
+      },
+      "mad_ns": {
+        "v19": 1.829499999999996,
+        "v18": 1.7295000000000016
+      }
+    },
+    {
+      "case": 46,
+      "name": "sPerformanceMonitor.start(PERF_MON_ACTION, \"minimalMove\", ai);",
+      "enabled": true,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 134.809,
+        "v18": 124.6275
+      },
+      "percent": 8.169545244829601,
+      "min_ns": {
+        "v19": 132.414,
+        "v18": 122.492
+      },
+      "max_ns": {
+        "v19": 167.361,
+        "v18": 186.142
+      },
+      "mad_ns": {
+        "v19": 1.6565000000000083,
+        "v18": 1.8230000000000004
+      }
+    },
+    {
+      "case": 47,
+      "name": "Engine::ExecuteAction full function",
+      "enabled": false,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 56.7845,
+        "v18": 78.84100000000001
+      },
+      "percent": -27.975926231275615,
+      "min_ns": {
+        "v19": 55.9314,
+        "v18": 77.3108
+      },
+      "max_ns": {
+        "v19": 57.1455,
+        "v18": 81.5112
+      },
+      "mad_ns": {
+        "v19": 0.29025000000000034,
+        "v18": 0.6603500000000011
+      }
+    },
+    {
+      "case": 47,
+      "name": "Engine::ExecuteAction full function",
+      "enabled": false,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 57.87705,
+        "v18": 80.0801
+      },
+      "percent": -27.726051790644625,
+      "min_ns": {
+        "v19": 55.6982,
+        "v18": 76.3381
+      },
+      "max_ns": {
+        "v19": 67.438,
+        "v18": 108.46
+      },
+      "mad_ns": {
+        "v19": 1.7373000000000012,
+        "v18": 1.5847499999999997
+      }
+    },
+    {
+      "case": 47,
+      "name": "Engine::ExecuteAction full function",
+      "enabled": true,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 960.385,
+        "v18": 929.655
+      },
+      "percent": 3.3055273192743595,
+      "min_ns": {
+        "v19": 939.093,
+        "v18": 914.327
+      },
+      "max_ns": {
+        "v19": 1017.51,
+        "v18": 939.72
+      },
+      "mad_ns": {
+        "v19": 6.84699999999998,
+        "v18": 3.8450000000000273
+      }
+    },
+    {
+      "case": 47,
+      "name": "Engine::ExecuteAction full function",
+      "enabled": true,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 957.6115,
+        "v18": 916.6465000000001
+      },
+      "percent": 4.469007409072079,
+      "min_ns": {
+        "v19": 945.743,
+        "v18": 908.527
+      },
+      "max_ns": {
+        "v19": 1948.07,
+        "v18": 1223.68
+      },
+      "mad_ns": {
+        "v19": 7.6264999999999645,
+        "v18": 5.22199999999998
+      }
+    },
+    {
+      "case": 48,
+      "name": "PlayerbotAIBase::UpdateAI full function",
+      "enabled": false,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 4.03418,
+        "v18": 31.7718
+      },
+      "percent": -87.30263944756041,
+      "min_ns": {
+        "v19": 3.68928,
+        "v18": 30.9702
+      },
+      "max_ns": {
+        "v19": 5.73167,
+        "v18": 38.2033
+      },
+      "mad_ns": {
+        "v19": 0.321755,
+        "v18": 0.7896000000000001
+      }
+    },
+    {
+      "case": 48,
+      "name": "PlayerbotAIBase::UpdateAI full function",
+      "enabled": false,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 3.75737,
+        "v18": 31.6874
+      },
+      "percent": -88.14238467024748,
+      "min_ns": {
+        "v19": 3.6917,
+        "v18": 31.1165
+      },
+      "max_ns": {
+        "v19": 5.19386,
+        "v18": 35.8798
+      },
+      "mad_ns": {
+        "v19": 0.05048000000000008,
+        "v18": 0.5462500000000006
+      }
+    },
+    {
+      "case": 48,
+      "name": "PlayerbotAIBase::UpdateAI full function",
+      "enabled": true,
+      "map": 1,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 251.39550000000003,
+        "v18": 242.1125
+      },
+      "percent": 3.8341680004130296,
+      "min_ns": {
+        "v19": 246.65,
+        "v18": 239.927
+      },
+      "max_ns": {
+        "v19": 447.219,
+        "v18": 342.163
+      },
+      "mad_ns": {
+        "v19": 3.558000000000007,
+        "v18": 1.5145000000000124
+      }
+    },
+    {
+      "case": 48,
+      "name": "PlayerbotAIBase::UpdateAI full function",
+      "enabled": true,
+      "map": 33,
+      "instance": 123,
+      "flags": 0,
+      "ns": {
+        "v19": 249.7825,
+        "v18": 241.9355
+      },
+      "percent": 3.243426450438247,
+      "min_ns": {
+        "v19": 245.341,
+        "v18": 239.026
+      },
+      "max_ns": {
+        "v19": 259.22,
+        "v18": 243.863
+      },
+      "mad_ns": {
+        "v19": 1.5189999999999912,
+        "v18": 1.1565000000000083
+      }
+    }
+  ]
+}

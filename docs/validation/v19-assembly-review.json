@@ -1,0 +1,110 @@
+{
+  "compiler": "MSVC 19.44.35223 x64 /O2 /GR /GL- /LTCG:OFF /OPT:NOICF",
+  "assembly_sha256": "b45c6fb086ec19c0feca65c9d57997831643ca141a1d430f381677adfbed456b",
+  "functions": [
+    {
+      "function": "scope_0",
+      "enabled_guards": 1,
+      "start_calls": 1,
+      "all_start_calls_skipped_by_off_branch": true,
+      "branch_targets": [
+        "$LN195@scope_0"
+      ]
+    },
+    {
+      "function": "scope_1",
+      "enabled_guards": 1,
+      "start_calls": 1,
+      "all_start_calls_skipped_by_off_branch": true,
+      "branch_targets": [
+        "$LN195@scope_1"
+      ]
+    },
+    {
+      "function": "scope_2",
+      "enabled_guards": 1,
+      "start_calls": 1,
+      "all_start_calls_skipped_by_off_branch": true,
+      "branch_targets": [
+        "$LN195@scope_2"
+      ]
+    },
+    {
+      "function": "scope_3",
+      "enabled_guards": 1,
+      "start_calls": 1,
+      "all_start_calls_skipped_by_off_branch": true,
+      "branch_targets": [
+        "$LN100@scope_3"
+      ]
+    },
+    {
+      "function": "scope_32",
+      "enabled_guards": 1,
+      "start_calls": 1,
+      "all_start_calls_skipped_by_off_branch": true,
+      "branch_targets": [
+        "$LN197@scope_32"
+      ]
+    },
+    {
+      "function": "scope_36",
+      "enabled_guards": 1,
+      "start_calls": 1,
+      "all_start_calls_skipped_by_off_branch": true,
+      "branch_targets": [
+        "$LN50@scope_36"
+      ]
+    },
+    {
+      "function": "scope_37",
+      "enabled_guards": 1,
+      "start_calls": 1,
+      "all_start_calls_skipped_by_off_branch": true,
+      "branch_targets": [
+        "$LN100@scope_37"
+      ]
+    },
+    {
+      "function": "scope_38",
+      "enabled_guards": 1,
+      "start_calls": 1,
+      "all_start_calls_skipped_by_off_branch": true,
+      "branch_targets": [
+        "$LN100@scope_38"
+      ]
+    },
+    {
+      "function": "scope_39",
+      "enabled_guards": 1,
+      "start_calls": 1,
+      "all_start_calls_skipped_by_off_branch": true,
+      "branch_targets": [
+        "$LN100@scope_39"
+      ]
+    },
+    {
+      "function": "UpdateAI@PlayerbotAIBase",
+      "enabled_guards": 1,
+      "start_calls": 1,
+      "all_start_calls_skipped_by_off_branch": true,
+      "branch_targets": [
+        "$LN110@UpdateAI"
+      ]
+    },
+    {
+      "function": "ExecuteAction@Engine",
+      "enabled_guards": 4,
+      "start_calls": 4,
+      "all_start_calls_skipped_by_off_branch": true,
+      "branch_targets": [
+        "$LN87@ExecuteAct",
+        "$LN212@ExecuteAct",
+        "$LN381@ExecuteAct",
+        "$LN468@ExecuteAct"
+      ]
+    }
+  ],
+  "scope": "Production PMO fragments and full ExecuteAction/FullTick with fixture game services; not the linked server function bodies.",
+  "manual_review": "scope_0/32 OFF jumps precede WorldPosition/string preparation; null PMO destructor branch skips teardown. FullTick retains prior-scope reset before flag check. ExecuteAction gameplay allocation remains, all four PMO starts/strings are guarded."
+}

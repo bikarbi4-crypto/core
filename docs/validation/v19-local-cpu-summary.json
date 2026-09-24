@@ -1,0 +1,80 @@
+[
+  {
+    "file": "cpu-benchmark-final.json",
+    "exit_code": 0,
+    "peak_whole_pc_cpu_percent": 28.32,
+    "affinity": "0x55"
+  },
+  {
+    "file": "cpu-benchmark-first.json",
+    "exit_code": 0,
+    "peak_whole_pc_cpu_percent": 22.95,
+    "affinity": "0x55"
+  },
+  {
+    "file": "cpu-benchmark-shared.json",
+    "exit_code": 0,
+    "peak_whole_pc_cpu_percent": 29.69,
+    "affinity": "0x55"
+  },
+  {
+    "file": "cpu-pmo-build.json",
+    "exit_code": 0,
+    "peak_whole_pc_cpu_percent": 37.3,
+    "affinity": "0x55"
+  },
+  {
+    "file": "cpu-pmo-build2.json",
+    "exit_code": 0,
+    "peak_whole_pc_cpu_percent": 37.4,
+    "affinity": "0x55"
+  },
+  {
+    "file": "cpu-pmo-final-asan.json",
+    "exit_code": 0,
+    "peak_whole_pc_cpu_percent": 26.61,
+    "affinity": "0x55"
+  },
+  {
+    "file": "cpu-pmo-final-build.json",
+    "exit_code": 0,
+    "peak_whole_pc_cpu_percent": 45.54,
+    "affinity": "0x55"
+  },
+  {
+    "file": "cpu-pmo-release-build.json",
+    "exit_code": 0,
+    "peak_whole_pc_cpu_percent": 37.8,
+    "affinity": "0x55"
+  },
+  {
+    "file": "cpu-pmo-shared-build.json",
+    "exit_code": 0,
+    "peak_whole_pc_cpu_percent": 41.17,
+    "affinity": "0x55"
+  },
+  {
+    "file": "cpu-pmo-tests.json",
+    "exit_code": 0,
+    "peak_whole_pc_cpu_percent": 24.02,
+    "affinity": "0x55"
+  },
+  {
+    "file": "cpu-repro-build.json",
+    "exit_code": 1,
+    "peak_whole_pc_cpu_percent": 26.98,
+    "affinity": "0x55"
+  },
+  {
+    "file": "cpu-repro-build2.json",
+    "exit_code": 0,
+    "peak_whole_pc_cpu_percent": 35.55,
+    "affinity": "0x55"
+  },
+  {
+    "file": "cpu-validation.json",
+    "exit_code": 0,
+    "peak_whole_pc_cpu_percent": 46.34,
+    "affinity": "0x55"
+  }
+]

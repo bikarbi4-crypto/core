@@ -1,10 +1,10 @@
-name: V18 Quest Hot Path Windows Validation
+name: V19 PMO OFF Fast Path Windows Validation
 
 on:
   push:
-    branches: [vmangos-v18-quest-hot-values]
+    branches: [vmangos-v19-pmo-off-fast-path]
   pull_request:
-    branches: [vmangos-v18-quest-hot-values]
+    branches: [vmangos-v19-pmo-off-fast-path]
   workflow_dispatch:
 
 permissions:
@@ -128,6 +128,24 @@ jobs:
           ctest --test-dir build-quest-asan -C RelWithDebInfo --output-on-failure
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
+      - name: Check V18 versus V19 PMO contracts and toggle regressions
+        shell: pwsh
+        run: |
+          cmake -S tests/playerbots/pmo_audit -B build-pmo-audit -G "Visual Studio 17 2022" -A x64
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cmake --build build-pmo-audit --config RelWithDebInfo --target pmo_test --parallel 2
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & build-pmo-audit/RelWithDebInfo/pmo_test.exe --repro > build-pmo-audit/v18-defects.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ctest --test-dir build-pmo-audit -C RelWithDebInfo --output-on-failure
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cmake -S tests/playerbots/pmo_audit -B build-pmo-asan -G "Visual Studio 17 2022" -A x64 -DPMO_ASAN=ON
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cmake --build build-pmo-asan --config RelWithDebInfo --parallel 2
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ctest --test-dir build-pmo-asan -C RelWithDebInfo --output-on-failure
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
       - name: Stage application DLLs and validation evidence
         shell: pwsh
         run: |
@@ -142,6 +160,13 @@ jobs:
           Copy-Item -LiteralPath build-tests-asan/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/source-tests-asan.log
           Copy-Item -LiteralPath build-tests/grind_contracts.json -Destination bin/RelWithDebInfo/validation/grind-source-provenance.json
           Copy-Item -LiteralPath docs/V18_QUEST_HOT_PATH.md -Destination bin/RelWithDebInfo/README_V18.md
+          Copy-Item -LiteralPath docs/V19_PMO_OFF_FAST_PATH.md -Destination bin/RelWithDebInfo/README_V19.md
+          Copy-Item -LiteralPath build-pmo-audit/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/pmo-tests.log
+          Copy-Item -LiteralPath build-pmo-asan/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/pmo-tests-asan.log
+          Copy-Item -LiteralPath build-pmo-audit/generated/provenance.json -Destination bin/RelWithDebInfo/validation/pmo-source-provenance.json
+          Copy-Item -LiteralPath build-pmo-audit/generated/inventory.json -Destination bin/RelWithDebInfo/validation/pmo-callsite-inventory.json
+          Copy-Item -LiteralPath build-pmo-audit/v18-defects.log -Destination bin/RelWithDebInfo/validation/pmo-v18-defects.log
+          Copy-Item -Path docs/validation/v19-* -Destination bin/RelWithDebInfo/validation
           Copy-Item -LiteralPath docs/OPTIMIZATION_TODO.md -Destination bin/RelWithDebInfo/OPTIMIZATION_TODO.md
           Copy-Item -LiteralPath build-quest-audit/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/quest-tests.log
           Copy-Item -LiteralPath build-quest-asan/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/quest-tests-asan.log
@@ -163,12 +188,12 @@ jobs:
           $artifactRoot = (Resolve-Path bin/RelWithDebInfo).Path
           $files = Get-ChildItem $artifactRoot -Recurse -File | Where-Object { $_.Name -in @('mangosd.exe', 'mangosd.pdb') -or $_.Extension -eq '.dll' }
           $hashes = @($files | ForEach-Object { @{ path = [IO.Path]::GetRelativePath($artifactRoot, $_.FullName).Replace('\','/'); bytes = $_.Length; sha256 = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash } })
-          @{ commit = (git rev-parse HEAD); source_baseline = '2ea64f9d27563ac410bacea79de6e2e2671b01c3'; fallback = 'cea7ba955f5c0d57ff76d63e53f97f34b1d3ab4c'; client_build = 5875; configuration = 'RelWithDebInfo'; architecture = 'x64'; playerbots = $true; source_tests = '4/4'; asan_tests = '4/4'; quest_tests = 'passed'; quest_asan_tests = 'passed'; runtime_smoke = 'passed --version with packaged DLLs and system-only PATH'; openssl3_runtime = '3.0.14 / 9cff14fd97814baf8a9a07d8447960a64d616ada'; files = $hashes; runtime_prerequisites = @('Microsoft Visual C++ 2015-2022 x64 runtime', 'Microsoft Visual C++ 2008 x64 CRT for the bundled libmySQL.dll') } | ConvertTo-Json -Depth 4 | Set-Content bin/RelWithDebInfo/build-info.json
+          @{ commit = (git rev-parse HEAD); source_baseline = 'fbab350b6cde7a40735d778986382807d6287048'; reference_v171 = '2ea64f9d27563ac410bacea79de6e2e2671b01c3'; fallback = 'cea7ba955f5c0d57ff76d63e53f97f34b1d3ab4c'; client_build = 5875; configuration = 'RelWithDebInfo'; architecture = 'x64'; playerbots = $true; source_tests = '4/4'; asan_tests = '4/4'; quest_tests = 'passed'; quest_asan_tests = 'passed'; pmo_tests = '5269 observations passed'; pmo_asan_tests = '5269 observations passed'; pmo_callsites = 47; runtime_smoke = 'passed --version with packaged DLLs and system-only PATH'; openssl3_runtime = '3.0.14 / 9cff14fd97814baf8a9a07d8447960a64d616ada'; files = $hashes; runtime_prerequisites = @('Microsoft Visual C++ 2015-2022 x64 runtime', 'Microsoft Visual C++ 2008 x64 CRT for the bundled libmySQL.dll') } | ConvertTo-Json -Depth 4 | Set-Content bin/RelWithDebInfo/build-info.json
 
       - name: Upload cumulative validation build
         uses: actions/upload-artifact@v4
         with:
-          name: vmangos-v18-quest-hot-values-windows-x64-relwithdebinfo
+          name: vmangos-v19-pmo-off-fast-path-windows-x64-relwithdebinfo
           path: |
             bin/RelWithDebInfo/mangosd.exe
             bin/RelWithDebInfo/mangosd.pdb
@@ -176,6 +201,7 @@ jobs:
             bin/RelWithDebInfo/licenses/*
             bin/RelWithDebInfo/validation/*
             bin/RelWithDebInfo/README_V18.md
+            bin/RelWithDebInfo/README_V19.md
             bin/RelWithDebInfo/OPTIMIZATION_TODO.md
             bin/RelWithDebInfo/build-info.json
           if-no-files-found: error
