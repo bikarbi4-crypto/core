@@ -400,12 +400,20 @@ bool NeedForQuestValue::Calculate()
 		if (statusData.m_status != QUEST_STATUS_INCOMPLETE)
 			continue;
 
+		bool destinationsChecked = false;
 		for (uint32 objective = 0; objective < QUEST_OBJECTIVES_COUNT; objective++)
 		{
 			std::vector<std::string> qualifier = { std::to_string(questId), std::to_string(objective) };
 
 			if (!AI_VALUE2(bool, "need quest objective", Qualified::MultiQualify(qualifier, ",")))
 				continue;
+
+			// This query uses the quest id and the same travel snapshot, not the
+			// objective. Keep all objective value reads (including their refreshes)
+			// in order, but inspect the identical destination set only once.
+			if (destinationsChecked)
+				continue;
+			destinationsChecked = true;
 
 			DestinationList destinations = sTravelMgr.GetDestinations(info, uint32(TravelDestinationPurpose::QuestAllObjective), {int32(questId)}, false, 0);
 			
