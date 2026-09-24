@@ -585,10 +585,10 @@ bool NeedQuestRewardValue::Calculate()
 
 bool NeedQuestObjectiveValue::CanGetItemSomewhere(const uint32 itemId, const uint32 reqCount, Player* bot)
 {
-    if (!GAI_VALUE2(std::list<int32>, "item drop list", itemId).empty()) //Can get it from drop.
+    if (!sSharedObjectContext.GetValue<std::list<int32>>("item drop list", itemId)->IsEmpty()) //Can get it from drop.
         return true;
 
-    if (GAI_VALUE2(std::list<int32>, "item vendor list", itemId).empty()) //Can not get it from vendor.
+    if (sSharedObjectContext.GetValue<std::list<int32>>("item vendor list", itemId)->IsEmpty()) //Can not get it from vendor.
         return true;
 
     ItemPrototype const* proto = sObjectMgr.GetItemPrototype(itemId);

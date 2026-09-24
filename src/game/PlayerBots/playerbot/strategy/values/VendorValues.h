@@ -36,6 +36,10 @@ namespace ai
 
         virtual std::list<int32> Calculate() override;
 
+        // Match SingleCalculatedValue's cold/reset behavior; observe only a
+        // scalar once the owned list has been populated.
+        bool IsEmpty() override { return lastCheckTime ? value.empty() : Get().empty(); }
+
 #ifdef GenerateBotHelp
         virtual std::string GetHelpName() { return "item vendor list"; } //Must equal iternal name
         virtual std::string GetHelpTypeName() { return "item"; }

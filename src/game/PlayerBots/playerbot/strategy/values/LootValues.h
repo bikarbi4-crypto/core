@@ -74,6 +74,10 @@ namespace ai
 
         virtual std::list<int32> Calculate() override;
 
+        // Warm shared storage belongs to this single-calculation value. The
+        // cold/reset path still uses Get, including its PMO and reentry policy.
+        bool IsEmpty() override { return lastCheckTime ? value.empty() : Get().empty(); }
+
 #ifdef GenerateBotHelp
         virtual std::string GetHelpName() { return "item drop list"; } //Must equal iternal name
         virtual std::string GetHelpTypeName() { return "loot"; }
