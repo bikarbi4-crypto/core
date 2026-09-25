@@ -216,6 +216,7 @@ public:
         std::list<std::string> HandleConsoleReload(std::string param);
         std::list<std::string> HandleConsoleUpdate(std::string param);
         std::list<std::string> HandleConsolePid(std::string param);
+        std::list<std::string> HandleConsolePresence(std::string param);
         std::list<std::string> HandleConsoleDiff(std::string param);
         std::list<std::string> HandleConsoleCpu(std::string param);
         std::list<std::string> HandleConsoleCleanMap(std::string param);
@@ -226,6 +227,7 @@ public:
         virtual void OnBotDeleted(uint32 botGuid, uint32 accountId) override;
 
     public:
+        void UpdatePresenceDiagnostics();
         static std::string GetCommandTexts(const std::string& command);
         static std::unordered_map<std::string, std::string> GetCommandTexts();
         std::list<std::string> HandleRandomizeFirst(Player* bot);

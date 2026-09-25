@@ -1,3 +1,5 @@
+#include <filesystem>
+#include <iomanip>
 
 #include "playerbot/PlayerbotAIConfig.h"
 #include "playerbot/playerbot.h"
@@ -1293,4 +1295,36 @@ void PlayerbotAIConfig::LoadLLMDefaultPrompts(const std::string& fileName)
     }
 
     sLog.Out(LOG_BASIC, LOG_LVL_MINIMAL, "Loaded %u LLM character personalities from %s", loaded, fileName.c_str());
+}
+
+std::vector<std::string> PlayerbotAIConfig::GetPresenceConfiguration() const
+{
+    std::vector<std::string> result;
+    std::ostringstream path;
+    std::error_code ec;
+    auto const absolute = std::filesystem::absolute(config.GetFilename(), ec);
+    path << "[PRESENCE] config_path_resolved_now=" << std::quoted(ec ? config.GetFilename() : absolute.u8string());
+    result.push_back(path.str());
+    auto add = [&](char const* key, auto effective, auto parsed) {
+        std::ostringstream line;
+        line << "[PRESENCE] config key=" << key << " effective=" << effective << " loaded_file_or_default=" << parsed
+             << " file_present=" << config.IsSet(key) << " runtime_differs=" << (effective != parsed);
+        result.push_back(line.str());
+    };
+    add("AiPlayerbot.DisableActivityPriorities", disableActivityPriorities, config.GetBoolDefault("AiPlayerbot.DisableActivityPriorities", false));
+    add("AiPlayerbot.DisableBotOptimizations", disableBotOptimizations, config.GetBoolDefault("AiPlayerbot.DisableBotOptimizations", false));
+    add("AiPlayerbot.botActiveAlone", botActiveAlone, config.GetIntDefault("AiPlayerbot.botActiveAlone", 10));
+    add("AiPlayerbot.DiffWithPlayer", diffWithPlayer, config.GetIntDefault("AiPlayerbot.DiffWithPlayer", 100));
+    add("AiPlayerbot.DiffEmpty", diffEmpty, config.GetIntDefault("AiPlayerbot.DiffEmpty", 200));
+    add("AiPlayerbot.MaxActivityRatePerTick", maxActivityRatePerTick, config.GetFloatDefault("AiPlayerbot.MaxActivityRatePerTick", 0.0f));
+    add("AiPlayerbot.ContinentInstancedActivityScaling", continentInstancedActivityScaling, config.GetBoolDefault("AiPlayerbot.ContinentInstancedActivityScaling", false));
+    add("AiPlayerbot.ContinentInstancedTargetMsWithPlayer", continentInstancedTargetMsWithPlayer, config.GetIntDefault("AiPlayerbot.ContinentInstancedTargetMsWithPlayer", 40));
+    add("AiPlayerbot.ContinentInstancedTargetMsEmpty", continentInstancedTargetMsEmpty, config.GetIntDefault("AiPlayerbot.ContinentInstancedTargetMsEmpty", 40));
+    add("AiPlayerbot.ForceActiveWhenNearPlayer", forceActiveWhenNearPlayer, config.GetBoolDefault("AiPlayerbot.ForceActiveWhenNearPlayer", false));
+    add("AiPlayerbot.LimitCombatActivity", limitCombatActivity, config.GetBoolDefault("AiPlayerbot.LimitCombatActivity", false));
+    add("AiPlayerbot.EnableMinimalMove", enableMinimalMove, config.GetBoolDefault("AiPlayerbot.EnableMinimalMove", true));
+    add("AiPlayerbot.GuildOrderAlwaysActive", guildOrderAlwaysActive, config.GetBoolDefault("AiPlayerbot.GuildOrderAlwaysActive", true));
+    add("AiPlayerbot.RandomBotUpdateInterval", randomBotUpdateInterval, config.GetIntDefault("AiPlayerbot.RandomBotUpdateInterval", 1000));
+    add("AiPlayerbot.PerfMonEnabled", perfMonEnabled, config.GetBoolDefault("AiPlayerbot.PerfMonEnabled", false));
+    return result;
 }

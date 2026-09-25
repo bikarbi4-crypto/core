@@ -416,6 +416,7 @@ public:
 
     void loadFreeAltBotAccounts();
 
+    std::vector<std::string> GetPresenceConfiguration() const;
     std::string GetTimestampStr();
 
     bool hasLog(std::string fileName) { return std::find(allowedLogFiles.begin(), allowedLogFiles.end(), fileName) != allowedLogFiles.end(); };

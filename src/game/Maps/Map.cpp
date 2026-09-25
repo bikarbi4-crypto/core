@@ -1,3 +1,4 @@
+#include "PlayerBots/playerbot/PresenceDiagnostics.h"
 /*
  * Copyright (C) 2005-2011 MaNGOS <http://getmangos.com/>
  * Copyright (C) 2009-2011 MaNGOSZero <https://github.com/mangos/zero>
@@ -939,10 +940,25 @@ void Map::UpdatePlayers(bool updateBots)
             m_inactivePlayersSkippedUpdates = 0;
     }
 
+    PresenceDiagnostics::MapSample presenceMap;
+    bool const recordPresence = PresenceDiagnostics::Enabled() &&
+        PresenceDiagnostics::BeginMap(presenceMap, GetId(), GetInstanceId());
+    if (recordPresence)
+    {
+        presenceMap.samples = GetAverageUpdateTimeSamples10s();
+        presenceMap.currentMs = float(GetAverageUpdateTimeMs10s());
+        presenceMap.localA = GetBotActivityPercentage();
+    }
     bool const updateInactivePlayers = !IsContinent();
     for (m_mapRefIter = m_mapRefManager.begin(); m_mapRefIter != m_mapRefManager.end(); ++m_mapRefIter)
     {
         Player* plr = m_mapRefIter->getSource();
+        if (recordPresence)
+        {
+            bool const inWorld = plr && plr->IsInWorld();
+            bool const priorityReal = inWorld && (!plr->GetPlayerbotAI() || plr->GetPlayerbotAI()->IsRealPlayer());
+            presenceMap.Player(inWorld, priorityReal, plr && !plr->IsBot(), priorityReal ? plr->GetZoneId() : 0);
+        }
         if (!plr || !plr->IsInWorld())
             continue;
 
@@ -1023,6 +1039,14 @@ void Map::UpdatePlayers(bool updateBots)
         WorldObject::UpdateHelper helper(plr);
         helper.UpdateRealTime(now, diff + plr->GetSkippedUpdateTime());
         plr->ResetSkippedUpdateTime();
+    }
+    if (recordPresence)
+    {
+        presenceMap.source = !sPlayerbotAIConfig.continentInstancedActivityScaling ? 0 :
+            (!IsContinent() || !GetInstanceId()) ? 3 : !presenceMap.samples ? 4 : presenceMap.localA < 0 ? 5 : 6;
+        presenceMap.wantedIfLocalEnabled = presenceMap.realByIsBot ? sPlayerbotAIConfig.continentInstancedTargetMsWithPlayer :
+            sPlayerbotAIConfig.continentInstancedTargetMsEmpty;
+        PresenceDiagnostics::EndMap(presenceMap);
     }
     lastPlayersUpdate = now;
 }

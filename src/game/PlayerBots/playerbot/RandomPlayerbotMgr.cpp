@@ -1,3 +1,4 @@
+#include "PresenceDiagnostics.h"
 #include "Config/Config.h"
 
 #include "playerbot/playerbot.h"
@@ -710,28 +711,28 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed, bool minimal)
 float RandomPlayerbotMgr::getActivityPercentage(Player* bot)
 {
     if (!sPlayerbotAIConfig.continentInstancedActivityScaling)
-        return getActivityPercentage();
+        return PresenceDiagnostics::ActivityValue(getActivityPercentage(), 0);
 
     if (!bot || !bot->IsInWorld())
-        return getActivityPercentage();
+        return PresenceDiagnostics::ActivityValue(getActivityPercentage(), 1);
 
     Map* map = bot->GetMap();
 
     if (!map)
-        return getActivityPercentage();
+        return PresenceDiagnostics::ActivityValue(getActivityPercentage(), 2);
 
     if (!map->IsContinent() || map->GetInstanceId() == 0)
-        return getActivityPercentage();
+        return PresenceDiagnostics::ActivityValue(getActivityPercentage(), 3);
 
     if (!map->GetAverageUpdateTimeSamples10s())
-        return getActivityPercentage();
+        return PresenceDiagnostics::ActivityValue(getActivityPercentage(), 4);
 
     float const localActivity = map->GetBotActivityPercentage();
 
     if (localActivity < 0.0f)
-        return getActivityPercentage();
+        return PresenceDiagnostics::ActivityValue(getActivityPercentage(), 5);
 
-    return localActivity;
+    return PresenceDiagnostics::ActivityValue(localActivity, 6);
 }
 
 void RandomPlayerbotMgr::ScaleBotActivity()
@@ -759,6 +760,8 @@ void RandomPlayerbotMgr::ScaleBotActivity()
     }
 
     setActivityPercentage(activityPercentage);
+    if (PresenceDiagnostics::Enabled())
+        PresenceDiagnostics::Scale({0, 0, wantedDiff, 0, 0, float(currentDiff), previousActivityPercentage, activityPercentage}, true);
 
     if (sPlayerbotAIConfig.continentInstancedActivityScaling)
     {
@@ -807,6 +810,9 @@ void RandomPlayerbotMgr::ScaleBotActivity()
                 newActivity = std::max(0.0f, std::min(100.0f, newActivity));
 
                 map->SetBotActivityPercentage(newActivity);
+                if (PresenceDiagnostics::Enabled())
+                    PresenceDiagnostics::Scale({map->GetId(), map->GetInstanceId(), wantedMs, map->GetAverageUpdateTimeSamples10s(), 0,
+                        currentMs, previousActivity, newActivity}, false);
             }
         }
     }
@@ -3409,6 +3415,19 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
     }
 
     std::string cmd = args;
+    if (cmd == "presence" || cmd.find("presence ") == 0)
+    {
+        // World-thread control only; never enter via map-thread chat or RA.
+        if (isRA)
+        {
+            handler->SendSysMessage("Presence diagnostics requires the local server console.");
+            return true;
+        }
+        auto const messages = sRandomPlayerbotMgr.HandleConsolePresence(cmd.size() > 9 ? cmd.substr(9) : "status");
+        for (auto const& message : messages)
+            sLog.Out(LOG_BASIC, LOG_LVL_MINIMAL, "%s", message.c_str());
+        return true;
+    }
 
     std::map<std::string, ConsoleCommandHandler> handlers;
     handlers["help"] = &RandomPlayerbotMgr::HandleHelp;
@@ -5106,4 +5125,38 @@ void RandomPlayerbotMgr::OnBotDeleted(uint32 botGuid, uint32 accountId)
     }
 
     CharacterDatabase.PExecute("DELETE FROM ai_playerbot_random_bots WHERE bot = '%u'", botGuid);
+}
+
+// Scalar aggregation only. No game objects are dereferenced by the collector.
+void RandomPlayerbotMgr::UpdatePresenceDiagnostics()
+{
+    if (!PresenceDiagnostics::Enabled())
+        return;
+    auto lines = PresenceDiagnostics::Poll(sPlayerbotAIConfig.perfMonEnabled);
+    if (lines.empty())
+        return;
+    sLog.Out(LOG_BASIC, LOG_LVL_MINIMAL, "[PRESENCE] world real_registry=%u sessions=%u diff10=%u diff60=%u global_A=%.3f",
+        GetPlayersCount(), sWorld.GetActiveSessionCount(), sWorld.GetCurrentDiff(), sWorld.GetAverageDiff(), getActivityPercentage());
+    for (auto const& line : sPlayerbotAIConfig.GetPresenceConfiguration())
+        sLog.Out(LOG_BASIC, LOG_LVL_MINIMAL, "%s", line.c_str());
+    for (auto const& line : lines)
+        sLog.Out(LOG_BASIC, LOG_LVL_MINIMAL, "%s", line.c_str());
+}
+
+std::list<std::string> RandomPlayerbotMgr::HandleConsolePresence(std::string param)
+{
+    if (param == "status") return {PresenceDiagnostics::Status()};
+    if (param == "stop")
+    {
+        auto lines = PresenceDiagnostics::Stop("console");
+        return {lines.begin(), lines.end()};
+    }
+    std::istringstream input(param);
+    std::string operation, duration, option, extra;
+    input >> operation >> duration >> option >> extra;
+    if (operation != "start" || duration.empty() || duration.size() > 4 ||
+        duration.find_first_not_of("0123456789") != std::string::npos || !extra.empty() ||
+        (!option.empty() && option != "timing"))
+        return {"Usage: rndbot presence start <30..3600 seconds> [timing] | status | stop"};
+    return {PresenceDiagnostics::Start(unsigned(std::stoul(duration)), option == "timing", sPlayerbotAIConfig.perfMonEnabled)};
 }

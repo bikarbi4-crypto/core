@@ -1,3 +1,4 @@
+#include "PresenceDiagnostics.h"
 #include "PlayerbotMgr.h"
 #include "Spells/SpellEntry.h"
 #include "playerbot/playerbot.h"
@@ -6022,13 +6023,14 @@ enum ActivityType
 
 ActivePiorityType PlayerbotAI::GetPriorityType()
 {
+    PresenceDiagnostics::PriorityProbe presence;
     //First priority - priorities disabled or has player master. Always active.
     if (sPlayerbotAIConfig.disableActivityPriorities || HasRealPlayerMaster())
-        return ActivePiorityType::HAS_REAL_PLAYER_MASTER;
+        return presence.Finish(ActivePiorityType::HAS_REAL_PLAYER_MASTER);
 
     //Self bot in a group with a bot master.
     if (IsRealPlayer())
-        return ActivePiorityType::IS_REAL_PLAYER;
+        return presence.Finish(ActivePiorityType::IS_REAL_PLAYER);
 
     Group* group = bot->GetGroup();
     if (group)
@@ -6044,51 +6046,51 @@ ActivePiorityType PlayerbotAI::GetPriorityType()
                 continue;
 
             if (!member->GetPlayerbotAI() || (member->GetPlayerbotAI() && member->GetPlayerbotAI()->HasRealPlayerMaster()))
-                return ActivePiorityType::IN_GROUP_WITH_REAL_PLAYER;
+                return presence.Finish(ActivePiorityType::IN_GROUP_WITH_REAL_PLAYER);
         }
     }
 
     if (bot->IsBeingTeleported()) //We might end up in a bg so stay active.
-        return ActivePiorityType::IN_BATTLEGROUND;
+        return presence.Finish(ActivePiorityType::IN_BATTLEGROUND);
 
     if (WorldPosition(bot).isBg())
-        return ActivePiorityType::IN_BATTLEGROUND;
+        return presence.Finish(ActivePiorityType::IN_BATTLEGROUND);
 
     if (!WorldPosition(bot).isOverworld())
     {
         if (!sPlayerbotAIConfig.enableMinimalMove)
-            return ActivePiorityType::IN_INSTANCE;
+            return presence.Finish(ActivePiorityType::IN_INSTANCE);
         else
         {
             AiObjectContext* context = GetAiObjectContext();
             LastMovement& lastMove = AI_VALUE(LastMovement&, "last movement");
             if (lastMove.lastPath.empty())
-                return ActivePiorityType::IN_INSTANCE;
+                return presence.Finish(ActivePiorityType::IN_INSTANCE);
         }
     }
 
     if (HasPlayerNearby())
-        return ActivePiorityType::VISIBLE_FOR_PLAYER;
+        return presence.Finish(ActivePiorityType::VISIBLE_FOR_PLAYER);
 
     if (sPlayerbotAIConfig.guildOrderAlwaysActive && bot->IsInWorld() && bot->GetGuildId())
     {
         AiObjectContext* context = GetAiObjectContext();
         GuildOrder guildOrder = AI_VALUE(GuildOrder, "guild order");
         if (guildOrder.IsValid())
-            return ActivePiorityType::IS_ALWAYS_ACTIVE;
+            return presence.Finish(ActivePiorityType::IS_ALWAYS_ACTIVE);
     }
 
     if (sServerFacade.IsInCombat(bot))
-        return ActivePiorityType::IN_COMBAT;
+        return presence.Finish(ActivePiorityType::IN_COMBAT);
 
     if (HasPlayerNearby(WorldPosition(bot).getVisibilityDistance() + sPlayerbotAIConfig.reactDistance))
-        return ActivePiorityType::NEARBY_PLAYER;
+        return presence.Finish(ActivePiorityType::NEARBY_PLAYER);
 
     if (sPlayerbotAIConfig.IsFreeAltBot(bot) || HasStrategy("travel once", BotState::BOT_STATE_NON_COMBAT))
-        return ActivePiorityType::IS_ALWAYS_ACTIVE;
+        return presence.Finish(ActivePiorityType::IS_ALWAYS_ACTIVE);
 
     if (bot->InBattleGroundQueue())
-        return ActivePiorityType::IN_BG_QUEUE;
+        return presence.Finish(ActivePiorityType::IN_BG_QUEUE);
 
     bool isLFG = false;
 #ifdef MANGOSBOT_TWO
@@ -6106,39 +6108,41 @@ ActivePiorityType PlayerbotAI::GetPriorityType()
 #endif
 
     if (isLFG)
-        return ActivePiorityType::IN_LFG;
+        return presence.Finish(ActivePiorityType::IN_LFG);
 
     if (sPlayerbotAIConfig.enableMinimalMove)
     {
         AiObjectContext* context = GetAiObjectContext();
         LastMovement& lastMove = AI_VALUE(LastMovement&, "last movement");
         if (lastMove.lastPath.empty() && !urand(0, 5))
-            return ActivePiorityType::NO_PATH;
+            return presence.Finish(ActivePiorityType::NO_PATH);
     }
 
     //If has real players - slow down continents without player
     //This means we first disable bots in a different continent/area.
     if (!sRandomPlayerbotMgr.HasPlayers())
-        return ActivePiorityType::IN_EMPTY_SERVER;
+        return presence.Finish(ActivePiorityType::IN_EMPTY_SERVER);
 
     // friends always active
     PlayerBotMap playersSnap = sRandomPlayerbotMgr.GetPlayersSnapshot();
+    presence.Snapshot(playersSnap.size());
     for (auto& i : playersSnap)
     {
         Player* player = i.second;
         if (!player || !player->IsInWorld())
             continue;
 
+        presence.Friend();
         if (sSocialMgr.HasFriend(player->GetGUIDLow(), bot->GetObjectGuid()))
-            return ActivePiorityType::PLAYER_FRIEND;
+            return presence.Finish(ActivePiorityType::PLAYER_FRIEND);
     }
 
     // real guild always active if member+
     if (IsInRealGuild())
-        return ActivePiorityType::PLAYER_GUILD;
+        return presence.Finish(ActivePiorityType::PLAYER_GUILD);
 
     if (bot->IsBeingTeleported() || !bot->IsInWorld())
-        return ActivePiorityType::IN_INACTIVE_MAP;
+        return presence.Finish(ActivePiorityType::IN_INACTIVE_MAP);
 
     // Check if the bot's map has any real (non-bot) players
     bool mapHasRealPlayers = false;
@@ -6148,8 +6152,10 @@ ActivePiorityType PlayerbotAI::GetPriorityType()
     {
         uint32 botZoneId = bot->GetZoneId();
         Map::PlayerList const& mapPlayers = botMap->GetPlayers();
+        presence.Scan();
         for (auto itr = mapPlayers.begin(); itr != mapPlayers.end(); ++itr)
         {
+            presence.Entry();
             Player* plr = itr->getSource();
             if (!plr || !plr->IsInWorld())
                 continue;
@@ -6167,12 +6173,12 @@ ActivePiorityType PlayerbotAI::GetPriorityType()
     }
 
     if (!mapHasRealPlayers)
-        return ActivePiorityType::IN_INACTIVE_MAP;
+        return presence.Finish(ActivePiorityType::IN_INACTIVE_MAP);
 
     if (!zoneHasRealPlayers)
-        return ActivePiorityType::IN_ACTIVE_MAP;
+        return presence.Finish(ActivePiorityType::IN_ACTIVE_MAP);
 
-    return ActivePiorityType::IN_ACTIVE_AREA;
+    return presence.Finish(ActivePiorityType::IN_ACTIVE_AREA);
 }
 
 //Returns the lower and upper bracket for bots to be active.
@@ -6226,10 +6232,13 @@ std::pair<uint32, uint32> PlayerbotAI::GetPriorityBracket(ActivePiorityType type
 bool PlayerbotAI::AllowActive(ActivityType activityType)
 {
     ActivePiorityType type = GetPriorityType();
+    PresenceDiagnostics::DecisionProbe presence;
+    if (presence)
+        presence.Begin(bot->GetGUIDLow(), presenceState, unsigned(activityType), unsigned(type));
 
     if (sPlayerbotAIConfig.forceActiveWhenNearPlayer && type == ActivePiorityType::VISIBLE_FOR_PLAYER)
     {
-        return true;
+        return presence.Finish(true);
     }
 
     if (activityType == DETAILED_MOVE_ACTIVITY)
@@ -6243,7 +6252,7 @@ bool PlayerbotAI::AllowActive(ActivityType activityType)
         case ActivePiorityType::VISIBLE_FOR_PLAYER:
         case ActivePiorityType::IN_COMBAT:
         case ActivePiorityType::NEARBY_PLAYER:
-            return true;
+            return presence.Finish(true);
             break;
         case ActivePiorityType::IS_ALWAYS_ACTIVE:
         case ActivePiorityType::IN_BG_QUEUE:
@@ -6268,7 +6277,7 @@ bool PlayerbotAI::AllowActive(ActivityType activityType)
         case ActivePiorityType::IN_GROUP_WITH_REAL_PLAYER:
         case ActivePiorityType::IN_INSTANCE:
         case ActivePiorityType::IS_ALWAYS_ACTIVE:
-            return true;
+            return presence.Finish(true);
         case ActivePiorityType::VISIBLE_FOR_PLAYER:
             break;
         case ActivePiorityType::IN_COMBAT:
@@ -6292,12 +6301,12 @@ bool PlayerbotAI::AllowActive(ActivityType activityType)
     float activityPercentage = sRandomPlayerbotMgr.getActivityPercentage(bot); // Activity between 0 and 100.
 
     if (!priorityBracket.second) //No scaling
-        return true;
+        return presence.Finish(true);
 
     if (priorityBracket.first >= activityPercentage)
-        return false;
+        return presence.Finish(false);
     if (priorityBracket.second <= activityPercentage && priorityBracket.second < 100)
-        return true;
+        return presence.Finish(true);
 
     float activePerc = (activityPercentage - priorityBracket.first) / (priorityBracket.second - priorityBracket.first);
 
@@ -6305,7 +6314,7 @@ bool PlayerbotAI::AllowActive(ActivityType activityType)
 
     uint32 ActivityNumber = GetFixedBotNumber(BotTypeNumber::ACTIVITY_TYPE_NUMBER, 100, activePerc * 0.01f); //The last number if the amount it cycles per min. Currently set to 1% of the active bots.
 
-    return ActivityNumber <= (activePerc);           //The given percentage of bots should be active and rotate 1% of those active bots each minute.
+    return presence.Finish(ActivityNumber <= (activePerc));           //The given percentage of bots should be active and rotate 1% of those active bots each minute.
 }
 
 bool PlayerbotAI::AllowActivity(ActivityType activityType, bool checkNow)
@@ -6314,11 +6323,17 @@ bool PlayerbotAI::AllowActivity(ActivityType activityType, bool checkNow)
         allowActiveCheckTimer[activityType] = time(NULL);
 
     if (!checkNow && time(NULL) < (allowActiveCheckTimer[activityType] + 5))
+    {
+        if (PresenceDiagnostics::Enabled() && activityType == ALL_ACTIVITY)
+            PresenceDiagnostics::Cache(bot->GetGUIDLow(), presenceState, true, false, allowActive[activityType], allowActiveCheckTimer[activityType]);
         return allowActive[activityType];
+    }
 
     bool allowed = AllowActive(activityType);
     allowActive[activityType] = allowed;
     allowActiveCheckTimer[activityType] = time(NULL);
+    if (PresenceDiagnostics::Enabled() && activityType == ALL_ACTIVITY)
+        PresenceDiagnostics::Cache(bot->GetGUIDLow(), presenceState, false, checkNow, allowed, allowActiveCheckTimer[activityType]);
     return allowed;
 }
 

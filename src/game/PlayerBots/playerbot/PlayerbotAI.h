@@ -1,3 +1,4 @@
+#include "PresenceDiagnostics.h"
 #pragma once
 #include "PlayerbotMgr.h"
 #include "PlayerbotAIBase.h"
@@ -712,6 +713,7 @@ protected:
     std::map<std::string, time_t> whispers;
     std::pair<ChatMsg, time_t> currentChat;
     static std::set<std::string> unsecuredCommands;
+    PresenceDiagnostics::BotState presenceState; // Scalar observation state, owned like allowActive.
     bool allowActive[MAX_ACTIVITY_TYPE];
     time_t allowActiveCheckTimer[MAX_ACTIVITY_TYPE];
     bool inCombat = false;

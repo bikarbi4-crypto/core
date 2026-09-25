@@ -2186,6 +2186,7 @@ void World::Update(uint32 diff)
     // Update Playerbots
     sRandomPlayerbotMgr.UpdateAI(diff);
     sRandomPlayerbotMgr.UpdateSessions(diff);
+    sRandomPlayerbotMgr.UpdatePresenceDiagnostics();
     // Update AutoBroadcast
     sAutoBroadCastMgr.Update(diff);
     // Update ban list if necessary
