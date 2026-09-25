@@ -216,6 +216,7 @@ jobs:
           Copy-Item -LiteralPath build-presence/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/presence-tests.log
           Copy-Item -LiteralPath build-presence-asan/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/presence-tests-asan.log
           Copy-Item -LiteralPath build-presence/generated/provenance.json -Destination bin/RelWithDebInfo/validation/presence-source-provenance.json
+          Copy-Item -LiteralPath build-presence/generated/source-scope-audit.json -Destination bin/RelWithDebInfo/validation/presence-source-scope-audit.json
           Copy-Item -LiteralPath build-presence/collector-evidence.log -Destination bin/RelWithDebInfo/validation/presence-collector.log
           Copy-Item -LiteralPath build-pmo-audit/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/pmo-tests.log
           Copy-Item -LiteralPath build-pmo-asan/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/pmo-tests-asan.log

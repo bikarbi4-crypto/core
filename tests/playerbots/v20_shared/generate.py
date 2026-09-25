@@ -10,6 +10,11 @@ out=Path(sys.argv[1]);out.mkdir(parents=True,exist_ok=True)
 (out/'revision.h').write_text('#pragma once\n#define REVISION_HASH "v20-constructor-test"\n#define REVISION_DATE "test"\n#define REVISION_TIME "test"\n#define SUPPORTED_CLIENT_BUILD 5875\n')
 base='33faa8e3c091d73483b42dc07f8f2934ba5f7958'
 manifest={'baseline':base,'sources':{},'fragments':{},'limits':['World/database Calculate fixtures; never initialize a world.','Uncalled virtual game methods abort. Actual AI class and all member constructors retained.','Registry narrowed to actual item drop list and global string registrations, plus test factories.']}
+sys.dont_write_bytecode=True
+sys.path.insert(0,str(root/'tests/playerbots/presence'))
+from source_scope import compact, normalize_presence, verify_source_scope
+manifest['presence_source_equivalence']=verify_source_scope()
+manifest['limits'].append('Both registry variants compile the current diagnostic AI layout, including its scalar BotState; declared layout/header delta is strictly verified against V20. This is not a past-sizeof benchmark.')
 def read(file,baseline=False):
  s=subprocess.check_output(['git','show',base+':'+p+file],cwd=root).decode('utf-8-sig') if baseline else (root/p/file).read_text(encoding='utf-8-sig')
  manifest['sources'][('baseline:' if baseline else 'candidate:')+file]=hashlib.sha256(s.encode()).hexdigest();return s
@@ -22,7 +27,11 @@ def block(s,sig):
 def function(file,sig):
  s=block(read(file),sig);manifest['fragments'][sig]=hashlib.sha256(s.encode()).hexdigest();return s
 for unchanged in ['PlayerbotAI.h','PlayerbotAI.cpp','PlayerbotAIBase.h','PlayerbotAIBase.cpp','ChatHelper.h','ChatHelper.cpp','ChatFilter.h','ChatFilter.cpp','PlayerbotSecurity.h','PlayerbotSecurity.cpp','PlayerbotAIAware.h','WorldPosition.h','WorldPosition.cpp','strategy/AiObject.h','strategy/AiObject.cpp','strategy/NamedObjectContext.h','strategy/NamedObjectCache.h','strategy/Value.h','strategy/values/LootValues.h','strategy/values/VendorValues.h','PerformanceMonitor.h']:
- assert read(unchanged)==read(unchanged,True),unchanged+' changed outside shared ownership scope'
+ candidate,historical=read(unchanged),read(unchanged,True)
+ if unchanged in ('PlayerbotAI.h','PlayerbotAI.cpp'):
+  assert compact(normalize_presence(unchanged,candidate))==compact(historical),unchanged+' changed beyond strictly verified presence hooks'
+ else:
+  assert candidate==historical,unchanged+' changed outside shared ownership scope'
 oldregistry=re.findall(r'creators\[[^\n]+',read('strategy/values/SharedValueContext.h',True))
 assert len(oldregistry)==16
 assert oldregistry==re.findall(r'creators\[[^\n]+',read('strategy/values/SharedValueContext.h'))

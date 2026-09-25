@@ -15,6 +15,9 @@ def extract(text, sig):
     return text[start:i]
 def old(path):return subprocess.check_output(['git','show',f'{BASE}:{path}'],cwd=ROOT).decode('utf-8-sig').replace('\r\n','\n')
 out=Path(sys.argv[1]); out.mkdir(parents=True, exist_ok=True)
+sys.dont_write_bytecode=True
+from source_scope import verify_source_scope
+(out/'source-scope-audit.json').write_text(json.dumps(verify_source_scope(),indent=2),encoding='utf-8')
 baseline=old(AI); current=(ROOT/AI).read_text(encoding='utf-8-sig')
 assert extract(baseline,SIGS[1])==extract(current,SIGS[1]), 'Priority brackets changed'
 evidence={'baseline':BASE,'variants':{},'checks':{}}

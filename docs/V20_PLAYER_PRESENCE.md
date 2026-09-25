@@ -89,6 +89,8 @@ GUIDs are used only inside bounded unique-observation sets.
 - `global_scale` / `local_scale`: last actual regulator update before/after A,
   wanted/current milliseconds, sample count and age. No regulator is called
   for diagnostics. No local_scale record means none was observed this run.
+  The global record has no underlying map sample counter: its `samples=0`
+  is a placeholder, not evidence that no world timings were collected.
 - `map` / `player_zone`: sampled inside the existing map-owner player loop,
   at most once per map per worker per 5 seconds; no extra map traversal.
   Both real-player definitions are reported separately. Map/zone is numeric.
@@ -165,3 +167,9 @@ and cache fields. Collector tests cover OFF allocation/clock absence, multiple
 threads, unique counts, transitions, ordinary timestamps, expiry, PMO stop,
 storage limits and restart. MSVC ASan and the cumulative suites are retained.
 No full-world functional test has been performed by the assistant.
+
+The cumulative PMO suite still checks all 47 current fragments/arguments and
+reset scopes. Its non-PMO remainder comparison strips only the declared
+presence hooks after a separate whole-source V20 equivalence gate. Negative
+controls prove RNG, cache interval, PMO-guard and regulator-gain mutations are
+rejected. No PMO file or test case is skipped to accommodate instrumentation.
