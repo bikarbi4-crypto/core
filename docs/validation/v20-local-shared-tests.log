@@ -1,0 +1,38 @@
+Start testing: Sep 25 08:00 RTZ 2 (зима)
+----------------------------------------------------------
+1/2 Testing: shared_candidate
+1/2 Test: shared_candidate
+Command: "C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v20/shared-build/RelWithDebInfo/shared_candidate.exe" "--check"
+Directory: C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v20/shared-build
+"shared_candidate" start time: Sep 25 08:00 RTZ 2 (зима)
+Output:
+----------------------------------------------------------
+contract_trace,0,80,32,112,0,0
+contract_trace,1,80,32,112,48,64
+candidate contracts passed checks=16188, factories=164, destroyed=68, calculates=225, sizeof(PlayerbotAI)=1344
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"shared_candidate" end time: Sep 25 08:00 RTZ 2 (зима)
+"shared_candidate" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/2 Testing: shared_baseline_off_contracts
+2/2 Test: shared_baseline_off_contracts
+Command: "C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v20/shared-build/RelWithDebInfo/shared_baseline.exe" "--check"
+Directory: C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v20/shared-build
+"shared_baseline_off_contracts" start time: Sep 25 08:00 RTZ 2 (зима)
+Output:
+----------------------------------------------------------
+contract_trace,0,80,32,112,0,0
+baseline contracts passed checks=804, factories=80, destroyed=32, calculates=112, sizeof(PlayerbotAI)=1344
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"shared_baseline_off_contracts" end time: Sep 25 08:00 RTZ 2 (зима)
+"shared_baseline_off_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Sep 25 08:00 RTZ 2 (зима)

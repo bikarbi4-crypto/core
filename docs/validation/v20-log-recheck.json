@@ -1,0 +1,773 @@
+{
+  "scope": {
+    "start": "2026-09-25 06:05:02",
+    "world_initialized": "2026-09-25 06:06:22",
+    "pmo_on": "2026-09-25 06:56:44",
+    "pmo_off": "2026-09-25 06:57:10",
+    "end": "2026-09-25 06:58:29",
+    "timezone": "timestamps used as logged; no conversion",
+    "raw_logs_in_output": false
+  },
+  "inputs": {
+    "Server.log": {
+      "bytes": 307744,
+      "raw_lines": 4048,
+      "sha256": "99e414656aa4e8caca4819a3371a1cb2dcd662a8d6bef18f7817992ccba38264",
+      "matches_handoff": true
+    },
+    "Perf.log": {
+      "bytes": 35305638,
+      "raw_lines": 656628,
+      "sha256": "50dbad0f6f714aa5acbb2ede5b0568c0e7c4adf8e8ee49fcea46f5383a9160ac",
+      "matches_handoff": true
+    },
+    "Loot.log": {
+      "bytes": 17699647,
+      "raw_lines": 90843,
+      "sha256": "f7f105a543618d43ff78fcad2678dc51f3dff4b376b3209237d449b10123cfff",
+      "matches_handoff": true
+    },
+    "Anticheat.log": {
+      "bytes": 71290,
+      "raw_lines": 587,
+      "sha256": "2ab937e89b61cee70b8684830b763e34318642a3459f551fc506297caafd3b99",
+      "matches_handoff": true
+    },
+    "DBErrors.log": {
+      "bytes": 71638,
+      "raw_lines": 629,
+      "sha256": "601afa8b314254871a9bf06118796d28a9dedf3bfa071d90bb129f687d9f501c",
+      "matches_handoff": true
+    }
+  },
+  "session": {
+    "world_to_halting_seconds": 3127,
+    "process_seconds": 3207,
+    "world_to_shutdown_seconds": 3091,
+    "shutdown_to_halting_seconds": 36,
+    "pmo_seconds": 26,
+    "pmo_commands": [
+      {
+        "line": 3659,
+        "time": "2026-09-25 06:56:44"
+      },
+      {
+        "line": 3660,
+        "time": "2026-09-25 06:56:44"
+      },
+      {
+        "line": 3669,
+        "time": "2026-09-25 06:57:10"
+      }
+    ],
+    "core_revision_matches_v19": true
+  },
+  "diff_snapshots": {
+    "all_count": 46,
+    "clean_count": 45,
+    "clean_definition": "from world initialization until first PMO enable; all later snapshots excluded",
+    "last10": {
+      "n": 10,
+      "first": "2026-09-25 06:53:29",
+      "last": "2026-09-25 06:56:40",
+      "active": 2363.8,
+      "diff10": 99.4,
+      "diff60": 99.0
+    },
+    "minutes30_40": {
+      "n": 7,
+      "first": "2026-09-25 06:37:20",
+      "last": "2026-09-25 06:45:57",
+      "active": 2423.8571428571427,
+      "diff10": 97.71428571428571,
+      "diff60": 99.85714285714286
+    },
+    "minutes40_50": {
+      "n": 28,
+      "first": "2026-09-25 06:46:33",
+      "last": "2026-09-25 06:56:03",
+      "active": 2366.964285714286,
+      "diff10": 102.25,
+      "diff60": 101.85714285714286
+    },
+    "maximum_active": {
+      "line": 2871,
+      "time": "2026-09-25 06:45:57",
+      "diff10": 95,
+      "diff60": 97,
+      "online": 3001,
+      "active": 2445
+    },
+    "last_clean": {
+      "line": 3512,
+      "time": "2026-09-25 06:56:40",
+      "diff10": 96,
+      "diff60": 102,
+      "online": 3001,
+      "active": 2368
+    },
+    "after_pmo": [
+      {
+        "line": 4020,
+        "time": "2026-09-25 06:57:13",
+        "diff10": 153,
+        "diff60": 102,
+        "online": 3001,
+        "active": 2169
+      }
+    ],
+    "clean_samples": [
+      {
+        "line": 1387,
+        "time": "2026-09-25 06:06:54",
+        "diff10": 58,
+        "diff60": 0,
+        "online": 568,
+        "active": 242
+      },
+      {
+        "line": 1514,
+        "time": "2026-09-25 06:07:05",
+        "diff10": 61,
+        "diff60": 0,
+        "online": 889,
+        "active": 291
+      },
+      {
+        "line": 1534,
+        "time": "2026-09-25 06:07:56",
+        "diff10": 61,
+        "diff60": 58,
+        "online": 2239,
+        "active": 500
+      },
+      {
+        "line": 1671,
+        "time": "2026-09-25 06:08:03",
+        "diff10": 59,
+        "diff60": 58,
+        "online": 2439,
+        "active": 528
+      },
+      {
+        "line": 1856,
+        "time": "2026-09-25 06:20:18",
+        "diff10": 70,
+        "diff60": 73,
+        "online": 3001,
+        "active": 1840
+      },
+      {
+        "line": 2002,
+        "time": "2026-09-25 06:20:24",
+        "diff10": 70,
+        "diff60": 72,
+        "online": 3001,
+        "active": 1848
+      },
+      {
+        "line": 2011,
+        "time": "2026-09-25 06:21:02",
+        "diff10": 72,
+        "diff60": 72,
+        "online": 3001,
+        "active": 1859
+      },
+      {
+        "line": 2060,
+        "time": "2026-09-25 06:24:40",
+        "diff10": 82,
+        "diff60": 80,
+        "online": 3001,
+        "active": 2083
+      },
+      {
+        "line": 2315,
+        "time": "2026-09-25 06:37:20",
+        "diff10": 103,
+        "diff60": 97,
+        "online": 3001,
+        "active": 2397
+      },
+      {
+        "line": 2471,
+        "time": "2026-09-25 06:37:29",
+        "diff10": 96,
+        "diff60": 99,
+        "online": 3001,
+        "active": 2409
+      },
+      {
+        "line": 2685,
+        "time": "2026-09-25 06:45:02",
+        "diff10": 97,
+        "diff60": 103,
+        "online": 3001,
+        "active": 2429
+      },
+      {
+        "line": 2692,
+        "time": "2026-09-25 06:45:14",
+        "diff10": 95,
+        "diff60": 103,
+        "online": 3001,
+        "active": 2430
+      },
+      {
+        "line": 2845,
+        "time": "2026-09-25 06:45:24",
+        "diff10": 96,
+        "diff60": 103,
+        "online": 3001,
+        "active": 2427
+      },
+      {
+        "line": 2857,
+        "time": "2026-09-25 06:45:37",
+        "diff10": 102,
+        "diff60": 97,
+        "online": 3001,
+        "active": 2430
+      },
+      {
+        "line": 2871,
+        "time": "2026-09-25 06:45:57",
+        "diff10": 95,
+        "diff60": 97,
+        "online": 3001,
+        "active": 2445
+      },
+      {
+        "line": 2884,
+        "time": "2026-09-25 06:46:33",
+        "diff10": 104,
+        "diff60": 103,
+        "online": 3001,
+        "active": 2411
+      },
+      {
+        "line": 2892,
+        "time": "2026-09-25 06:46:43",
+        "diff10": 105,
+        "diff60": 103,
+        "online": 3001,
+        "active": 2416
+      },
+      {
+        "line": 2900,
+        "time": "2026-09-25 06:46:54",
+        "diff10": 117,
+        "diff60": 103,
+        "online": 3001,
+        "active": 2398
+      },
+      {
+        "line": 2908,
+        "time": "2026-09-25 06:47:09",
+        "diff10": 110,
+        "diff60": 103,
+        "online": 3001,
+        "active": 2366
+      },
+      {
+        "line": 2919,
+        "time": "2026-09-25 06:47:23",
+        "diff10": 106,
+        "diff60": 103,
+        "online": 3001,
+        "active": 2393
+      },
+      {
+        "line": 2927,
+        "time": "2026-09-25 06:47:43",
+        "diff10": 106,
+        "diff60": 108,
+        "online": 3001,
+        "active": 2376
+      },
+      {
+        "line": 2934,
+        "time": "2026-09-25 06:48:01",
+        "diff10": 100,
+        "diff60": 108,
+        "online": 3001,
+        "active": 2377
+      },
+      {
+        "line": 2943,
+        "time": "2026-09-25 06:48:15",
+        "diff10": 102,
+        "diff60": 108,
+        "online": 3001,
+        "active": 2380
+      },
+      {
+        "line": 2951,
+        "time": "2026-09-25 06:48:35",
+        "diff10": 101,
+        "diff60": 102,
+        "online": 3001,
+        "active": 2369
+      },
+      {
+        "line": 2961,
+        "time": "2026-09-25 06:48:53",
+        "diff10": 103,
+        "diff60": 102,
+        "online": 3001,
+        "active": 2366
+      },
+      {
+        "line": 2979,
+        "time": "2026-09-25 06:49:23",
+        "diff10": 108,
+        "diff60": 102,
+        "online": 3001,
+        "active": 2348
+      },
+      {
+        "line": 2986,
+        "time": "2026-09-25 06:49:39",
+        "diff10": 105,
+        "diff60": 105,
+        "online": 3001,
+        "active": 2340
+      },
+      {
+        "line": 2994,
+        "time": "2026-09-25 06:49:52",
+        "diff10": 107,
+        "diff60": 105,
+        "online": 3001,
+        "active": 2330
+      },
+      {
+        "line": 3004,
+        "time": "2026-09-25 06:50:07",
+        "diff10": 96,
+        "diff60": 105,
+        "online": 3001,
+        "active": 2344
+      },
+      {
+        "line": 3017,
+        "time": "2026-09-25 06:50:45",
+        "diff10": 100,
+        "diff60": 102,
+        "online": 3001,
+        "active": 2351
+      },
+      {
+        "line": 3168,
+        "time": "2026-09-25 06:51:08",
+        "diff10": 100,
+        "diff60": 102,
+        "online": 3001,
+        "active": 2352
+      },
+      {
+        "line": 3179,
+        "time": "2026-09-25 06:51:41",
+        "diff10": 100,
+        "diff60": 99,
+        "online": 3001,
+        "active": 2349
+      },
+      {
+        "line": 3187,
+        "time": "2026-09-25 06:52:02",
+        "diff10": 103,
+        "diff60": 99,
+        "online": 3001,
+        "active": 2352
+      },
+      {
+        "line": 3200,
+        "time": "2026-09-25 06:52:28",
+        "diff10": 98,
+        "diff60": 100,
+        "online": 3001,
+        "active": 2362
+      },
+      {
+        "line": 3208,
+        "time": "2026-09-25 06:53:01",
+        "diff10": 97,
+        "diff60": 100,
+        "online": 3001,
+        "active": 2372
+      },
+      {
+        "line": 3220,
+        "time": "2026-09-25 06:53:29",
+        "diff10": 97,
+        "diff60": 99,
+        "online": 3001,
+        "active": 2366
+      },
+      {
+        "line": 3227,
+        "time": "2026-09-25 06:53:48",
+        "diff10": 100,
+        "diff60": 99,
+        "online": 3001,
+        "active": 2343
+      },
+      {
+        "line": 3236,
+        "time": "2026-09-25 06:54:16",
+        "diff10": 97,
+        "diff60": 99,
+        "online": 3001,
+        "active": 2371
+      },
+      {
+        "line": 3243,
+        "time": "2026-09-25 06:54:36",
+        "diff10": 98,
+        "diff60": 99,
+        "online": 3001,
+        "active": 2362
+      },
+      {
+        "line": 3249,
+        "time": "2026-09-25 06:54:59",
+        "diff10": 101,
+        "diff60": 99,
+        "online": 3001,
+        "active": 2378
+      },
+      {
+        "line": 3263,
+        "time": "2026-09-25 06:55:19",
+        "diff10": 99,
+        "diff60": 99,
+        "online": 3001,
+        "active": 2371
+      },
+      {
+        "line": 3274,
+        "time": "2026-09-25 06:55:38",
+        "diff10": 102,
+        "diff60": 98,
+        "online": 3001,
+        "active": 2363
+      },
+      {
+        "line": 3351,
+        "time": "2026-09-25 06:56:03",
+        "diff10": 101,
+        "diff60": 98,
+        "online": 3001,
+        "active": 2369
+      },
+      {
+        "line": 3363,
+        "time": "2026-09-25 06:56:23",
+        "diff10": 103,
+        "diff60": 98,
+        "online": 3001,
+        "active": 2347
+      },
+      {
+        "line": 3512,
+        "time": "2026-09-25 06:56:40",
+        "diff10": 96,
+        "diff60": 102,
+        "online": 3001,
+        "active": 2368
+      }
+    ]
+  },
+  "perf": {
+    "slow_world_lines": 15298,
+    "update_map_lines": 14854,
+    "total_session_lines": 30152,
+    "all_max": {
+      "line": 626478,
+      "time": "2026-09-25 06:06:33",
+      "ms": 636
+    },
+    "mature_gt200": [
+      {
+        "line": 639603,
+        "time": "2026-09-25 06:36:47",
+        "ms": 209
+      },
+      {
+        "line": 639867,
+        "time": "2026-09-25 06:37:07",
+        "ms": 206
+      },
+      {
+        "line": 640635,
+        "time": "2026-09-25 06:38:07",
+        "ms": 234
+      },
+      {
+        "line": 641059,
+        "time": "2026-09-25 06:38:40",
+        "ms": 205
+      },
+      {
+        "line": 643068,
+        "time": "2026-09-25 06:41:09",
+        "ms": 226
+      },
+      {
+        "line": 646000,
+        "time": "2026-09-25 06:44:43",
+        "ms": 239
+      },
+      {
+        "line": 647696,
+        "time": "2026-09-25 06:46:51",
+        "ms": 201
+      },
+      {
+        "line": 648211,
+        "time": "2026-09-25 06:47:26",
+        "ms": 206
+      },
+      {
+        "line": 649431,
+        "time": "2026-09-25 06:48:56",
+        "ms": 207
+      },
+      {
+        "line": 649760,
+        "time": "2026-09-25 06:49:18",
+        "ms": 281
+      },
+      {
+        "line": 652773,
+        "time": "2026-09-25 06:52:58",
+        "ms": 245
+      },
+      {
+        "line": 655385,
+        "time": "2026-09-25 06:56:10",
+        "ms": 202
+      }
+    ],
+    "mature_gt500": 0,
+    "mature_max": {
+      "line": 649760,
+      "time": "2026-09-25 06:49:18",
+      "ms": 281
+    },
+    "pmo_print_second_max": {
+      "line": 656187,
+      "time": "2026-09-25 06:57:13",
+      "ms": 464
+    }
+  },
+  "queues": {
+    "general_profiles": 9,
+    "partition_samples": 117,
+    "all_sampled_zero": true
+  },
+  "last_clean_profile_instance11": {
+    "line": 3597,
+    "time": "2026-09-25 06:56:42",
+    "bots": 689,
+    "active": 534,
+    "work_ms": 95.26,
+    "players_ms": 90.58,
+    "world_region": "Kalimdor, not a raid instance"
+  },
+  "loot": {
+    "creature_records": 2660,
+    "gameobject_records": 96,
+    "gameobject_distinct_bot_guids": 58,
+    "gameobject_distinct_entry_guid_pairs": 67
+  },
+  "server_warnings": {
+    "add_cooldown": 647,
+    "use_item": 269,
+    "use_item_results": {
+      "100": 161,
+      "19": 2,
+      "30": 19,
+      "60": 86,
+      "96": 1
+    },
+    "item_update_queue": 39,
+    "item_update_queue_distinct_guids": 16,
+    "sql_error": 0,
+    "duplicate_entry": 0,
+    "movespline_path_size": 1,
+    "cancelled_instance_creation": 4,
+    "guild_names_exhausted": 4,
+    "find_script_targets": 2,
+    "broken_zone_data": 6,
+    "escort_warning": 1
+  },
+  "db_errors": {
+    "total": 629,
+    "first": "2026-09-25 06:05:04",
+    "last": "2026-09-25 06:05:08",
+    "unused_gossip_menu": 448,
+    "missing_item_loot_template": 178,
+    "same_proc_flags": 2,
+    "empty_reputation_reward": 1
+  },
+  "anticheat": {
+    "session_lines": 7,
+    "items_check_lines": 1,
+    "non_unit_loot_lines": 1
+  },
+  "printed_pmo": {
+    "grind target": {
+      "metric": "V",
+      "seconds": "4.737",
+      "count": 6218,
+      "source_lines": [
+        3676,
+        3694,
+        3707,
+        3718,
+        3725,
+        3731,
+        3732,
+        3735,
+        3736,
+        3737,
+        3739
+      ]
+    },
+    "need for quest": {
+      "metric": "V",
+      "seconds": "3.776",
+      "count": 14826,
+      "source_lines": [
+        3684,
+        3700,
+        3702,
+        3723,
+        3724,
+        3726,
+        3728,
+        3733,
+        3734,
+        3738
+      ]
+    },
+    "attackers": {
+      "metric": "V",
+      "seconds": "2.351",
+      "count": 19651,
+      "source_lines": [
+        3680,
+        3687,
+        3696,
+        3698,
+        3703,
+        3709,
+        3710,
+        3712,
+        3713,
+        3721,
+        3729
+      ]
+    },
+    "attackers count": {
+      "metric": "V",
+      "seconds": "1.935",
+      "count": 19324,
+      "source_lines": [
+        3683,
+        3689,
+        3697,
+        3701,
+        3704,
+        3711,
+        3714,
+        3722,
+        3730
+      ]
+    },
+    "need quest objective": {
+      "metric": "V",
+      "seconds": "1.394",
+      "count": 274739,
+      "source_lines": [
+        3685,
+        3686,
+        3690,
+        3692,
+        3708,
+        3716,
+        3727
+      ]
+    },
+    "check values": {
+      "metric": "A",
+      "seconds": "0.981",
+      "count": 2654,
+      "source_lines": [
+        3799,
+        3800,
+        3806,
+        3816,
+        3827
+      ]
+    },
+    "add gathering loot": {
+      "metric": "A",
+      "seconds": "1.658",
+      "count": 10780,
+      "source_lines": [
+        3807,
+        3817,
+        3821,
+        3825,
+        3829,
+        3833
+      ]
+    }
+  },
+  "limitations": [
+    "Arithmetic means of irregular logged snapshots; not all-tick distributions.",
+    "Perf.log threshold samples cannot establish p95/p99 without denominator.",
+    "Slow-world and map-update lines are distinct phases, not distinct lag events.",
+    "Loot rows are item receipts, not unique kills or opened objects.",
+    "PMO rows overlap and omit below-threshold entries; do not sum to CPU percentage.",
+    "V18/V19 sessions are unpaired and do not establish a whole-server speedup.",
+    "No crash shown before normal halting; this does not prove no leaks or all gameplay parity.",
+    "One final Server.log network shutdown line at 06:58:30 lies outside handoff session cutoff."
+  ],
+  "v18_context_recheck": {
+    "sha256": "a4d6057f6873dc05efbfca3124ed5221f6835a9ce3f0071aa45ed8b73afef95a",
+    "bytes": 429893,
+    "last10": {
+      "n": 10,
+      "first": "2026-09-24 20:27:57",
+      "last": "2026-09-24 20:36:04",
+      "active": 2145.8,
+      "diff10": 94.3,
+      "diff60": 93.7
+    },
+    "comparison": "unpaired; informational context only"
+  },
+  "handoff_claim_checks": {
+    "last10": true,
+    "window30_40": true,
+    "window40_50": true,
+    "max_active": true,
+    "perf_counts": true,
+    "loot_counts": true,
+    "queues": true,
+    "warnings": true,
+    "db": true,
+    "anticheat": true,
+    "pmo": true,
+    "duration_and_pmo": true,
+    "spikes": true,
+    "profile": true,
+    "last_clean": true,
+    "after_pmo": true,
+    "v18_context": true
+  },
+  "all_checked_claims_match": true
+}

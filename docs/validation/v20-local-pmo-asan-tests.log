@@ -1,0 +1,19 @@
+Start testing: Sep 25 08:34 RTZ 2 (зима)
+----------------------------------------------------------
+1/1 Testing: pmo_contracts
+1/1 Test: pmo_contracts
+Command: "C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v20/pmo-asan-build/RelWithDebInfo/pmo_test.exe"
+Directory: C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v20/pmo-asan-build
+"pmo_contracts" start time: Sep 25 08:34 RTZ 2 (зима)
+Output:
+----------------------------------------------------------
+PMO PASS: 5269 parity/toggle observations; 47 callsites; OFF counters zero; 512 concurrent map/instance registrations.
+<end of output>
+Test time =   0.32 sec
+----------------------------------------------------------
+Test Passed.
+"pmo_contracts" end time: Sep 25 08:34 RTZ 2 (зима)
+"pmo_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Sep 25 08:34 RTZ 2 (зима)

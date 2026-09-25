@@ -1,0 +1,51 @@
+SECTION HEADER #735
+.text$mn name
+       0 physical address
+       0 virtual address
+      74 size of raw data
+  28AA74 file pointer to raw data (0028AA74 to 0028AAE7)
+  28AAE8 file pointer to relocation table
+       0 file pointer to line numbers
+       3 number of relocations
+       0 number of line numbers
+60501020 flags
+         Code
+         COMDAT; sym= "public: virtual class ai::UntypedValue * __cdecl ai::SharedObjectContext::GetUntypedValue(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?GetUntypedValue@SharedObjectContext@ai@@UEAAPEAVUntypedValue@2@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+         16 byte align
+         Execute Read
+
+  0000000000000000: mov         qword ptr [rsp+10h],rbx
+  0000000000000005: mov         qword ptr [rsp+18h],rsi
+  000000000000000A: push        rdi
+  000000000000000B: sub         rsp,20h
+  000000000000000F: mov         rdi,rdx
+  0000000000000012: mov         rsi,rcx
+  0000000000000015: mov         ecx,540h
+  000000000000001A: call        ??2@YAPEAX_K@Z
+  000000000000001F: mov         qword ptr [rsp+30h],rax
+  0000000000000024: test        rax,rax
+  0000000000000027: je          0000000000000036
+  0000000000000029: mov         rcx,rax
+  000000000000002C: call        ??0PlayerbotAI@@QEAA@XZ
+  0000000000000031: mov         rbx,rax
+  0000000000000034: jmp         0000000000000038
+  0000000000000036: xor         ebx,ebx
+  0000000000000038: lea         rcx,[rsi+8]
+  000000000000003C: mov         r8,rbx
+  000000000000003F: mov         rdx,rdi
+  0000000000000042: call        ?GetObjectA@?$NamedObjectContextList@VUntypedValue@ai@@@ai@@QEAAPEAVUntypedValue@2@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVPlayerbotAI@@@Z
+  0000000000000047: mov         rdi,rax
+  000000000000004A: test        rbx,rbx
+  000000000000004D: je          0000000000000064
+  000000000000004F: mov         rcx,qword ptr [rbx]
+  0000000000000052: mov         r8,qword ptr [rcx+10h]
+  0000000000000056: mov         edx,1
+  000000000000005B: mov         rcx,rbx
+  000000000000005E: call        r8
+  0000000000000061: mov         rax,rdi
+  0000000000000064: mov         rbx,qword ptr [rsp+38h]
+  0000000000000069: mov         rsi,qword ptr [rsp+40h]
+  000000000000006E: add         rsp,20h
+  0000000000000072: pop         rdi
+  0000000000000073: ret
+

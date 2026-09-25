@@ -1,0 +1,14 @@
+[
+  {
+    "variant": "v19",
+    "list_source_sections": 12,
+    "scalar_slot_32": 0,
+    "rt_dynamic_cast": 7
+  },
+  {
+    "variant": "v20",
+    "list_source_sections": 0,
+    "scalar_slot_32": 6,
+    "rt_dynamic_cast": 7
+  }
+]

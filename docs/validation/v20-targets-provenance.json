@@ -1,0 +1,25 @@
+{
+  "baseline": "33faa8e3c091d73483b42dc07f8f2934ba5f7958",
+  "path": "src/game/PlayerBots/playerbot/strategy/values/PossibleAttackTargetsValue.cpp",
+  "variants": {
+    "v19": {
+      "source_sha256": "be9fdf93effc966cfc8cba1ed709f378caa39d83c607f10b389ebdf260d9c57f",
+      "function_sha256": [
+        "7e3f7b31104880b9ff86ee90c3f8946361816e39c8ed41acfee75b664608cbd4",
+        "dad2c8cdcbf69420f82e6650efb4ead7600b77eb82135f039babfda1d7904007"
+      ]
+    },
+    "v20": {
+      "source_sha256": "95427b24679badfd1a9313fb75dd9abd40a835ec65db355b741d01565abded7a",
+      "function_sha256": [
+        "7e3f7b31104880b9ff86ee90c3f8946361816e39c8ed41acfee75b664608cbd4",
+        "f7ad2a3a3620b00bb2ead7fe1160e3788477534dd6f47cb9188526731e504e6b"
+      ]
+    }
+  },
+  "object_guid": {
+    "path": "src/game/ObjectGuid.h",
+    "sha256": "bffe4316f4d21f0daaac9aa824ed7c17d5d20ca5184e515247f67f0766479279",
+    "fixture": "uint64: production ObjectGuid has one uint64 field and implicit trivial copy/destruction; world APIs use raw fixture IDs"
+  }
+}

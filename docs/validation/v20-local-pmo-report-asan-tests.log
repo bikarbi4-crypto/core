@@ -1,0 +1,22 @@
+Start testing: Sep 25 07:46 RTZ 2 (зима)
+----------------------------------------------------------
+1/1 Testing: v20_pmo_report_contracts
+1/1 Test: v20_pmo_report_contracts
+Command: "C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v20/pmo-report-asan/RelWithDebInfo/v20_pmo_test.exe"
+Directory: C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v20/pmo-report-asan
+"v20_pmo_report_contracts" start time: Sep 25 07:46 RTZ 2 (зима)
+Output:
+----------------------------------------------------------
+PrintStats production-body parity: 128 calls, 88 rows compared; 80 corrected max fields.
+Baseline reproducer: aggregated min=2, max=5; corrected max=120.
+Count-only/zero partitions, every tick/stack/map option, Reset and source snapshots passed.
+Preserved limitation: zero denominators render NaN/Inf in existing report logic.
+<end of output>
+Test time =   0.08 sec
+----------------------------------------------------------
+Test Passed.
+"v20_pmo_report_contracts" end time: Sep 25 07:46 RTZ 2 (зима)
+"v20_pmo_report_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Sep 25 07:46 RTZ 2 (зима)

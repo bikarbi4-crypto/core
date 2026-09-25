@@ -1,0 +1,66 @@
+{
+  "assembly_sha256": "edff415eb8e112061bf9b0434d6e09f249dc7a6d853829fbe28dd524b80de54d",
+  "variants": {
+    "v19": {
+      "direct_operator_new_calls": 8,
+      "list_assignment_calls": 1,
+      "all_calls": [
+        "call\t??2@YAPEAX_K@Z\t\t\t\t; operator new",
+        "call\t??2@YAPEAX_K@Z\t\t\t\t; operator new",
+        "call\t?event@World@@QEAAXI_K@Z\t\t; World::event",
+        "call\tQWORD PTR __imp__wassert",
+        "call\tQWORD PTR __imp__wassert",
+        "call\t?event@World@@QEAAXI_K@Z\t\t; World::event",
+        "call\t?event@World@@QEAAXI_K@Z\t\t; World::event",
+        "call\t?event@World@@QEAAXI_K@Z\t\t; World::event",
+        "call\t??2@YAPEAX_K@Z\t\t\t\t; operator new",
+        "call\t?event@World@@QEAAXI_K@Z\t\t; World::event",
+        "call\t?event@World@@QEAAXI_K@Z\t\t; World::event",
+        "call\t??2@YAPEAX_K@Z\t\t\t\t; operator new",
+        "call\t?event@World@@QEAAXI_K@Z\t\t; World::event",
+        "call\t??3@YAXPEAX_K@Z\t\t\t\t; operator delete",
+        "call\t??4?$list@_KV?$allocator@_K@std@@@std@@QEAAAEAV01@AEBV01@@Z ; std::list<unsigned __int64,std::allocator<unsigned __int64> >::operator=",
+        "call\t??$_Construct_range_unchecked@PEB_KPEB_K@?$list@_KV?$allocator@_K@std@@@std@@AEAAXPEB_KQEB_K@Z ; std::list<unsigned __int64,std::allocator<unsigned __int64> >::_Construct_range_unchecked<unsigned __int64 const *,unsigned __int64 const *>",
+        "call\t?_Unchecked_erase@?$list@_KV?$allocator@_K@std@@@std@@AEAAPEAU?$_List_node@_KPEAX@2@PEAU32@QEAU32@@Z ; std::list<unsigned __int64,std::allocator<unsigned __int64> >::_Unchecked_erase",
+        "call\t??3@YAXPEAX_K@Z\t\t\t\t; operator delete",
+        "call\t??3@YAXPEAX_K@Z\t\t\t\t; operator delete",
+        "call\t??2@YAPEAX_K@Z\t\t\t\t; operator new",
+        "call\t??2@YAPEAX_K@Z\t\t\t\t; operator new",
+        "call\t??3@YAXPEAX_K@Z\t\t\t\t; operator delete",
+        "call\t?_Unchecked_erase@?$list@_KV?$allocator@_K@std@@@std@@AEAAPEAU?$_List_node@_KPEAX@2@PEAU32@QEAU32@@Z ; std::list<unsigned __int64,std::allocator<unsigned __int64> >::_Unchecked_erase",
+        "call\t??3@YAXPEAX_K@Z\t\t\t\t; operator delete",
+        "call\t??3@YAXPEAX_K@Z\t\t\t\t; operator delete",
+        "call\t??3@YAXPEAX_K@Z\t\t\t\t; operator delete",
+        "call\t??3@YAXPEAX_K@Z\t\t\t\t; operator delete",
+        "call\t??2@YAPEAX_K@Z\t\t\t\t; operator new",
+        "call\t??2@YAPEAX_K@Z\t\t\t\t; operator new",
+        "call\t??3@YAXPEAX_K@Z\t\t\t\t; operator delete",
+        "call\t?_Xlength_error@std@@YAXPEBD@Z\t\t; std::_Xlength_error"
+      ]
+    },
+    "v20": {
+      "direct_operator_new_calls": 2,
+      "list_assignment_calls": 0,
+      "all_calls": [
+        "call\t??2@YAPEAX_K@Z\t\t\t\t; operator new",
+        "call\t??2@YAPEAX_K@Z\t\t\t\t; operator new",
+        "call\t?event@World@@QEAAXI_K@Z\t\t; World::event",
+        "call\tQWORD PTR __imp__wassert",
+        "call\tQWORD PTR __imp__wassert",
+        "call\t?event@World@@QEAAXI_K@Z\t\t; World::event",
+        "call\t?event@World@@QEAAXI_K@Z\t\t; World::event",
+        "call\t?event@World@@QEAAXI_K@Z\t\t; World::event",
+        "call\t?event@World@@QEAAXI_K@Z\t\t; World::event",
+        "call\t?event@World@@QEAAXI_K@Z\t\t; World::event",
+        "call\t?event@World@@QEAAXI_K@Z\t\t; World::event",
+        "call\t??3@YAXPEAX_K@Z\t\t\t\t; operator delete",
+        "call\t?_Unchecked_erase@?$list@_KV?$allocator@_K@std@@@std@@AEAAPEAU?$_List_node@_KPEAX@2@PEAU32@QEAU32@@Z ; std::list<unsigned __int64,std::allocator<unsigned __int64> >::_Unchecked_erase",
+        "call\t?_Unchecked_erase@?$list@_KV?$allocator@_K@std@@@std@@AEAAPEAU?$_List_node@_KPEAX@2@PEAU32@QEAU32@@Z ; std::list<unsigned __int64,std::allocator<unsigned __int64> >::_Unchecked_erase",
+        "call\t??3@YAXPEAX_K@Z\t\t\t\t; operator delete",
+        "call\t??3@YAXPEAX_K@Z\t\t\t\t; operator delete",
+        "call\t??3@YAXPEAX_K@Z\t\t\t\t; operator delete",
+        "call\t?_Xlength_error@std@@YAXPEBD@Z\t\t; std::_Xlength_error"
+      ]
+    }
+  }
+}

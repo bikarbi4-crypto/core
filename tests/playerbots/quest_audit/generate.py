@@ -41,9 +41,22 @@ new = read('strategy/values/QuestValues.cpp', True)
 assert block(old,'bool NeedQuestObjectiveValue::Calculate()') == block(new,'bool NeedQuestObjectiveValue::Calculate()')
 for invariant in ['PlayerbotAIAware.h','strategy/AiObject.h','strategy/AiObjectContext.h',
                   'strategy/NamedObjectCache.h','strategy/NamedObjectContext.h',
-                  'strategy/values/SharedValueContext.h','strategy/values/QuestValues.h',
+                  'strategy/values/QuestValues.h',
                   'strategy/values/LootValues.cpp','strategy/values/VendorValues.cpp','TravelMgr.cpp']:
     assert read(invariant)==read(invariant,True), invariant+' changed outside the audited candidates'
+# V20 repairs ownership inside SharedObjectContext. Preserve this older quest
+# fixture's baseline wrapper and all original quest cases, while checking the
+# quest-visible registration/typed-key contract instead of freezing its lifetime
+# bug. The real constructor, ownership, PMO and threaded registry paths are
+# independently required by tests/playerbots/v20_shared (including V19 ASan UAF).
+shared_old=read('strategy/values/SharedValueContext.h')
+shared_new=read('strategy/values/SharedValueContext.h',True)
+assert block(shared_old,'class SharedValueContext',True)==block(shared_new,'class SharedValueContext',True)
+for signature in ['Value<T>* GetValue(const std::string& name)',
+                  'Value<T>* GetValue(const std::string& name, const std::string& param)',
+                  'Value<T>* GetValue(const std::string& name, int32 param)']:
+    assert block(shared_old,signature)==block(shared_new,signature),signature+' changed'
+manifest['shared_context_boundary']='Quest fixture retains baseline wrapper; all registration and typed-key overload bodies unchanged. Actual V20 lifetime/PMO/registry contracts are in v20_shared.'
 sig = 'bool NeedForQuestValue::Calculate()'
 baseline_need, final_need = block(old, sig), block(new, sig)
 a_block = '\t\t\t// This query uses the quest id and the same travel snapshot, not the\n' + final_need.split('\t\t\t// This query uses the quest id and the same travel snapshot, not the\n',1)[1].split('\t\t\tDestinationList destinations',1)[0]

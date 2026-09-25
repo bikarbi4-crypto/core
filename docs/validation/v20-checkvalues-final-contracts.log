@@ -1,0 +1,20 @@
+UpdateCTestConfiguration  from :C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v20/checkvalues-build/DartConfiguration.tcl
+Test project C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v20/checkvalues-build
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: checkvalues_contracts
+
+1: Test command: C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v20\checkvalues-build\RelWithDebInfo\checkvalues_audit.exe
+1: Working Directory: C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v20/checkvalues-build
+1: Test timeout computed to be: 10000000
+1: CheckValues PASS: 2560 observations; exact results/order/refresh/PMO names/cache states; fallback allocations identical.
+1/1 Test #1: checkvalues_contracts ............   Passed    0.29 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.31 sec

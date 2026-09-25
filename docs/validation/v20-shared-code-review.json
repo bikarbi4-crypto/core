@@ -1,0 +1,36 @@
+{
+  "scope": "MSVC x64 normal production-constructor harness COFF object code; not final server EXE",
+  "variants": {
+    "baseline": {
+      "dump_sha256": "0f02fb45114a27b35159f107b2ba14b0495a59eb9a8a99e0f688cac3963fdea2",
+      "method_sha256": "8005978d9d6b4e52addf0fca709c9eccf00d4de9f9410afb572b2695920c4699",
+      "ai_constructor_calls": 1,
+      "operator_new_calls": 1,
+      "named_cache_calls": 1,
+      "mutex_locks": 0,
+      "mutex_unlocks": 0,
+      "calls": [
+        "??2@YAPEAX_K@Z",
+        "??0PlayerbotAI@@QEAA@XZ",
+        "?GetObjectA@?$NamedObjectContextList@VUntypedValue@ai@@@ai@@QEAAPEAVUntypedValue@2@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVPlayerbotAI@@@Z",
+        "r8"
+      ]
+    },
+    "candidate": {
+      "dump_sha256": "8d057f0c1d9b763d2638bb915b8a9ae53ca1c39356ed53256cff2028cf9dee04",
+      "method_sha256": "de31d34c99f65637faed24aea899a9b37910fe4256a04d27ab1f262585068103",
+      "ai_constructor_calls": 0,
+      "operator_new_calls": 0,
+      "named_cache_calls": 1,
+      "mutex_locks": 1,
+      "mutex_unlocks": 1,
+      "calls": [
+        "_Mtx_lock",
+        "?GetObjectA@?$NamedObjectContextList@VUntypedValue@ai@@@ai@@QEAAPEAVUntypedValue@2@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVPlayerbotAI@@@Z",
+        "_Mtx_unlock",
+        "?_Throw_Cpp_error@std@@YAXH@Z",
+        "?_Throw_Cpp_error@std@@YAXH@Z"
+      ]
+    }
+  }
+}

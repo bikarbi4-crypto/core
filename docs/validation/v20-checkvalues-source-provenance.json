@@ -1,0 +1,89 @@
+{
+  "baseline": "33faa8e3c091d73483b42dc07f8f2934ba5f7958",
+  "sources": {
+    "working:src/game/PlayerBots/playerbot/strategy/Value.h": "d46851649bf428560007d3f55dcdd516cfa440d4a50d30aacafff9d9fece0b50",
+    "v19:src/game/PlayerBots/playerbot/strategy/Value.h": "d46851649bf428560007d3f55dcdd516cfa440d4a50d30aacafff9d9fece0b50",
+    "working:src/game/PlayerBots/playerbot/strategy/AiObjectContext.h": "5dd155127ca83805bf4b6494a3199f06a17a3a4f51930cd952689024607f7f7e",
+    "working:src/game/PlayerBots/playerbot/strategy/values/ValueContext.h": "62603291a0e478c0c249d7e364137ae2f0a1308c79f832d5e67db79eb4fd143e",
+    "working:src/game/PlayerBots/playerbot/strategy/values/PossibleTargetsValue.h": "66f3bc159dba4983e94441dacf9853ece0e17fa0d50b3001695b48575228929a",
+    "v19:src/game/PlayerBots/playerbot/strategy/values/PossibleTargetsValue.h": "66f3bc159dba4983e94441dacf9853ece0e17fa0d50b3001695b48575228929a",
+    "working:src/game/PlayerBots/playerbot/strategy/values/NearestNpcsValue.h": "5b55e5e09f04557dec84d0bb25f5b8a14f1d0b15813eda4b1bc743a659cc171a",
+    "v19:src/game/PlayerBots/playerbot/strategy/values/NearestNpcsValue.h": "5b55e5e09f04557dec84d0bb25f5b8a14f1d0b15813eda4b1bc743a659cc171a",
+    "working:src/game/PlayerBots/playerbot/strategy/values/NearestCorpsesValue.h": "c1ff952bae7919ed486b2a124e27839f3fbf8f843fd02820f821ba27b6ebd9b6",
+    "v19:src/game/PlayerBots/playerbot/strategy/values/NearestCorpsesValue.h": "c1ff952bae7919ed486b2a124e27839f3fbf8f843fd02820f821ba27b6ebd9b6",
+    "working:src/game/PlayerBots/playerbot/strategy/values/NearestGameObjects.h": "026cae4e92c850fd5ffbee5180e098007bc6a6fa9b7a6b4d72fe56e848025d62",
+    "v19:src/game/PlayerBots/playerbot/strategy/values/NearestGameObjects.h": "026cae4e92c850fd5ffbee5180e098007bc6a6fa9b7a6b4d72fe56e848025d62",
+    "working:src/game/PlayerBots/playerbot/strategy/values/NearestFriendlyPlayersValue.h": "5ee425ed9cc552318f9a3e3f82181d109e3cc384df0b797893d9239c21cfa9b4",
+    "v19:src/game/PlayerBots/playerbot/strategy/values/NearestFriendlyPlayersValue.h": "5ee425ed9cc552318f9a3e3f82181d109e3cc384df0b797893d9239c21cfa9b4",
+    "working:src/game/PlayerBots/playerbot/strategy/values/NearestUnitsValue.h": "3e0e44b508136c8b3aee3e9aa3ae51c1bae91abed012910919d16c1038ec3fcc",
+    "v19:src/game/PlayerBots/playerbot/strategy/values/NearestUnitsValue.h": "3e0e44b508136c8b3aee3e9aa3ae51c1bae91abed012910919d16c1038ec3fcc",
+    "working:src/game/PlayerBots/playerbot/PlayerbotAIAware.h": "01ec8535fe2fd14d6f06257095fc901fbe61321a23e953eaf7564638a9baff47",
+    "v19:src/game/PlayerBots/playerbot/strategy/actions/CheckValuesAction.cpp": "76bbcecf97961bb6c8e612a8218952764a578ddb9f7673649dd255ce6f674e55",
+    "working:src/game/PlayerBots/playerbot/strategy/actions/CheckValuesAction.cpp": "9caca6ebfc0aca4fb072f3161c4a74fc90e07085a6d81a3b26a5ff935043bfcf"
+  },
+  "registrations": [
+    {
+      "lookup": "possible targets",
+      "type": "PossibleTargetsValue",
+      "registration": "creators[\"possible targets\"] = [](PlayerbotAI* ai) { return new PossibleTargetsValue(ai); };",
+      "interval": 4,
+      "pmo_name": "possible targets"
+    },
+    {
+      "lookup": "all targets",
+      "type": "AllTargetsValue",
+      "registration": "creators[\"all targets\"] = [](PlayerbotAI* ai) { return new AllTargetsValue(ai); };",
+      "interval": 4,
+      "pmo_name": "all targets"
+    },
+    {
+      "lookup": "nearest npcs",
+      "type": "NearestNpcsValue",
+      "registration": "creators[\"nearest npcs\"] = [](PlayerbotAI* ai) { return new NearestNpcsValue(ai); };",
+      "interval": 4,
+      "pmo_name": "nearest npcs"
+    },
+    {
+      "lookup": "nearest corpses",
+      "type": "NearestCorpsesValue",
+      "registration": "creators[\"nearest corpses\"] = [](PlayerbotAI* ai) { return new NearestCorpsesValue(ai); };",
+      "interval": 4,
+      "pmo_name": "nearest corpses"
+    },
+    {
+      "lookup": "nearest game objects no los",
+      "type": "NearestGameObjects",
+      "registration": "creators[\"nearest game objects no los\"] = [](PlayerbotAI* ai) { return new NearestGameObjects(ai, sPlayerbotAIConfig.sightDistance, LOS_IGNORE); };",
+      "interval": 1,
+      "pmo_name": "nearest game objects"
+    },
+    {
+      "lookup": "nearest friendly players",
+      "type": "NearestFriendlyPlayersValue",
+      "registration": "creators[\"nearest friendly players\"] = [](PlayerbotAI* ai) { return new NearestFriendlyPlayersValue(ai); };",
+      "interval": 4,
+      "pmo_name": "nearest friendly players"
+    }
+  ],
+  "guid_fixture": {
+    "path": "src/game/ObjectGuid.h",
+    "sha256": "bffe4316f4d21f0daaac9aa824ed7c17d5d20ca5184e515247f67f0766479279",
+    "representation": "one uint64; trivial copy/destruction; fixture uses uint64 GUIDs"
+  },
+  "generated_sha256": {
+    "getvalue.inc": "80d8279e94dceeecf501af3751ec2a048e69cb8aa10b6ecdad76f46eb20f9ca0",
+    "policies.inc": "fc69e6bf4e8f2f7f12b79f22404d536d72fbe8a50b253662de36540dc31a93a2",
+    "v19.inc": "b39fff79ba433c248cd92a627fab331ac6e4a7701f29e294ed7a6cd423c748ee",
+    "v20.inc": "cee322595c1c0341f49d3ba0ccbbad112b7c0dc9fcc4b8487cdf5dbe027b1de6"
+  },
+  "harness_sha256": {
+    "api.h": "a41a3737fff58132faef20243a70d2e8d4dfb4293f9df7d71363c7d783c25d16",
+    "CMakeLists.txt": "dd224baf23fa0102429decffbbfe06b0cb0c257fe34fd0e9090644ae71c5c417",
+    "consumer.cpp": "5a9a8089e4229f20b968d61e5b97c48671588e661bd2816d18b05452c634a00a",
+    "generate.py": "f126cb4681fadd51018f21139eee2c76f9d17908fc5ea29b721b130ce6b42997",
+    "main.cpp": "820ff8c240caf3e7a84869e6cb06808d3bff2b59b9d5353cd742b9cdff3e4b70",
+    "README.md": "be411585010d0933efece25cc0878fe24efdc58638fd866bf1ff73d5615ed6d5",
+    "services.h": "6dab26ae15421c254ef3cf9e17f935507cd02234f3c64c05ba9d76c979df8057",
+    "summarize.py": "c8f2e9ca3adcbf6b968b6fe3adf9060c8f8dd3048d7364a7b4259dae7b5c0806"
+  }
+}

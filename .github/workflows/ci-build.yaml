@@ -1,10 +1,10 @@
-name: V19 PMO OFF Fast Path Windows Validation
+name: V20 Value Allocation Windows Validation
 
 on:
   push:
-    branches: [vmangos-v19-pmo-off-fast-path]
+    branches: [vmangos-v20-value-allocation]
   pull_request:
-    branches: [vmangos-v19-pmo-off-fast-path]
+    branches: [vmangos-v20-value-allocation]
   workflow_dispatch:
 
 permissions:
@@ -146,6 +146,49 @@ jobs:
           ctest --test-dir build-pmo-asan -C RelWithDebInfo --output-on-failure
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
+      - name: Check V20 shared-value lifetime and reproduce V19 use-after-free
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          foreach ($asan in @($false, $true)) {
+            $buildDir = 'build-v20-shared' + $(if ($asan) { '-asan' } else { '' })
+            $configureArgs = @('-S', 'tests/playerbots/v20_shared', '-B', $buildDir, '-G', 'Visual Studio 17 2022', '-A', 'x64')
+            if ($asan) { $configureArgs += '-DSHARED_ASAN=ON' }
+            cmake @configureArgs
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            cmake --build $buildDir --config RelWithDebInfo --parallel 2
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            ctest --test-dir $buildDir -C RelWithDebInfo --output-on-failure -V
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+
+      - name: Check V20 list consumers and PMO report contracts
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $suites = @(
+            @{ Name = 'checkvalues'; Source = 'v20_checkvalues'; Asan = 'CHECKVALUES_ASAN'; Target = 'checkvalues_audit' },
+            @{ Name = 'targets'; Source = 'v20_targets'; Asan = 'TARGETS_ASAN'; Target = 'targets_audit' },
+            @{ Name = 'pmo-report'; Source = 'v20_pmo'; Asan = 'V20_PMO_ASAN'; Target = 'v20_pmo_test' }
+          )
+          foreach ($suite in $suites) {
+            foreach ($asan in @($false, $true)) {
+              $buildDir = "build-v20-$($suite.Name)" + $(if ($asan) { '-asan' } else { '' })
+              $configureArgs = @('-S', "tests/playerbots/$($suite.Source)", '-B', $buildDir, '-G', 'Visual Studio 17 2022', '-A', 'x64')
+              if ($asan) { $configureArgs += "-D$($suite.Asan)=ON" }
+              cmake @configureArgs
+              if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+              cmake --build $buildDir --config RelWithDebInfo --target $suite.Target --parallel 2
+              if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+              ctest --test-dir $buildDir -C RelWithDebInfo --output-on-failure -V
+              if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+              if (!$asan -and $suite.Name -in @('checkvalues', 'targets')) {
+                & "$buildDir/RelWithDebInfo/$($suite.Target).exe" --allocations "$buildDir/allocations.csv"
+                if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+              }
+            }
+          }
+
       - name: Stage application DLLs and validation evidence
         shell: pwsh
         run: |
@@ -161,6 +204,7 @@ jobs:
           Copy-Item -LiteralPath build-tests/grind_contracts.json -Destination bin/RelWithDebInfo/validation/grind-source-provenance.json
           Copy-Item -LiteralPath docs/V18_QUEST_HOT_PATH.md -Destination bin/RelWithDebInfo/README_V18.md
           Copy-Item -LiteralPath docs/V19_PMO_OFF_FAST_PATH.md -Destination bin/RelWithDebInfo/README_V19.md
+          Copy-Item -LiteralPath docs/V20_VALUE_ALLOCATION.md -Destination bin/RelWithDebInfo/README_V20.md
           Copy-Item -LiteralPath build-pmo-audit/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/pmo-tests.log
           Copy-Item -LiteralPath build-pmo-asan/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/pmo-tests-asan.log
           Copy-Item -LiteralPath build-pmo-audit/generated/provenance.json -Destination bin/RelWithDebInfo/validation/pmo-source-provenance.json
@@ -174,6 +218,16 @@ jobs:
           Copy-Item -Path docs/validation/v18-* -Destination bin/RelWithDebInfo/validation
           Copy-Item -LiteralPath build-chain-audit/contracts.csv -Destination bin/RelWithDebInfo/validation/value-chain-contracts.csv
           Copy-Item -LiteralPath build-chain-audit/generated/provenance.json -Destination bin/RelWithDebInfo/validation/value-chain-provenance.json
+          foreach ($suite in @('shared', 'checkvalues', 'targets', 'pmo-report')) {
+            Copy-Item -LiteralPath "build-v20-$suite/Testing/Temporary/LastTest.log" -Destination "bin/RelWithDebInfo/validation/v20-$suite-tests.log"
+            Copy-Item -LiteralPath "build-v20-$suite-asan/Testing/Temporary/LastTest.log" -Destination "bin/RelWithDebInfo/validation/v20-$suite-tests-asan.log"
+            Copy-Item -LiteralPath "build-v20-$suite/generated/provenance.json" -Destination "bin/RelWithDebInfo/validation/v20-$suite-source-provenance.json"
+          }
+          Copy-Item -LiteralPath build-v20-shared-asan/v19-expected-uaf.log -Destination bin/RelWithDebInfo/validation/v20-shared-v19-expected-uaf.log
+          Copy-Item -LiteralPath build-v20-pmo-report/generated/source-audit.json -Destination bin/RelWithDebInfo/validation/v20-pmo-repo-wide-source-audit.json
+          Copy-Item -LiteralPath build-v20-checkvalues/allocations.csv -Destination bin/RelWithDebInfo/validation/v20-checkvalues-allocations.csv
+          Copy-Item -LiteralPath build-v20-targets/allocations.csv -Destination bin/RelWithDebInfo/validation/v20-targets-allocations.csv
+          Copy-Item -Path docs/validation/v20-* -Destination bin/RelWithDebInfo/validation
 
       - name: Check packaged DLL loading without a world or database
         shell: pwsh
@@ -188,12 +242,12 @@ jobs:
           $artifactRoot = (Resolve-Path bin/RelWithDebInfo).Path
           $files = Get-ChildItem $artifactRoot -Recurse -File | Where-Object { $_.Name -in @('mangosd.exe', 'mangosd.pdb') -or $_.Extension -eq '.dll' }
           $hashes = @($files | ForEach-Object { @{ path = [IO.Path]::GetRelativePath($artifactRoot, $_.FullName).Replace('\','/'); bytes = $_.Length; sha256 = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash } })
-          @{ commit = (git rev-parse HEAD); source_baseline = 'fbab350b6cde7a40735d778986382807d6287048'; reference_v171 = '2ea64f9d27563ac410bacea79de6e2e2671b01c3'; fallback = 'cea7ba955f5c0d57ff76d63e53f97f34b1d3ab4c'; client_build = 5875; configuration = 'RelWithDebInfo'; architecture = 'x64'; playerbots = $true; source_tests = '4/4'; asan_tests = '4/4'; quest_tests = 'passed'; quest_asan_tests = 'passed'; pmo_tests = '5269 observations passed'; pmo_asan_tests = '5269 observations passed'; pmo_callsites = 47; runtime_smoke = 'passed --version with packaged DLLs and system-only PATH'; openssl3_runtime = '3.0.14 / 9cff14fd97814baf8a9a07d8447960a64d616ada'; files = $hashes; runtime_prerequisites = @('Microsoft Visual C++ 2015-2022 x64 runtime', 'Microsoft Visual C++ 2008 x64 CRT for the bundled libmySQL.dll') } | ConvertTo-Json -Depth 4 | Set-Content bin/RelWithDebInfo/build-info.json
+          @{ commit = (git rev-parse HEAD); source_baseline = '33faa8e3c091d73483b42dc07f8f2934ba5f7958'; reference_v18 = 'fbab350b6cde7a40735d778986382807d6287048'; reference_v171 = '2ea64f9d27563ac410bacea79de6e2e2671b01c3'; fallback = 'cea7ba955f5c0d57ff76d63e53f97f34b1d3ab4c'; client_build = 5875; configuration = 'RelWithDebInfo'; architecture = 'x64'; playerbots = $true; source_tests = '4/4'; asan_tests = '4/4'; quest_tests = 'passed'; quest_asan_tests = 'passed'; pmo_tests = '5269 observations passed'; pmo_asan_tests = '5269 observations passed'; pmo_callsites = 47; v20_shared_tests = 'passed normal and ASan; expected V19 use-after-free independently reproduced'; v20_checkvalues_tests = '2560 observations passed normal and ASan'; v20_targets_tests = 'passed normal and ASan'; v20_pmo_report_tests = 'passed normal and ASan'; runtime_smoke = 'passed --version with packaged DLLs and system-only PATH'; openssl3_runtime = '3.0.14 / 9cff14fd97814baf8a9a07d8447960a64d616ada'; files = $hashes; runtime_prerequisites = @('Microsoft Visual C++ 2015-2022 x64 runtime', 'Microsoft Visual C++ 2008 x64 CRT for the bundled libmySQL.dll') } | ConvertTo-Json -Depth 4 | Set-Content bin/RelWithDebInfo/build-info.json
 
       - name: Upload cumulative validation build
         uses: actions/upload-artifact@v4
         with:
-          name: vmangos-v19-pmo-off-fast-path-windows-x64-relwithdebinfo
+          name: vmangos-v20-value-allocation-windows-x64-relwithdebinfo
           path: |
             bin/RelWithDebInfo/mangosd.exe
             bin/RelWithDebInfo/mangosd.pdb
@@ -202,6 +256,7 @@ jobs:
             bin/RelWithDebInfo/validation/*
             bin/RelWithDebInfo/README_V18.md
             bin/RelWithDebInfo/README_V19.md
+            bin/RelWithDebInfo/README_V20.md
             bin/RelWithDebInfo/OPTIMIZATION_TODO.md
             bin/RelWithDebInfo/build-info.json
           if-no-files-found: error

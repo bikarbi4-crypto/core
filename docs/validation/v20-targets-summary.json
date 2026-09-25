@@ -1,0 +1,915 @@
+{
+  "raw_rows": 1440,
+  "summaries": [
+    {
+      "fixture": "0_0",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 47.3488,
+      "v20_ns": 47.157300000000006,
+      "delta_ns": -0.19149999999999068,
+      "speedup": 1.0040608771070436,
+      "change_percent": -0.4044453080120136
+    },
+    {
+      "fixture": "0_0",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 72.42965000000001,
+      "v20_ns": 73.83494999999999,
+      "delta_ns": 1.4052999999999827,
+      "speedup": 0.9809670081716046,
+      "change_percent": 1.9402275173219463
+    },
+    {
+      "fixture": "0_0",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 46.93300000000001,
+      "v20_ns": 46.672799999999995,
+      "delta_ns": -0.26020000000001176,
+      "speedup": 1.0055749815738506,
+      "change_percent": -0.5544073466431154
+    },
+    {
+      "fixture": "0_0",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 72.53954999999999,
+      "v20_ns": 73.6893,
+      "delta_ns": 1.1497500000000116,
+      "speedup": 0.9843973276988652,
+      "change_percent": 1.584997425542367
+    },
+    {
+      "fixture": "0_1",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 46.7697,
+      "v20_ns": 46.956649999999996,
+      "delta_ns": 0.18694999999999595,
+      "speedup": 0.9960186682823413,
+      "change_percent": 0.39972460802613075
+    },
+    {
+      "fixture": "0_1",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 72.4716,
+      "v20_ns": 73.259,
+      "delta_ns": 0.7874000000000052,
+      "speedup": 0.9892518325393467,
+      "change_percent": 1.0864945716666963
+    },
+    {
+      "fixture": "0_1",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 46.9345,
+      "v20_ns": 47.304500000000004,
+      "delta_ns": 0.37000000000000455,
+      "speedup": 0.9921783339851388,
+      "change_percent": 0.7883326763894472
+    },
+    {
+      "fixture": "0_1",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 72.35565,
+      "v20_ns": 73.6046,
+      "delta_ns": 1.2489500000000078,
+      "speedup": 0.9830316311752254,
+      "change_percent": 1.7261264324209824
+    },
+    {
+      "fixture": "0_2",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 47.49985,
+      "v20_ns": 46.989450000000005,
+      "delta_ns": -0.5103999999999971,
+      "speedup": 1.0108620126432635,
+      "change_percent": -1.0745297090411832
+    },
+    {
+      "fixture": "0_2",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 72.58834999999999,
+      "v20_ns": 73.6183,
+      "delta_ns": 1.0299500000000137,
+      "speedup": 0.9860095927235482,
+      "change_percent": 1.4188915989962858
+    },
+    {
+      "fixture": "0_2",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 47.09015,
+      "v20_ns": 46.4508,
+      "delta_ns": -0.6393500000000003,
+      "speedup": 1.01376402559267,
+      "change_percent": -1.3577149361384544
+    },
+    {
+      "fixture": "0_2",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 71.98335,
+      "v20_ns": 73.23535000000001,
+      "delta_ns": 1.2520000000000095,
+      "speedup": 0.9829044307154945,
+      "change_percent": 1.7392910999557643
+    },
+    {
+      "fixture": "0_3",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 46.65375,
+      "v20_ns": 46.6042,
+      "delta_ns": -0.049550000000003536,
+      "speedup": 1.0010632088953357,
+      "change_percent": -0.10620796827693901
+    },
+    {
+      "fixture": "0_3",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 71.6919,
+      "v20_ns": 72.5044,
+      "delta_ns": 0.8125,
+      "speedup": 0.988793783549688,
+      "change_percent": 1.133321895500039
+    },
+    {
+      "fixture": "0_3",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 46.76285,
+      "v20_ns": 46.82005,
+      "delta_ns": 0.057200000000001694,
+      "speedup": 0.9987783011765259,
+      "change_percent": 0.12231931971640186
+    },
+    {
+      "fixture": "0_3",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 72.34955,
+      "v20_ns": 73.0034,
+      "delta_ns": 0.6538500000000056,
+      "speedup": 0.9910435678338269,
+      "change_percent": 0.9037374800534348
+    },
+    {
+      "fixture": "0_4",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 47.32055,
+      "v20_ns": 47.62265,
+      "delta_ns": 0.3021000000000029,
+      "speedup": 0.9936563798948609,
+      "change_percent": 0.6384118527785532
+    },
+    {
+      "fixture": "0_4",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 72.6929,
+      "v20_ns": 74.18975,
+      "delta_ns": 1.4968500000000091,
+      "speedup": 0.9798240322955664,
+      "change_percent": 2.05914195196506
+    },
+    {
+      "fixture": "0_4",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 48.0034,
+      "v20_ns": 46.9162,
+      "delta_ns": -1.0871999999999957,
+      "speedup": 1.0231732322737135,
+      "change_percent": -2.2648395738635085
+    },
+    {
+      "fixture": "0_4",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 72.56389999999999,
+      "v20_ns": 73.4436,
+      "delta_ns": 0.8797000000000139,
+      "speedup": 0.9880221013131163,
+      "change_percent": 1.2123108046838915
+    },
+    {
+      "fixture": "1_0",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 54.95225,
+      "v20_ns": 55.5176,
+      "delta_ns": 0.5653500000000022,
+      "speedup": 0.98981674279868,
+      "change_percent": 1.0288022783416562
+    },
+    {
+      "fixture": "1_0",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 102.96350000000001,
+      "v20_ns": 103.9265,
+      "delta_ns": 0.9629999999999939,
+      "speedup": 0.9907338359321252,
+      "change_percent": 0.935282891510103
+    },
+    {
+      "fixture": "1_0",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 102.765,
+      "v20_ns": 57.1045,
+      "delta_ns": -45.6605,
+      "speedup": 1.7995954784649195,
+      "change_percent": -44.431956405390935
+    },
+    {
+      "fixture": "1_0",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 151.4885,
+      "v20_ns": 105.8615,
+      "delta_ns": -45.62699999999998,
+      "speedup": 1.4310065510124075,
+      "change_percent": -30.119117952847894
+    },
+    {
+      "fixture": "1_1",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 104.7925,
+      "v20_ns": 53.952,
+      "delta_ns": -50.840500000000006,
+      "speedup": 1.942328365954923,
+      "change_percent": -48.51539947992462
+    },
+    {
+      "fixture": "1_1",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 146.9305,
+      "v20_ns": 102.8335,
+      "delta_ns": -44.096999999999994,
+      "speedup": 1.4288194022375975,
+      "change_percent": -30.012148600869114
+    },
+    {
+      "fixture": "1_1",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 105.008,
+      "v20_ns": 53.8254,
+      "delta_ns": -51.182599999999994,
+      "speedup": 1.9509005042229133,
+      "change_percent": -48.74161968611915
+    },
+    {
+      "fixture": "1_1",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 147.734,
+      "v20_ns": 103.3905,
+      "delta_ns": -44.343500000000006,
+      "speedup": 1.428893370280635,
+      "change_percent": -30.01577158947839
+    },
+    {
+      "fixture": "1_2",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 108.81649999999999,
+      "v20_ns": 56.0951,
+      "delta_ns": -52.72139999999999,
+      "speedup": 1.9398574920091056,
+      "change_percent": -48.44982148846911
+    },
+    {
+      "fixture": "1_2",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 153.50650000000002,
+      "v20_ns": 106.03049999999999,
+      "delta_ns": -47.47600000000003,
+      "speedup": 1.4477579564370633,
+      "change_percent": -30.927680586815555
+    },
+    {
+      "fixture": "1_2",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 108.92099999999999,
+      "v20_ns": 56.3911,
+      "delta_ns": -52.52989999999999,
+      "speedup": 1.931528202145374,
+      "change_percent": -48.22752269993848
+    },
+    {
+      "fixture": "1_2",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 155.02100000000002,
+      "v20_ns": 105.963,
+      "delta_ns": -49.05800000000002,
+      "speedup": 1.4629729245113863,
+      "change_percent": -31.64603505331537
+    },
+    {
+      "fixture": "1_3",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 58.21995,
+      "v20_ns": 57.5897,
+      "delta_ns": -0.6302499999999966,
+      "speedup": 1.0109437972415205,
+      "change_percent": -1.0825327057134126
+    },
+    {
+      "fixture": "1_3",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 98.55725000000001,
+      "v20_ns": 98.6885,
+      "delta_ns": 0.13124999999999432,
+      "speedup": 0.998670057808154,
+      "change_percent": 0.13317132935424247
+    },
+    {
+      "fixture": "1_3",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 58.105450000000005,
+      "v20_ns": 57.39365,
+      "delta_ns": -0.7118000000000038,
+      "speedup": 1.0124020688699884,
+      "change_percent": -1.225014176811301
+    },
+    {
+      "fixture": "1_3",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 98.88919999999999,
+      "v20_ns": 99.18975,
+      "delta_ns": 0.3005500000000154,
+      "speedup": 0.9969699490118685,
+      "change_percent": 0.30392601012043663
+    },
+    {
+      "fixture": "1_4",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 57.97425,
+      "v20_ns": 57.8972,
+      "delta_ns": -0.07704999999999984,
+      "speedup": 1.0013308070165743,
+      "change_percent": -0.1329038323048537
+    },
+    {
+      "fixture": "1_4",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 99.1745,
+      "v20_ns": 99.1821,
+      "delta_ns": 0.007600000000010709,
+      "speedup": 0.999923373269975,
+      "change_percent": 0.0076632602130644045
+    },
+    {
+      "fixture": "1_4",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 58.5098,
+      "v20_ns": 57.42115,
+      "delta_ns": -1.0886500000000012,
+      "speedup": 1.0189590420951165,
+      "change_percent": -1.8606284759134395
+    },
+    {
+      "fixture": "1_4",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 98.56415000000001,
+      "v20_ns": 99.61245,
+      "delta_ns": 1.0482999999999834,
+      "speedup": 0.9894762150715098,
+      "change_percent": 1.0635712883436677
+    },
+    {
+      "fixture": "8_0",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 114.309,
+      "v20_ns": 117.46449999999999,
+      "delta_ns": 3.1554999999999893,
+      "speedup": 0.9731365646642178,
+      "change_percent": 2.7605000481151887
+    },
+    {
+      "fixture": "8_0",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 425.6405,
+      "v20_ns": 429.129,
+      "delta_ns": 3.4885000000000446,
+      "speedup": 0.9918707428302445,
+      "change_percent": 0.819588361539858
+    },
+    {
+      "fixture": "8_0",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 183.9455,
+      "v20_ns": 135.411,
+      "delta_ns": -48.53450000000001,
+      "speedup": 1.3584236140343104,
+      "change_percent": -26.38526085171967
+    },
+    {
+      "fixture": "8_0",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 426.4315,
+      "v20_ns": 380.057,
+      "delta_ns": -46.37450000000001,
+      "speedup": 1.1220198549164995,
+      "change_percent": -10.875017441253753
+    },
+    {
+      "fixture": "8_1",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 483.528,
+      "v20_ns": 104.4195,
+      "delta_ns": -379.10850000000005,
+      "speedup": 4.6306293364745095,
+      "change_percent": -78.40466322529409
+    },
+    {
+      "fixture": "8_1",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 779.4675,
+      "v20_ns": 418.37199999999996,
+      "delta_ns": -361.0955,
+      "speedup": 1.8630967177535782,
+      "change_percent": -46.3259212218598
+    },
+    {
+      "fixture": "8_1",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 481.0625,
+      "v20_ns": 102.096,
+      "delta_ns": -378.9665,
+      "speedup": 4.711864323773703,
+      "change_percent": -78.77697804339353
+    },
+    {
+      "fixture": "8_1",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 782.193,
+      "v20_ns": 417.581,
+      "delta_ns": -364.61199999999997,
+      "speedup": 1.8731527535975054,
+      "change_percent": -46.61407095179834
+    },
+    {
+      "fixture": "8_2",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 494.9975,
+      "v20_ns": 118.4485,
+      "delta_ns": -376.549,
+      "speedup": 4.179010287171218,
+      "change_percent": -76.07088924691539
+    },
+    {
+      "fixture": "8_2",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 796.7835,
+      "v20_ns": 432.18399999999997,
+      "delta_ns": -364.59950000000003,
+      "speedup": 1.8436210040168077,
+      "change_percent": -45.75891694544379
+    },
+    {
+      "fixture": "8_2",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 494.85699999999997,
+      "v20_ns": 119.315,
+      "delta_ns": -375.542,
+      "speedup": 4.147483551942337,
+      "change_percent": -75.88899419428239
+    },
+    {
+      "fixture": "8_2",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 790.558,
+      "v20_ns": 429.642,
+      "delta_ns": -360.916,
+      "speedup": 1.8400389161208635,
+      "change_percent": -45.6533233488245
+    },
+    {
+      "fixture": "8_3",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 133.757,
+      "v20_ns": 133.66649999999998,
+      "delta_ns": -0.09050000000002001,
+      "speedup": 1.0006770582008209,
+      "change_percent": -0.06766001031722757
+    },
+    {
+      "fixture": "8_3",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 392.993,
+      "v20_ns": 394.1775,
+      "delta_ns": 1.184500000000014,
+      "speedup": 0.9969950085938442,
+      "change_percent": 0.30140485962855124
+    },
+    {
+      "fixture": "8_3",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 133.3695,
+      "v20_ns": 133.92849999999999,
+      "delta_ns": 0.5589999999999975,
+      "speedup": 0.9958261311072699,
+      "change_percent": 0.41913630927610246
+    },
+    {
+      "fixture": "8_3",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 392.2605,
+      "v20_ns": 393.698,
+      "delta_ns": 1.4375,
+      "speedup": 0.996348724148967,
+      "change_percent": 0.36646565228974914
+    },
+    {
+      "fixture": "8_4",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 262.15650000000005,
+      "v20_ns": 149.24,
+      "delta_ns": -112.91650000000004,
+      "speedup": 1.7566101581345486,
+      "change_percent": -43.07217253815947
+    },
+    {
+      "fixture": "8_4",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 525.958,
+      "v20_ns": 416.327,
+      "delta_ns": -109.63099999999997,
+      "speedup": 1.2633290658544845,
+      "change_percent": -20.84405979184649
+    },
+    {
+      "fixture": "8_4",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 249.6845,
+      "v20_ns": 136.4725,
+      "delta_ns": -113.21200000000002,
+      "speedup": 1.8295590686768397,
+      "change_percent": -45.3420216312987
+    },
+    {
+      "fixture": "8_4",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 514.923,
+      "v20_ns": 402.8075,
+      "delta_ns": -112.1155,
+      "speedup": 1.2783351849208369,
+      "change_percent": -21.773255418771353
+    },
+    {
+      "fixture": "64_0",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 666.2475,
+      "v20_ns": 679.6695,
+      "delta_ns": 13.422000000000025,
+      "speedup": 0.9802521666780692,
+      "change_percent": 2.0145666587867206
+    },
+    {
+      "fixture": "64_0",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 2147.325,
+      "v20_ns": 2164.505,
+      "delta_ns": 17.18000000000029,
+      "speedup": 0.9920628503976658,
+      "change_percent": 0.800065197396771
+    },
+    {
+      "fixture": "64_0",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 812.0115000000001,
+      "v20_ns": 750.6165000000001,
+      "delta_ns": -61.39499999999998,
+      "speedup": 1.0817927663460636,
+      "change_percent": -7.560853510079591
+    },
+    {
+      "fixture": "64_0",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 1763.975,
+      "v20_ns": 1719.605,
+      "delta_ns": -44.36999999999989,
+      "speedup": 1.0258024371876098,
+      "change_percent": -2.5153417707166947
+    },
+    {
+      "fixture": "64_1",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 3628.46,
+      "v20_ns": 555.777,
+      "delta_ns": -3072.683,
+      "speedup": 6.528625689800045,
+      "change_percent": -84.68284065416182
+    },
+    {
+      "fixture": "64_1",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 5220.37,
+      "v20_ns": 2086.7349999999997,
+      "delta_ns": -3133.635,
+      "speedup": 2.5016928359374817,
+      "change_percent": -60.02706704697177
+    },
+    {
+      "fixture": "64_1",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 3719.21,
+      "v20_ns": 610.6995,
+      "delta_ns": -3108.5105000000003,
+      "speedup": 6.09008194701322,
+      "change_percent": -83.5798597013882
+    },
+    {
+      "fixture": "64_1",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 5203.525,
+      "v20_ns": 2072.0,
+      "delta_ns": -3131.5249999999996,
+      "speedup": 2.5113537644787645,
+      "change_percent": -60.18083895051911
+    },
+    {
+      "fixture": "64_2",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 3777.51,
+      "v20_ns": 721.7685,
+      "delta_ns": -3055.7415,
+      "speedup": 5.233686424386767,
+      "change_percent": -80.8930088868064
+    },
+    {
+      "fixture": "64_2",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 5323.355,
+      "v20_ns": 2174.425,
+      "delta_ns": -3148.9299999999994,
+      "speedup": 2.44816675672879,
+      "change_percent": -59.15310927037554
+    },
+    {
+      "fixture": "64_2",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 3718.48,
+      "v20_ns": 710.7940000000001,
+      "delta_ns": -3007.6859999999997,
+      "speedup": 5.2314453976820285,
+      "change_percent": -80.88482390654247
+    },
+    {
+      "fixture": "64_2",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 5306.165,
+      "v20_ns": 2176.59,
+      "delta_ns": -3129.575,
+      "speedup": 2.437833951272403,
+      "change_percent": -58.97997894901496
+    },
+    {
+      "fixture": "64_3",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 779.7425000000001,
+      "v20_ns": 783.2275,
+      "delta_ns": 3.4849999999999,
+      "speedup": 0.9955504626688926,
+      "change_percent": 0.4469424200937988
+    },
+    {
+      "fixture": "64_3",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 1794.105,
+      "v20_ns": 1809.315,
+      "delta_ns": 15.210000000000036,
+      "speedup": 0.9915935036187729,
+      "change_percent": 0.8477764679324817
+    },
+    {
+      "fixture": "64_3",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 765.7529999999999,
+      "v20_ns": 773.883,
+      "delta_ns": 8.13000000000011,
+      "speedup": 0.9894945359957511,
+      "change_percent": 1.0617000521055964
+    },
+    {
+      "fixture": "64_3",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 1793.885,
+      "v20_ns": 1807.12,
+      "delta_ns": 13.2349999999999,
+      "speedup": 0.992676191951835,
+      "change_percent": 0.7377841946390129
+    },
+    {
+      "fixture": "64_4",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 1883.405,
+      "v20_ns": 957.269,
+      "delta_ns": -926.136,
+      "speedup": 1.9674772712790238,
+      "change_percent": -49.173491628194675
+    },
+    {
+      "fixture": "64_4",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 2996.4,
+      "v20_ns": 2037.125,
+      "delta_ns": -959.2750000000001,
+      "speedup": 1.470896484015463,
+      "change_percent": -32.01425043385397
+    },
+    {
+      "fixture": "64_4",
+      "get_one": true,
+      "mode": "warm",
+      "v19_ns": 811.108,
+      "v20_ns": 702.588,
+      "delta_ns": -108.51999999999998,
+      "speedup": 1.1544575199120963,
+      "change_percent": -13.379229399783998
+    },
+    {
+      "fixture": "64_4",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 1869.92,
+      "v20_ns": 1712.295,
+      "delta_ns": -157.625,
+      "speedup": 1.0920548153209582,
+      "change_percent": -8.429505005561733
+    }
+  ],
+  "allocation_pairs": 40,
+  "worst_negative": [
+    {
+      "fixture": "8_0",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 114.309,
+      "v20_ns": 117.46449999999999,
+      "delta_ns": 3.1554999999999893,
+      "speedup": 0.9731365646642178,
+      "change_percent": 2.7605000481151887
+    },
+    {
+      "fixture": "0_4",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 72.6929,
+      "v20_ns": 74.18975,
+      "delta_ns": 1.4968500000000091,
+      "speedup": 0.9798240322955664,
+      "change_percent": 2.05914195196506
+    },
+    {
+      "fixture": "64_0",
+      "get_one": false,
+      "mode": "warm",
+      "v19_ns": 666.2475,
+      "v20_ns": 679.6695,
+      "delta_ns": 13.422000000000025,
+      "speedup": 0.9802521666780692,
+      "change_percent": 2.0145666587867206
+    },
+    {
+      "fixture": "0_0",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 72.42965000000001,
+      "v20_ns": 73.83494999999999,
+      "delta_ns": 1.4052999999999827,
+      "speedup": 0.9809670081716046,
+      "change_percent": 1.9402275173219463
+    },
+    {
+      "fixture": "0_2",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 71.98335,
+      "v20_ns": 73.23535000000001,
+      "delta_ns": 1.2520000000000095,
+      "speedup": 0.9829044307154945,
+      "change_percent": 1.7392910999557643
+    },
+    {
+      "fixture": "0_1",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 72.35565,
+      "v20_ns": 73.6046,
+      "delta_ns": 1.2489500000000078,
+      "speedup": 0.9830316311752254,
+      "change_percent": 1.7261264324209824
+    },
+    {
+      "fixture": "0_0",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 72.53954999999999,
+      "v20_ns": 73.6893,
+      "delta_ns": 1.1497500000000116,
+      "speedup": 0.9843973276988652,
+      "change_percent": 1.584997425542367
+    },
+    {
+      "fixture": "0_2",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 72.58834999999999,
+      "v20_ns": 73.6183,
+      "delta_ns": 1.0299500000000137,
+      "speedup": 0.9860095927235482,
+      "change_percent": 1.4188915989962858
+    },
+    {
+      "fixture": "0_4",
+      "get_one": true,
+      "mode": "cold",
+      "v19_ns": 72.56389999999999,
+      "v20_ns": 73.4436,
+      "delta_ns": 0.8797000000000139,
+      "speedup": 0.9880221013131163,
+      "change_percent": 1.2123108046838915
+    },
+    {
+      "fixture": "0_3",
+      "get_one": false,
+      "mode": "cold",
+      "v19_ns": 71.6919,
+      "v20_ns": 72.5044,
+      "delta_ns": 0.8125,
+      "speedup": 0.988793783549688,
+      "change_percent": 1.133321895500039
+    }
+  ],
+  "notes": [
+    "First round discarded; medians of eight paired same-work rounds; all raw data retained.",
+    "Cold includes creation/destruction of input list; warm prebuilds each independent input outside timer.",
+    "World predicates are fixtures; actual production RemoveNonThreating/Calculate are extracted.",
+    "Benchmark executable has normal CRT allocation. Allocation counts use a separate executable.",
+    "Function has no inter-tick cache, expiration or PMO branch; surrounding Value policy unchanged."
+  ]
+}

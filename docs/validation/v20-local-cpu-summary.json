@@ -1,0 +1,349 @@
+{
+  "maximum_observed_percent": 51.46,
+  "limit_requested_percent": 80,
+  "cpu_placement": "wrapper0x55 (four logical CPUs); cumulative0x54; benchmarks pinone CPU; external applications not controlled",
+  "runs": [
+    {
+      "file": "checkvalues-cpu-asan-build-final.json",
+      "peak_whole_pc_percent": 15.51,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-asan-build.json",
+      "peak_whole_pc_percent": 26.98,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-asan-build2.json",
+      "peak_whole_pc_percent": 14.51,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-asan-configure.json",
+      "peak_whole_pc_percent": 31.77,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-asan-test-final.json",
+      "peak_whole_pc_percent": 15.77,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-asan-test.json",
+      "peak_whole_pc_percent": 29.6,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-asan-test2.json",
+      "peak_whole_pc_percent": 19.2,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-benchmark-final.json",
+      "peak_whole_pc_percent": 23.9,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-benchmark-uninstrumented.json",
+      "peak_whole_pc_percent": 15.5,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-benchmark.json",
+      "peak_whole_pc_percent": 28.71,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-build-final.json",
+      "peak_whole_pc_percent": 19.43,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-build-split.json",
+      "peak_whole_pc_percent": 19.53,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-build.json",
+      "peak_whole_pc_percent": 19.53,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-build2.json",
+      "peak_whole_pc_percent": 24.44,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-build3.json",
+      "peak_whole_pc_percent": 18.05,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-configure.json",
+      "peak_whole_pc_percent": 30.44,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-final-asan-build.json",
+      "peak_whole_pc_percent": 24.73,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-final-asan-contracts.json",
+      "peak_whole_pc_percent": 37.01,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-final-contracts.json",
+      "peak_whole_pc_percent": 13.18,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-test-final.json",
+      "peak_whole_pc_percent": 6.86,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-test.json",
+      "peak_whole_pc_percent": 15.46,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-test2.json",
+      "peak_whole_pc_percent": 13.48,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "checkvalues-cpu-test3.json",
+      "peak_whole_pc_percent": 7.18,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "cumulative-validation-cpu.json",
+      "peak_whole_pc_percent": 38.26,
+      "exit_code": 1,
+      "affinity": "0x55"
+    },
+    {
+      "file": "log-recheck-cpu.json",
+      "peak_whole_pc_percent": 7.84,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "pmo-asan-build-cpu.json",
+      "peak_whole_pc_percent": 29.79,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "pmo-asan-configure-cpu.json",
+      "peak_whole_pc_percent": 27.5,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "pmo-asan-test-cpu.json",
+      "peak_whole_pc_percent": 12.4,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "pmo-build-cpu.json",
+      "peak_whole_pc_percent": 21.92,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "pmo-configure-cpu.json",
+      "peak_whole_pc_percent": 25.34,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "pmo-test-cpu.json",
+      "peak_whole_pc_percent": 6.77,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "quest-chain-validation-cpu.json",
+      "peak_whole_pc_percent": 44.11,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "shared-asan-cpu.json",
+      "peak_whole_pc_percent": 14.55,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "shared-asan-final-cpu.json",
+      "peak_whole_pc_percent": 8.35,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "shared-benchmark-cpu.json",
+      "peak_whole_pc_percent": 16.88,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "shared-build-cpu.json",
+      "peak_whole_pc_percent": 20.02,
+      "exit_code": 1,
+      "affinity": "0x55"
+    },
+    {
+      "file": "shared-build2-cpu.json",
+      "peak_whole_pc_percent": 25.99,
+      "exit_code": 1,
+      "affinity": "0x55"
+    },
+    {
+      "file": "shared-build3-cpu.json",
+      "peak_whole_pc_percent": 29.57,
+      "exit_code": 1,
+      "affinity": "0x55"
+    },
+    {
+      "file": "shared-build4-cpu.json",
+      "peak_whole_pc_percent": 29.93,
+      "exit_code": 1,
+      "affinity": "0x55"
+    },
+    {
+      "file": "shared-build5-cpu.json",
+      "peak_whole_pc_percent": 24.11,
+      "exit_code": 1,
+      "affinity": "0x55"
+    },
+    {
+      "file": "shared-build6-cpu.json",
+      "peak_whole_pc_percent": 29.61,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "shared-candidate-build-cpu.json",
+      "peak_whole_pc_percent": 20.72,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "shared-candidate-repro-cpu.json",
+      "peak_whole_pc_percent": 5.96,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "shared-configure-cpu.json",
+      "peak_whole_pc_percent": 25.54,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "shared-contracts-build-cpu.json",
+      "peak_whole_pc_percent": 21.21,
+      "exit_code": 1,
+      "affinity": "0x55"
+    },
+    {
+      "file": "shared-contracts-build2-cpu.json",
+      "peak_whole_pc_percent": 20.08,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "shared-contracts-build3-cpu.json",
+      "peak_whole_pc_percent": 36.49,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "shared-contracts-final-build-cpu.json",
+      "peak_whole_pc_percent": 22.56,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "shared-normal-alloc-build-cpu.json",
+      "peak_whole_pc_percent": 27.97,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "shared-v19-repro-cpu.json",
+      "peak_whole_pc_percent": 7.21,
+      "exit_code": 1,
+      "affinity": "0x55"
+    },
+    {
+      "file": "targets-asan-build-cpu.json",
+      "peak_whole_pc_percent": 26.98,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "targets-asan-config-cpu.json",
+      "peak_whole_pc_percent": 27.33,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "targets-asan-test-cpu.json",
+      "peak_whole_pc_percent": 51.46,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "targets-benchmark-cpu.json",
+      "peak_whole_pc_percent": 33.3,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "targets-build-cpu.json",
+      "peak_whole_pc_percent": 17.45,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "targets-config-cpu.json",
+      "peak_whole_pc_percent": 12.16,
+      "exit_code": 0,
+      "affinity": "0x55"
+    },
+    {
+      "file": "targets-test-cpu.json",
+      "peak_whole_pc_percent": 8.85,
+      "exit_code": 0,
+      "affinity": "0x55"
+    }
+  ]
+}

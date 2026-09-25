@@ -1,0 +1,391 @@
+{
+  "baseline": "33faa8e3c091d73483b42dc07f8f2934ba5f7958",
+  "rounds": 9,
+  "excluded_warmup_rounds": [
+    0
+  ],
+  "clock": "actual steady_clock, real CRT allocations in normal build, no allocation hook",
+  "affinity_mask": 1,
+  "timing_rows": 198,
+  "allocation_rows": 22,
+  "calibrations": [
+    {
+      "kind": "lookup",
+      "pmo": false,
+      "probe": {
+        "ns_per_call": 23.9,
+        "checksum": 1000
+      },
+      "iterations": 100000
+    },
+    {
+      "kind": "lookup",
+      "pmo": true,
+      "probe": {
+        "ns_per_call": 18.1,
+        "checksum": 1000
+      },
+      "iterations": 100000
+    },
+    {
+      "kind": "long_lookup",
+      "pmo": false,
+      "probe": {
+        "ns_per_call": 23.1,
+        "checksum": 1000
+      },
+      "iterations": 100000
+    },
+    {
+      "kind": "long_lookup",
+      "pmo": true,
+      "probe": {
+        "ns_per_call": 24.5,
+        "checksum": 1000
+      },
+      "iterations": 100000
+    },
+    {
+      "kind": "unknown_lookup",
+      "pmo": false,
+      "probe": {
+        "ns_per_call": 21.5,
+        "checksum": 0
+      },
+      "iterations": 100000
+    },
+    {
+      "kind": "unknown_lookup",
+      "pmo": true,
+      "probe": {
+        "ns_per_call": 21.0,
+        "checksum": 0
+      },
+      "iterations": 100000
+    },
+    {
+      "kind": "warm_get",
+      "pmo": false,
+      "probe": {
+        "ns_per_call": 526.2,
+        "checksum": 3000
+      },
+      "iterations": 5702
+    },
+    {
+      "kind": "warm_get",
+      "pmo": true,
+      "probe": {
+        "ns_per_call": 454.0,
+        "checksum": 3000
+      },
+      "iterations": 6608
+    },
+    {
+      "kind": "cold_get",
+      "pmo": false,
+      "probe": {
+        "ns_per_call": 1231.9,
+        "checksum": 3000
+      },
+      "iterations": 2436
+    },
+    {
+      "kind": "cold_get",
+      "pmo": true,
+      "probe": {
+        "ns_per_call": 1156.1,
+        "checksum": 3000
+      },
+      "iterations": 2595
+    },
+    {
+      "kind": "reset_get",
+      "pmo": false,
+      "probe": {
+        "ns_per_call": 657.5,
+        "checksum": 3000
+      },
+      "iterations": 4563
+    },
+    {
+      "kind": "reset_get",
+      "pmo": true,
+      "probe": {
+        "ns_per_call": 1044.7,
+        "checksum": 3000
+      },
+      "iterations": 2872
+    }
+  ],
+  "cases": [
+    {
+      "kind": "lookup",
+      "pmo": false,
+      "baseline": {
+        "median_ns": 4741.469499999999,
+        "min_ns": 4722.099,
+        "max_ns": 4842.967,
+        "allocations_per_call": 67.0,
+        "bytes_per_call": 3880.0,
+        "ai_constructions_per_call": 1.0
+      },
+      "candidate": {
+        "median_ns": 16.171,
+        "min_ns": 13.954,
+        "max_ns": 17.161,
+        "allocations_per_call": 0.0,
+        "bytes_per_call": 0.0,
+        "ai_constructions_per_call": 0.0
+      },
+      "ratio_candidate_over_baseline": 0.003410546034304344
+    },
+    {
+      "kind": "lookup",
+      "pmo": true,
+      "baseline": {
+        "median_ns": 4732.1655,
+        "min_ns": 4702.462,
+        "max_ns": 4839.279,
+        "allocations_per_call": 67.0,
+        "bytes_per_call": 3880.0,
+        "ai_constructions_per_call": 1.0
+      },
+      "candidate": {
+        "median_ns": 16.7855,
+        "min_ns": 14.508,
+        "max_ns": 17.416,
+        "allocations_per_call": 0.0,
+        "bytes_per_call": 0.0,
+        "ai_constructions_per_call": 0.0
+      },
+      "ratio_candidate_over_baseline": 0.003547107555726865
+    },
+    {
+      "kind": "long_lookup",
+      "pmo": false,
+      "baseline": {
+        "median_ns": 4744.0935,
+        "min_ns": 4725.759,
+        "max_ns": 4791.924,
+        "allocations_per_call": 67.0,
+        "bytes_per_call": 3880.0,
+        "ai_constructions_per_call": 1.0
+      },
+      "candidate": {
+        "median_ns": 20.1725,
+        "min_ns": 18.413,
+        "max_ns": 23.547,
+        "allocations_per_call": 0.0,
+        "bytes_per_call": 0.0,
+        "ai_constructions_per_call": 0.0
+      },
+      "ratio_candidate_over_baseline": 0.004252129516418679
+    },
+    {
+      "kind": "long_lookup",
+      "pmo": true,
+      "baseline": {
+        "median_ns": 4779.3369999999995,
+        "min_ns": 4751.37,
+        "max_ns": 4882.412,
+        "allocations_per_call": 67.0,
+        "bytes_per_call": 3880.0,
+        "ai_constructions_per_call": 1.0
+      },
+      "candidate": {
+        "median_ns": 19.948999999999998,
+        "min_ns": 18.21,
+        "max_ns": 21.523,
+        "allocations_per_call": 0.0,
+        "bytes_per_call": 0.0,
+        "ai_constructions_per_call": 0.0
+      },
+      "ratio_candidate_over_baseline": 0.004174009909742711
+    },
+    {
+      "kind": "unknown_lookup",
+      "pmo": false,
+      "baseline": {
+        "median_ns": 4738.6145,
+        "min_ns": 4711.13,
+        "max_ns": 5040.693,
+        "allocations_per_call": 67.0,
+        "bytes_per_call": 3880.0,
+        "ai_constructions_per_call": 1.0
+      },
+      "candidate": {
+        "median_ns": 18.604,
+        "min_ns": 17.211,
+        "max_ns": 20.041,
+        "allocations_per_call": 0.0,
+        "bytes_per_call": 0.0,
+        "ai_constructions_per_call": 0.0
+      },
+      "ratio_candidate_over_baseline": 0.003926042095215806
+    },
+    {
+      "kind": "unknown_lookup",
+      "pmo": true,
+      "baseline": {
+        "median_ns": 4755.800499999999,
+        "min_ns": 4727.527,
+        "max_ns": 4881.611,
+        "allocations_per_call": 67.0,
+        "bytes_per_call": 3880.0,
+        "ai_constructions_per_call": 1.0
+      },
+      "candidate": {
+        "median_ns": 20.2205,
+        "min_ns": 17.954,
+        "max_ns": 23.759,
+        "allocations_per_call": 0.0,
+        "bytes_per_call": 0.0,
+        "ai_constructions_per_call": 0.0
+      },
+      "ratio_candidate_over_baseline": 0.004251755303865249
+    },
+    {
+      "kind": "warm_get",
+      "pmo": false,
+      "baseline": {
+        "median_ns": 5401.14871975,
+        "min_ns": 5349.84216065,
+        "max_ns": 5631.05927745,
+        "allocations_per_call": 73.0,
+        "bytes_per_call": 4040.0,
+        "ai_constructions_per_call": 1.0
+      },
+      "candidate": {
+        "median_ns": 483.32164152949997,
+        "min_ns": 431.234654507,
+        "max_ns": 522.904244125,
+        "allocations_per_call": 6.0,
+        "bytes_per_call": 160.0,
+        "ai_constructions_per_call": 0.0
+      },
+      "ratio_candidate_over_baseline": 0.08948497192128256
+    },
+    {
+      "kind": "warm_get",
+      "pmo": true,
+      "baseline": {
+        "median_ns": 5380.2285109,
+        "min_ns": 5318.73486683,
+        "max_ns": 5737.80266344,
+        "allocations_per_call": 73.0,
+        "bytes_per_call": 4040.0,
+        "ai_constructions_per_call": 1.0
+      },
+      "candidate": {
+        "median_ns": 477.610472155,
+        "min_ns": 457.157990315,
+        "max_ns": 490.723365617,
+        "allocations_per_call": 6.0,
+        "bytes_per_call": 160.0,
+        "ai_constructions_per_call": 0.0
+      },
+      "ratio_candidate_over_baseline": 0.088771410208208
+    },
+    {
+      "kind": "cold_get",
+      "pmo": false,
+      "baseline": {
+        "median_ns": 6346.44909688,
+        "min_ns": 6140.47619048,
+        "max_ns": 6443.59605911,
+        "allocations_per_call": 85.0,
+        "bytes_per_call": 4544.0,
+        "ai_constructions_per_call": 1.0
+      },
+      "candidate": {
+        "median_ns": 1081.7323481150001,
+        "min_ns": 952.750410509,
+        "max_ns": 1155.58292282,
+        "allocations_per_call": 18.0,
+        "bytes_per_call": 664.0,
+        "ai_constructions_per_call": 0.0
+      },
+      "ratio_candidate_over_baseline": 0.17044686431768505
+    },
+    {
+      "kind": "cold_get",
+      "pmo": true,
+      "candidate": {
+        "median_ns": 1228.74759152,
+        "min_ns": 1077.80346821,
+        "max_ns": 1325.62620424,
+        "allocations_per_call": 20.011,
+        "bytes_per_call": 752.968,
+        "ai_constructions_per_call": 0.0
+      }
+    },
+    {
+      "kind": "reset_get",
+      "pmo": false,
+      "baseline": {
+        "median_ns": 5538.88888889,
+        "min_ns": 5501.27109358,
+        "max_ns": 5770.06355468,
+        "allocations_per_call": 77.0,
+        "bytes_per_call": 4136.0,
+        "ai_constructions_per_call": 1.0
+      },
+      "candidate": {
+        "median_ns": 609.368836292,
+        "min_ns": 574.095989481,
+        "max_ns": 649.46307254,
+        "allocations_per_call": 10.0,
+        "bytes_per_call": 256.0,
+        "ai_constructions_per_call": 0.0
+      },
+      "ratio_candidate_over_baseline": 0.11001643985209428
+    },
+    {
+      "kind": "reset_get",
+      "pmo": true,
+      "candidate": {
+        "median_ns": 802.6462395545,
+        "min_ns": 772.493036212,
+        "max_ns": 826.323119777,
+        "allocations_per_call": 12.011,
+        "bytes_per_call": 344.968,
+        "ai_constructions_per_call": 0.0
+      }
+    }
+  ],
+  "skipped_undefined_baselines": [
+    {
+      "variant": "baseline",
+      "kind": "cold_get",
+      "pmo": true,
+      "reason": "ASan-confirmed dangling AI dereference on PMO Calculate; undefined baseline is not a timing comparator."
+    },
+    {
+      "variant": "baseline",
+      "kind": "reset_get",
+      "pmo": true,
+      "reason": "ASan-confirmed dangling AI dereference on PMO Calculate; undefined baseline is not a timing comparator."
+    }
+  ],
+  "negative_medians": [],
+  "boundaries": [
+    "Real AI layout and constructors/destructors, named factory/cache, Value policies and real PMO implementation.",
+    "World-dependent item-drop Calculate uses a deterministic three-item fixture; registry narrowed to two production registrations plus test factories.",
+    "Context and first owner AI construction occur before timer; cold_get recreates one cached value, not a whole context.",
+    "Warm shared/statics are primed before timing. Each measurement is a fresh process, paired counts and checksums match.",
+    "SingleCalculatedValue does not time-expire. reset_get forces its original Reset semantics.",
+    "No full-server throughput or PMO-ON undefined baseline parity claimed."
+  ],
+  "executable_sha256": {
+    "normal/baseline": "5ea86b3cdbfb2d832acc895e4a369e8a3e5ec6f0d1d3f7fb2e3fb9b9f3111e90",
+    "normal/candidate": "4ba0838a70823e8f7b94fff652c28a78a7eab679cfa89cd8fab34cbe113395d6",
+    "allocations/baseline": "99eb3cfa3e6c74fe8dbc9a3af6656519d7040f4018113cc4542b80fcdeef6d04",
+    "allocations/candidate": "9c28cf2485ee03fa9765b9521dbf377b21e295930a9fa95676f601a19af7e78f"
+  },
+  "source_provenance_sha256": "c6bac051037ecf1eae533fcec9ebbc00505f5e1267df0ae7add19e39f3006429",
+  "raw_sha256": {
+    "benchmark": "117681d6ee526f9e8e9f1571e135591921d6bb1d03f03a9712c66d270532cba8",
+    "allocations": "29b3b04ca8193c2e9b635a8a5bb5090d14bd40621117b4ef8aa50f15536909cf"
+  }
+}

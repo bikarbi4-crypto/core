@@ -1,0 +1,22 @@
+{
+  "baseline": "33faa8e3c091d73483b42dc07f8f2934ba5f7958",
+  "sources": {
+    "v19:src/game/PlayerBots/playerbot/PerformanceMonitor.h": "9c06d7495950420138e4d23f624e8edfaacc29d8478603723abc7a738c074a01",
+    "v19:src/game/PlayerBots/playerbot/PerformanceMonitor.cpp": "4b28c8200ae29ad0aafdf7ebed0d027201b7847e5b6bcae07272656f52e7ab0d",
+    "v20:src/game/PlayerBots/playerbot/PerformanceMonitor.h": "932fe23f25c0a8524aa17afef79c0fa2e894f3ed992a36fd9fd8c6ed98eb65c7",
+    "v20:src/game/PlayerBots/playerbot/PerformanceMonitor.cpp": "a27838672d718b7c47d0cfc7e88018b22e704a2152b977b3b93b0fc48da47bc9"
+  },
+  "fragment_sha256": {
+    "v19:0": "7dfbdc355bafc2122f07ebf7f4eb84f67117ecae4a45e199236438b1bcb4268f",
+    "v19:1": "6cc313d53a30c79bc75291540eddb588c816a8d8a83cc8686cee47abb767f84e",
+    "v19:2": "eefbca19500136923894ae65e37a0ff9e550f1d4b1800300089456967f6b1041",
+    "v19:3": "e64a43991420d26ea1fc89803c53589f278ebc99ee84934cbe2b25699ad04c80",
+    "v19:4": "50b7ed5f8dfe417d2654e1161988eff76d125a0d31df1c5a58b1e3a7bb03a7c0",
+    "v20:0": "7dfbdc355bafc2122f07ebf7f4eb84f67117ecae4a45e199236438b1bcb4268f",
+    "v20:1": "6cc313d53a30c79bc75291540eddb588c816a8d8a83cc8686cee47abb767f84e",
+    "v20:2": "eefbca19500136923894ae65e37a0ff9e550f1d4b1800300089456967f6b1041",
+    "v20:3": "acbb63de071579b6548bda4ff49b0327de3b15a8ca2e2d2cc1f7f6d9762ec454",
+    "v20:4": "50b7ed5f8dfe417d2654e1161988eff76d125a0d31df1c5a58b1e3a7bb03a7c0"
+  },
+  "max_only_delta": true
+}

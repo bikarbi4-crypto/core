@@ -1,0 +1,51 @@
+SECTION HEADER #82A
+.text$mn name
+       0 physical address
+       0 virtual address
+      7E size of raw data
+  2AA228 file pointer to raw data (002AA228 to 002AA2A5)
+  2AA2A6 file pointer to relocation table
+       0 file pointer to line numbers
+       5 number of relocations
+       0 number of line numbers
+60501020 flags
+         Code
+         COMDAT; sym= "public: virtual class ai::UntypedValue * __cdecl ai::SharedObjectContext::GetUntypedValue(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?GetUntypedValue@SharedObjectContext@ai@@UEAAPEAVUntypedValue@2@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+         16 byte align
+         Execute Read
+
+  0000000000000000: mov         qword ptr [rsp+10h],rbx
+  0000000000000005: mov         qword ptr [rsp+18h],rsi
+  000000000000000A: push        rdi
+  000000000000000B: sub         rsp,20h
+  000000000000000F: mov         rsi,rdx
+  0000000000000012: mov         rdi,rcx
+  0000000000000015: lea         rbx,[rcx+8]
+  0000000000000019: mov         qword ptr [rsp+30h],rbx
+  000000000000001E: mov         rcx,rbx
+  0000000000000021: call        _Mtx_lock
+  0000000000000026: test        eax,eax
+  0000000000000028: jne         0000000000000073
+  000000000000002A: cmp         dword ptr [rbx+4Ch],7FFFFFFFh
+  0000000000000031: je          0000000000000061
+  0000000000000033: lea         rcx,[rdi+68h]
+  0000000000000037: mov         r8,qword ptr [rdi+58h]
+  000000000000003B: mov         rdx,rsi
+  000000000000003E: call        ?GetObjectA@?$NamedObjectContextList@VUntypedValue@ai@@@ai@@QEAAPEAVUntypedValue@2@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVPlayerbotAI@@@Z
+  0000000000000043: mov         rdi,rax
+  0000000000000046: mov         rcx,rbx
+  0000000000000049: call        _Mtx_unlock
+  000000000000004E: mov         rax,rdi
+  0000000000000051: mov         rbx,qword ptr [rsp+38h]
+  0000000000000056: mov         rsi,qword ptr [rsp+40h]
+  000000000000005B: add         rsp,20h
+  000000000000005F: pop         rdi
+  0000000000000060: ret
+  0000000000000061: mov         dword ptr [rbx+4Ch],7FFFFFFEh
+  0000000000000068: mov         ecx,6
+  000000000000006D: call        ?_Throw_Cpp_error@std@@YAXH@Z
+  0000000000000072: int         3
+  0000000000000073: mov         ecx,5
+  0000000000000078: call        ?_Throw_Cpp_error@std@@YAXH@Z
+  000000000000007D: int         3
+

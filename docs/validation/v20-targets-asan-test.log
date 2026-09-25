@@ -1,0 +1,22 @@
+UpdateCTestConfiguration  from :C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v20/targets-asan-build/DartConfiguration.tcl
+Test project C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v20/targets-asan-build
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: targets_contracts
+
+1: Test command: C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v20\targets-asan-build\RelWithDebInfo\targets_audit.exe
+1: Working Directory: C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v20/targets-asan-build
+1: Environment variable modifications: 
+1:  PATH=path_list_prepend:C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64
+1: Test timeout computed to be: 180
+1: PASS 89360 paired observations; exact GUID/order/predicate traces; exception/reentry; Calculate wrapper; node identity
+1/1 Test #1: targets_contracts ................   Passed    8.67 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   8.70 sec
