@@ -62,25 +62,24 @@ void PossibleAttackTargetsValue::RemoveNonThreating(std::list<ObjectGuid>& targe
         }
         else if (!HasIgnoreCCRti(target, bot) && HasBreakableCC(target, bot))
         {
-            breakableCC.push_back(*tIter);
             std::list<ObjectGuid>::iterator tIter2 = tIter;
             ++tIter;
-            targets.erase(tIter2);
+            breakableCC.splice(breakableCC.end(), targets, tIter2);
         }
         else if (!HasIgnoreCCRti(target, bot) && HasUnBreakableCC(target, bot))
         {
-            unBreakableCC.push_back(*tIter);
             std::list<ObjectGuid>::iterator tIter2 = tIter;
             ++tIter;
-            targets.erase(tIter2);
+            unBreakableCC.splice(unBreakableCC.end(), targets, tIter2);
         }
         else
         {
             if (getOne)
             {
-                // If the target is valid return it straight away
-                std::list<ObjectGuid> result = { *tIter };
-                targets = result;
+                // Keep the selected node and discard the other local targets.
+                targets.erase(targets.begin(), tIter);
+                ++tIter;
+                targets.erase(tIter, targets.end());
                 break;
             }
             else
@@ -94,11 +93,11 @@ void PossibleAttackTargetsValue::RemoveNonThreating(std::list<ObjectGuid>& targe
     {
         if (!unBreakableCC.empty())
         {
-            targets = unBreakableCC;
+            targets.splice(targets.end(), unBreakableCC);
         }
         else if(!breakableCC.empty())
         {
-            targets = breakableCC;
+            targets.splice(targets.end(), breakableCC);
         }
     }
 }
