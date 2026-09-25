@@ -337,6 +337,7 @@ std::vector<std::string> Report()
         auto const& m = item.second;
         out.str(""); out << "map=" << m.map << " instance=" << m.instance << " age_ms=" << now-m.observedMs
             << " list_entries=" << m.entries << " real_priority=" << m.realByPriority << " real_IsBot=" << m.realByIsBot
+            << " missing_sessions=" << m.missingSessions
             << " local_A=" << m.localA << " current_ms=" << m.currentMs << " samples=" << m.samples << " dropped_zones=" << m.droppedZones
             << " source_at_snapshot=" << m.source << " wanted_if_local_enabled=" << m.wantedIfLocalEnabled;
         emit("map", out.str());

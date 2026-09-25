@@ -956,8 +956,11 @@ void Map::UpdatePlayers(bool updateBots)
         if (recordPresence)
         {
             bool const inWorld = plr && plr->IsInWorld();
-            bool const priorityReal = inWorld && (!plr->GetPlayerbotAI() || plr->GetPlayerbotAI()->IsRealPlayer());
-            presenceMap.Player(inWorld, priorityReal, plr && !plr->IsBot(), priorityReal ? plr->GetZoneId() : 0);
+            bool const hasSession = plr && plr->GetSession();
+            if (plr && !hasSession)
+                ++presenceMap.missingSessions;
+            bool const priorityReal = inWorld && (!plr->GetPlayerbotAI() || (hasSession && plr->GetPlayerbotAI()->IsRealPlayer()));
+            presenceMap.Player(inWorld, priorityReal, hasSession && !plr->IsBot(), priorityReal ? plr->GetZoneId() : 0);
         }
         if (!plr || !plr->IsInWorld())
             continue;

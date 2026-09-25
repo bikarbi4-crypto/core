@@ -92,6 +92,9 @@ GUIDs are used only inside bounded unique-observation sets.
 - `map` / `player_zone`: sampled inside the existing map-owner player loop,
   at most once per map per worker per 5 seconds; no extra map traversal.
   Both real-player definitions are reported separately. Map/zone is numeric.
+  A missing session is reported explicitly and never dereferenced for IsBot/
+  AI IsRealPlayer by the observer; treat such counts as incomplete. Botless
+  shared AI early/cache paths likewise never acquire a GUID for telemetry.
   `wanted_if_local_enabled` is a configured candidate target, not evidence
   that local scaling ran. `source_at_snapshot` describes that sampled map;
   `activity_sources` counts actual getActivityPercentage return paths.

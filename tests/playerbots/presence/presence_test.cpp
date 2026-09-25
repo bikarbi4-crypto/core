@@ -78,6 +78,18 @@ int main()
         assert(baseline::env.calls==candidate::env.calls);
     }
     assert(Has(Stop("sources"),"source0=1 source1=2 source2=1 source3=2 source4=1 source5=1 source6=1"));
+    // A botless shared AI can use the disabled-priorities early return or cached allow.
+    // The observer must not introduce a bot dereference on these previously safe paths.
+    Start(60,false,false);
+    baseline::Setup(1); candidate::Setup(1);
+    baseline::PlayerbotAI botlessBefore; candidate::PlayerbotAI botlessAfter;
+    botlessBefore.bot=nullptr; botlessAfter.bot=nullptr;
+    for(unsigned activity=1;activity<10;++activity)
+    {
+        assert(botlessBefore.AllowActivity(baseline::ActivityType(activity))==botlessAfter.AllowActivity(candidate::ActivityType(activity)));
+        assert(botlessBefore.AllowActivity(baseline::ActivityType(activity),true)==botlessAfter.AllowActivity(candidate::ActivityType(activity),true));
+    }
+    assert(Has(Stop("botless"),"unique_observed_bots=0 "));
     MapSample m;
     m.Player(true,true,true,12); m.Player(true,true,false,12); m.Player(false,false,true,99); m.Player(true,false,false,1);
     assert(m.entries==4 && m.realByPriority==2 && m.realByIsBot==2 && m.zoneCount==1 && m.zonePlayers[0]==2);

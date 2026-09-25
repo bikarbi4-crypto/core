@@ -41,7 +41,7 @@ struct MapSample
 {
     std::uint32_t map = 0, instance = 0, samples = 0;
     std::uint64_t observedMs = 0;
-    std::uint32_t entries = 0, realByPriority = 0, realByIsBot = 0;
+    std::uint32_t entries = 0, realByPriority = 0, realByIsBot = 0, missingSessions = 0;
     float currentMs = 0, localA = -1;
     unsigned source = 0, wantedIfLocalEnabled = 0;
     // Counts of in-world real players by the exact priority predicate; no names/GUIDs.

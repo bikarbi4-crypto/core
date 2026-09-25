@@ -6233,7 +6233,7 @@ bool PlayerbotAI::AllowActive(ActivityType activityType)
 {
     ActivePiorityType type = GetPriorityType();
     PresenceDiagnostics::DecisionProbe presence;
-    if (presence)
+    if (presence && bot)
         presence.Begin(bot->GetGUIDLow(), presenceState, unsigned(activityType), unsigned(type));
 
     if (sPlayerbotAIConfig.forceActiveWhenNearPlayer && type == ActivePiorityType::VISIBLE_FOR_PLAYER)
@@ -6324,7 +6324,7 @@ bool PlayerbotAI::AllowActivity(ActivityType activityType, bool checkNow)
 
     if (!checkNow && time(NULL) < (allowActiveCheckTimer[activityType] + 5))
     {
-        if (PresenceDiagnostics::Enabled() && activityType == ALL_ACTIVITY)
+        if (PresenceDiagnostics::Enabled() && activityType == ALL_ACTIVITY && bot)
             PresenceDiagnostics::Cache(bot->GetGUIDLow(), presenceState, true, false, allowActive[activityType], allowActiveCheckTimer[activityType]);
         return allowActive[activityType];
     }
@@ -6332,7 +6332,7 @@ bool PlayerbotAI::AllowActivity(ActivityType activityType, bool checkNow)
     bool allowed = AllowActive(activityType);
     allowActive[activityType] = allowed;
     allowActiveCheckTimer[activityType] = time(NULL);
-    if (PresenceDiagnostics::Enabled() && activityType == ALL_ACTIVITY)
+    if (PresenceDiagnostics::Enabled() && activityType == ALL_ACTIVITY && bot)
         PresenceDiagnostics::Cache(bot->GetGUIDLow(), presenceState, false, checkNow, allowed, allowActiveCheckTimer[activityType]);
     return allowed;
 }
