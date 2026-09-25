@@ -227,7 +227,10 @@ jobs:
           Copy-Item -LiteralPath build-v20-pmo-report/generated/source-audit.json -Destination bin/RelWithDebInfo/validation/v20-pmo-repo-wide-source-audit.json
           Copy-Item -LiteralPath build-v20-checkvalues/allocations.csv -Destination bin/RelWithDebInfo/validation/v20-checkvalues-allocations.csv
           Copy-Item -LiteralPath build-v20-targets/allocations.csv -Destination bin/RelWithDebInfo/validation/v20-targets-allocations.csv
-          Copy-Item -Path docs/validation/v20-* -Destination bin/RelWithDebInfo/validation
+          # Preserve local measurements separately from fresh CI evidence.
+          Get-ChildItem -Path docs/validation/v20-* -File | ForEach-Object {
+            Copy-Item -LiteralPath $_.FullName -Destination (Join-Path bin/RelWithDebInfo/validation ("local-" + $_.Name))
+          }
 
       - name: Check packaged DLL loading without a world or database
         shell: pwsh

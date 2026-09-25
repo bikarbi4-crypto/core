@@ -150,6 +150,8 @@ Raw personal/server logs are not published with the source evidence.
 Windows-only CI builds VS2022 x64 RelWithDebInfo mangosd, BUILD_PLAYERBOTS=1,
 SUPPORTED_CLIENT_BUILD=5875, with existing pinned dependencies. It reruns old/new
 contracts and packages EXE, PDB, build-info, runtime DLLs/licenses and evidence.
+Archived local V20 evidence is prefixed `local-`; freshly generated CI evidence
+keeps its original names so neither provenance nor allocation results are replaced.
 Final delivery verifies CI at exact HEAD and EXE/PDB identity and hashes. No
 automatic deployment, world startup or database connection is part of this task.
 V20's next gameplay comparison is against accepted V19. The 40-man raid test stays
