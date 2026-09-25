@@ -150,6 +150,8 @@ mutex or global atomic increment on every hot call. A bot-lifetime ID is
 allocated once per observed AI per run; enabling is an atomic read.
 
 OFF performs no diagnostic scans, allocations, snapshot copies or clock reads.
+The shard is created lazily: a separate MSVC cold-thread test rejects eager
+TLS map-sentinel allocations that a warmed-up hot-call test would miss.
 It still adds branches/atomic reads and is not promised to be instruction-free.
 ON pays bounded map sampling, thread-local bookkeeping, publication and log
 output costs. `publication_ns` excludes the last publication's cost (visible
@@ -175,3 +177,6 @@ reset scopes. Its non-PMO remainder comparison strips only the declared
 presence hooks after a separate whole-source V20 equivalence gate. Negative
 controls prove RNG, cache interval, PMO-guard and regulator-gain mutations are
 rejected. No PMO file or test case is skipped to accommodate instrumentation.
+The gate accepts only the unchanged CMake generator's exact Progression.h
+output for numeric build 5875, in addition to the tracked equivalent header.
+Other client/patch constants and committed header changes remain rejected.

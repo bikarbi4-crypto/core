@@ -73,9 +73,6 @@ jobs:
       - name: Configure VMaNGOS
         run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DBUILD_EXTRACTORS=0 -DENABLE_MAILSENDER=1 -DBUILD_WARNINGS_AS_ERROR=0 -DBUILD_PLAYERBOTS=1 -DSUPPORTED_CLIENT_BUILD=5875
 
-      - name: Build mangosd RelWithDebInfo
-        run: cmake --build build --config RelWithDebInfo --target mangosd --parallel 3
-
       - name: Build and run cumulative source tests
         shell: pwsh
         run: |
@@ -195,6 +192,11 @@ jobs:
             ctest --test-dir $dir -C RelWithDebInfo --output-on-failure -V
             if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           }
+
+      # Run source gates first, including the generated build-5875 header, so a
+      # diagnostic contract failure is reported before the long core compile.
+      - name: Build mangosd RelWithDebInfo
+        run: cmake --build build --config RelWithDebInfo --target mangosd --parallel 3
 
       - name: Stage application DLLs and validation evidence
         shell: pwsh

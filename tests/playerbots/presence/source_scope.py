@@ -20,6 +20,13 @@ def compact(text):
     # Preserve internal whitespace, including inside literals.
     return '\n'.join(line.strip() for line in text.splitlines() if line.strip())
 
+def verify_progression_header(tracked, template, current):
+    # Root CMake writes this tracked header in-place when configured with the
+    # required numeric client build. Permit that exact output, never a broad
+    # exclusion of gameplay/version constants.
+    assert template.count('@supported_build@')==1
+    assert current==tracked or current==template.replace('@supported_build@','5875'), 'Unexpected generated Progression.h'
+
 def normalize_presence(file,text):
     """Remove only the declared observer hooks, including in a PMO-erased remainder."""
     if file=='PlayerbotAI.h':
@@ -87,8 +94,21 @@ def verify_source_scope():
     path=PREFIX+'PlayerbotAIConfig.h'
     equal('Config declarations',old(path),current(path).replace('    std::vector<std::string> GetPresenceConfiguration() const;',''))
     expected={'src/game/Maps/Map.cpp','src/game/World.cpp'}|{PREFIX+p for p in ['PlayerbotAI.cpp','PlayerbotAI.h','PlayerbotAIConfig.cpp','PlayerbotAIConfig.h','RandomPlayerbotMgr.cpp','RandomPlayerbotMgr.h','PresenceDiagnostics.cpp','PresenceDiagnostics.h']}
-    changed=subprocess.check_output(['git','diff','--name-only',BASE,'--','src'],cwd=ROOT,text=True).splitlines()
-    assert set(changed)==expected,changed
+    generated='src/shared/Progression.h'; template='cmake/generators/Progression.h.in'
+    assert current(template)==old(template), 'Progression generator changed'
+    tracked=subprocess.check_output(['git','show','HEAD:'+generated],cwd=ROOT).decode('utf-8-sig').replace('\r\n','\n')
+    assert tracked==old(generated), 'Committed progression header changed'
+    verify_progression_header(tracked,old(template),current(generated))
+    canonical=old(template).replace('@supported_build@','5875')
+    verify_progression_header(tracked,old(template),canonical)
+    for mutation in [canonical.replace('SUPPORTED_CLIENT_BUILD 5875','SUPPORTED_CLIENT_BUILD 5874'),
+                     canonical.replace('MAX_CONTENT_PATCH 10','MAX_CONTENT_PATCH 9')]:
+        try: verify_progression_header(tracked,old(template),mutation)
+        except AssertionError: pass
+        else: raise AssertionError('Progression mutation was not rejected')
+    checks['generated build header']='Tracked V20 or exact unchanged CMake template with supported build 5875; client/patch mutations rejected'
+    changed=set(subprocess.check_output(['git','diff','--name-only',BASE,'--','src'],cwd=ROOT,text=True).splitlines())
+    assert changed-{generated}==expected,sorted(changed)
     for path in [PREFIX+'PresenceDiagnostics.cpp',PREFIX+'PresenceDiagnostics.h']:
         assert not re.search(r'\b(?:Map|Player)\s*\*',current(path)),path
     return {'baseline':BASE,'checks':checks,'restricted_src_diff':sorted(expected),
