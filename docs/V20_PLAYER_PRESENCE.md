@@ -136,6 +136,8 @@ Publication ages, registered/published thread counts and dropped observations
 are explicit. Latest unique states are deduplicated by GUID and scalar
 lifetime/revision; maps are deduplicated by latest observation timestamp.
 Thread/map transfer may briefly retain an older map snapshot, so use ages.
+Snapshots published after report-start while aggregation is in progress have
+age zero; unsigned subtraction must not turn a fresh snapshot into a huge age.
 Do not subtract cumulative counts across different epoch IDs.
 
 Limits per run: 64 registered threads, 16384 bot keys and 128 map keys per

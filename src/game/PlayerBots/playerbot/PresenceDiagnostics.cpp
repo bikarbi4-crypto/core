@@ -21,6 +21,9 @@ static std::uint64_t Ns()
 #endif
 }
 static std::uint64_t Ms() { return Ns() / 1000000; }
+// A worker may publish after Report captured its start time but before copying
+// that worker's snapshot. Such a snapshot is fresh, not an unsigned age wrap.
+static std::uint64_t Age(std::uint64_t now, std::uint64_t observed) { return now >= observed ? now - observed : 0; }
 static std::uint64_t Key(std::uint32_t map, std::uint32_t instance) { return (std::uint64_t(map) << 32) | instance; }
 std::atomic<std::uint64_t> activeEpoch{0};
 static std::atomic<std::uint64_t> lifetimeSequence{0}; // One increment per observed bot lifetime/run, never per hot call.
@@ -284,7 +287,7 @@ std::vector<std::string> Report()
     };
     std::ostringstream out;
     out << "published_threads=" << ready << " registered_threads=" << published.size() << " dropped_threads=" << droppedThreads
-        << " oldest_publication_age_ms=" << now-oldest << " unique_observed_bots=" << merged.bots.size()
+        << " oldest_publication_age_ms=" << Age(now, oldest) << " unique_observed_bots=" << merged.bots.size()
         << " map_snapshot_real_sum=" << mapRealSum
         << " dropped_bot_observations=" << c.droppedBotObservations << " dropped_map_observations=" << c.droppedMapObservations
         << " publications=" << publications << " publication_ns=" << publicationNs << " counts=cumulative_published_tail_may_be_missing";
@@ -325,7 +328,7 @@ std::vector<std::string> Report()
     emit("activity_sources", out.str());
     auto scaleLine = [&](ScaleSample const& s, bool global) {
         if (!s.observedMs) return;
-        out.str(""); out << "map=" << s.map << " instance=" << s.instance << " age_ms=" << now-s.observedMs
+        out.str(""); out << "map=" << s.map << " instance=" << s.instance << " age_ms=" << Age(now, s.observedMs)
             << " wanted_ms=" << s.wanted << " current_ms=" << s.current << " before_A=" << s.before
             << " after_A=" << s.after << " samples=" << s.samples;
         emit(global ? "global_scale" : "local_scale", out.str());
@@ -335,14 +338,14 @@ std::vector<std::string> Report()
     for (auto const& item : merged.maps)
     {
         auto const& m = item.second;
-        out.str(""); out << "map=" << m.map << " instance=" << m.instance << " age_ms=" << now-m.observedMs
+        out.str(""); out << "map=" << m.map << " instance=" << m.instance << " age_ms=" << Age(now, m.observedMs)
             << " list_entries=" << m.entries << " real_priority=" << m.realByPriority << " real_IsBot=" << m.realByIsBot
             << " missing_sessions=" << m.missingSessions
             << " local_A=" << m.localA << " current_ms=" << m.currentMs << " samples=" << m.samples << " dropped_zones=" << m.droppedZones
             << " source_at_snapshot=" << m.source << " wanted_if_local_enabled=" << m.wantedIfLocalEnabled;
         emit("map", out.str());
         for (unsigned i = 0; i < m.zoneCount; ++i)
-            emit("player_zone", "map=" + std::to_string(m.map) + " instance=" + std::to_string(m.instance) + " zone=" + std::to_string(m.zones[i]) + " real=" + std::to_string(m.zonePlayers[i]) + " age_ms=" + std::to_string(now-m.observedMs));
+            emit("player_zone", "map=" + std::to_string(m.map) + " instance=" + std::to_string(m.instance) + " zone=" + std::to_string(m.zones[i]) + " real=" + std::to_string(m.zonePlayers[i]) + " age_ms=" + std::to_string(Age(now, m.observedMs)));
     }
     emit("report_cost", "aggregation_ns=" + std::to_string(Ns()-reportStart));
     return lines;

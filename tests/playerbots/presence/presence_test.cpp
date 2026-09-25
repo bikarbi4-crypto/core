@@ -2,7 +2,22 @@
 #include <fstream>
 
 static std::atomic<std::uint64_t> fakeNs{100000000000ULL}, clockCalls{0};
-namespace PresenceDiagnostics { std::uint64_t TestClockNs() { ++clockCalls; return fakeNs.load(); } }
+static std::atomic<unsigned> reportInterleave{0};
+static thread_local bool pauseNextClock = false;
+namespace PresenceDiagnostics {
+std::uint64_t TestClockNs()
+{
+    ++clockCalls;
+    auto const captured = fakeNs.load();
+    if (pauseNextClock)
+    {
+        pauseNextClock = false;
+        reportInterleave.store(1);
+        while (reportInterleave.load() != 2) std::this_thread::yield();
+    }
+    return captured;
+}
+}
 static thread_local std::uint64_t allocations = 0;
 void* operator new(std::size_t n) { ++allocations; if (auto* p=std::malloc(n ? n : 1)) return p; throw std::bad_alloc(); }
 void operator delete(void* p) noexcept { std::free(p); }
@@ -154,6 +169,29 @@ int main()
     lines=Stop("thread_cap");
     // Stop's calling thread also attempts registration after all worker slots filled.
     assert(Has(lines,"registered_threads=64 dropped_threads=3 "));
+    // Report's timestamp can precede a snapshot published while it is merging.
+    // Preserve monotonic fake time while deterministically forcing this order.
+    Stop("before_interleave");
+    Start(60,false,false);
+    reportInterleave.store(0);
+    std::thread duringReport([] {
+        while (reportInterleave.load() != 1) std::this_thread::yield();
+        fakeNs.fetch_add(5000000000ULL);
+        MapSample sample;
+        assert(BeginMap(sample,0,777));
+        sample.Player(true,true,true,12);
+        Scale({0,777,40,10,0,35,80,85},false);
+        EndMap(sample);
+        reportInterleave.store(2);
+    });
+    pauseNextClock = true;
+    lines=Report();
+    duringReport.join();
+    assert(Has(lines,"local_scale map=0 instance=777 age_ms=0 "));
+    assert(Has(lines,"map map=0 instance=777 age_ms=0 "));
+    assert(Has(lines,"player_zone map=0 instance=777 zone=12 real=1 age_ms=0"));
+    evidence.insert(evidence.end(),lines.begin(),lines.end());
+    Stop("interleave");
     std::ofstream output("collector-evidence.log");
     for(auto const& line:evidence) output<<line<<'\n';
     std::cout<<"PASS "<<cases<<" actual-body cache/decision parity observations in OFF/ON/timing; identical RNG, calls, cache state.\n"
