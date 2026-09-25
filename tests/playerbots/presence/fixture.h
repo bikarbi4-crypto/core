@@ -8,6 +8,7 @@ struct Env
     bool visible=false, guild=false, order=false, combat=false, nearby=false, freeAlt=false, travel=false, queue=false;
     bool players=false, friendFound=false, realGuild=false, inWorld=true, mapExists=true;
     bool forceVisible=false, limitCombat=false, guildOrderAlways=true;
+    bool continent=true; unsigned instance=5, samples=20; float localA=65;
     float activity=90; unsigned alone=100, rng=27, fixed=17;
     unsigned mapCase=0; std::time_t now=100;
     bool tracing=true; std::vector<std::string> calls;
@@ -44,6 +45,10 @@ struct Map
     using PlayerList=std::vector<GroupReference>;
     PlayerList list;
     PlayerList const& GetPlayers() { Call("map-list"); return list; }
+    bool IsContinent() { Call("continent"); return env.continent; }
+    unsigned GetInstanceId() { Call("instance"); return env.instance; }
+    unsigned GetAverageUpdateTimeSamples10s() { Call("samples"); return env.samples; }
+    float GetBotActivityPercentage() { Call("local-A"); return env.localA; }
 };
 inline Group group;
 inline Map map;
@@ -71,19 +76,21 @@ struct Config
 {
     bool disableActivityPriorities=false, enableMinimalMove=true, guildOrderAlwaysActive=true, forceActiveWhenNearPlayer=false, limitCombatActivity=false;
     unsigned botActiveAlone=100; float reactDistance=5;
+    bool continentInstancedActivityScaling=false;
     bool IsFreeAltBot(Player*) { Call("free-alt"); return env.freeAlt; }
 };
 inline Config sPlayerbotAIConfig;
 struct Facade { bool IsInCombat(Player*) { Call("combat"); return env.combat; } };
 inline Facade sServerFacade;
 using PlayerBotMap=std::map<unsigned,Player*>;
-struct Manager
+struct RandomPlayerbotMgr
 {
     bool HasPlayers() { Call("has-players"); return env.players; }
     PlayerBotMap GetPlayersSnapshot() { Call("snapshot"); return {{3,&human}}; }
-    float getActivityPercentage(Player*) { Call("activity"); return env.activity; }
+    float getActivityPercentage() { Call("activity"); return env.activity; }
+    float getActivityPercentage(Player*);
 };
-inline Manager sRandomPlayerbotMgr;
+inline RandomPlayerbotMgr sRandomPlayerbotMgr;
 struct Social { bool HasFriend(unsigned, unsigned) { Call("friend"); return env.friendFound; } };
 inline Social sSocialMgr;
 enum class BotState { BOT_STATE_NON_COMBAT };

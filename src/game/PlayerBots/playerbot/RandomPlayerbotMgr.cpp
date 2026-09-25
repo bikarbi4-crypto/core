@@ -5135,7 +5135,7 @@ void RandomPlayerbotMgr::UpdatePresenceDiagnostics()
     auto lines = PresenceDiagnostics::Poll(sPlayerbotAIConfig.perfMonEnabled);
     if (lines.empty())
         return;
-    sLog.Out(LOG_BASIC, LOG_LVL_MINIMAL, "[PRESENCE] world real_registry=%u sessions=%u diff10=%u diff60=%u global_A=%.3f",
+    sLog.Out(LOG_BASIC, LOG_LVL_MINIMAL, "[PRESENCE] world policy_registry_entries=%u sessions=%u diff10=%u diff60=%u global_A=%.3f",
         GetPlayersCount(), sWorld.GetActiveSessionCount(), sWorld.GetCurrentDiff(), sWorld.GetAverageDiff(), getActivityPercentage());
     for (auto const& line : sPlayerbotAIConfig.GetPresenceConfiguration())
         sLog.Out(LOG_BASIC, LOG_LVL_MINIMAL, "%s", line.c_str());

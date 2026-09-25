@@ -16,13 +16,19 @@ and existing DLL/configuration files for manual rollback.
 
 ## What the source establishes
 
-For background bots, a real player in the global registry replaces the
+For background bots, a nonempty policy registry replaces the
 `IN_EMPTY_SERVER` bracket {50,100} with friend/guild or map/zone checks.
 `IN_ACTIVE_AREA` remains {50,100}; `IN_ACTIVE_MAP` is {70,100};
 `IN_INACTIVE_MAP` is {80,100}. This can reduce allowed activity at identical
 global A and identical diff targets. It does not predict whole-world active
 counts: other priorities, fixed-number discretization, cache and workload
 still matter. The reported active counter is not CPU utilization.
+
+HasPlayers() tests the manager registry, which can also contain non-random
+bots through OnBotLoginRegistration/MovePlayerBot. Its size is not a strict
+human-player count. The map observer uses the actual priority predicate and
+reports a separate real-player count. No extra human filter is inserted into
+the existing policy; doing that would change behavior.
 
 The nonempty-server path copies GetPlayersSnapshot, checks friends, and may
 scan the full map player list, including bots. Its real-world cost is not
@@ -74,9 +80,12 @@ The generic GetValue/SetValue interface does not expose these 15 fields.
 account IDs, character GUIDs, chat, addresses or credentials are printed.
 GUIDs are used only inside bounded unique-observation sets.
 
-- `world`: real-player registry size, active Sessions, measured diff10/diff60,
+- `world`: policy registry entry count, active Sessions, measured diff10/diff60,
   current global A. Registry size and in-world map real count are different
   populations; do not equate them during login/logout.
+  `map_snapshot_real_sum` sums published per-map real counts; sample times
+  differ and transfers can temporarily duplicate a player. It is not an
+  instantaneous deduplicated world population. Use a stationary stable phase.
 - `global_scale` / `local_scale`: last actual regulator update before/after A,
   wanted/current milliseconds, sample count and age. No regulator is called
   for diagnostics. No local_scale record means none was observed this run.
@@ -107,6 +116,8 @@ GUIDs are used only inside bounded unique-observation sets.
   allow/deny call counts. Last ordinary refresh Unix min/max is taken from
   the latest unique observations; unknown is explicit. Initial cache timer
   initialization and checkNow=true are not called ordinary refreshes.
+  These count AllowActivity calls; direct IsActivityAllowedCached getters in
+  Map update scheduling are not included.
 - `cost`: only the GetPriorityType snapshot/friend/map-scan path, not every
   GetPlayersSnapshot user in the repository. Optional priority nanoseconds
   include in-function instrumentation; empty clock pair cost is measured
@@ -142,8 +153,8 @@ performance gain or a quantitative explanation of the user's active drop.
 ## Validation
 
 `tests/playerbots/presence` compiles exact V20/current GetPriorityType,
-GetPriorityBracket, AllowActive and AllowActivity bodies against identical
-fixtures. Cases cover priority exits, multiple objectives of activity policy,
+GetPriorityBracket, AllowActive, AllowActivity and getActivityPercentage bodies
+against identical fixtures. Cases cover priority exits, activity types,
 empty/real/bot/selfbot/null/out-of-world map entries, first/last matching zone,
 threshold boundaries, botActiveAlone, force-visible/combat flags, timer/cache
 and forced refresh. OFF/ON/timing compare results, RNG, ordered external calls

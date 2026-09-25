@@ -276,6 +276,8 @@ std::vector<std::string> Report()
         if (s.global.observedMs > merged.global.observedMs) merged.global = s.global;
     }
     auto const& c = merged.counts;
+    unsigned mapRealSum = 0;
+    for (auto const& item : merged.maps) mapRealSum += item.second.realByPriority;
     std::vector<std::string> lines;
     auto emit = [&](std::string const& kind, std::string const& values) {
         lines.push_back("[PRESENCE] epoch=" + std::to_string(epoch) + " elapsed_ms=" + std::to_string(elapsed) + " " + kind + " " + values);
@@ -283,6 +285,7 @@ std::vector<std::string> Report()
     std::ostringstream out;
     out << "published_threads=" << ready << " registered_threads=" << published.size() << " dropped_threads=" << droppedThreads
         << " oldest_publication_age_ms=" << now-oldest << " unique_observed_bots=" << merged.bots.size()
+        << " map_snapshot_real_sum=" << mapRealSum
         << " dropped_bot_observations=" << c.droppedBotObservations << " dropped_map_observations=" << c.droppedMapObservations
         << " publications=" << publications << " publication_ns=" << publicationNs << " counts=cumulative_published_tail_may_be_missing";
     emit("coverage", out.str());

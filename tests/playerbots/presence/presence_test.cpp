@@ -62,6 +62,22 @@ int main()
         if(mode) { auto lines=Stop("test"); evidence.insert(evidence.end(),lines.begin(),lines.end()); }
     }
     // Map-player definitions stay distinct, including selfbot/out-of-world/GM-like ordinary players.
+    Start(60,false,false);
+    for(unsigned scenario=0;scenario<9;++scenario)
+    {
+        baseline::Setup(0); candidate::Setup(0);
+        baseline::sPlayerbotAIConfig.continentInstancedActivityScaling=candidate::sPlayerbotAIConfig.continentInstancedActivityScaling=scenario!=0;
+        baseline::env.inWorld=candidate::env.inWorld=scenario!=2;
+        baseline::env.mapExists=candidate::env.mapExists=scenario!=3;
+        baseline::env.continent=candidate::env.continent=scenario!=4;
+        baseline::env.instance=candidate::env.instance=scenario==5 ? 0 : 5;
+        baseline::env.samples=candidate::env.samples=scenario==6 ? 0 : 20;
+        baseline::env.localA=candidate::env.localA=scenario==7 ? -1.f : 65.f;
+        assert(baseline::sRandomPlayerbotMgr.getActivityPercentage(scenario==1 ? nullptr : &baseline::bot)==
+            candidate::sRandomPlayerbotMgr.getActivityPercentage(scenario==1 ? nullptr : &candidate::bot));
+        assert(baseline::env.calls==candidate::env.calls);
+    }
+    assert(Has(Stop("sources"),"source0=1 source1=2 source2=1 source3=2 source4=1 source5=1 source6=1"));
     MapSample m;
     m.Player(true,true,true,12); m.Player(true,true,false,12); m.Player(false,false,true,99); m.Player(true,false,false,1);
     assert(m.entries==4 && m.realByPriority==2 && m.realByIsBot==2 && m.zoneCount==1 && m.zonePlayers[0]==2);

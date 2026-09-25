@@ -5,6 +5,7 @@ ROOT=Path(__file__).resolve().parents[3]
 BASE='169cb7712c8b704a3fe274cbf42a0cbb53fcb90a'
 AI='src/game/PlayerBots/playerbot/PlayerbotAI.cpp'
 HEADER='src/game/PlayerBots/playerbot/PlayerbotAI.h'
+MGR='src/game/PlayerBots/playerbot/RandomPlayerbotMgr.cpp'
 SIGS=['ActivePiorityType PlayerbotAI::GetPriorityType()', 'std::pair<uint32, uint32> PlayerbotAI::GetPriorityBracket(',
       'bool PlayerbotAI::AllowActive(', 'bool PlayerbotAI::AllowActivity(']
 def extract(text, sig):
@@ -19,8 +20,14 @@ assert extract(baseline,SIGS[1])==extract(current,SIGS[1]), 'Priority brackets c
 evidence={'baseline':BASE,'variants':{},'checks':{}}
 for name, text in [('baseline',baseline),('candidate',current)]:
     bodies='\n\n'.join('__declspec(noinline) '+extract(text,s) for s in SIGS)
+    mgr=old(MGR) if name=='baseline' else (ROOT/MGR).read_text(encoding='utf-8-sig')
+    selector=extract(mgr,'float RandomPlayerbotMgr::getActivityPercentage(Player* bot)')
+    bodies+='\n\n__declspec(noinline) '+selector
     (out/(name+'.inc')).write_text(bodies,encoding='utf-8')
     evidence['variants'][name]={'source_sha256':hashlib.sha256(text.encode()).hexdigest(),'bodies_sha256':hashlib.sha256(bodies.encode()).hexdigest()}
+old_selector=extract(old(MGR),'float RandomPlayerbotMgr::getActivityPercentage(Player* bot)')
+new_selector=extract((ROOT/MGR).read_text(encoding='utf-8-sig'),'float RandomPlayerbotMgr::getActivityPercentage(Player* bot)')
+assert re.sub(r'PresenceDiagnostics::ActivityValue\((getActivityPercentage\(\)|localActivity), [0-6]\)',r'\1',new_selector)==old_selector
 header=(ROOT/HEADER).read_text(encoding='utf-8-sig')
 enums='\n'.join(extract(header,s)+';' for s in ['enum class ActivePiorityType', 'enum ActivityType'])
 assert enums=='\n'.join(extract(old(HEADER),s)+';' for s in ['enum class ActivePiorityType', 'enum ActivityType'])
