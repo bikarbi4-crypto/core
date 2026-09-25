@@ -8,6 +8,8 @@
 #include "LootValues.h"
 #include "MountValues.h"
 #include "playerbot/PlayerbotAI.h"
+#include <memory>
+#include <mutex>
 
 namespace ai
 {
@@ -49,15 +51,23 @@ namespace ai
     class SharedObjectContext
     {
     public:
-        SharedObjectContext() { valueContexts.Add(new SharedValueContext()); };
+        // Shared values retain AiObject::ai and chat. Their botless context must
+        // outlive them; a temporary AI leaves dangling pointers even on cache hits.
+        SharedObjectContext() : valueAI(new PlayerbotAI()), sharedValues(new SharedValueContext())
+        {
+            valueContexts.Add(sharedValues.get());
+        }
+
+        virtual ~SharedObjectContext() = default;
 
     public:
         virtual UntypedValue* GetUntypedValue(const std::string& name)
         {
-            PlayerbotAI* ai = new PlayerbotAI();
-            UntypedValue* value = valueContexts.GetObject(name, ai);
-            delete ai;
-            return value;
+            // Serialize factory/cache mutations, including negative entries.
+            // Recursive factory lookups keep the same owned, botless context.
+            // Value Get/Set/Reset remain governed by their existing policies.
+            std::lock_guard<std::recursive_mutex> guard(valueMutex);
+            return valueContexts.GetObject(name, valueAI.get());
         }
 
         template<class T>
@@ -78,6 +88,13 @@ namespace ai
             std::ostringstream out; out << param;
             return GetValue<T>(name, out.str());
         }
+    private:
+        std::recursive_mutex valueMutex;
+        // Declaration order is intentional: the borrowed list dies first,
+        // then its explicitly owned shared values, and only then their AI/chat.
+        // This AI is never attached to a Player or used to run a game update.
+        std::unique_ptr<PlayerbotAI> valueAI;
+        std::unique_ptr<SharedValueContext> sharedValues;
     protected:
         NamedObjectContextList<UntypedValue> valueContexts;
     };
