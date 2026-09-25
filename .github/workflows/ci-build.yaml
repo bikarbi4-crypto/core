@@ -1,10 +1,10 @@
-name: V20 Value Allocation Windows Validation
+name: V20 Player Presence Diagnostic Windows Validation
 
 on:
   push:
-    branches: [vmangos-v20-value-allocation]
+    branches: [vmangos-v20-player-presence-diagnostics]
   pull_request:
-    branches: [vmangos-v20-value-allocation]
+    branches: [vmangos-v20-player-presence-diagnostics]
   workflow_dispatch:
 
 permissions:
@@ -20,7 +20,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Prepare pinned runtime build tools and legacy CRT
+      - name: Prepare pinned runtime build tools
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
@@ -30,12 +30,6 @@ jobs:
           $nasmRoot = Join-Path $env:RUNNER_TEMP 'vmangos-nasm'
           Expand-Archive -LiteralPath $nasmZip -DestinationPath $nasmRoot
           Join-Path $nasmRoot 'nasm-2.16.03' | Out-File $env:GITHUB_PATH -Append
-          # Install only on this disposable CI host; the artifact states this prerequisite.
-          $legacyCrt = Join-Path $env:RUNNER_TEMP 'vmangos-vcredist2008-x64.exe'
-          Invoke-WebRequest 'https://download.microsoft.com/download/5/d/8/5d8c65cb-c849-4025-8e95-c3966cafd8ae/vcredist_x64.exe' -OutFile $legacyCrt
-          if ((Get-FileHash $legacyCrt -Algorithm SHA256).Hash -ne 'C5E273A4A16AB4D5471E91C7477719A2F45DDADB76C7F98A38FA5074A6838654') { throw 'VC2008 runtime hash mismatch' }
-          $install = Start-Process -FilePath $legacyCrt -ArgumentList '/q','/norestart' -Wait -PassThru -WindowStyle Hidden
-          if ($install.ExitCode -notin @(0, 3010, 1638)) { throw "VC2008 runtime installation failed: $($install.ExitCode)" }
 
       - name: Build matching OpenSSL 3 runtime
         shell: cmd
@@ -189,6 +183,19 @@ jobs:
             }
           }
 
+      - name: Check presence observation parity, bounds and thread aggregation
+        shell: pwsh
+        run: |
+          foreach ($asan in @($false, $true)) {
+            $dir = 'build-presence' + $(if ($asan) { '-asan' } else { '' })
+            cmake -S tests/playerbots/presence -B $dir -G "Visual Studio 17 2022" -A x64 "-DPRESENCE_ASAN=$asan"
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            cmake --build $dir --config RelWithDebInfo --parallel 2
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            ctest --test-dir $dir -C RelWithDebInfo --output-on-failure -V
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+
       - name: Stage application DLLs and validation evidence
         shell: pwsh
         run: |
@@ -205,6 +212,11 @@ jobs:
           Copy-Item -LiteralPath docs/V18_QUEST_HOT_PATH.md -Destination bin/RelWithDebInfo/README_V18.md
           Copy-Item -LiteralPath docs/V19_PMO_OFF_FAST_PATH.md -Destination bin/RelWithDebInfo/README_V19.md
           Copy-Item -LiteralPath docs/V20_VALUE_ALLOCATION.md -Destination bin/RelWithDebInfo/README_V20.md
+          Copy-Item -LiteralPath docs/V20_PLAYER_PRESENCE.md -Destination bin/RelWithDebInfo/README_PRESENCE.md
+          Copy-Item -LiteralPath build-presence/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/presence-tests.log
+          Copy-Item -LiteralPath build-presence-asan/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/presence-tests-asan.log
+          Copy-Item -LiteralPath build-presence/generated/provenance.json -Destination bin/RelWithDebInfo/validation/presence-source-provenance.json
+          Copy-Item -LiteralPath build-presence/collector-evidence.log -Destination bin/RelWithDebInfo/validation/presence-collector.log
           Copy-Item -LiteralPath build-pmo-audit/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/pmo-tests.log
           Copy-Item -LiteralPath build-pmo-asan/Testing/Temporary/LastTest.log -Destination bin/RelWithDebInfo/validation/pmo-tests-asan.log
           Copy-Item -LiteralPath build-pmo-audit/generated/provenance.json -Destination bin/RelWithDebInfo/validation/pmo-source-provenance.json
@@ -232,11 +244,8 @@ jobs:
             Copy-Item -LiteralPath $_.FullName -Destination (Join-Path bin/RelWithDebInfo/validation ("local-" + $_.Name))
           }
 
-      - name: Check packaged DLL loading without a world or database
-        shell: pwsh
-        run: |
-          python tests/playerbots/check_windows_runtime.py bin/RelWithDebInfo (git rev-parse HEAD)
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      # IMPORTANT RUNTIME BOUNDARY: never execute mangosd, even --version.
+      # Only standalone unit/benchmark executables above are permitted.
 
       - name: Record build identity
         shell: pwsh
@@ -245,12 +254,12 @@ jobs:
           $artifactRoot = (Resolve-Path bin/RelWithDebInfo).Path
           $files = Get-ChildItem $artifactRoot -Recurse -File | Where-Object { $_.Name -in @('mangosd.exe', 'mangosd.pdb') -or $_.Extension -eq '.dll' }
           $hashes = @($files | ForEach-Object { @{ path = [IO.Path]::GetRelativePath($artifactRoot, $_.FullName).Replace('\','/'); bytes = $_.Length; sha256 = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash } })
-          @{ commit = (git rev-parse HEAD); source_baseline = '33faa8e3c091d73483b42dc07f8f2934ba5f7958'; reference_v18 = 'fbab350b6cde7a40735d778986382807d6287048'; reference_v171 = '2ea64f9d27563ac410bacea79de6e2e2671b01c3'; fallback = 'cea7ba955f5c0d57ff76d63e53f97f34b1d3ab4c'; client_build = 5875; configuration = 'RelWithDebInfo'; architecture = 'x64'; playerbots = $true; source_tests = '4/4'; asan_tests = '4/4'; quest_tests = 'passed'; quest_asan_tests = 'passed'; pmo_tests = '5269 observations passed'; pmo_asan_tests = '5269 observations passed'; pmo_callsites = 47; v20_shared_tests = 'passed normal and ASan; expected V19 use-after-free independently reproduced'; v20_checkvalues_tests = '2560 observations passed normal and ASan'; v20_targets_tests = 'passed normal and ASan'; v20_pmo_report_tests = 'passed normal and ASan'; runtime_smoke = 'passed --version with packaged DLLs and system-only PATH'; openssl3_runtime = '3.0.14 / 9cff14fd97814baf8a9a07d8447960a64d616ada'; files = $hashes; runtime_prerequisites = @('Microsoft Visual C++ 2015-2022 x64 runtime', 'Microsoft Visual C++ 2008 x64 CRT for the bundled libmySQL.dll') } | ConvertTo-Json -Depth 4 | Set-Content bin/RelWithDebInfo/build-info.json
+          @{ commit = (git rev-parse HEAD); source_baseline = '33faa8e3c091d73483b42dc07f8f2934ba5f7958'; reference_v18 = 'fbab350b6cde7a40735d778986382807d6287048'; reference_v171 = '2ea64f9d27563ac410bacea79de6e2e2671b01c3'; fallback = 'cea7ba955f5c0d57ff76d63e53f97f34b1d3ab4c'; client_build = 5875; configuration = 'RelWithDebInfo'; architecture = 'x64'; playerbots = $true; source_tests = '4/4'; asan_tests = '4/4'; quest_tests = 'passed'; quest_asan_tests = 'passed'; pmo_tests = '5269 observations passed'; pmo_asan_tests = '5269 observations passed'; pmo_callsites = 47; v20_shared_tests = 'passed normal and ASan; expected V19 use-after-free independently reproduced'; v20_checkvalues_tests = '2560 observations passed normal and ASan'; v20_targets_tests = 'passed normal and ASan'; v20_pmo_report_tests = 'passed normal and ASan'; runtime_smoke = 'NOT RUN: explicit user runtime boundary'; diagnostic_only = $true; presence_tests = 'passed normal and ASan'; presence_source_baseline = '169cb7712c8b704a3fe274cbf42a0cbb53fcb90a'; openssl3_runtime = '3.0.14 / 9cff14fd97814baf8a9a07d8447960a64d616ada'; files = $hashes; runtime_prerequisites = @('Microsoft Visual C++ 2015-2022 x64 runtime', 'Microsoft Visual C++ 2008 x64 CRT for the bundled libmySQL.dll') } | ConvertTo-Json -Depth 4 | Set-Content bin/RelWithDebInfo/build-info.json
 
       - name: Upload cumulative validation build
         uses: actions/upload-artifact@v4
         with:
-          name: vmangos-v20-value-allocation-windows-x64-relwithdebinfo
+          name: vmangos-v20-player-presence-diagnostics-windows-x64-relwithdebinfo
           path: |
             bin/RelWithDebInfo/mangosd.exe
             bin/RelWithDebInfo/mangosd.pdb
@@ -260,6 +269,7 @@ jobs:
             bin/RelWithDebInfo/README_V18.md
             bin/RelWithDebInfo/README_V19.md
             bin/RelWithDebInfo/README_V20.md
+            bin/RelWithDebInfo/README_PRESENCE.md
             bin/RelWithDebInfo/OPTIMIZATION_TODO.md
             bin/RelWithDebInfo/build-info.json
           if-no-files-found: error

@@ -1,5 +1,19 @@
 # Optimization baseline and pending validation
 
+Player-presence investigation (2026-09-25): separate diagnostic branch from
+V20 `169cb7712c8b704a3fe274cbf42a0cbb53fcb90a`. No policy/index replacement
+and no assistant-run gameplay. See `V20_PLAYER_PRESENCE.md` for the explicit
+runtime boundary and the user-run experiment. Historical release status below
+is retained; no V0-V20 change is reverted by this diagnostic build.
+
+- [ ] User-run no-player -> stationary player -> no-player experiment, PMO OFF;
+  compare priorities, targets/A, scan cost, client/server CPU and focus separately.
+- [ ] `pet_spell.PRIMARY`: five conflicts in the handoff's earlier V20 session;
+  that log's SHA-256 differs from the currently accessible Server.log. No DB edit,
+  suppression or causal connection to the presence drop is established.
+- [ ] `Item::AddToUpdateQueueOf`: separate lifetime/update investigation; untouched.
+- [ ] AddCooldown / UseItem residuals: separate investigation; untouched.
+
 Accepted source/development baseline (2026-09-25 handoff): V19,
 `33faa8e3c091d73483b42dc07f8f2934ba5f7958`, branch
 `vmangos-v19-pmo-off-fast-path`. Cumulative V0-V19, including V17 A/B/C,
