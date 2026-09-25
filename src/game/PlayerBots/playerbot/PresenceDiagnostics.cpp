@@ -55,25 +55,30 @@ struct Shard
     std::uint64_t priorityCalls = 0;
     bool timing = false;
 };
-static thread_local Shard local;
+// MSVC eagerly constructs namespace-scope TLS objects on thread startup. Empty
+// map/list sentinels would allocate even while diagnostics is OFF. Defer the
+// shard itself until the first enabled observation, and keep its address stable.
+static thread_local std::unique_ptr<Shard> local;
 
 static Shard* Current()
 {
     auto const epoch = activeEpoch.load(std::memory_order_acquire);
     if (!epoch) return nullptr;
-    if (local.data.epoch != epoch)
+    if (!local) local = std::make_unique<Shard>();
+    auto& shard = *local;
+    if (shard.data.epoch != epoch)
     {
-        local = Shard{};
-        local.data.epoch = epoch;
-        local.timing = sampleTiming.load(std::memory_order_relaxed);
+        shard = Shard{};
+        shard.data.epoch = epoch;
+        shard.timing = sampleTiming.load(std::memory_order_relaxed);
         auto& registry = Store();
         std::lock_guard<std::mutex> lock(registry.mutex);
         if (registry.epoch != epoch) return nullptr;
         if (registry.shards.size() == MaxThreads) { ++registry.droppedThreads; return nullptr; }
-        local.published = std::make_shared<Published>();
-        registry.shards.push_back(local.published);
+        shard.published = std::make_shared<Published>();
+        registry.shards.push_back(shard.published);
     }
-    return local.published ? &local : nullptr;
+    return shard.published ? &shard : nullptr;
 }
 static void Publish(Shard& shard, bool force)
 {

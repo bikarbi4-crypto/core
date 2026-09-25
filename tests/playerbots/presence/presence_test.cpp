@@ -31,6 +31,14 @@ int main()
     static_assert(unsigned(candidate::ActivePiorityType::MAX_TYPE)==PriorityCount);
     static_assert(candidate::MAX_ACTIVITY_TYPE==ActivityCount && candidate::ALL_ACTIVITY==AllActivity);
     assert(!Enabled());
+    // MSVC runs dynamic TLS initialization before this thread body. Merely
+    // measuring allocations around a warm probe would miss eager TLS maps.
+    std::thread freshOff([] {
+        assert(allocations==0);
+        PriorityProbe p; p.Finish(17u); Flush();
+        assert(allocations==0);
+    });
+    freshOff.join();
     assert(Start(5,false,false).find("duration")!=std::string::npos);
     assert(Start(60,false,true).find("refused")!=std::string::npos);
     // Completely OFF collector: zero allocations, clocks, publications or copies.
