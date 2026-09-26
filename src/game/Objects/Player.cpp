@@ -24,6 +24,7 @@
 #include <sstream>
 
 #include "Player.h"
+#include "WorldSocket.h"
 #include "Bag.h"
 #include "Language.h"
 #include "Database/DatabaseEnv.h"
@@ -290,6 +291,7 @@ Player::Player(WorldSession* session) : Unit(),
 
 Player::~Player()
 {
+    StopActivityPresence();
     // Playerbot cleanup
     delete m_playerbotMgr;
     m_playerbotMgr = nullptr;
@@ -1440,6 +1442,8 @@ void Player::RelocateToLastClientPosition()
         m_position.y = y;
         m_position.z = z;
         m_position.o = o;
+        UpdateActivityPosition();
+        GetViewPoint().Event_ActivityRelocated();
     }
 }
 
@@ -2204,6 +2208,58 @@ void Player::ProcessDelayedOperations()
     m_delayedOperations = 0;
 }
 
+void Player::StartActivityPresence()
+{
+    // Socket ownership distinguishes a client (including selfbot/takeover) from
+    // every server-created bot session. Do not use either legacy IsBot predicate.
+    if (!IsInWorld() || !GetSession() || !GetSession()->GetSocket() ||
+        GetSession()->GetSocket()->IsClosing() || GetSession()->PlayerLogout())
+        return;
+    StopActivityPresence();
+    PlayerActivityPresence::Observation observation;
+    observation.location = {GetMapId(), GetInstanceId(), GetZoneId(),
+        {GetPositionX(), GetPositionY(), GetPositionZ()}};
+    observation.excludedFromNearby = IsGameMaster() && HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_GM);
+    WorldObject* camera = GetCamera().GetBody();
+    if (camera && camera != this)
+    {
+        observation.remoteCamera = true;
+        observation.camera = {camera->GetPositionX(), camera->GetPositionY(), camera->GetPositionZ()};
+    }
+    m_activityPresenceToken.store(sPlayerActivityPresence.Enter(GetGUIDLow(), observation), std::memory_order_release);
+}
+
+void Player::StopActivityPresence()
+{
+    auto const token = m_activityPresenceToken.exchange(0, std::memory_order_acq_rel);
+    if (token)
+        sPlayerActivityPresence.Leave(GetGUIDLow(), token);
+}
+
+void Player::UpdateActivityPosition()
+{
+    auto const token = m_activityPresenceToken.load(std::memory_order_acquire);
+    if (token)
+        sPlayerActivityPresence.Move(GetGUIDLow(), token, {GetMapId(), GetInstanceId(), GetZoneId(),
+            {GetPositionX(), GetPositionY(), GetPositionZ()}});
+}
+
+void Player::UpdateActivityCamera(WorldObject const* source)
+{
+    auto const token = m_activityPresenceToken.load(std::memory_order_acquire);
+    if (token)
+        sPlayerActivityPresence.SetCamera(GetGUIDLow(), token,
+            {source->GetPositionX(), source->GetPositionY(), source->GetPositionZ()}, source != this);
+}
+
+void Player::UpdateActivityGmState()
+{
+    auto const token = m_activityPresenceToken.load(std::memory_order_acquire);
+    if (token)
+        sPlayerActivityPresence.SetExcluded(GetGUIDLow(), token,
+            IsGameMaster() && HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_GM));
+}
+
 void Player::AddToWorld()
 {
     // Do not add/remove the player from the object storage
@@ -2217,10 +2273,12 @@ void Player::AddToWorld()
             m_items[i]->AddToWorld();
     }
     sPlayerBotMgr.OnPlayerInWorld(this);
+    StartActivityPresence();
 }
 
 void Player::RemoveFromWorld()
 {
+    StopActivityPresence();
     if (m_transport)
         SendDestroyGroupMembers(true);
 
@@ -2735,6 +2793,7 @@ void Player::SetGameMaster(bool on, bool notify)
     m.SetCount(PLAYER_END);
     m.SetBit(UNIT_FIELD_FLAGS);
     RefreshBitsForVisibleUnits(&m, TYPEMASK_PLAYER);
+    UpdateActivityGmState();
 }
 
 void Player::SetGMVisible(bool on, bool notify)
@@ -21841,7 +21900,10 @@ void Player::RefreshBitsForVisibleUnits(UpdateMask* mask, uint32 objectTypeMask)
 
 void Player::SetSession(WorldSession* s)
 {
+    StopActivityPresence();
     m_session = s;
+    // Reconnect/takeover can reuse an already in-world Player.
+    StartActivityPresence();
     // PlayerTalkClass stores a pointer to WorldSession
     ASSERT(PlayerTalkClass);
     delete PlayerTalkClass;

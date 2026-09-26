@@ -65,6 +65,7 @@ class Camera
         void Event_AddedToWorld();
         void Event_RemovedFromWorld();
         void Event_Moved();
+        void Event_ActivityRelocated();
         void Event_ViewPointVisibilityChanged();
 
         Player& m_owner;
@@ -134,6 +135,10 @@ public:
     {
         CameraCall(&Camera::Event_ViewPointVisibilityChanged);
     }
+
+    // Same observer lifetime as visibility/camera events; only scalar values
+    // are published. Called for every relocation, not only grid transitions.
+    void Event_ActivityRelocated() { CameraCall(&Camera::Event_ActivityRelocated); }
 
     void Call_UpdateVisibilityForOwner()
     {

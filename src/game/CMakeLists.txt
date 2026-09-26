@@ -36,6 +36,7 @@ set (game_SRCS
     ObjectGuid.cpp
     ObjectMgr.cpp
     ObjectPosSelector.cpp
+    PlayerActivityPresence.cpp
     PlayerDump.cpp
     QuestDef.cpp
     ReputationMgr.cpp

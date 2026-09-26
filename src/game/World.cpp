@@ -24,6 +24,7 @@
 */
 
 #include "World.h"
+#include "PlayerActivityPresence.h"
 #include "Database/DatabaseEnv.h"
 #include "Config/Config.h"
 #include "Platform/Define.h"
@@ -140,6 +141,9 @@ World::World():
     m_timeRate(1.0f),
     m_canProcessAsyncPackets(false)
 {
+    // Construct before World finishes construction: the index then outlives
+    // World/session destruction, including shutdown with remaining sessions.
+    (void)sPlayerActivityPresence;
     m_gameDay = (m_gameTime + m_timeZoneOffset) / DAY;
     m_startTime = m_gameTime,
 

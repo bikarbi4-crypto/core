@@ -453,6 +453,10 @@ void WorldSession::SendPlayTimeWarning(PlayTimeFlag flag, int32 timeLeftInSecond
 
 bool WorldSession::ForcePlayerLogoutDelay()
 {
+    // A disconnected body may stay in-world for two minutes. It is no longer
+    // human presence, even while its old remote-address string still exists.
+    if (GetPlayer())
+        GetPlayer()->StopActivityPresence();
     if (!sWorld.IsStopped() && GetPlayer() && GetPlayer()->FindMap() && GetPlayer()->IsInWorld())
     {
         if (GetBot())
@@ -697,6 +701,8 @@ bool WorldSession::UpdateDisconnected(uint32 diff)
 // %Log the player out
 void WorldSession::LogoutPlayer(bool Save)
 {
+    if (GetPlayer())
+        GetPlayer()->StopActivityPresence();
     // finish pending transfers before starting the logout
     /* while(_player && _player->IsBeingTeleportedFar())
         HandleMoveWorldportAckOpcode(); */

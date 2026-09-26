@@ -94,6 +94,7 @@ void Camera::SetView(WorldObject* obj, bool update_far_sight_field /*= true*/)
     }
 
     UpdateForCurrentViewPoint();
+    m_owner.UpdateActivityCamera(m_source);
 }
 
 void Camera::Event_ViewPointVisibilityChanged()
@@ -125,6 +126,12 @@ void Camera::Event_RemovedFromWorld()
     }
 
     ResetView();
+}
+
+void Camera::Event_ActivityRelocated()
+{
+    if (m_source != &m_owner)
+        m_owner.UpdateActivityCamera(m_source);
 }
 
 void Camera::Event_Moved()

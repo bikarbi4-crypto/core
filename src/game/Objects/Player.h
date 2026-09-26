@@ -39,6 +39,7 @@
 #include "HonorMgr.h"
 #include "PlayerTaxi.h"
 #include "MirrorTimer.h"
+#include "PlayerActivityPresence.h"
 
 #include <string>
 #include <utility>
@@ -1657,6 +1658,7 @@ class Player final: public Unit
         float  m_summon_y;
         float  m_summon_z;
 
+        std::atomic<PlayerActivityPresence::Token> m_activityPresenceToken{0};
         Camera m_camera;
         ObjectGuid m_pendingCameraUpdate;
         uint32 m_cameraUpdateTimer;
@@ -1773,6 +1775,11 @@ class Player final: public Unit
         void LeaveCombatWithFarAwayCreatures();
 
         Camera& GetCamera() { return m_camera; }
+        void StartActivityPresence();
+        void StopActivityPresence();
+        void UpdateActivityPosition();
+        void UpdateActivityCamera(WorldObject const* source);
+        void UpdateActivityGmState();
         void ScheduleCameraUpdate(ObjectGuid guid);
 
         uint32 GetLongSight() const { return m_longSightSpell; }

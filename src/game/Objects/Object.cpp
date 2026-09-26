@@ -1547,6 +1547,12 @@ void WorldObject::Relocate(float x, float y, float z, float orientation)
 
     m_movementInfo.ChangePosition(x, y, z, orientation);
     m_movementInfo.UpdateTime(WorldTimer::getMSTime());
+    if (sPlayerActivityPresence.HasPlayers())
+    {
+        if (Player* player = ToPlayer())
+            player->UpdateActivityPosition();
+        GetViewPoint().Event_ActivityRelocated();
+    }
     /*if (ShipTransport* t = GetTransport())
     {
         t->CalculatePassengerOffset(x, y, z);
@@ -2367,6 +2373,8 @@ void WorldObject::SetMap(Map* map)
 
     // Order is important, must be done after m_currMap is set
     SetZoneScript();
+    if (Player* player = ToPlayer())
+        player->UpdateActivityPosition();
 }
 
 Map* WorldObject::GetMap() const
