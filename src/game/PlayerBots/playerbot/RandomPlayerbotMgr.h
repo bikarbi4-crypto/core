@@ -6,6 +6,7 @@
 #include "PlayerbotMgr.h"
 #include "playerbot/PlayerbotAIConfig.h"
 #include "WorldPosition.h"
+#include "PlayerActivityPresence.h"
 #include <map>
 #include <list>
 #include <shared_mutex>
@@ -103,7 +104,7 @@ public:
         PlayerBotMap& GetPlayers() { return players; };
         // Thread-safe snapshot of real player map for use from map update threads (Continents.Instanciate sub-maps).
         PlayerBotMap GetPlayersSnapshot() { std::shared_lock<std::shared_mutex> lock(m_playersMutex); return players; }
-        bool HasPlayers() { std::shared_lock<std::shared_mutex> lock(m_playersMutex); return !players.empty(); }
+        bool HasPlayers() { return sPlayerActivityPresence.HasPlayers(); }
         uint32 GetPlayersCount() { std::shared_lock<std::shared_mutex> lock(m_playersMutex); return players.size(); }
         std::shared_mutex& GetPlayersMutex() { return m_playersMutex; }
         Player* GetPlayer(uint32 playerGuid);
@@ -218,6 +219,7 @@ public:
         std::list<std::string> HandleConsolePid(std::string param);
         std::list<std::string> HandleConsoleDiff(std::string param);
         std::list<std::string> HandleConsoleCpu(std::string param);
+        std::list<std::string> HandleConsolePresence(std::string param);
         std::list<std::string> HandleConsoleCleanMap(std::string param);
         std::list<std::string> HandleConsoleLoginDebug(std::string param);
         std::list<std::string> HandleConsolePathCheck(std::string param);
@@ -240,7 +242,11 @@ public:
 
         void MirrorAh();
     private:
+        // Mixed registry retained for bot population, groups and social consumers.
         PlayerBotMap players;
+        // Cold producer counters, protected by m_playersMutex; no TLS collector.
+        uint64 m_registryClientWrites = 0, m_registryBotWrites = 0;
+        uint64 m_registryMoveWrites = 0, m_registryErases = 0;
         mutable std::shared_mutex m_playersMutex; // Protects 'players' map for cross-thread reads (Continents.Instanciate)
         int processTicks;
         std::unordered_map<std::string, WorldLocation> namedLocations;

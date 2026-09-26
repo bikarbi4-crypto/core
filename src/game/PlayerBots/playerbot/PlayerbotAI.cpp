@@ -5920,39 +5920,8 @@ bool PlayerbotAI::HasPlayerNearby(WorldPosition pos, float range)
 {
     if (!range)
         range = pos.getVisibilityDistance();
-
-    float sqRange = range * range;
-    uint32 const botMapId = bot->GetMapId();
-    uint32 const botInstanceId = bot->GetInstanceId();
-
-    std::shared_lock<std::shared_mutex> lock(sRandomPlayerbotMgr.GetPlayersMutex());
-    for (auto& i : sRandomPlayerbotMgr.GetPlayers())
-    {
-        Player* player = i.second;
-        if (!player || !player->IsInWorld())
-            continue;
-
-        // Filter out invisible GMs.
-        if (player->IsGameMaster() && player->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_GM))
-            continue;
-
-        if (player->GetMapId() != botMapId || player->GetInstanceId() != botInstanceId)
-            continue;
-
-        if (pos.sqDistance(WorldPosition(player)) < sqRange)
-            return true;
-
-        // if player is far check farsight/cinematic camera
-        Camera& viewPoint = player->GetCamera();
-        WorldObject* viewObj = viewPoint.GetBody();
-        if (viewObj && viewObj != player)
-        {
-            if (pos.sqDistance(WorldPosition(viewObj)) < sqRange)
-                return true;
-        }
-    }
-
-    return false;
+    return sPlayerActivityPresence.Nearby(bot->GetMapId(), bot->GetInstanceId(),
+        {pos.getX(), pos.getY(), pos.getZ()}, range, true);
 }
 
 bool PlayerbotAI::HasPlayerNearby(float range)
@@ -6023,11 +5992,12 @@ enum ActivityType
 ActivePiorityType PlayerbotAI::GetPriorityType()
 {
     //First priority - priorities disabled or has player master. Always active.
-    if (sPlayerbotAIConfig.disableActivityPriorities || HasRealPlayerMaster())
+    if (sPlayerbotAIConfig.disableActivityPriorities ||
+        (HasRealPlayerMaster() && sPlayerActivityPresence.Contains(GetMaster()->GetGUIDLow())))
         return ActivePiorityType::HAS_REAL_PLAYER_MASTER;
 
-    //Self bot in a group with a bot master.
-    if (IsRealPlayer())
+    // A connected selfbot is still a human; a disconnected body is not.
+    if (sPlayerActivityPresence.Contains(bot->GetGUIDLow()))
         return ActivePiorityType::IS_REAL_PLAYER;
 
     Group* group = bot->GetGroup();
@@ -6043,7 +6013,10 @@ ActivePiorityType PlayerbotAI::GetPriorityType()
             if (member == bot)
                 continue;
 
-            if (!member->GetPlayerbotAI() || (member->GetPlayerbotAI() && member->GetPlayerbotAI()->HasRealPlayerMaster()))
+            PlayerbotAI* memberAI = member->GetPlayerbotAI();
+            if (sPlayerActivityPresence.Contains(member->GetGUIDLow()) ||
+                (memberAI && memberAI->HasRealPlayerMaster() &&
+                 sPlayerActivityPresence.Contains(memberAI->GetMaster()->GetGUIDLow())))
                 return ActivePiorityType::IN_GROUP_WITH_REAL_PLAYER;
         }
     }
@@ -6121,17 +6094,11 @@ ActivePiorityType PlayerbotAI::GetPriorityType()
     if (!sRandomPlayerbotMgr.HasPlayers())
         return ActivePiorityType::IN_EMPTY_SERVER;
 
-    // friends always active
-    PlayerBotMap playersSnap = sRandomPlayerbotMgr.GetPlayersSnapshot();
-    for (auto& i : playersSnap)
-    {
-        Player* player = i.second;
-        if (!player || !player->IsInWorld())
-            continue;
-
-        if (sSocialMgr.HasFriend(player->GetGUIDLow(), bot->GetObjectGuid()))
-            return ActivePiorityType::PLAYER_FRIEND;
-    }
+    // Only present human GUIDs can give this activity priority. SocialMgr's
+    // own lock protects friend data; no gameplay pointers or registry copies.
+    if (sPlayerActivityPresence.Any([&](uint32 guid)
+        { return sSocialMgr.HasFriend(guid, bot->GetObjectGuid()); }))
+        return ActivePiorityType::PLAYER_FRIEND;
 
     // real guild always active if member+
     if (IsInRealGuild())
@@ -6140,31 +6107,9 @@ ActivePiorityType PlayerbotAI::GetPriorityType()
     if (bot->IsBeingTeleported() || !bot->IsInWorld())
         return ActivePiorityType::IN_INACTIVE_MAP;
 
-    // Check if the bot's map has any real (non-bot) players
-    bool mapHasRealPlayers = false;
-    bool zoneHasRealPlayers = false;
-    Map* botMap = bot->GetMap();
-    if (botMap)
-    {
-        uint32 botZoneId = bot->GetZoneId();
-        Map::PlayerList const& mapPlayers = botMap->GetPlayers();
-        for (auto itr = mapPlayers.begin(); itr != mapPlayers.end(); ++itr)
-        {
-            Player* plr = itr->getSource();
-            if (!plr || !plr->IsInWorld())
-                continue;
-
-            if (plr->GetPlayerbotAI() && !plr->GetPlayerbotAI()->IsRealPlayer())
-                continue;
-
-            mapHasRealPlayers = true;
-            if (plr->GetZoneId() == botZoneId)
-            {
-                zoneHasRealPlayers = true;
-                break;
-            }
-        }
-    }
+    auto const presence = sPlayerActivityPresence.OnMap(bot->GetMapId(), bot->GetInstanceId(), bot->GetZoneId());
+    bool const mapHasRealPlayers = presence.map;
+    bool const zoneHasRealPlayers = presence.zone;
 
     if (!mapHasRealPlayers)
         return ActivePiorityType::IN_INACTIVE_MAP;

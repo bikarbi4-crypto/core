@@ -953,40 +953,10 @@ void Map::UpdatePlayers(bool updateBots)
 
         if (sPlayerbotAIConfig.forceActiveWhenNearPlayer && !plr->isRealPlayer())
         {
-            float range = sPlayerbotAIConfig.reactDistance;
-            float sqRange = range * range;
-
-            uint32 const botMapId = plr->GetMapId();
-            uint32 const botInstanceId = plr->GetInstanceId();
-
-            std::shared_lock<std::shared_mutex> lock(sRandomPlayerbotMgr.GetPlayersMutex());
-
-            for (auto const& i : sRandomPlayerbotMgr.GetPlayers())
-            {
-                Player* player = i.second;
-
-                if (!player || !player->IsInWorld())
-                    continue;
-
-                if (player->IsGameMaster() && player->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_GM))
-                {
-                    continue;
-                }
-
-                if (player->GetMapId() != botMapId || player->GetInstanceId() != botInstanceId)
-                {
-                    continue;
-                }
-
-                float dx = plr->GetPositionX() - player->GetPositionX();
-                float dy = plr->GetPositionY() - player->GetPositionY();
-
-                if ((dx * dx + dy * dy) < sqRange)
-                {
-                    playerNearby = true;
-                    break;
-                }
-            }
+            // Preserve the original strict 2D body-only test (no camera/Z).
+            playerNearby = sPlayerActivityPresence.Nearby(plr->GetMapId(), plr->GetInstanceId(),
+                {plr->GetPositionX(), plr->GetPositionY(), plr->GetPositionZ()},
+                sPlayerbotAIConfig.reactDistance, false);
         }
 
         bool const needsBgQueueUpdate = sRandomPlayerbotMgr.ShouldForceBgQueueUpdate(plr);

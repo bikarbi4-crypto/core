@@ -738,7 +738,7 @@ void RandomPlayerbotMgr::ScaleBotActivity()
 {
     float previousActivityPercentage = getActivityPercentage();
 
-    uint32 wantedDiff = sRandomPlayerbotMgr.GetPlayers().empty() ? sPlayerbotAIConfig.diffEmpty : sPlayerbotAIConfig.diffWithPlayer;
+    uint32 wantedDiff = !HasPlayers() ? sPlayerbotAIConfig.diffEmpty : sPlayerbotAIConfig.diffWithPlayer;
 
     uint32 currentDiff = sWorld.GetCurrentDiff();
 
@@ -780,7 +780,7 @@ void RandomPlayerbotMgr::ScaleBotActivity()
                 if (!map->GetAverageUpdateTimeSamples10s())
                     continue;
 
-                uint32 const wantedMs = map->HaveRealPlayers() ? sPlayerbotAIConfig.continentInstancedTargetMsWithPlayer : sPlayerbotAIConfig.continentInstancedTargetMsEmpty;
+                uint32 const wantedMs = sPlayerActivityPresence.OnMap(map->GetId(), map->GetInstanceId(), 0).map ? sPlayerbotAIConfig.continentInstancedTargetMsWithPlayer : sPlayerbotAIConfig.continentInstancedTargetMsEmpty;
 
                 float const currentMs = static_cast<float>(map->GetAverageUpdateTimeMs10s());
 
@@ -2144,6 +2144,7 @@ void RandomPlayerbotMgr::MovePlayerBot(uint32 guid, PlayerbotHolder* newHolder)
     {
         std::unique_lock<std::shared_mutex> lock(m_playersMutex);
         players[guid] = this->GetPlayerBot(guid);
+        ++m_registryMoveWrites;
     }
     PlayerbotHolder::MovePlayerBot(guid, newHolder);
 }
@@ -3421,6 +3422,7 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
     handlers["clean map"] = &RandomPlayerbotMgr::HandleConsoleCleanMap;
     handlers["login debug"] = &RandomPlayerbotMgr::HandleConsoleLoginDebug;
     handlers["cpu"] = &RandomPlayerbotMgr::HandleConsoleCpu;
+    handlers["presence"] = &RandomPlayerbotMgr::HandleConsolePresence;
 
     for (auto& [prefix, consoleHandler] : handlers)
     {
@@ -3603,7 +3605,7 @@ void RandomPlayerbotMgr::OnPlayerLogout(Player* player)
 
     {
         std::unique_lock<std::shared_mutex> lock(m_playersMutex);
-        players.erase(player->GetGUIDLow());
+        m_registryErases += players.erase(player->GetGUIDLow());
     }
 }
 
@@ -3660,6 +3662,7 @@ void RandomPlayerbotMgr::OnPlayerLogin(Player* player)
         {
             std::unique_lock<std::shared_mutex> lock(m_playersMutex);
             players[player->GetGUIDLow()] = player;
+            ++m_registryClientWrites;
         }
         sLog.Out(LOG_BASIC, LOG_LVL_DEBUG, "Including non-random bot player %s into random bot update", player->GetName());
     }
@@ -3678,6 +3681,7 @@ void RandomPlayerbotMgr::OnBotLoginRegistration(Player* player)
         {
             std::unique_lock<std::shared_mutex> lock(m_playersMutex);
             players[player->GetGUIDLow()] = player;
+            ++m_registryBotWrites;
         }
         sLog.Out(LOG_BASIC, LOG_LVL_DEBUG, "Including non-random bot player %s into random bot update", player->GetName());
     }
@@ -4345,6 +4349,7 @@ std::unordered_map<std::string, std::string> RandomPlayerbotMgr::GetCommandTexts
         {"reset", "Reset all random bots and clear event cache.\nUsage: reset"},
         {"diff", "Show server performance metrics.\nUsage: diff [player_diff] [empty_diff]"},
         {"cpu", "Show detailed map/continent CPU profiling.\nUsage: cpu"},
+        {"presence", "Show V21 human activity presence and mixed-registry producer counters.\nUsage: presence"},
         {"stats", "Print bot statistics.\nUsage: stats"},
         {"update", "Trigger immediate bot AI update.\nUsage: update"},
         {"pid", "Adjust PID controller values.\nUsage: pid p i d"},
@@ -4615,6 +4620,23 @@ std::list<std::string> RandomPlayerbotMgr::HandleConsoleDiff(std::string param)
     return messages;
 }
 
+std::list<std::string> RandomPlayerbotMgr::HandleConsolePresence(std::string /*param*/)
+{
+    std::ostringstream out;
+    uint32 const humans = sPlayerActivityPresence.Count();
+    {
+        std::shared_lock<std::shared_mutex> lock(m_playersMutex);
+        out << "V21 presence: human_in_world=" << humans
+            << " activity_has_players=" << (humans != 0)
+            << " mixed_registry=" << players.size()
+            << " client_writes=" << m_registryClientWrites
+            << " bot_registration_writes=" << m_registryBotWrites
+            << " move_writes=" << m_registryMoveWrites
+            << " erased=" << m_registryErases;
+    }
+    return {out.str()};
+}
+
 std::list<std::string> RandomPlayerbotMgr::HandleConsoleCpu(std::string param)
 {
     std::list<std::string> messages;
@@ -4679,7 +4701,7 @@ std::list<std::string> RandomPlayerbotMgr::HandleConsoleCpu(std::string param)
 
         stats.activityPercentage = map->GetBotActivityPercentage();
 
-        stats.targetMs = map->HaveRealPlayers() ? sPlayerbotAIConfig.continentInstancedTargetMsWithPlayer : sPlayerbotAIConfig.continentInstancedTargetMsEmpty;
+        stats.targetMs = sPlayerActivityPresence.OnMap(map->GetId(), map->GetInstanceId(), 0).map ? sPlayerbotAIConfig.continentInstancedTargetMsWithPlayer : sPlayerbotAIConfig.continentInstancedTargetMsEmpty;
 
         stats.sessionsMs = map->GetAverageSessionsUpdateTimeMs10s();
 
