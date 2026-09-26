@@ -1,0 +1,84 @@
+{
+  "baseline": "169cb7712c8b704a3fe274cbf42a0cbb53fcb90a",
+  "variants": {
+    "baseline": "655ef09dbc6a71ca02af330963c1b8ca3a7a2c8a49b91982f285831d96ebf5b9",
+    "candidate": "bb4171f02051e5485fb1c69b7e5cd18223749fa1100091df3728ce5a940ffe83"
+  },
+  "protected": {
+    "src/game/PlayerBots/playerbot/PerformanceMonitor.cpp": "507f1949f5cb9470c85c90271310212c93b226b096c2e2dede9484f95d1b7020",
+    "src/game/PlayerBots/playerbot/PerformanceMonitor.h": "9c06d7495950420138e4d23f624e8edfaacc29d8478603723abc7a738c074a01",
+    "src/game/PlayerBots/playerbot/strategy/values/QuestValues.cpp": "3a0e5f56b3491d4fc784c9c082992f11cc964cdce3da956b09a23fca60281e1c",
+    "src/game/PlayerBots/playerbot/strategy/values/GrindTargetValue.cpp": "fae6644555cef6f091ba6d2949059abf44806f2ada532b2507c0dafc5b2af6d9",
+    "src/game/PlayerBots/playerbot/strategy/values/PossibleTargetsValue.cpp": "4e86451f3267f121f7be2a8ad47d1b39483eba3c6504316a18c0a62e10f9d406",
+    "src/game/PlayerBots/playerbot/strategy/AiObjectContext.cpp": "c2a06c3947021750c1fa2654b80a67d64a6205d2917062fb07947fd31a1ab363",
+    "src/game/PlayerBots/playerbot/strategy/AiObjectContext.h": "5dd155127ca83805bf4b6494a3199f06a17a3a4f51930cd952689024607f7f7e",
+    "src/game/PlayerBots/playerbot/strategy/Value.h": "d46851649bf428560007d3f55dcdd516cfa440d4a50d30aacafff9d9fece0b50",
+    "src/game/PlayerBots/playerbot/TravelMgr.cpp": "4c74dae980e38ba7af1b3c7378be58a7cea42a2d5779fa95a71149832d9f561c",
+    "src/game/PlayerBots/playerbot/PlayerbotAIConfig.cpp": "aa8bef23a91a26bed6089058807ac8ce4d8f97d07c7ff1386eb60db7ffe85786",
+    "src/game/PlayerBots/playerbot/PlayerbotAIConfig.h": "956af8d884e5a7261ce7985c8dc63af4ac09ac5b71e7657b68949169d891d356"
+  },
+  "lifecycle_methods_sha256": "08da4ffb3a17fd6c89a2508aa38dedada4ccabbac6fecf99afd301a93020aecf",
+  "wiring": [
+    [
+      "src/game/Objects/Player.cpp",
+      "void Player::AddToWorld()",
+      "StartActivityPresence();"
+    ],
+    [
+      "src/game/Objects/Player.cpp",
+      "void Player::RemoveFromWorld()",
+      "StopActivityPresence();"
+    ],
+    [
+      "src/game/Objects/Player.cpp",
+      "Player::~Player()",
+      "StopActivityPresence();"
+    ],
+    [
+      "src/game/Objects/Player.cpp",
+      "void Player::SetSession(",
+      "StartActivityPresence();"
+    ],
+    [
+      "src/game/Objects/Player.cpp",
+      "void Player::RelocateToLastClientPosition()",
+      "UpdateActivityPosition();"
+    ],
+    [
+      "src/game/Objects/Player.cpp",
+      "void Player::SetGameMaster(",
+      "UpdateActivityGmState();"
+    ],
+    [
+      "src/game/Server/WorldSession.cpp",
+      "bool WorldSession::ForcePlayerLogoutDelay()",
+      "StopActivityPresence();"
+    ],
+    [
+      "src/game/Server/WorldSession.cpp",
+      "void WorldSession::LogoutPlayer(",
+      "StopActivityPresence();"
+    ],
+    [
+      "src/game/Objects/Object.cpp",
+      "void WorldObject::Relocate(float x, float y, float z, float orientation)",
+      "UpdateActivityPosition();"
+    ],
+    [
+      "src/game/Objects/Object.cpp",
+      "void WorldObject::SetMap(",
+      "UpdateActivityPosition();"
+    ],
+    [
+      "src/game/Camera.cpp",
+      "void Camera::SetView(",
+      "UpdateActivityCamera(m_source);"
+    ],
+    [
+      "src/game/Camera.cpp",
+      "void Camera::Event_ActivityRelocated()",
+      "UpdateActivityCamera(m_source);"
+    ]
+  ],
+  "limits": "World services are deterministic fixtures; live map scheduling and gameplay require user runtime validation."
+}

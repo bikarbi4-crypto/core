@@ -1,0 +1,40 @@
+{
+  "normal-final-test": "passed",
+  "asan-final-test": "passed",
+  "pmo-tests": "passed",
+  "pmo-asan-tests": "passed",
+  "cumulative-tests": "passed",
+  "cumulative-asan-tests": "passed",
+  "quest-tests": "passed",
+  "quest-asan-tests": "passed",
+  "v20-shared-tests": "passed",
+  "v20-shared-asan-tests": "passed",
+  "v20-targets-tests": "passed",
+  "v20-targets-asan-tests": "passed",
+  "v20-checkvalues-tests": "passed",
+  "v20-checkvalues-asan-tests": "passed",
+  "v20-pmo-tests": "passed",
+  "v20-pmo-asan-tests": "passed",
+  "value_chain": {
+    "rows": 810,
+    "exit_code": 0
+  },
+  "peak_whole_pc_cpu_percent": 52.44,
+  "cpu_runs": {
+    "configure-cpu.json": 19.63,
+    "cumulative-cpu.json": 52.44,
+    "final-presence-cpu.json": 32.21,
+    "first-checks-cpu.json": 36.08,
+    "test-cpu.json": 8.01,
+    "tests-build-cpu.json": 19.55,
+    "tests-build2-cpu.json": 27.46,
+    "v20-regressions-cpu.json": 41.92,
+    "worktree-cpu.json": 33.89
+  },
+  "limit": "affinity 0x55/0x54; build parallel=2; /MP1",
+  "runtime": "NOT RUN: mangosd/WoW/DB not executed or contacted",
+  "repaired_validation_issues": [
+    "fixture macro shadowing: fixed namespace qualification",
+    "V20 shared-source historical gate: narrowly normalize declared V21 non-PMO functions; keep actual constructors and all protected code checks"
+  ]
+}

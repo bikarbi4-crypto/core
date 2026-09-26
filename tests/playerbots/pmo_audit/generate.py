@@ -17,6 +17,11 @@ BASE='fbab350b6cde7a40735d778986382807d6287048'
 out=Path(sys.argv[1]); out.mkdir(parents=True,exist_ok=True)
 manifest={'baseline':BASE,'sources':{},'fragments':{},'controlled_substitutions':['world position coordinates/hooks','game work in scope fragments','action services','trace-only deterministic clock/probes']}
 
+sys.dont_write_bytecode=True
+sys.path.insert(0,str(ROOT/'tests/playerbots/v21_presence'))
+from source_scope import normalize_v21, verify
+manifest['v21_scope']=verify()
+
 def read(path,current):
     path=P+path
     s=(ROOT/path).read_text(encoding='utf-8-sig') if current else subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT).decode('utf-8-sig')
@@ -106,6 +111,8 @@ for ns,current in [('v18',False),('v19',True)]:
             expected=new_loop if current else old_loop
             assert remainder.count(expected)==1
             remainder=remainder.replace(expected,'')
+        if current:
+            remainder=normalize_v21(file,remainder)
         gameplay_shapes[(ns,file)]=re.sub(r'\s+','',remainder)
     all_fragments[ns]=frags
     header=clean(read('PerformanceMonitor.h',current)).replace('private:','public:')

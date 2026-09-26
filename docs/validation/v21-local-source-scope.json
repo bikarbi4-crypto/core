@@ -1,0 +1,21 @@
+{
+  "baseline": "169cb7712c8b704a3fe274cbf42a0cbb53fcb90a",
+  "normalized_exact": [
+    "src/game/PlayerBots/playerbot/PlayerbotAI.cpp",
+    "src/game/PlayerBots/playerbot/RandomPlayerbotMgr.cpp"
+  ],
+  "changed_source": {
+    "src/game/CMakeLists.txt": "89e0fbf5333c869a34fa3c73bf2f22eced665db6ae11bea870418defdee55923",
+    "src/game/Camera.cpp": "01c28eb6abc7aa3002d0743a04bdd99ae6e6407532f99ea4beee0dd599b0352a",
+    "src/game/Camera.h": "514abc5793719067dbe883960f98887ba47f31654d12f47ee2ec4baf6428f4e9",
+    "src/game/Maps/Map.cpp": "b4117240a14e6e237fe5b4cee1f1e4fc93c5fe55181af2da47b8c2cf34d52f78",
+    "src/game/Objects/Object.cpp": "dd2ee35b28a41daa662919a586f6ccdfa3e25fcf977b048b480583bf8b6e3e8f",
+    "src/game/Objects/Player.cpp": "e30a9cd153df0eba2831cfc026017e52d7dfeff46f4cf25764df72e4b85d42de",
+    "src/game/Objects/Player.h": "ad289bf752a8001c8d92f9613ef068acd3068ea0ab5e732aed8076fe8c9e2ac5",
+    "src/game/PlayerBots/playerbot/PlayerbotAI.cpp": "7029b6fa80266043a8e8f177fcae12618348f8b1dcbb4dd638119515d17bb675",
+    "src/game/PlayerBots/playerbot/RandomPlayerbotMgr.cpp": "fbc543add3be2c21588233b7dedfc721c856f63748614bdd0ff4d58e30c7a21a",
+    "src/game/PlayerBots/playerbot/RandomPlayerbotMgr.h": "801d8bba8da1f1f826f52981f2a1d4cac3356dc461af3baf8a973b243d5f6dc4",
+    "src/game/Server/WorldSession.cpp": "86379bdceac0aeff24e0006d0d508792b5ac2bbbaea368580cb8ad3e4627a46c",
+    "src/game/World.cpp": "0b05311e6ee825a5228fdd0d0d906d4e69509d46b1f267828f219e3adff865d0"
+  }
+}

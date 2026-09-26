@@ -1,13 +1,11 @@
 # Optimization baseline and pending validation
 
-Accepted source/development baseline (2026-09-25 handoff): V19,
-`33faa8e3c091d73483b42dc07f8f2934ba5f7958`, branch
-`vmangos-v19-pmo-off-fast-path`. Cumulative V0-V19, including V17 A/B/C,
-remain enabled. This is a development-baseline decision; the repository's
-GitHub default branch is not changed by this release.
+Accepted development baseline: V20 `169cb7712c8b704a3fe274cbf42a0cbb53fcb90a`,
+branch `vmangos-v20-value-allocation`. Cumulative V0–V20 remains enabled.
+V21 `vmangos-v21-player-presence` is the next validation release from this parent.
+Diagnostic `4b9d62de1c5dbe1398f5067596fa9111f00e2fdd` is reference only.
+The default branch and live installation are not changed by this release.
 
-V20 is the next validation build on `vmangos-v20-value-allocation`, not an
-automatic installation or a claim of completed V20 gameplay validation.
 Preserved V18 fallback: `fbab350b6cde7a40735d778986382807d6287048`, branch
 `vmangos-v18-quest-hot-values`.
 
@@ -61,3 +59,12 @@ investigations remain pending; V20 does not close or modify them.
 - [ ] Numeric qualified-key formatter reserve: preserve C++ locale, exact bytes,
   signed int32 limits, overload resolution and manual qualifiers before considering
   an alternative formatter. No new inter-tick cache is authorized by this item.
+
+- [ ] V21 user-only A/B/C/D gameplay validation: empty, human in-world, logout
+  to character screen, full disconnect; include reconnect/transfer/GM/selfbot.
+  Record `rndbot presence`, `rndbot cpu`, `rndbot diff`, phase times and logs.
+- [ ] Audit unused legacy `GetRandomPlayer` numeric map indexing under read lock.
+- [ ] Unused `HasManyPlayersNearby`: review its legacy squared/rounded radius
+  contract separately before adding consumers or changing semantics.
+- [ ] Existing async login manager's mixed raw-Player snapshot lifetime and social
+  consumers' naming/definitions: separate population/social work, not V21 activity.

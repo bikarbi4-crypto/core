@@ -1,0 +1,226 @@
+[
+  {
+    "scenario": "empty",
+    "operation": "priority",
+    "v20_median_ns": 20.95,
+    "v21_median_ns": 16.62,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "empty",
+    "operation": "nearby",
+    "v20_median_ns": 6.2,
+    "v21_median_ns": 4.16,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "empty",
+    "operation": "force",
+    "v20_median_ns": 5.2,
+    "v21_median_ns": 3.01,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "one_human_other_map",
+    "operation": "priority",
+    "v20_median_ns": 75.08,
+    "v21_median_ns": 38.55,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "one_human_other_map",
+    "operation": "nearby",
+    "v20_median_ns": 7.59,
+    "v21_median_ns": 9.28,
+    "rounds": 9,
+    "v21_slower": true
+  },
+  {
+    "scenario": "one_human_other_map",
+    "operation": "force",
+    "v20_median_ns": 6.51,
+    "v21_median_ns": 7.84,
+    "rounds": 9,
+    "v21_slower": true
+  },
+  {
+    "scenario": "one_human_nearby_no_mixed",
+    "operation": "priority",
+    "v20_median_ns": 10.06,
+    "v21_median_ns": 17.26,
+    "rounds": 9,
+    "v21_slower": true
+  },
+  {
+    "scenario": "one_human_nearby_no_mixed",
+    "operation": "nearby",
+    "v20_median_ns": 7.64,
+    "v21_median_ns": 9.61,
+    "rounds": 9,
+    "v21_slower": true
+  },
+  {
+    "scenario": "one_human_nearby_no_mixed",
+    "operation": "force",
+    "v20_median_ns": 5.98,
+    "v21_median_ns": 7.87,
+    "rounds": 9,
+    "v21_slower": true
+  },
+  {
+    "scenario": "523_mixed_no_human",
+    "operation": "priority",
+    "v20_median_ns": 23813.1,
+    "v21_median_ns": 14.65,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "523_mixed_no_human",
+    "operation": "nearby",
+    "v20_median_ns": 1827.17,
+    "v21_median_ns": 4.17,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "523_mixed_no_human",
+    "operation": "force",
+    "v20_median_ns": 1495.69,
+    "v21_median_ns": 2.98,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "523_mixed_one_human_other_map",
+    "operation": "priority",
+    "v20_median_ns": 23777.3,
+    "v21_median_ns": 37.65,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "523_mixed_one_human_other_map",
+    "operation": "nearby",
+    "v20_median_ns": 1818.01,
+    "v21_median_ns": 8.5,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "523_mixed_one_human_other_map",
+    "operation": "force",
+    "v20_median_ns": 1513.34,
+    "v21_median_ns": 7.1,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "large_map_human_same_zone",
+    "operation": "priority",
+    "v20_median_ns": 23932.8,
+    "v21_median_ns": 40.14,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "large_map_human_same_zone",
+    "operation": "nearby",
+    "v20_median_ns": 1849.15,
+    "v21_median_ns": 9.32,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "large_map_human_same_zone",
+    "operation": "force",
+    "v20_median_ns": 1546.66,
+    "v21_median_ns": 8.23,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "large_map_human_other_zone",
+    "operation": "priority",
+    "v20_median_ns": 25845.7,
+    "v21_median_ns": 42.18,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "large_map_human_other_zone",
+    "operation": "nearby",
+    "v20_median_ns": 2088.03,
+    "v21_median_ns": 9.73,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "large_map_human_other_zone",
+    "operation": "force",
+    "v20_median_ns": 1619.23,
+    "v21_median_ns": 8.3,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "nearby_human",
+    "operation": "priority",
+    "v20_median_ns": 1888.65,
+    "v21_median_ns": 16.04,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "nearby_human",
+    "operation": "nearby",
+    "v20_median_ns": 1912.47,
+    "v21_median_ns": 8.95,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "nearby_human",
+    "operation": "force",
+    "v20_median_ns": 1725.48,
+    "v21_median_ns": 11.67,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "nearby_only_human",
+    "operation": "priority",
+    "v20_median_ns": 4321.75,
+    "v21_median_ns": 30.55,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "nearby_only_human",
+    "operation": "nearby",
+    "v20_median_ns": 2006.62,
+    "v21_median_ns": 9.55,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "nearby_only_human",
+    "operation": "force",
+    "v20_median_ns": 1692.1,
+    "v21_median_ns": 8.18,
+    "rounds": 9,
+    "v21_slower": false
+  },
+  {
+    "scenario": "human_position_publish",
+    "operation": "move",
+    "v20_median_ns": 0.0,
+    "v21_median_ns": 6.911,
+    "rounds": 9,
+    "v21_slower": true
+  }
+]
