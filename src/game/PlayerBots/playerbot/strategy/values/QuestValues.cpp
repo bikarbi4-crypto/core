@@ -602,9 +602,35 @@ bool NeedQuestObjectiveValue::CanGetItemSomewhere(const uint32 itemId, const uin
 	return false;
 }
 
+namespace
+{
+    int32 GetQuestObjectiveQualifierInt(const std::string& value, uint32 index)
+    {
+        // NeedForQuest builds {questId,objective}. Avoid a temporary vector for
+        // that grammar only; retain the general parser for every other input.
+        const size_t size = value.size();
+        if (index < 2 && size >= 5 && size <= 14 && value.front() == '{' &&
+            value.back() == '}' && value[size - 3] == ',' &&
+            value[size - 2] >= '0' && value[size - 2] <= '3')
+        {
+            bool digits = true;
+            for (size_t i = 1; i < size - 3; ++i)
+                if (value[i] < '0' || value[i] > '9')
+                    digits = false;
+
+            if (digits)
+            {
+                // stoi preserves the existing signed range and exceptions.
+                return index ? value[size - 2] - '0' : std::stoi(value.substr(1, size - 4));
+            }
+        }
+        return Qualified::getMultiQualifierInt(value, index, ",");
+    }
+}
+
 bool NeedQuestObjectiveValue::Calculate()
 {
-	uint32 questId = getMultiQualifierInt(getQualifier(),0,",");
+    uint32 questId = GetQuestObjectiveQualifierInt(getQualifier(), 0);
 	if (!bot->IsActiveQuest(questId))
 		return false;
 
@@ -630,7 +656,7 @@ bool NeedQuestObjectiveValue::Calculate()
 
 	Quest const* pQuest = sObjectMgr.GetQuestTemplate(questId);
 
-	uint32 objective = getMultiQualifierInt(getQualifier(), 1, ",");
+    uint32 objective = GetQuestObjectiveQualifierInt(getQualifier(), 1);
 
 	uint32  reqCount = pQuest->ReqItemCount[objective];
 	uint32  hasCount = questStatus.m_itemcount[objective];
