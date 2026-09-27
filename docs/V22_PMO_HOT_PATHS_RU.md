@@ -22,7 +22,10 @@ PMO добавляет собственную нагрузку. Сырые по�
 
 **A.** Разбор `{questId,objective}` в NeedQuestObjective без временного
 vector<string>, только для доказанного цифрового формата. Другие строки идут
-через прежний parser; signed range/исключения std::stoi сохранены. Нет кеша
+через прежний parser; signed range/исключения и MSVC errno std::stoi сохранены
+для обеих частей. Прямое преобразование цифры objective отвергнуто после
+отдельного воспроизведения различий errno; этот отрицательный результат приложен.
+Нет кеша
 между вызовами. NeedForQuest, GetDestinations, GrindTarget и scoring не менялись.
 
 **B.** В Vanilla без MEMORY_MONITOR FlyDirect получает маршрут по const
@@ -52,9 +55,9 @@ CheckValues, перенос Teldrassil/Darnassus. Partition evidence сохра�
 
 | Участок, один вызов | V21, нс | V22, нс |
 |---|---:|---:|
-| Квест, 4 objectives, entry отсутствует, refresh | 1867.19 | 1123.59 |
-| Квест, entry в первом destination | 735.59 | 546.84 |
-| 20 квестов, entry отсутствует | 40713.56 | 24962.08 |
+| Квест, 4 objectives, entry отсутствует, refresh | 1855.88 | 1160.21 |
+| Квест, entry в первом destination | 911.64 | 696.80 |
+| 20 квестов, entry отсутствует | 43524.15 | 30131.21 |
 | Только отключённая проверка полёта, маршрут 512 точек | 893.64 | 1.42 |
 | isUseful: 8 длинных условий, искомого нет | 311.64 | 66.89 |
 | Event: source и param по 64 символа | 108.71 | 60.06 |
@@ -88,7 +91,7 @@ Empty/short/SSO cases и generic-parser fallback могут дать нулев�
 - 19,360 quest observations: 0/1/2/4 objectives, несколько incomplete, item,
   creature/GO, completed/inactive/absent quests, несколько quests, destination
   first/last/miss, refresh/reset, PMO OFF/ON; точные traces без удаления событий.
-- Более 100 тысяч parser input/position comparisons, включая границы signed
+- Более 300 тысяч parser input/position/errno-state comparisons, включая границы signed
   int32, leading zero, signs, reward/nested/fallback, invalid_argument/out_of_range.
 - 120 полных GrindTarget → NeedForQuest → objective observations: 0/1/8/64/512,
   duplicates, attacker-first/active target, no target, quest/non-quest,

@@ -12,6 +12,7 @@
 #define NOMINMAX
 #include <windows.h>
 #include <random>
+#include <cerrno>
 #include "../allocations.h"
 
 static std::vector<Api> apis() { return {v21_api(),v22_api()}; }
@@ -40,9 +41,17 @@ static void ParserContracts() {
         inputs.push_back(i%3?"{"+q+","+o+"}":q+","+o);
     }
     for(const auto& s:inputs) for(unsigned n=0;n<4;++n) {
-        assert(Parse(v21_api(),s,n)==Parse(v22_api(),s,n));++count;
+        for(int initial:{0,EDOM,ERANGE}) {
+            errno=initial;const auto before=Parse(v21_api(),s,n);const int beforeErrno=errno;
+            errno=initial;const auto after=Parse(v22_api(),s,n);const int afterErrno=errno;
+            if(before!=after || beforeErrno!=afterErrno) {
+                std::cerr<<"Parser parity mismatch: "<<s<<" index="<<n<<" errno "<<beforeErrno<<" -> "<<afterErrno<<'\n';
+                std::exit(2);
+            }
+            ++count;
+        }
     }
-    std::cout<<"parser result/exception parity: "<<count<<" inputs/positions passed\n";
+    std::cout<<"parser result/exception parity: "<<count<<" inputs/positions/errno states passed\n";
 }
 static void Check(const Case& c,unsigned steps=4) {
     std::vector<Observation> control;

@@ -620,8 +620,9 @@ namespace
 
             if (digits)
             {
-                // stoi preserves the existing signed range and exceptions.
-                return index ? value[size - 2] - '0' : std::stoi(value.substr(1, size - 4));
+                // Keep stoi for both fields: besides range/exception behavior,
+                // MSVC also resets errno even for a one-digit objective.
+                return std::stoi(index ? value.substr(size - 2, 1) : value.substr(1, size - 4));
             }
         }
         return Qualified::getMultiQualifierInt(value, index, ",");

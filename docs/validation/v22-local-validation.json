@@ -67,11 +67,11 @@
     },
     "v22-quest": {
       "passed": true,
-      "sha256": "94e7045847176f77e1ce9e3e3b47c2960af72721561e07427fbbadd8a845d959"
+      "sha256": "4ab7731fbb2acbead32cc8c4dbe32c39c5db4a508d6d6bab884e6f93f8c3cd65"
     },
     "v22-quest-asan": {
       "passed": true,
-      "sha256": "6bce6a3e3c8678862f0e5bdc66711a891a0f6b4e3fd3e36d1ecfd61d8ea28084"
+      "sha256": "f3708d71d8c878857a2de24cf745ee38254f9c85bc97d2c01b6f26f716c4e851"
     },
     "v22-plumbing": {
       "passed": true,
@@ -94,6 +94,8 @@
     "cumulative-cpu.json": 39.86,
     "cumulative-final-cpu.json": 40.23,
     "cumulative-resume-cpu.json": 7.03,
+    "errno-fix-cpu.json": 39.72,
+    "errno-repro-build-cpu.json": 15.26,
     "extras-cpu.json": 32.3,
     "plumbing-b-cpu.json": 37.67,
     "plumbing-baseline-cpu.json": 31.04,
@@ -107,6 +109,7 @@
   },
   "runtime": "NOT RUN: server/client/proxy/database were not started, connected to or changed",
   "prior_failures": [
+    "Rejected direct objective-digit conversion: MSVC stoi resets errno; regression reproduced (0 versus EDOM), then fixed by retaining stoi for BOTH fields. Expanded input/result/exception/errno parity and ASan pass.",
     "New grind fixture counter narrowed uint64 to unsigned: corrected before final tests.",
     "Historical V21 source gate rejected the declared quest change: added full-file hash-checked V22 normalization, then corrected indentation in that test adapter. Original assertions retained; all suites then passed."
   ],
