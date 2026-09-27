@@ -109,7 +109,7 @@ bool MovementAction::MoveNear(WorldObject* target, float distance)
     return false;
 }
 
-bool MovementAction::FlyDirect(WorldPosition &startPosition, WorldPosition &endPosition, WorldPosition& movePosition, TravelPath movePath, bool idle)
+bool MovementAction::FlyDirect(WorldPosition &startPosition, WorldPosition &endPosition, WorldPosition& movePosition, FlyDirectPathArgument movePath, bool idle)
 {
     //Fly directly.
 #ifdef MANGOSBOT_ZERO

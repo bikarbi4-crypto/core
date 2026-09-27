@@ -4,6 +4,7 @@
 #include "playerbot/strategy/NamedObjectContext.h"
 #include "playerbot/PlayerbotAIConfig.h"
 #include "playerbot/TravelNode.h"
+#include "playerbot/MemoryMonitor.h"
 #include "WaypointMovementGenerator.h"
 #include "playerbot/strategy/values/HazardsValue.h"
 #include "playerbot/strategy/values/LastMovementValue.h"
@@ -20,7 +21,14 @@ namespace ai
     protected:
         bool ChaseTo(WorldObject *obj, float distance = 0.0f, float angle = 0.0f);
         bool MoveNear(uint32 mapId, float x, float y, float z, float distance = sPlayerbotAIConfig.contactDistance);
-        bool FlyDirect(WorldPosition &startPosition,  WorldPosition &endPosition , WorldPosition& movePosition, TravelPath movePath, bool idle);
+        // Vanilla's flight probe returns false without inspecting the path.
+        // Keep copy hooks for MEMORY_MONITOR and the other client branches.
+#if defined(MANGOSBOT_ZERO) && !defined(MEMORY_MONITOR)
+        using FlyDirectPathArgument = const TravelPath&;
+#else
+        using FlyDirectPathArgument = TravelPath;
+#endif
+        bool FlyDirect(WorldPosition &startPosition,  WorldPosition &endPosition , WorldPosition& movePosition, FlyDirectPathArgument movePath, bool idle);
 
         inline bool MoveTo(const WorldLocation& location, bool idle = false, bool react = false, bool noPath = false, bool ignoreEnemyTargets = false)
         {

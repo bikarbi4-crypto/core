@@ -251,12 +251,8 @@ bool MoveToTravelTargetAction::isUseful()
 
     if (ai->HasStrategy("follow", BotState::BOT_STATE_NON_COMBAT) || ai->HasStrategy("wander", BotState::BOT_STATE_NON_COMBAT))
     {
-        auto conditions = travelTarget->GetConditions();
-        for (auto& cond : conditions)
-        {
-            if (cond == "should travel named::guild order")
-                return false;
-        }
+        if (travelTarget->HasCondition("should travel named::guild order"))
+            return false;
     }
 
     if (bot->GetGroup() && !bot->GetGroup()->IsLeader(bot->GetObjectGuid()))
