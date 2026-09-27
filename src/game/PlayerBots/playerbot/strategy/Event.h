@@ -2,6 +2,7 @@
 
 #include "ObjectGuid.h"
 #include "WorldPacket.h"
+#include <utility>
 
 class Player;
 
@@ -29,10 +30,10 @@ namespace ai
             return *this;
         }
         Event() {}
-        Event(std::string source) : source(source) {}
-        Event(std::string source, std::string param, Player* owner = NULL) : source(source), param(param), owner(owner) {}
-        Event(std::string source, WorldPacket &packet, Player* owner = NULL) : source(source), packet(packet), owner(owner) {}
-        Event(std::string source, ObjectGuid object, Player* owner = NULL) : source(source), owner(owner) { packet << object; }
+        Event(std::string source) : source(std::move(source)) {}
+        Event(std::string source, std::string param, Player* owner = NULL) : source(std::move(source)), param(std::move(param)), owner(owner) {}
+        Event(std::string source, WorldPacket &packet, Player* owner = NULL) : source(std::move(source)), packet(packet), owner(owner) {}
+        Event(std::string source, ObjectGuid object, Player* owner = NULL) : source(std::move(source)), owner(owner) { packet << object; }
         virtual ~Event() {}
 
 	public:
