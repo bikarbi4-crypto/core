@@ -14,6 +14,11 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[3]
 P = 'src/game/PlayerBots/playerbot/'
+sys.dont_write_bytecode=True
+sys.path.insert(0,str(ROOT/'tests/playerbots/v22_hotpaths'))
+from v22_scope import normalize_v22, verify as verify_v22
+verify_v22()
+
 BASE = '2ea64f9d27563ac410bacea79de6e2e2671b01c3'
 out = Path(sys.argv[1]); out.mkdir(parents=True, exist_ok=True)
 manifest = {'baseline': BASE, 'variants': {}, 'sources': {}}
@@ -23,7 +28,7 @@ def read(path, current=False):
     s = (ROOT/path).read_text(encoding='utf-8-sig') if current else subprocess.check_output(
         ['git', 'show', f'{BASE}:{path}'], cwd=ROOT).decode('utf-8-sig')
     manifest['sources'][('working:' if current else BASE+':')+path] = hashlib.sha256(s.encode()).hexdigest()
-    return s
+    return normalize_v22(path,s) if current else s
 
 def block(s, signature, semi=False):
     start = s.index(signature); begin = s.index('{', start)

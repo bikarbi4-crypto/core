@@ -1,0 +1,38 @@
+{
+  "baseline": "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7",
+  "sources": {
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/values/QuestValues.cpp": "3a0e5f56b3491d4fc784c9c082992f11cc964cdce3da956b09a23fca60281e1c",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/PlayerbotAIAware.h": "01ec8535fe2fd14d6f06257095fc901fbe61321a23e953eaf7564638a9baff47",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/NamedObjectCache.h": "fe25b192ffe3cc091abda1bd78e143c3bcc1d12c288630f59a977554a907c5ee",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/NamedObjectContext.h": "2742e6df6c740daa1fd1100766e9e65fd8c3d9d95f674a20bae66a4b5f0b79fe",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/AiObject.h": "10eab26d5f06d382ac80b7d6cd0cc89b0e730bcf85ab2fc72943127fbb5cadcf",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/Value.h": "d46851649bf428560007d3f55dcdd516cfa440d4a50d30aacafff9d9fece0b50",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/AiObjectContext.h": "5dd155127ca83805bf4b6494a3199f06a17a3a4f51930cd952689024607f7f7e",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/values/QuestValues.h": "9aeebd3115244596b72fce1696dc0c2629a57a6a655a67547ca9fa77d968de5c",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/values/LootValues.h": "c82761b23ce6f50813c0e10ec01337b5bb92aa601b71b29f70ba48c7100ac7ef",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/values/VendorValues.h": "d9dc1ac0e34a85f1922f6d0dcb4b3aa8ac5bb86077d2c461688ccad8075b4e17",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/values/SharedValueContext.h": "4f11dda2c1a65362ef5bcde00141ff2002e21ce2a840ac2015cf2ecf079765dd",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/TravelMgr.cpp": "4c74dae980e38ba7af1b3c7378be58a7cea42a2d5779fa95a71149832d9f561c",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/values/LootValues.cpp": "15e697b3764143b6a4d9789a391f2b92c567fd257d932acb668f1446ff31ab70",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/values/VendorValues.cpp": "159ba64c4ed6dc97bf943ba571860139ee56240a17e07758f79ed3c42aafaf24",
+    "working:src/game/PlayerBots/playerbot/strategy/values/QuestValues.cpp": "3a0e5f56b3491d4fc784c9c082992f11cc964cdce3da956b09a23fca60281e1c",
+    "working:src/game/PlayerBots/playerbot/PlayerbotAIAware.h": "01ec8535fe2fd14d6f06257095fc901fbe61321a23e953eaf7564638a9baff47",
+    "working:src/game/PlayerBots/playerbot/strategy/NamedObjectCache.h": "fe25b192ffe3cc091abda1bd78e143c3bcc1d12c288630f59a977554a907c5ee",
+    "working:src/game/PlayerBots/playerbot/strategy/NamedObjectContext.h": "2742e6df6c740daa1fd1100766e9e65fd8c3d9d95f674a20bae66a4b5f0b79fe",
+    "working:src/game/PlayerBots/playerbot/strategy/AiObject.h": "10eab26d5f06d382ac80b7d6cd0cc89b0e730bcf85ab2fc72943127fbb5cadcf",
+    "working:src/game/PlayerBots/playerbot/strategy/Value.h": "d46851649bf428560007d3f55dcdd516cfa440d4a50d30aacafff9d9fece0b50",
+    "working:src/game/PlayerBots/playerbot/strategy/AiObjectContext.h": "5dd155127ca83805bf4b6494a3199f06a17a3a4f51930cd952689024607f7f7e",
+    "working:src/game/PlayerBots/playerbot/strategy/values/QuestValues.h": "9aeebd3115244596b72fce1696dc0c2629a57a6a655a67547ca9fa77d968de5c",
+    "working:src/game/PlayerBots/playerbot/strategy/values/LootValues.h": "c82761b23ce6f50813c0e10ec01337b5bb92aa601b71b29f70ba48c7100ac7ef",
+    "working:src/game/PlayerBots/playerbot/strategy/values/VendorValues.h": "d9dc1ac0e34a85f1922f6d0dcb4b3aa8ac5bb86077d2c461688ccad8075b4e17",
+    "working:src/game/PlayerBots/playerbot/strategy/values/SharedValueContext.h": "4f11dda2c1a65362ef5bcde00141ff2002e21ce2a840ac2015cf2ecf079765dd",
+    "working:src/game/PlayerBots/playerbot/TravelMgr.cpp": "4c74dae980e38ba7af1b3c7378be58a7cea42a2d5779fa95a71149832d9f561c",
+    "working:src/game/PlayerBots/playerbot/strategy/values/LootValues.cpp": "15e697b3764143b6a4d9789a391f2b92c567fd257d932acb668f1446ff31ab70",
+    "working:src/game/PlayerBots/playerbot/strategy/values/VendorValues.cpp": "159ba64c4ed6dc97bf943ba571860139ee56240a17e07758f79ed3c42aafaf24"
+  },
+  "substitutions": [
+    "game services",
+    "clock in trace build",
+    "shared factory registrations"
+  ]
+}

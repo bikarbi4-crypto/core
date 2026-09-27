@@ -14,6 +14,7 @@ def extract(text,sig):
  return text[start:i]
 sys.dont_write_bytecode=True
 from source_scope import verify
+from v22_scope import normalize_v22
 (out/'source-scope.json').write_text(json.dumps(verify(),indent=2),encoding='utf-8')
 evidence={'baseline':BASE,'variants':{},'protected':{}}
 sigs=['ActivePiorityType PlayerbotAI::GetPriorityType()', 'std::pair<uint32, uint32> PlayerbotAI::GetPriorityBracket(',
@@ -48,7 +49,7 @@ for path in ['PerformanceMonitor.cpp','PerformanceMonitor.h','strategy/values/Qu
  'strategy/values/GrindTargetValue.cpp','strategy/values/PossibleTargetsValue.cpp','strategy/AiObjectContext.cpp',
  'strategy/AiObjectContext.h','strategy/Value.h','TravelMgr.cpp','PlayerbotAIConfig.cpp','PlayerbotAIConfig.h']:
  if (ROOT/P/path).exists():
-  assert old(P+path)==current(P+path),path
+  assert old(P+path)==normalize_v22(P+path,current(P+path)),path
   evidence['protected'][P+path]=hashlib.sha256(current(P+path).encode()).hexdigest()
 # Source wiring checks: the standalone executable never creates a real session.
 wiring=[('src/game/Objects/Player.cpp','void Player::AddToWorld()','StartActivityPresence();'),

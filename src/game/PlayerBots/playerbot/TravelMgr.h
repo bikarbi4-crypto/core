@@ -378,9 +378,9 @@ namespace ai
 		void SetConditions(std::vector<std::string> conditions) { travelConditions = conditions; }
 		std::vector<std::string> GetConditions() { return travelConditions; }
         bool HasCondition(const char* condition) const
-		{
-			return std::find(travelConditions.begin(), travelConditions.end(), condition) != travelConditions.end();
-		}
+        {
+            return std::find(travelConditions.begin(), travelConditions.end(), condition) != travelConditions.end();
+        }
 
 		void SetStatus(TravelStatus status);
 		void SetExpireIn(uint32 expireMs) { statusTime = GetExpiredTime() + expireMs; }

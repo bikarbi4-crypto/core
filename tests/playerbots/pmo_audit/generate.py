@@ -13,6 +13,11 @@ import sys
 
 ROOT=Path(__file__).resolve().parents[3]
 P='src/game/PlayerBots/playerbot/'
+sys.dont_write_bytecode=True
+sys.path.insert(0,str(ROOT/'tests/playerbots/v22_hotpaths'))
+from v22_scope import normalize_v22, verify as verify_v22
+verify_v22()
+
 BASE='fbab350b6cde7a40735d778986382807d6287048'
 out=Path(sys.argv[1]); out.mkdir(parents=True,exist_ok=True)
 manifest={'baseline':BASE,'sources':{},'fragments':{},'controlled_substitutions':['world position coordinates/hooks','game work in scope fragments','action services','trace-only deterministic clock/probes']}
@@ -26,7 +31,7 @@ def read(path,current):
     path=P+path
     s=(ROOT/path).read_text(encoding='utf-8-sig') if current else subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT).decode('utf-8-sig')
     manifest['sources'][('working:' if current else BASE+':')+path]=hashlib.sha256(s.encode()).hexdigest()
-    return s
+    return normalize_v22(path,s) if current else s
 
 def mask(s,strings=False):
     pattern=r'//[^\n]*|/\*.*?\*/'

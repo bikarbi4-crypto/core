@@ -1,8 +1,12 @@
 """Allow only declared V21 functions when checking cumulative/non-PMO code."""
 from pathlib import Path
-import hashlib,json,re,subprocess
+import hashlib,json,re,subprocess,sys
 ROOT=Path(__file__).resolve().parents[3]
 BASE='169cb7712c8b704a3fe274cbf42a0cbb53fcb90a'
+sys.dont_write_bytecode=True
+sys.path.insert(0,str(ROOT/'tests/playerbots/v22_hotpaths'))
+from v22_scope import APPROVED as V22_FILES, normalize_v22, verify as verify_v22
+
 P='src/game/PlayerBots/playerbot/'
 def old(path):return subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT).decode('utf-8-sig').replace('\r\n','\n')
 def extract(text,sig):
@@ -28,6 +32,7 @@ def normalize_v21(file,text):
   text=text.replace(extract(text,sig)+'\n\n','')
  return text
 def verify():
+ verify_v22()
  evidence={'baseline':BASE,'normalized_exact':[],'changed_source':{}}
  for file in ['PlayerbotAI.cpp','RandomPlayerbotMgr.cpp']:
   text=(ROOT/P/file).read_text(encoding='utf-8-sig')
@@ -42,6 +47,8 @@ def verify():
   if path=='src/shared/Progression.h':
    template=(ROOT/'cmake/generators/Progression.h.in').read_text(encoding='utf-8-sig')
    assert content in [old(path),template.replace('@supported_build@','5875')];continue
+  if path in V22_FILES:
+   normalize_v22(path,content);continue
   assert path in allowed,'Changed protected source: '+path
   evidence['changed_source'][path]=hashlib.sha256(content.encode()).hexdigest()
  for path in ['PlayerActivityPresence.h','PlayerActivityPresence.cpp']:

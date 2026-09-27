@@ -1,0 +1,118 @@
+{
+  "baseline": "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7",
+  "checks": {
+    "pmo": {
+      "passed": true,
+      "sha256": "9acfd84482773b8fb6ff5816a44ccc9ff0403cd7be635fcf3e90b5a43a04ba8b"
+    },
+    "pmo-asan": {
+      "passed": true,
+      "sha256": "2bc98f02fec40cc518526ea40955c1982a851afc9208b2f6755675a70d3e8ad5"
+    },
+    "cumulative": {
+      "passed": true,
+      "sha256": "f5ec7f359c00d91738669d835ecbf03bcc2b95db63214ac8e0ed3c0fa1481876"
+    },
+    "cumulative-asan": {
+      "passed": true,
+      "sha256": "c585143387f15321f54550168dbe0642c63cf3e1d5d0cdcb010901086337c51c"
+    },
+    "quest-old": {
+      "passed": true,
+      "sha256": "d9347d723867bc5b5034868e5ca6957c61aa5f4270a9dec39da33629bd09868c"
+    },
+    "quest-old-asan": {
+      "passed": true,
+      "sha256": "d6cacd6a115d713a81de3a9b8bfba3cb57f8b41760660be4d37beeb8f3cfe31c"
+    },
+    "v20-shared": {
+      "passed": true,
+      "sha256": "63c9c7f069482531273413e647252c222d4a9348432f4f71e1cd1ea207d60c5d"
+    },
+    "v20-shared-asan": {
+      "passed": true,
+      "sha256": "0a69a487a5a9ee7139e524bdd1efc13604d737a23da5ed57bacb172befa2f4b0"
+    },
+    "v20-targets": {
+      "passed": true,
+      "sha256": "ac98a7dd8652e7a66b53c36a5199ea406047f878f12b8babd905ce81d86e0165"
+    },
+    "v20-targets-asan": {
+      "passed": true,
+      "sha256": "69282a6b4db9e294780e4c38fbf2395beeac2808e59679713a3766e950c93f0c"
+    },
+    "v20-checkvalues": {
+      "passed": true,
+      "sha256": "b21d91feb129b63a43b0a5b15fdb691e7d24a9d32b74b9d0b5c51b32a9e91a7d"
+    },
+    "v20-checkvalues-asan": {
+      "passed": true,
+      "sha256": "9a62ada7e1a44b2c5d57c081f25f74b253770647ef56845f5c5ba82c4e1ef62a"
+    },
+    "v20-pmo": {
+      "passed": true,
+      "sha256": "4d32aebd3e995420850f6901b6047643c03aa75eec4326c69e013292bfcae6c9"
+    },
+    "v20-pmo-asan": {
+      "passed": true,
+      "sha256": "66114cacb8c8ca3dcabf695db17853d5bbfedfc1b7255a55f37f0d63b76d06fb"
+    },
+    "v21-presence": {
+      "passed": true,
+      "sha256": "193eba1b85cd4d5a2aa43d919e44d25167befedc8bdc9a0e9227c5f5308ccd86"
+    },
+    "v21-presence-asan": {
+      "passed": true,
+      "sha256": "82ce0be18ddfd44215d562077c2ca0a0704b12e3e144b332ac7cae9da45f6a93"
+    },
+    "v22-quest": {
+      "passed": true,
+      "sha256": "94e7045847176f77e1ce9e3e3b47c2960af72721561e07427fbbadd8a845d959"
+    },
+    "v22-quest-asan": {
+      "passed": true,
+      "sha256": "6bce6a3e3c8678862f0e5bdc66711a891a0f6b4e3fd3e36d1ecfd61d8ea28084"
+    },
+    "v22-plumbing": {
+      "passed": true,
+      "sha256": "3e3a4e3b0fd2a1637b7720bd932337c1fb483bd3a9ab2990df74f7547fee1339"
+    },
+    "v22-plumbing-asan": {
+      "passed": true,
+      "sha256": "1beacf3d755ed942d9dc2ddc51dbfeffadde49feefa4ac3b92e2b2d838691866"
+    },
+    "memory-asan": {
+      "passed": true,
+      "sha256": "c64536e7f0222219d16111552ea97996292bddad48a51c2650a3b51958181fde"
+    },
+    "v17_value_chain": {
+      "output_lines": 828,
+      "passed": true
+    }
+  },
+  "cpu_peaks": {
+    "cumulative-cpu.json": 39.86,
+    "cumulative-final-cpu.json": 40.23,
+    "cumulative-resume-cpu.json": 7.03,
+    "extras-cpu.json": 32.3,
+    "plumbing-b-cpu.json": 37.67,
+    "plumbing-baseline-cpu.json": 31.04,
+    "plumbing-c-cpu.json": 34.6,
+    "quest-asan-cpu.json": 38.22,
+    "quest-baseline-cpu.json": 36.66,
+    "quest-candidate-cpu.json": 46.34,
+    "quest-final-cpu.json": 36.29,
+    "quest-final-repair-cpu.json": 39.77,
+    "release-bench-cpu.json": 36.6
+  },
+  "runtime": "NOT RUN: server/client/proxy/database were not started, connected to or changed",
+  "prior_failures": [
+    "New grind fixture counter narrowed uint64 to unsigned: corrected before final tests.",
+    "Historical V21 source gate rejected the declared quest change: added full-file hash-checked V22 normalization, then corrected indentation in that test adapter. Original assertions retained; all suites then passed."
+  ],
+  "limits": [
+    "Standalone deterministic world services; no live pathfinding mesh or gameplay test.",
+    "No server-wide speedup claim. PMO implementation/scopes and all production sources except six audited files identical to V21.",
+    "Final paired benchmarks ran sequentially with no concurrent build job. Allocation probes are separate executables."
+  ]
+}

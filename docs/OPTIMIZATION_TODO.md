@@ -1,8 +1,9 @@
 # Optimization baseline and pending validation
 
-Accepted development baseline: V20 `169cb7712c8b704a3fe274cbf42a0cbb53fcb90a`,
-branch `vmangos-v20-value-allocation`. Cumulative V0–V20 remains enabled.
-V21 `vmangos-v21-player-presence` is the next validation release from this parent.
+Accepted development baseline: V21 `6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7`,
+branch `vmangos-v21-player-presence`. Cumulative V0–V21 remains enabled.
+V20 `169cb7712c8b704a3fe274cbf42a0cbb53fcb90a` remains a fallback.
+V22 `vmangos-v22-pmo-hotpaths` is the next validation release from V21.
 Diagnostic `4b9d62de1c5dbe1398f5067596fa9111f00e2fdd` is reference only.
 The default branch and live installation are not changed by this release.
 
@@ -28,7 +29,7 @@ accepted when they were written; this decision supersedes them for development.
   their difference is not an overall optimization percentage.
 
 Existing unrelated Mema, AddCooldown, UseItem residuals and other open runtime
-investigations remain pending; V20 does not close or modify them.
+investigations remain pending; V22 does not close or modify them.
 
 - [x] V19 PMO OFF guards, nested/toggle cleanup and late map registration,
   with standalone source contracts, MSVC ASan and same-work microbenchmarks.
@@ -60,11 +61,21 @@ investigations remain pending; V20 does not close or modify them.
   signed int32 limits, overload resolution and manual qualifiers before considering
   an alternative formatter. No new inter-tick cache is authorized by this item.
 
-- [ ] V21 user-only A/B/C/D gameplay validation: empty, human in-world, logout
-  to character screen, full disconnect; include reconnect/transfer/GM/selfbot.
+- [x] V21 user A/B/C/D presence validation: empty, human in-world, logout
+  to character screen, full disconnect. Accepted by the user for V22.
+- [ ] Extended presence scenarios: reconnect/transfer/GM/selfbot.
   Record `rndbot presence`, `rndbot cpu`, `rndbot diff`, phase times and logs.
 - [ ] Audit unused legacy `GetRandomPlayer` numeric map indexing under read lock.
 - [ ] Unused `HasManyPlayersNearby`: review its legacy squared/rounded radius
   contract separately before adding consumers or changing semantics.
 - [ ] Existing async login manager's mixed raw-Player snapshot lifetime and social
   consumers' naming/definitions: separate population/social work, not V21 activity.
+
+- [ ] V22 user-only runtime comparison, same population/config/route/quests,
+  PMO OFF steady samples and separate short ON windows. Confirm combat, quest,
+  travel, target switching and V21 presence; no whole-server percentage from
+  standalone microbenchmarks.
+- [ ] Separate V22.1/V23 partition experiment: user PMO-run pre-window snapshot
+  instance 11 ~674 bots / ~486 active / ~94 ms (players ~88.6 ms), instance 12
+  ~69 / ~52 / ~14.9 ms; Teldrassil + Darnassus ~286 bots / ~187 active.
+  Investigate only with matched runtime evidence. V22 makes NO partition changes.

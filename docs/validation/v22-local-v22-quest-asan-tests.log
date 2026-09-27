@@ -1,0 +1,41 @@
+UpdateCTestConfiguration  from :C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v22/v22-quest-asan-build/DartConfiguration.tcl
+Test project C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v22/v22-quest-asan-build
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: v22_quest_contracts
+
+1: Test command: C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v22\v22-quest-asan-build\RelWithDebInfo\quest_test.exe
+1: Working Directory: C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v22/v22-quest-asan-build
+1: Environment variable modifications: 
+1:  PATH=path_list_prepend:C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64
+1: Test timeout computed to be: 180
+1: parser result/exception parity: 100276 inputs/positions passed
+1: destination counts: v21 objectives=0 calls=0 distances=0
+1: destination counts: v22 objectives=0 calls=0 distances=0
+1: destination counts: v21 objectives=1 calls=1 distances=16
+1: destination counts: v22 objectives=1 calls=1 distances=16
+1: destination counts: v21 objectives=2 calls=1 distances=16
+1: destination counts: v22 objectives=2 calls=1 distances=16
+1: destination counts: v21 objectives=4 calls=1 distances=16
+1: destination counts: v22 objectives=4 calls=1 distances=16
+1: quest parity: 19360 observations passed across V21 and V22; policy/reentry/exception/qualifier checks passed
+1/2 Test #1: v22_quest_contracts ..............   Passed    9.45 sec
+test 2
+    Start 2: v22_grind_quest_chain
+
+2: Test command: C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v22\v22-quest-asan-build\RelWithDebInfo\chain_test.exe
+2: Working Directory: C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v22/v22-quest-asan-build
+2: Environment variable modifications: 
+2:  PATH=path_list_prepend:C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64
+2: Test timeout computed to be: 10000000
+2: PASS 120 complete GrindTarget -> NeedForQuest -> NeedQuestObjective observations; target, duplicate candidate order, RNG draws and Value traces match
+2/2 Test #2: v22_grind_quest_chain ............   Passed    0.40 sec
+
+100% tests passed out of 2
+
+Total Test time (real) =   9.90 sec

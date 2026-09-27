@@ -1,0 +1,39 @@
+{
+  "baseline": "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7",
+  "sources": {
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/SharedDefines.h": "82a9b5eb387e316f7fe4a04664f0f8e7abe59e33a8ff6805286de36f3a85b93c",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/WorldPosition.h": "26e68e3160ab6df95309582c799dcb95753ad429d803786308b908ae4977f1be",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/TravelNode.h": "e58e2dcbc7184e32e3fbe64e776c14cb864e1b8bd70041f94864ebe8cbe96221",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/actions/MovementActions.h": "0ac418d652e7c2b8ce8bcaf87f5b02dfd8f79e6eb9dcda0e63b43048e6ff45d9",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/actions/MovementActions.cpp": "92fbf0aaeac3bcbfa16adb4ee84e6e60f1690973257d39b127fd754e76cbeef8",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/TravelMgr.h": "0f3e74d665b38c5fa22d4c20a6addb025f47c0c6cd6cb479334963164c3d93b2",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/actions/MoveToTravelTargetAction.cpp": "0f0e048433ed954b90edd8c04b6314e2eeb2ef482eaf7ca84f68ea11f2cb11a8",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/Server/WorldPacket.h": "12318add30956a2cc1d215b19a2bde090e2d9283ec281b20a6cb8c7a4629833d",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/Event.h": "821032d51bc0d622a22f11ac6d4ebcdae9b4ffbbcfd3880261ee62ae9775bd44",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/Event.cpp": "845cb62dc977b932461460d1e17b07b7ade39ec2a2ef5b888e44047787d4bc50",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/AiObject.h": "10eab26d5f06d382ac80b7d6cd0cc89b0e730bcf85ab2fc72943127fbb5cadcf",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/Trigger.h": "4de3acc9a801eb4f1831595c7bb8efd120a6d3faaeb0a2c70eabb1d029d5151c",
+    "6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7:src/game/PlayerBots/playerbot/strategy/Trigger.cpp": "7b1fecc6f62cfd3aad261bd5ef7c5e75c3f94ab3eb618847b0a9fc54ff6e4037",
+    "working:src/game/SharedDefines.h": "82a9b5eb387e316f7fe4a04664f0f8e7abe59e33a8ff6805286de36f3a85b93c",
+    "working:src/game/PlayerBots/playerbot/WorldPosition.h": "26e68e3160ab6df95309582c799dcb95753ad429d803786308b908ae4977f1be",
+    "working:src/game/PlayerBots/playerbot/TravelNode.h": "e58e2dcbc7184e32e3fbe64e776c14cb864e1b8bd70041f94864ebe8cbe96221",
+    "working:src/game/PlayerBots/playerbot/strategy/actions/MovementActions.h": "0ac418d652e7c2b8ce8bcaf87f5b02dfd8f79e6eb9dcda0e63b43048e6ff45d9",
+    "working:src/game/PlayerBots/playerbot/strategy/actions/MovementActions.cpp": "92fbf0aaeac3bcbfa16adb4ee84e6e60f1690973257d39b127fd754e76cbeef8",
+    "working:src/game/PlayerBots/playerbot/TravelMgr.h": "0f3e74d665b38c5fa22d4c20a6addb025f47c0c6cd6cb479334963164c3d93b2",
+    "working:src/game/PlayerBots/playerbot/strategy/actions/MoveToTravelTargetAction.cpp": "0f0e048433ed954b90edd8c04b6314e2eeb2ef482eaf7ca84f68ea11f2cb11a8",
+    "working:src/game/Server/WorldPacket.h": "12318add30956a2cc1d215b19a2bde090e2d9283ec281b20a6cb8c7a4629833d",
+    "working:src/game/PlayerBots/playerbot/strategy/Event.h": "821032d51bc0d622a22f11ac6d4ebcdae9b4ffbbcfd3880261ee62ae9775bd44",
+    "working:src/game/PlayerBots/playerbot/strategy/Event.cpp": "845cb62dc977b932461460d1e17b07b7ade39ec2a2ef5b888e44047787d4bc50",
+    "working:src/game/PlayerBots/playerbot/strategy/AiObject.h": "10eab26d5f06d382ac80b7d6cd0cc89b0e730bcf85ab2fc72943127fbb5cadcf",
+    "working:src/game/PlayerBots/playerbot/strategy/Trigger.h": "4de3acc9a801eb4f1831595c7bb8efd120a6d3faaeb0a2c70eabb1d029d5151c",
+    "working:src/game/PlayerBots/playerbot/strategy/Trigger.cpp": "7b1fecc6f62cfd3aad261bd5ef7c5e75c3f94ab3eb618847b0a9fc54ff6e4037"
+  },
+  "substitutions": [
+    "ByteBuffer storage fixture",
+    "AiObject constructor fixture",
+    "unused Trigger target services",
+    "world services in isUseful",
+    "trace-only copy counter"
+  ],
+  "compiled_client": "MANGOSBOT_ZERO"
+}
