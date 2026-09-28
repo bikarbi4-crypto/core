@@ -1,0 +1,117 @@
+{
+  "source_sha256": "4bb51538713545197932d5792e1bcb78b5972d3798f77ecec4e385a8d7231237",
+  "physical_lines": 6528,
+  "world_seconds": 5881.0,
+  "diffs": 70,
+  "cpu_snapshots": 14,
+  "partition_records_checked": 182,
+  "zone_records_checked": 1096,
+  "presence": [
+    {
+      "time": "2026-09-27 16:07:27",
+      "line": 2174,
+      "human_in_world": 1,
+      "activity_has_players": 1,
+      "mixed_registry": 1,
+      "client_writes": 1,
+      "bot_registration_writes": 0,
+      "move_writes": 0,
+      "erased": 0
+    },
+    {
+      "time": "2026-09-27 16:10:09",
+      "line": 2399,
+      "human_in_world": 1,
+      "activity_has_players": 1,
+      "mixed_registry": 230,
+      "client_writes": 1,
+      "bot_registration_writes": 229,
+      "move_writes": 0,
+      "erased": 0
+    },
+    {
+      "time": "2026-09-27 16:26:55",
+      "line": 3682,
+      "human_in_world": 1,
+      "activity_has_players": 1,
+      "mixed_registry": 230,
+      "client_writes": 2,
+      "bot_registration_writes": 229,
+      "move_writes": 0,
+      "erased": 1
+    },
+    {
+      "time": "2026-09-27 16:37:37",
+      "line": 4330,
+      "human_in_world": 1,
+      "activity_has_players": 1,
+      "mixed_registry": 230,
+      "client_writes": 2,
+      "bot_registration_writes": 229,
+      "move_writes": 0,
+      "erased": 1
+    },
+    {
+      "time": "2026-09-27 17:07:34",
+      "line": 5836,
+      "human_in_world": 1,
+      "activity_has_players": 1,
+      "mixed_registry": 230,
+      "client_writes": 2,
+      "bot_registration_writes": 229,
+      "move_writes": 0,
+      "erased": 1
+    }
+  ],
+  "window_stats": [
+    {
+      "name": "\u041f\u043e\u0441\u043b\u0435 \u0432\u0445\u043e\u0434\u0430",
+      "start": "2026-09-27 16:10:07",
+      "end": "2026-09-27 16:13:18",
+      "n": 7,
+      "active_mean": 2146.4285714285716,
+      "diff10_mean": 93.85714285714286,
+      "diff60_mean": 99.71428571428571,
+      "active_min": 2119,
+      "active_max": 2165
+    },
+    {
+      "name": "\u0421\u0435\u0440\u0435\u0434\u0438\u043d\u0430",
+      "start": "2026-09-27 16:25:09",
+      "end": "2026-09-27 16:41:29",
+      "n": 37,
+      "active_mean": 2065.945945945946,
+      "diff10_mean": 98.94594594594595,
+      "diff60_mean": 98.97297297297297,
+      "active_min": 1915,
+      "active_max": 2170
+    },
+    {
+      "name": "\u041f\u043e\u0437\u0434\u043d\u0438\u0439 \u0443\u0447\u0430\u0441\u0442\u043e\u043a",
+      "start": "2026-09-27 17:00:58",
+      "end": "2026-09-27 17:13:35",
+      "n": 18,
+      "active_mean": 2328.3888888888887,
+      "diff10_mean": 99.05555555555556,
+      "diff60_mean": 99.16666666666667,
+      "active_min": 2228,
+      "active_max": 2442
+    }
+  ],
+  "late_minus_middle_active": 262.44294294294286,
+  "error_counts": {
+    "Player::AddCooldown": 1457,
+    "UseItemAction": 1017,
+    "Item::AddToUpdateQueueOf": 185,
+    "SQL ERROR": 2,
+    "Duplicate entry": 2,
+    "Scheduled instance creation": 8,
+    "MoveSplineInitArgs::Validate": 1,
+    "Performance monitor": 0
+  },
+  "item_queue_unique_guids": 68,
+  "burst_records_checked": 20,
+  "pmo_records": 0,
+  "shutdown_observed": false,
+  "verdict": "Numerical handoff claims reproduced from original SHA-matched log. No paired V21/V22 throughput comparison, p95/p99 or causal attribution available."
+}

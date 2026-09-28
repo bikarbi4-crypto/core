@@ -1,0 +1,9 @@
+{
+  "baseline": "24e11eb41b85ab74437dfc1737289c2bcca42de4",
+  "changed_source": {
+    "src/game/PlayerBots/playerbot/strategy/Engine.cpp": "b3a474914e2d41a206cd7ef4302c91e618176f8547e99ac1a5940cb1fc8c7398",
+    "src/game/PlayerBots/playerbot/strategy/values/AttackersValue.cpp": "c2d5e25cccfa67d0934b05727c380bea5dcde90a84fb2a599f87effe65d2297a"
+  },
+  "other_production_sources": "byte-identical to V22 (normalized line endings); generated client header checked separately",
+  "historical_normalization": "only the two frozen whole files; actual V23 bodies execute in separate normal/ASan suites"
+}

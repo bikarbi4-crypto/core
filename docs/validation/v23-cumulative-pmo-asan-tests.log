@@ -1,0 +1,22 @@
+UpdateCTestConfiguration  from :C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/pmo-asan-build/DartConfiguration.tcl
+Test project C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/pmo-asan-build
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: pmo_contracts
+
+1: Test command: C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\pmo-asan-build\RelWithDebInfo\pmo_test.exe
+1: Working Directory: C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/pmo-asan-build
+1: Environment variable modifications: 
+1:  PATH=path_list_prepend:C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64
+1: Test timeout computed to be: 120
+1: PMO PASS: 5269 parity/toggle observations; 47 callsites; OFF counters zero; 512 concurrent map/instance registrations.
+1/1 Test #1: pmo_contracts ....................   Passed    0.33 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.35 sec

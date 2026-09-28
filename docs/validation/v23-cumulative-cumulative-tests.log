@@ -1,0 +1,44 @@
+UpdateCTestConfiguration  from :C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/cumulative-build/DartConfiguration.tcl
+Test project C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/cumulative-build
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: context_cache
+
+1: Test command: C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\cumulative-build\RelWithDebInfo\context_cache_test.exe
+1: Working Directory: C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/cumulative-build
+1: Test timeout computed to be: 60
+1: PASS: 400000 differential operations; 20000 sorted inserts; stable nodes; cached nulls; qualified names; reentrant factories and ordered updates; ownership.
+1/4 Test #1: context_cache ....................   Passed    0.48 sec
+test 2
+    Start 2: action_lists
+
+2: Test command: C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\cumulative-build\RelWithDebInfo\action_lists_test.exe
+2: Working Directory: C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/cumulative-build
+2: Test timeout computed to be: 60
+2: PASS: production V11-V13 ownership matrix, null/empty distinction, exact float bits, names, all four callback-before-clone paths.
+2/4 Test #2: action_lists .....................   Passed    0.03 sec
+test 3
+    Start 3: value_metadata
+
+3: Test command: C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\cumulative-build\RelWithDebInfo\value_metadata_test.exe
+3: Working Directory: C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/cumulative-build
+3: Test timeout computed to be: 60
+3: PASS: production V16/V17 refresh, PMO, Calculate, LazyGet, Set, Reset, reentry, manual/single/memory policies, five consumers and zero element copies; scalar results cannot dangle.
+3/4 Test #3: value_metadata ...................   Passed    0.14 sec
+test 4
+    Start 4: grind_target
+
+4: Test command: C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\cumulative-build\RelWithDebInfo\grind_target_test.exe
+4: Working Directory: C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/cumulative-build
+4: Test timeout computed to be: 60
+4: PASS: 2195 deterministic production V16/A/V17 scenarios; target, random draws, debug messages, refresh reads and distance ordering match.
+4/4 Test #4: grind_target .....................   Passed    0.11 sec
+
+100% tests passed out of 4
+
+Total Test time (real) =   1.06 sec

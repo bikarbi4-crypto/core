@@ -1,0 +1,282 @@
+{
+  "baseline": "24e11eb41b85ab74437dfc1737289c2bcca42de4",
+  "cumulative_suites": {
+    "pmo": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 120",
+        "1: PMO PASS: 5269 parity/toggle observations; 47 callsites; OFF counters zero; 512 concurrent map/instance registrations.",
+        "1/1 Test #1: pmo_contracts ....................   Passed    0.03 sec",
+        "100% tests passed out of 1",
+        "Total Test time (real) =   0.05 sec"
+      ],
+      "log": "pmo-tests.log"
+    },
+    "pmo-asan": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 120",
+        "1: PMO PASS: 5269 parity/toggle observations; 47 callsites; OFF counters zero; 512 concurrent map/instance registrations.",
+        "1/1 Test #1: pmo_contracts ....................   Passed    0.33 sec",
+        "100% tests passed out of 1",
+        "Total Test time (real) =   0.35 sec"
+      ],
+      "log": "pmo-asan-tests.log"
+    },
+    "cumulative": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 60",
+        "1: PASS: 400000 differential operations; 20000 sorted inserts; stable nodes; cached nulls; qualified names; reentrant factories and ordered updates; ownership.",
+        "1/4 Test #1: context_cache ....................   Passed    0.48 sec",
+        "2: Test timeout computed to be: 60",
+        "2: PASS: production V11-V13 ownership matrix, null/empty distinction, exact float bits, names, all four callback-before-clone paths.",
+        "2/4 Test #2: action_lists .....................   Passed    0.03 sec",
+        "3: Test timeout computed to be: 60",
+        "3: PASS: production V16/V17 refresh, PMO, Calculate, LazyGet, Set, Reset, reentry, manual/single/memory policies, five consumers and zero element copies; scalar results cannot dangle.",
+        "3/4 Test #3: value_metadata ...................   Passed    0.14 sec",
+        "4: Test timeout computed to be: 60",
+        "4: PASS: 2195 deterministic production V16/A/V17 scenarios; target, random draws, debug messages, refresh reads and distance ordering match.",
+        "4/4 Test #4: grind_target .....................   Passed    0.11 sec",
+        "100% tests passed out of 4",
+        "Total Test time (real) =   1.06 sec"
+      ],
+      "log": "cumulative-tests.log"
+    },
+    "cumulative-asan": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 60",
+        "1: PASS: 400000 differential operations; 20000 sorted inserts; stable nodes; cached nulls; qualified names; reentrant factories and ordered updates; ownership.",
+        "1/4 Test #1: context_cache ....................   Passed    1.87 sec",
+        "2: Test timeout computed to be: 60",
+        "2: PASS: production V11-V13 ownership matrix, null/empty distinction, exact float bits, names, all four callback-before-clone paths.",
+        "2/4 Test #2: action_lists .....................   Passed    0.05 sec",
+        "3: Test timeout computed to be: 60",
+        "3: PASS: production V16/V17 refresh, PMO, Calculate, LazyGet, Set, Reset, reentry, manual/single/memory policies, five consumers and zero element copies; scalar results cannot dangle.",
+        "3/4 Test #3: value_metadata ...................   Passed    0.08 sec",
+        "4: Test timeout computed to be: 60",
+        "4: PASS: 2195 deterministic production V16/A/V17 scenarios; target, random draws, debug messages, refresh reads and distance ordering match.",
+        "4/4 Test #4: grind_target .....................   Passed    2.58 sec",
+        "100% tests passed out of 4",
+        "Total Test time (real) =   4.63 sec"
+      ],
+      "log": "cumulative-asan-tests.log"
+    },
+    "quest-old": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 120",
+        "1: quest parity: 34000 observations passed across V17.1, A, B, C and V18; policy/reentry/exception/qualifier checks passed",
+        "1/1 Test #1: quest_contracts ..................   Passed    0.57 sec",
+        "100% tests passed out of 1",
+        "Total Test time (real) =   0.59 sec"
+      ],
+      "log": "quest-old-tests.log"
+    },
+    "quest-old-asan": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 120",
+        "1: quest parity: 34000 observations passed across V17.1, A, B, C and V18; policy/reentry/exception/qualifier checks passed",
+        "1/1 Test #1: quest_contracts ..................   Passed   18.84 sec",
+        "100% tests passed out of 1",
+        "Total Test time (real) =  18.86 sec"
+      ],
+      "log": "quest-old-asan-tests.log"
+    },
+    "chain-old": {
+      "pass_lines": [
+        "case,type,policy,mode,operation,stage,list_size,pass,variant,iterations,ns_per_call,checksum"
+      ],
+      "log": "chain-old-tests.log"
+    },
+    "v20-shared": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 10000000",
+        "1: candidate contracts passed checks=16188, factories=164, destroyed=68, calculates=225, sizeof(PlayerbotAI)=1344",
+        "1/2 Test #1: shared_candidate .................   Passed    0.04 sec",
+        "2: Test timeout computed to be: 10000000",
+        "2: baseline contracts passed checks=804, factories=80, destroyed=32, calculates=112, sizeof(PlayerbotAI)=1344",
+        "2/2 Test #2: shared_baseline_off_contracts ....   Passed    0.03 sec",
+        "100% tests passed out of 2",
+        "Total Test time (real) =   0.12 sec"
+      ],
+      "log": "v20-shared-tests.log"
+    },
+    "v20-shared-asan": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 10000000",
+        "1: candidate contracts passed checks=16188, factories=164, destroyed=68, calculates=225, sizeof(PlayerbotAI)=1344",
+        "1/3 Test #1: shared_candidate .................   Passed    0.10 sec",
+        "2: Test timeout computed to be: 10000000",
+        "2: baseline contracts passed checks=804, factories=80, destroyed=32, calculates=112, sizeof(PlayerbotAI)=1344",
+        "2/3 Test #2: shared_baseline_off_contracts ....   Passed    0.10 sec",
+        "3: Test timeout computed to be: 10000000",
+        "3/3 Test #3: shared_v19_expected_uaf ..........   Passed    0.10 sec",
+        "100% tests passed out of 3",
+        "Total Test time (real) =   0.33 sec"
+      ],
+      "log": "v20-shared-asan-tests.log"
+    },
+    "v20-targets": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 180",
+        "1: PASS 89360 paired observations; exact GUID/order/predicate traces; exception/reentry; Calculate wrapper; node identity",
+        "1/1 Test #1: targets_contracts ................   Passed    0.42 sec",
+        "100% tests passed out of 1",
+        "Total Test time (real) =   0.58 sec"
+      ],
+      "log": "v20-targets-tests.log"
+    },
+    "v20-targets-asan": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 180",
+        "1: PASS 89360 paired observations; exact GUID/order/predicate traces; exception/reentry; Calculate wrapper; node identity",
+        "1/1 Test #1: targets_contracts ................   Passed    8.55 sec",
+        "100% tests passed out of 1",
+        "Total Test time (real) =   8.57 sec"
+      ],
+      "log": "v20-targets-asan-tests.log"
+    },
+    "v20-checkvalues": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 10000000",
+        "1: CheckValues PASS: 2560 observations; exact results/order/refresh/PMO names/cache states; fallback allocations identical.",
+        "1/1 Test #1: checkvalues_contracts ............   Passed    0.28 sec",
+        "100% tests passed out of 1",
+        "Total Test time (real) =   0.30 sec"
+      ],
+      "log": "v20-checkvalues-tests.log"
+    },
+    "v20-checkvalues-asan": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 10000000",
+        "1: CheckValues PASS: 2560 observations; exact results/order/refresh/PMO names/cache states; fallback allocations identical.",
+        "1/1 Test #1: checkvalues_contracts ............   Passed   11.15 sec",
+        "100% tests passed out of 1",
+        "Total Test time (real) =  11.17 sec"
+      ],
+      "log": "v20-checkvalues-asan-tests.log"
+    },
+    "v20-pmo": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 60",
+        "1: Count-only/zero partitions, every tick/stack/map option, Reset and source snapshots passed.",
+        "1/1 Test #1: v20_pmo_report_contracts .........   Passed    0.03 sec",
+        "100% tests passed out of 1",
+        "Total Test time (real) =   0.05 sec"
+      ],
+      "log": "v20-pmo-tests.log"
+    },
+    "v20-pmo-asan": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 60",
+        "1: Count-only/zero partitions, every tick/stack/map option, Reset and source snapshots passed.",
+        "1/1 Test #1: v20_pmo_report_contracts .........   Passed    0.07 sec",
+        "100% tests passed out of 1",
+        "Total Test time (real) =   0.09 sec"
+      ],
+      "log": "v20-pmo-asan-tests.log"
+    },
+    "v21-presence": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 90",
+        "1: Lifecycle: 7 categories, character screen/transfer/reconnect/disconnect/GM/camera/generation; 160 worker lifetimes passed",
+        "1: Intentional corrections: mixed-only empty/nearby, legacy bot group, human selfbot group, disconnected master/self passed",
+        "1/1 Test #1: presence_lifecycle_parity_operations ...   Passed    0.04 sec",
+        "100% tests passed out of 1",
+        "Total Test time (real) =   0.06 sec"
+      ],
+      "log": "v21-presence-tests.log"
+    },
+    "v21-presence-asan": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 90",
+        "1: Lifecycle: 7 categories, character screen/transfer/reconnect/disconnect/GM/camera/generation; 160 worker lifetimes passed",
+        "1: Intentional corrections: mixed-only empty/nearby, legacy bot group, human selfbot group, disconnected master/self passed",
+        "1/1 Test #1: presence_lifecycle_parity_operations ...   Passed    0.17 sec",
+        "100% tests passed out of 1",
+        "Total Test time (real) =   0.19 sec"
+      ],
+      "log": "v21-presence-asan-tests.log"
+    },
+    "v22-quest": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 180",
+        "1: parser result/exception parity: 300828 inputs/positions/errno states passed",
+        "1: quest parity: 19360 observations passed across V21 and V22; policy/reentry/exception/qualifier checks passed",
+        "1/2 Test #1: v22_quest_contracts ..............   Passed    0.64 sec",
+        "2: Test timeout computed to be: 10000000",
+        "2: PASS 120 complete GrindTarget -> NeedForQuest -> NeedQuestObjective observations; target, duplicate candidate order, RNG draws and Value traces match",
+        "2/2 Test #2: v22_grind_quest_chain ............   Passed    0.05 sec",
+        "100% tests passed out of 2",
+        "Total Test time (real) =   0.83 sec"
+      ],
+      "log": "v22-quest-tests.log"
+    },
+    "v22-quest-asan": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 180",
+        "1: parser result/exception parity: 300828 inputs/positions/errno states passed",
+        "1: quest parity: 19360 observations passed across V21 and V22; policy/reentry/exception/qualifier checks passed",
+        "1/2 Test #1: v22_quest_contracts ..............   Passed   11.66 sec",
+        "2: Test timeout computed to be: 10000000",
+        "2: PASS 120 complete GrindTarget -> NeedForQuest -> NeedQuestObjective observations; target, duplicate candidate order, RNG draws and Value traces match",
+        "2/2 Test #2: v22_grind_quest_chain ............   Passed    0.40 sec",
+        "100% tests passed out of 2",
+        "Total Test time (real) =  12.10 sec"
+      ],
+      "log": "v22-quest-asan-tests.log"
+    },
+    "v22-plumbing": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 10000000",
+        "1: PASS 1696 travel/event/trigger observations; exact service trace, result, input routes; copy/assignment/packet/GUID/exception/reentry contracts",
+        "1/1 Test #1: v22_plumbing_contracts ...........   Passed    0.18 sec",
+        "100% tests passed out of 1",
+        "Total Test time (real) =   0.34 sec"
+      ],
+      "log": "v22-plumbing-tests.log"
+    },
+    "v22-plumbing-asan": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 10000000",
+        "1: PASS 1696 travel/event/trigger observations; exact service trace, result, input routes; copy/assignment/packet/GUID/exception/reentry contracts",
+        "1/1 Test #1: v22_plumbing_contracts ...........   Passed    0.17 sec",
+        "100% tests passed out of 1",
+        "Total Test time (real) =   0.19 sec"
+      ],
+      "log": "v22-plumbing-asan-tests.log"
+    },
+    "v22-memory": {
+      "pass_lines": [
+        "1: Test timeout computed to be: 10000000",
+        "1: PASS 1696 travel/event/trigger observations; exact service trace, result, input routes; copy/assignment/packet/GUID/exception/reentry contracts",
+        "1/1 Test #1: v22_plumbing_contracts ...........   Passed    0.18 sec",
+        "100% tests passed out of 1",
+        "Total Test time (real) =   0.20 sec"
+      ],
+      "log": "v22-memory-tests.log"
+    }
+  },
+  "new_suites": {
+    "attackers": {
+      "normal": 6755,
+      "asan": 6755
+    },
+    "log_action": {
+      "normal": 26876,
+      "asan": 26876
+    }
+  },
+  "peak_whole_pc_cpu_percent": 60.04,
+  "runtime": "NOT RUN: user-owned",
+  "source_scope": {
+    "baseline": "24e11eb41b85ab74437dfc1737289c2bcca42de4",
+    "changed_source": {
+      "src/game/PlayerBots/playerbot/strategy/Engine.cpp": "b3a474914e2d41a206cd7ef4302c91e618176f8547e99ac1a5940cb1fc8c7398",
+      "src/game/PlayerBots/playerbot/strategy/values/AttackersValue.cpp": "c2d5e25cccfa67d0934b05727c380bea5dcde90a84fb2a599f87effe65d2297a"
+    },
+    "other_production_sources": "byte-identical to V22 (normalized line endings); generated client header checked separately",
+    "historical_normalization": "only the two frozen whole files; actual V23 bodies execute in separate normal/ASan suites",
+    "frozen_hash_mutation_checks_rejected": [
+      "src/game/PlayerBots/playerbot/strategy/values/AttackersValue.cpp",
+      "src/game/PlayerBots/playerbot/strategy/Engine.cpp"
+    ]
+  }
+}

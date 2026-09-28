@@ -1,0 +1,302 @@
+Версия MSBuild 17.14.40+3e7442088 для .NET Framework
+
+  1>Checking Build System
+  Building Custom Rule C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v21/source/tests/playerbots/v23_hotpaths/attackers/CMakeLists.txt
+  Building Custom Rule C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v21/source/tests/playerbots/v23_hotpaths/attackers/CMakeLists.txt
+cl : командная строка  warning D9025: переопределение "/DNDEBUG" на "/UNDEBUG" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  main.cpp
+  Building Custom Rule C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v21/source/tests/playerbots/v23_hotpaths/attackers/CMakeLists.txt
+cl : командная строка  warning D9025: переопределение "/DNDEBUG" на "/UNDEBUG" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  main.cpp
+cl : командная строка  warning D9025: переопределение "/DNDEBUG" на "/UNDEBUG" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  main.cpp
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(445,5): error C2065: AiObjectContext: необъявленный идентификатор [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(445,5): error C2065: AiObjectContext: необъявленный идентификатор [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(445,22): error C2597: недопустимая ссылка на нестатический член "v22::AiNamedObject::context" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+      C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(445,22):
+       см. объявление "v22::AiNamedObject::context"
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(445,22): error C3867: "v22::AiNamedObject::context": нестандартный синтаксис; используйте "&", чтобы создать указатель на член [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(445,22): error C2568: *: не удается разрешить перегрузку функции [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(451,13): error C2062: тип "bool" не требуется [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(457,13): error C2062: тип "bool" не требуется [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(559,53): warning C4244: =: преобразование "v22::int32" в "float", возможна потеря данных [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(30,37): warning C4244: =: преобразование "unsigned int" в "float", возможна потеря данных [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(46,8): warning C4091: : пропускается слева от "std::list<v22::ObjectGuid,std::allocator<v22::ObjectGuid>>", когда ни одна переменная не объявлена [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(47,16): error C2059: синтаксическая ошибка: = [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(47,17): error C2143: синтаксическая ошибка: отсутствие ";" перед "{" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(47,81): error C2143: синтаксическая ошибка: отсутствие ";" перед "}" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(48,77): error C2059: синтаксическая ошибка: ) [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(68,26): error C2385: неоднозначный уровень доступа "Reset" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+      C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(68,26):
+      может быть "Reset" в базе "v22::CalculatedValue<std::list<v22::ObjectGuid,std::allocator<v22::ObjectGuid> > >"
+      C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(68,26):
+      или может быть "Reset" в базе "v22::Qualified"
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(445,22): error C2597: недопустимая ссылка на нестатический член "v22::AiNamedObject::context" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+      C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(445,22):
+       см. объявление "v22::AiNamedObject::context"
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(445,22): error C3867: "v22::AiNamedObject::context": нестандартный синтаксис; используйте "&", чтобы создать указатель на член [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(445,22): error C2568: *: не удается разрешить перегрузку функции [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(451,13): error C2062: тип "bool" не требуется [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(457,13): error C2062: тип "bool" не требуется [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(559,53): warning C4244: =: преобразование "v22::int32" в "float", возможна потеря данных [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(30,37): warning C4244: =: преобразование "unsigned int" в "float", возможна потеря данных [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(46,8): warning C4091: : пропускается слева от "std::list<v22::ObjectGuid,std::allocator<v22::ObjectGuid>>", когда ни одна переменная не объявлена [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(47,16): error C2059: синтаксическая ошибка: = [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(47,17): error C2143: синтаксическая ошибка: отсутствие ";" перед "{" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(47,81): error C2143: синтаксическая ошибка: отсутствие ";" перед "}" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(48,77): error C2059: синтаксическая ошибка: ) [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(68,26): error C2385: неоднозначный уровень доступа "Reset" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+      C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(68,26):
+      может быть "Reset" в базе "v22::CalculatedValue<std::list<v22::ObjectGuid,std::allocator<v22::ObjectGuid> > >"
+      C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(68,26):
+      или может быть "Reset" в базе "v22::Qualified"
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(445,5): error C2065: AiObjectContext: необъявленный идентификатор [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(445,22): error C2597: недопустимая ссылка на нестатический член "v23::AiNamedObject::context" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+      C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(445,22):
+       см. объявление "v23::AiNamedObject::context"
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(445,22): error C3867: "v23::AiNamedObject::context": нестандартный синтаксис; используйте "&", чтобы создать указатель на член [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(445,22): error C2568: *: не удается разрешить перегрузку функции [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(451,13): error C2062: тип "bool" не требуется [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(457,13): error C2062: тип "bool" не требуется [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(559,53): warning C4244: =: преобразование "v23::int32" в "float", возможна потеря данных [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(445,5): error C2065: AiObjectContext: необъявленный идентификатор [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(445,22): error C2597: недопустимая ссылка на нестатический член "v23::AiNamedObject::context" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+      C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(445,22):
+       см. объявление "v23::AiNamedObject::context"
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(445,22): error C3867: "v23::AiNamedObject::context": нестандартный синтаксис; используйте "&", чтобы создать указатель на член [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(445,22): error C2568: *: не удается разрешить перегрузку функции [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(451,13): error C2062: тип "bool" не требуется [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(457,13): error C2062: тип "bool" не требуется [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(559,53): warning C4244: =: преобразование "v23::int32" в "float", возможна потеря данных [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(30,37): warning C4244: =: преобразование "unsigned int" в "float", возможна потеря данных [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(46,8): warning C4091: : пропускается слева от "std::list<v23::ObjectGuid,std::allocator<v23::ObjectGuid>>", когда ни одна переменная не объявлена [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(47,16): error C2059: синтаксическая ошибка: = [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(47,17): error C2143: синтаксическая ошибка: отсутствие ";" перед "{" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(47,81): error C2143: синтаксическая ошибка: отсутствие ";" перед "}" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(48,77): error C2059: синтаксическая ошибка: ) [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(68,26): error C2385: неоднозначный уровень доступа "Reset" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_benchmark.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+      C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(68,26):
+      может быть "Reset" в базе "v23::CalculatedValue<std::list<v23::ObjectGuid,std::allocator<v23::ObjectGuid> > >"
+      C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(68,26):
+      или может быть "Reset" в базе "v23::Qualified"
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(30,37): warning C4244: =: преобразование "unsigned int" в "float", возможна потеря данных [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(46,8): warning C4091: : пропускается слева от "std::list<v23::ObjectGuid,std::allocator<v23::ObjectGuid>>", когда ни одна переменная не объявлена [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(47,16): error C2059: синтаксическая ошибка: = [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(47,17): error C2143: синтаксическая ошибка: отсутствие ";" перед "{" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(47,81): error C2143: синтаксическая ошибка: отсутствие ";" перед "}" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(48,77): error C2059: синтаксическая ошибка: ) [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(68,26): error C2385: неоднозначный уровень доступа "Reset" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_allocations.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+      C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(68,26):
+      может быть "Reset" в базе "v23::CalculatedValue<std::list<v23::ObjectGuid,std::allocator<v23::ObjectGuid> > >"
+      C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(68,26):
+      или может быть "Reset" в базе "v23::Qualified"
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(445,5): error C2065: AiObjectContext: необъявленный идентификатор [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(445,22): error C2597: недопустимая ссылка на нестатический член "v22::AiNamedObject::context" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+      C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(445,22):
+       см. объявление "v22::AiNamedObject::context"
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(445,22): error C3867: "v22::AiNamedObject::context": нестандартный синтаксис; используйте "&", чтобы создать указатель на член [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(445,22): error C2568: *: не удается разрешить перегрузку функции [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(451,13): error C2062: тип "bool" не требуется [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(457,13): error C2062: тип "bool" не требуется [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v22-bodies.inc(559,53): warning C4244: =: преобразование "v22::int32" в "float", возможна потеря данных [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(30,37): warning C4244: =: преобразование "unsigned int" в "float", возможна потеря данных [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(46,8): warning C4091: : пропускается слева от "std::list<v22::ObjectGuid,std::allocator<v22::ObjectGuid>>", когда ни одна переменная не объявлена [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(47,16): error C2059: синтаксическая ошибка: = [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(47,17): error C2143: синтаксическая ошибка: отсутствие ";" перед "{" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(47,81): error C2143: синтаксическая ошибка: отсутствие ";" перед "}" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(48,77): error C2059: синтаксическая ошибка: ) [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(68,26): error C2385: неоднозначный уровень доступа "Reset" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+      C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(68,26):
+      может быть "Reset" в базе "v22::CalculatedValue<std::list<v22::ObjectGuid,std::allocator<v22::ObjectGuid> > >"
+      C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(68,26):
+      или может быть "Reset" в базе "v22::Qualified"
+  
+  allocations.cpp
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(445,5): error C2065: AiObjectContext: необъявленный идентификатор [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(445,22): error C2597: недопустимая ссылка на нестатический член "v23::AiNamedObject::context" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+      C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(445,22):
+       см. объявление "v23::AiNamedObject::context"
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(445,22): error C3867: "v23::AiNamedObject::context": нестандартный синтаксис; используйте "&", чтобы создать указатель на член [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(445,22): error C2568: *: не удается разрешить перегрузку функции [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(451,13): error C2062: тип "bool" не требуется [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(457,13): error C2062: тип "bool" не требуется [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\generated\v23-bodies.inc(559,53): warning C4244: =: преобразование "v23::int32" в "float", возможна потеря данных [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(30,37): warning C4244: =: преобразование "unsigned int" в "float", возможна потеря данных [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(46,8): warning C4091: : пропускается слева от "std::list<v23::ObjectGuid,std::allocator<v23::ObjectGuid>>", когда ни одна переменная не объявлена [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(47,16): error C2059: синтаксическая ошибка: = [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(47,17): error C2143: синтаксическая ошибка: отсутствие ";" перед "{" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(47,81): error C2143: синтаксическая ошибка: отсутствие ";" перед "}" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(48,77): error C2059: синтаксическая ошибка: ) [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+  
+C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(68,26): error C2385: неоднозначный уровень доступа "Reset" [C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-baseline-build\attackers_test.vcxproj]
+  (компиляция исходного файла "../../v21/source/tests/playerbots/v23_hotpaths/attackers/main.cpp")
+      C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(68,26):
+      может быть "Reset" в базе "v23::CalculatedValue<std::list<v23::ObjectGuid,std::allocator<v23::ObjectGuid> > >"
+      C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v21\source\tests\playerbots\v23_hotpaths\attackers\state.inc(68,26):
+      или может быть "Reset" в базе "v23::Qualified"
+  
+  Создание кода...

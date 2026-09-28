@@ -1,0 +1,19 @@
+{
+  "baseline": "24e11eb41b85ab74437dfc1737289c2bcca42de4",
+  "path": "src/game/PlayerBots/playerbot/strategy/Engine.cpp",
+  "variants": {
+    "v22": {
+      "source_sha256": "b7b8a1e147b1760205a286ef7fa5687bdd8e0caa26bc650253b4e8ec94800b21",
+      "function_sha256": "9041a662ec6c46d056d93165c7b0ce0cba624ef53977bbe5a342812b7f432254"
+    },
+    "v23": {
+      "source_sha256": "b7b8a1e147b1760205a286ef7fa5687bdd8e0caa26bc650253b4e8ec94800b21",
+      "function_sha256": "9041a662ec6c46d056d93165c7b0ce0cba624ef53977bbe5a342812b7f432254"
+    }
+  },
+  "world_fixtures": [
+    "bot/group/name getters",
+    "logger and test-file sinks"
+  ],
+  "production": "complete LogAction including formatting, history maintenance and both logging branches"
+}

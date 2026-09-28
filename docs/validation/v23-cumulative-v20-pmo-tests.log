@@ -1,0 +1,23 @@
+UpdateCTestConfiguration  from :C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/v20-pmo-build/DartConfiguration.tcl
+Test project C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/v20-pmo-build
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: v20_pmo_report_contracts
+
+1: Test command: C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\v20-pmo-build\RelWithDebInfo\v20_pmo_test.exe
+1: Working Directory: C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/v20-pmo-build
+1: Test timeout computed to be: 60
+1: PrintStats production-body parity: 128 calls, 88 rows compared; 80 corrected max fields.
+1: Baseline reproducer: aggregated min=2, max=5; corrected max=120.
+1: Count-only/zero partitions, every tick/stack/map option, Reset and source snapshots passed.
+1: Preserved limitation: zero denominators render NaN/Inf in existing report logic.
+1/1 Test #1: v20_pmo_report_contracts .........   Passed    0.03 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.05 sec

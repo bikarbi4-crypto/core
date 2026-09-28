@@ -1,0 +1,42 @@
+{
+  "baseline": "24e11eb41b85ab74437dfc1737289c2bcca42de4",
+  "variants": {
+    "v22": {
+      "source_sha256": "8c4e3d271ceeca22b8403ed3983c6f24a78100efd1aae08d85b07c32f4c76dd6"
+    },
+    "v23": {
+      "source_sha256": "8c4e3d271ceeca22b8403ed3983c6f24a78100efd1aae08d85b07c32f4c76dd6"
+    }
+  },
+  "sources": {
+    "24e11eb41b85ab74437dfc1737289c2bcca42de4:src/game/PlayerBots/playerbot/strategy/values/AttackersValue.cpp": "8c4e3d271ceeca22b8403ed3983c6f24a78100efd1aae08d85b07c32f4c76dd6",
+    "24e11eb41b85ab74437dfc1737289c2bcca42de4:src/game/PlayerBots/playerbot/strategy/Value.h": "d46851649bf428560007d3f55dcdd516cfa440d4a50d30aacafff9d9fece0b50",
+    "24e11eb41b85ab74437dfc1737289c2bcca42de4:src/game/PlayerBots/playerbot/strategy/NamedObjectContext.h": "2742e6df6c740daa1fd1100766e9e65fd8c3d9d95f674a20bae66a4b5f0b79fe",
+    "24e11eb41b85ab74437dfc1737289c2bcca42de4:src/game/PlayerBots/playerbot/strategy/values/NearestUnitsValue.h": "3e0e44b508136c8b3aee3e9aa3ae51c1bae91abed012910919d16c1038ec3fcc",
+    "24e11eb41b85ab74437dfc1737289c2bcca42de4:src/game/PlayerBots/playerbot/strategy/values/PossibleTargetsValue.h": "66f3bc159dba4983e94441dacf9853ece0e17fa0d50b3001695b48575228929a",
+    "24e11eb41b85ab74437dfc1737289c2bcca42de4:src/game/PlayerBots/playerbot/strategy/values/AttackersValue.h": "4ba5aa204289a6307e8f232ab5d4fc9a5910fa6a16f731dbe773c7e592c006b5",
+    "24e11eb41b85ab74437dfc1737289c2bcca42de4:src/game/PlayerBots/playerbot/strategy/values/PossibleTargetsValue.cpp": "4e86451f3267f121f7be2a8ad47d1b39483eba3c6504316a18c0a62e10f9d406",
+    "working:src/game/PlayerBots/playerbot/strategy/values/AttackersValue.cpp": "8c4e3d271ceeca22b8403ed3983c6f24a78100efd1aae08d85b07c32f4c76dd6",
+    "working:src/game/PlayerBots/playerbot/strategy/Value.h": "d46851649bf428560007d3f55dcdd516cfa440d4a50d30aacafff9d9fece0b50",
+    "working:src/game/PlayerBots/playerbot/strategy/NamedObjectContext.h": "2742e6df6c740daa1fd1100766e9e65fd8c3d9d95f674a20bae66a4b5f0b79fe",
+    "working:src/game/PlayerBots/playerbot/strategy/values/NearestUnitsValue.h": "3e0e44b508136c8b3aee3e9aa3ae51c1bae91abed012910919d16c1038ec3fcc",
+    "working:src/game/PlayerBots/playerbot/strategy/values/PossibleTargetsValue.h": "66f3bc159dba4983e94441dacf9853ece0e17fa0d50b3001695b48575228929a",
+    "working:src/game/PlayerBots/playerbot/strategy/values/AttackersValue.h": "4ba5aa204289a6307e8f232ab5d4fc9a5910fa6a16f731dbe773c7e592c006b5",
+    "working:src/game/PlayerBots/playerbot/strategy/values/PossibleTargetsValue.cpp": "4e86451f3267f121f7be2a8ad47d1b39483eba3c6504316a18c0a62e10f9d406"
+  },
+  "production": [
+    "complete AttackersValue.cpp",
+    "AttackersValue declarations",
+    "Qualified",
+    "Value/CalculatedValue/ManualSetValue/ObjectGuidList policies",
+    "NearestUnitsValue and PossibleTargetsValue declarations",
+    "PossibleTargets Calculate/FindUnits/AcceptUnit"
+  ],
+  "world_fixtures": [
+    "unit/player/group/position services",
+    "deterministic grid query and possible-target validity",
+    "typed registry factory adapter",
+    "clock and PMO sink"
+  ],
+  "instrumentation": "trace/counters compile out of timing binary"
+}

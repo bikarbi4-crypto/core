@@ -1,9 +1,10 @@
 # Optimization baseline and pending validation
 
-Accepted development baseline: V21 `6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7`,
-branch `vmangos-v21-player-presence`. Cumulative V0–V21 remains enabled.
+Accepted development baseline: V22 `24e11eb41b85ab74437dfc1737289c2bcca42de4`,
+branch `vmangos-v22-pmo-hotpaths`. Cumulative V0–V22 remains enabled.
+V21 `6a32bb9c97d45166719a9b5a9d3e0f0c0c8ac4c7` remains preserved.
 V20 `169cb7712c8b704a3fe274cbf42a0cbb53fcb90a` remains a fallback.
-V22 `vmangos-v22-pmo-hotpaths` is the next validation release from V21.
+V23 `vmangos-v23-attackers-logaction` is the next validation release from V22.
 Diagnostic `4b9d62de1c5dbe1398f5067596fa9111f00e2fdd` is reference only.
 The default branch and live installation are not changed by this release.
 
@@ -29,7 +30,7 @@ accepted when they were written; this decision supersedes them for development.
   their difference is not an overall optimization percentage.
 
 Existing unrelated Mema, AddCooldown, UseItem residuals and other open runtime
-investigations remain pending; V22 does not close or modify them.
+investigations remain pending; V23 does not close or modify them.
 
 - [x] V19 PMO OFF guards, nested/toggle cleanup and late map registration,
   with standalone source contracts, MSVC ASan and same-work microbenchmarks.
@@ -75,7 +76,18 @@ investigations remain pending; V22 does not close or modify them.
   PMO OFF steady samples and separate short ON windows. Confirm combat, quest,
   travel, target switching and V21 presence; no whole-server percentage from
   standalone microbenchmarks.
-- [ ] Separate V22.1/V23 partition experiment: user PMO-run pre-window snapshot
-  instance 11 ~674 bots / ~486 active / ~94 ms (players ~88.6 ms), instance 12
-  ~69 / ~52 / ~14.9 ms; Teldrassil + Darnassus ~286 bots / ~187 active.
-  Investigate only with matched runtime evidence. V22 makes NO partition changes.
+- [x] V22 follow-up uptime review independently recalculated on 2026-09-28:
+  5881 seconds, 70 diff samples, 14 CPU snapshots, 182 partition rows and 1096
+  zone rows. Late versus middle has +262.44 active at similar mean diff within
+  one changing workload. It is not a paired V21/V22 gain. No PMO tables or
+  orderly shutdown in this file; no conclusion about the reason logging ended.
+- [ ] Separate partition experiment after matched runtime evidence. Latest V22
+  snapshot: instance 11 has 665 bots / 510 active / 93.41 ms; instance 12 has
+  78 / 63 / 17.27 ms; Teldrassil + Darnassus 308 / 230. V23 changes no partition.
+- [ ] Separate item-failure retry audit: repeated AddCooldown/UseItem/item-queue
+  bursts verified in the V22 log. No retry/error suppression is part of V23.
+- [ ] V23 user-only smoke and paired V22/V23 comparison: combat, target changes,
+  quest/travel, group/master/pet/guardians/duel, shareTargets, real-player presence,
+  normal/group-only/test logging. Same configuration/population and matched uptime;
+  PMO OFF steady window, then separate short ON/report window. Save full logs and
+  phase times. Automated fixture tests do not replace this gameplay check.

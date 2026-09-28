@@ -5,7 +5,7 @@ ROOT=Path(__file__).resolve().parents[3]
 BASE='169cb7712c8b704a3fe274cbf42a0cbb53fcb90a'
 sys.dont_write_bytecode=True
 sys.path.insert(0,str(ROOT/'tests/playerbots/v22_hotpaths'))
-from v22_scope import APPROVED as V22_FILES, normalize_v22, verify as verify_v22
+from v22_scope import APPROVED as V22_FILES, V23_FILES, normalize_v22, verify as verify_v22
 
 P='src/game/PlayerBots/playerbot/'
 def old(path):return subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT).decode('utf-8-sig').replace('\r\n','\n')
@@ -47,7 +47,7 @@ def verify():
   if path=='src/shared/Progression.h':
    template=(ROOT/'cmake/generators/Progression.h.in').read_text(encoding='utf-8-sig')
    assert content in [old(path),template.replace('@supported_build@','5875')];continue
-  if path in V22_FILES:
+  if path in V22_FILES or path in V23_FILES:
    normalize_v22(path,content);continue
   assert path in allowed,'Changed protected source: '+path
   evidence['changed_source'][path]=hashlib.sha256(content.encode()).hexdigest()

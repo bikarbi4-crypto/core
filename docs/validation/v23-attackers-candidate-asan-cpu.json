@@ -1,0 +1,313 @@
+{
+  "affinity_mask": "0x55",
+  "logical_processors_allowed": 4,
+  "command": [
+    "C:/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe",
+    "-X",
+    "utf8",
+    "work/v23/run_suite.py",
+    "attackers",
+    "candidate",
+    "--asan"
+  ],
+  "samples": [
+    {
+      "time": 1790567565.3784947,
+      "whole_pc_cpu_percent": 15.98
+    },
+    {
+      "time": 1790567566.3796074,
+      "whole_pc_cpu_percent": 17.7
+    },
+    {
+      "time": 1790567567.3800628,
+      "whole_pc_cpu_percent": 14.55
+    },
+    {
+      "time": 1790567568.483469,
+      "whole_pc_cpu_percent": 22.21
+    },
+    {
+      "time": 1790567569.4845097,
+      "whole_pc_cpu_percent": 15.61
+    },
+    {
+      "time": 1790567570.4849024,
+      "whole_pc_cpu_percent": 11.62
+    },
+    {
+      "time": 1790567571.4854624,
+      "whole_pc_cpu_percent": 10.88
+    },
+    {
+      "time": 1790567572.4856942,
+      "whole_pc_cpu_percent": 10.51
+    },
+    {
+      "time": 1790567573.4860663,
+      "whole_pc_cpu_percent": 9.85
+    },
+    {
+      "time": 1790567574.4865432,
+      "whole_pc_cpu_percent": 17.74
+    },
+    {
+      "time": 1790567575.4867513,
+      "whole_pc_cpu_percent": 18.24
+    },
+    {
+      "time": 1790567576.4873734,
+      "whole_pc_cpu_percent": 10.23
+    },
+    {
+      "time": 1790567577.4875038,
+      "whole_pc_cpu_percent": 11.6
+    },
+    {
+      "time": 1790567578.4878788,
+      "whole_pc_cpu_percent": 10.69
+    },
+    {
+      "time": 1790567579.488193,
+      "whole_pc_cpu_percent": 10.78
+    },
+    {
+      "time": 1790567580.4887388,
+      "whole_pc_cpu_percent": 10.47
+    },
+    {
+      "time": 1790567581.4891908,
+      "whole_pc_cpu_percent": 12.81
+    },
+    {
+      "time": 1790567582.489386,
+      "whole_pc_cpu_percent": 10.83
+    },
+    {
+      "time": 1790567583.489681,
+      "whole_pc_cpu_percent": 10.28
+    },
+    {
+      "time": 1790567584.4901311,
+      "whole_pc_cpu_percent": 11.1
+    },
+    {
+      "time": 1790567585.4905455,
+      "whole_pc_cpu_percent": 11.52
+    },
+    {
+      "time": 1790567586.4906652,
+      "whole_pc_cpu_percent": 10.17
+    },
+    {
+      "time": 1790567587.4908223,
+      "whole_pc_cpu_percent": 23.44
+    },
+    {
+      "time": 1790567588.4914205,
+      "whole_pc_cpu_percent": 10.05
+    },
+    {
+      "time": 1790567589.4916449,
+      "whole_pc_cpu_percent": 10.45
+    },
+    {
+      "time": 1790567590.4917943,
+      "whole_pc_cpu_percent": 10.59
+    },
+    {
+      "time": 1790567591.4921625,
+      "whole_pc_cpu_percent": 13.01
+    },
+    {
+      "time": 1790567592.4926043,
+      "whole_pc_cpu_percent": 9.31
+    },
+    {
+      "time": 1790567593.4929762,
+      "whole_pc_cpu_percent": 10.89
+    },
+    {
+      "time": 1790567594.4934282,
+      "whole_pc_cpu_percent": 11.6
+    },
+    {
+      "time": 1790567595.493757,
+      "whole_pc_cpu_percent": 12.76
+    },
+    {
+      "time": 1790567596.4943063,
+      "whole_pc_cpu_percent": 11.53
+    },
+    {
+      "time": 1790567597.4945836,
+      "whole_pc_cpu_percent": 10.18
+    },
+    {
+      "time": 1790567598.494749,
+      "whole_pc_cpu_percent": 10.67
+    },
+    {
+      "time": 1790567599.4952004,
+      "whole_pc_cpu_percent": 12.59
+    },
+    {
+      "time": 1790567600.4954646,
+      "whole_pc_cpu_percent": 10.29
+    },
+    {
+      "time": 1790567601.495862,
+      "whole_pc_cpu_percent": 10.58
+    },
+    {
+      "time": 1790567602.496011,
+      "whole_pc_cpu_percent": 12.77
+    },
+    {
+      "time": 1790567603.4961123,
+      "whole_pc_cpu_percent": 10.95
+    },
+    {
+      "time": 1790567604.4965348,
+      "whole_pc_cpu_percent": 11.38
+    },
+    {
+      "time": 1790567605.4970412,
+      "whole_pc_cpu_percent": 17.03
+    },
+    {
+      "time": 1790567606.4976313,
+      "whole_pc_cpu_percent": 18.16
+    },
+    {
+      "time": 1790567607.4978676,
+      "whole_pc_cpu_percent": 16.94
+    },
+    {
+      "time": 1790567608.4981976,
+      "whole_pc_cpu_percent": 16.89
+    },
+    {
+      "time": 1790567609.4984186,
+      "whole_pc_cpu_percent": 17.45
+    },
+    {
+      "time": 1790567610.498787,
+      "whole_pc_cpu_percent": 10.64
+    },
+    {
+      "time": 1790567611.4993124,
+      "whole_pc_cpu_percent": 10.22
+    },
+    {
+      "time": 1790567612.499541,
+      "whole_pc_cpu_percent": 12.32
+    },
+    {
+      "time": 1790567613.4997756,
+      "whole_pc_cpu_percent": 10.9
+    },
+    {
+      "time": 1790567614.5002456,
+      "whole_pc_cpu_percent": 10.6
+    },
+    {
+      "time": 1790567615.5008013,
+      "whole_pc_cpu_percent": 17.2
+    },
+    {
+      "time": 1790567616.5011296,
+      "whole_pc_cpu_percent": 15.6
+    },
+    {
+      "time": 1790567617.5016649,
+      "whole_pc_cpu_percent": 9.9
+    },
+    {
+      "time": 1790567618.5019972,
+      "whole_pc_cpu_percent": 11.74
+    },
+    {
+      "time": 1790567619.5025308,
+      "whole_pc_cpu_percent": 9.87
+    },
+    {
+      "time": 1790567620.5030107,
+      "whole_pc_cpu_percent": 10.73
+    },
+    {
+      "time": 1790567621.5036714,
+      "whole_pc_cpu_percent": 10.06
+    },
+    {
+      "time": 1790567622.5038643,
+      "whole_pc_cpu_percent": 11.22
+    },
+    {
+      "time": 1790567623.5042124,
+      "whole_pc_cpu_percent": 10.87
+    },
+    {
+      "time": 1790567624.5044053,
+      "whole_pc_cpu_percent": 10.75
+    },
+    {
+      "time": 1790567625.504514,
+      "whole_pc_cpu_percent": 13.53
+    },
+    {
+      "time": 1790567626.5049372,
+      "whole_pc_cpu_percent": 13.86
+    },
+    {
+      "time": 1790567627.5050488,
+      "whole_pc_cpu_percent": 12.16
+    },
+    {
+      "time": 1790567628.505259,
+      "whole_pc_cpu_percent": 10.71
+    },
+    {
+      "time": 1790567629.5055053,
+      "whole_pc_cpu_percent": 11.82
+    },
+    {
+      "time": 1790567630.5058324,
+      "whole_pc_cpu_percent": 10.32
+    },
+    {
+      "time": 1790567631.5064464,
+      "whole_pc_cpu_percent": 10.84
+    },
+    {
+      "time": 1790567632.5068564,
+      "whole_pc_cpu_percent": 10.38
+    },
+    {
+      "time": 1790567633.5070608,
+      "whole_pc_cpu_percent": 10.27
+    },
+    {
+      "time": 1790567634.5071757,
+      "whole_pc_cpu_percent": 15.89
+    },
+    {
+      "time": 1790567635.5076299,
+      "whole_pc_cpu_percent": 14.2
+    },
+    {
+      "time": 1790567636.508128,
+      "whole_pc_cpu_percent": 10.35
+    },
+    {
+      "time": 1790567637.5085034,
+      "whole_pc_cpu_percent": 10.14
+    },
+    {
+      "time": 1790567638.5086994,
+      "whole_pc_cpu_percent": 9.46
+    }
+  ],
+  "exit_code": 0,
+  "peak_cpu_percent": 23.44
+}

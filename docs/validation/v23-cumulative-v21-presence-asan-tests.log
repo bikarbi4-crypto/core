@@ -1,0 +1,25 @@
+UpdateCTestConfiguration  from :C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/v21-presence-asan-build/DartConfiguration.tcl
+Test project C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/v21-presence-asan-build
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: presence_lifecycle_parity_operations
+
+1: Test command: C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\v21-presence-asan-build\RelWithDebInfo\presence_test.exe
+1: Working Directory: C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/v21-presence-asan-build
+1: Environment variable modifications: 
+1:  PATH=path_list_prepend:C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64
+1: Test timeout computed to be: 90
+1: Lifecycle: 7 categories, character screen/transfer/reconnect/disconnect/GM/camera/generation; 160 worker lifetimes passed
+1: Human parity: 51840 activity/cache observations, 24 priority scenarios, identical RNG
+1: Intentional corrections: mixed-only empty/nearby, legacy bot group, human selfbot group, disconnected master/self passed
+1: Operations recorded; no registry copies or full map scans in V21 activity consumers
+1/1 Test #1: presence_lifecycle_parity_operations ...   Passed    0.17 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.19 sec

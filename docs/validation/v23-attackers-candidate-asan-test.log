@@ -1,0 +1,22 @@
+UpdateCTestConfiguration  from :C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/attackers-candidate-asan-build/DartConfiguration.tcl
+Test project C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/attackers-candidate-asan-build
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: v23_attackers_parity
+
+1: Test command: C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\attackers-candidate-asan-build\RelWithDebInfo\attackers_test.exe
+1: Working Directory: C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/attackers-candidate-asan-build
+1: Environment variable modifications: 
+1:  PATH=path_list_prepend:C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64
+1: Test timeout computed to be: 180
+1: PASS 6755 complete Attackers observations; GUID/order/duplicates, sets, group/master/pet/guardians/duel, qualifiers, Value refresh, RNG, PMO, errno, exceptions/reentry
+1/1 Test #1: v23_attackers_parity .............   Passed   68.60 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =  68.62 sec

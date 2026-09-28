@@ -1,0 +1,31 @@
+UpdateCTestConfiguration  from :C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/v20-shared-build/DartConfiguration.tcl
+Test project C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/v20-shared-build
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: shared_candidate
+
+1: Test command: C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\v20-shared-build\RelWithDebInfo\shared_candidate.exe "--check"
+1: Working Directory: C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/v20-shared-build
+1: Test timeout computed to be: 10000000
+1: contract_trace,0,80,32,112,0,0
+1: contract_trace,1,80,32,112,48,64
+1: candidate contracts passed checks=16188, factories=164, destroyed=68, calculates=225, sizeof(PlayerbotAI)=1344
+1/2 Test #1: shared_candidate .................   Passed    0.04 sec
+test 2
+    Start 2: shared_baseline_off_contracts
+
+2: Test command: C:\Users\user\Documents\Codex\2026-09-22\referenced-chatgpt-conversation-this-is-an\work\v23\v20-shared-build\RelWithDebInfo\shared_baseline.exe "--check"
+2: Working Directory: C:/Users/user/Documents/Codex/2026-09-22/referenced-chatgpt-conversation-this-is-an/work/v23/v20-shared-build
+2: Test timeout computed to be: 10000000
+2: contract_trace,0,80,32,112,0,0
+2: baseline contracts passed checks=804, factories=80, destroyed=32, calculates=112, sizeof(PlayerbotAI)=1344
+2/2 Test #2: shared_baseline_off_contracts ....   Passed    0.03 sec
+
+100% tests passed out of 2
+
+Total Test time (real) =   0.12 sec

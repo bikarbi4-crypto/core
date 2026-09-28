@@ -1,0 +1,40 @@
+{
+  "affinity_mask": "0x55",
+  "logical_processors_allowed": 4,
+  "command": [
+    "C:/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe",
+    "-X",
+    "utf8",
+    "work/v23/run_suite.py",
+    "log_action",
+    "candidate"
+  ],
+  "samples": [
+    {
+      "time": 1790567667.1263952,
+      "whole_pc_cpu_percent": 16.36
+    },
+    {
+      "time": 1790567668.126689,
+      "whole_pc_cpu_percent": 15.61
+    },
+    {
+      "time": 1790567669.2847733,
+      "whole_pc_cpu_percent": 34.81
+    },
+    {
+      "time": 1790567670.2856598,
+      "whole_pc_cpu_percent": 27.8
+    },
+    {
+      "time": 1790567671.286111,
+      "whole_pc_cpu_percent": 20.02
+    },
+    {
+      "time": 1790567672.2862828,
+      "whole_pc_cpu_percent": 17.1
+    }
+  ],
+  "exit_code": 0,
+  "peak_cpu_percent": 34.81
+}
