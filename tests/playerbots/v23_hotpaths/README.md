@@ -23,7 +23,7 @@ the local evidence includes matching baseline/current source hashes at that time
 
 Nine alternating rounds, warmup, fixed CPU affinity, no LTO/ICF, observable result
 sinks. All raw cases are retained, including negative/control results. The local
-runner limits compilation to two jobs and four of eight logical CPUs. Counts
+runner limits compilation to two jobs and four of 16 logical CPUs. Counts
 are allocations/requested bytes per call, not peak live memory. Durations include
 the same fixture services and result consumption in both variants; do not treat
 them as whole-server or on-disk logging measurements. Shared-target duplicates,
