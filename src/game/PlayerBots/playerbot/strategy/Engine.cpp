@@ -816,8 +816,7 @@ void Engine::LogAction(const char* format, ...)
     lastAction += buf;
     if (lastAction.size() > 512)
     {
-        lastAction = lastAction.substr(512);
-        size_t pos = lastAction.find("|");
+        size_t pos = lastAction.find("|", 512);
         lastAction = (pos == std::string::npos ? "" : lastAction.substr(pos));
     }
 
